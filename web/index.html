@@ -40,10 +40,10 @@
           <p class="eyebrow">A research demo for checking model runs</p>
           <h1 id="intro-title">Two model runs disagree.<br><span class="soft">Find the step where they split.</span></h1>
           <p class="lede">
-            Suppose someone runs a model for you. The answer alone cannot show how they got it.
-            MLVM runs the model in a virtual machine that can capture its state at any instruction.
-            Someone else can run the same program. If the two runs start alike but end differently,
-            MLVM narrows the disagreement to one instruction and checks that step locally.
+            An answer alone cannot show that a model ran as claimed. MLVM gives the same program
+            and inputs the same software rules, including floating-point math, on different computers.
+            In CI, five TinyStories prompts produce <a href="blog.html#cross-platform">matching state fingerprints across x86 and ARM hosts and WebAssembly</a>.
+            In the demo, a disagreement is narrowed to one instruction and checked locally.
           </p>
           <div class="hero-actions">
             <a class="button-link primary" href="#run">Try it in your browser <span aria-hidden="true">↓</span></a>
