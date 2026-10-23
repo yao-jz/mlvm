@@ -33,6 +33,21 @@
     </nav>
   </header>
 
+  <aside class="home-toc" aria-label="Homepage contents">
+    <details class="home-toc-menu">
+      <summary>On this page</summary>
+      <nav aria-label="Jump to a section">
+        <a href="#problem">Overview</a>
+        <a href="#run">Run a model</a>
+        <a href="#liar">Test a disagreement</a>
+        <a href="#how-it-works">How checking works</a>
+        <a href="#gallery">Recorded example</a>
+        <a href="#framework">The full framework</a>
+        <a href="#install">Run it locally</a>
+      </nav>
+    </details>
+  </aside>
+
   <main id="main">
     <section id="problem" class="hero" aria-labelledby="intro-title">
       <div class="hero-grid">
@@ -40,12 +55,12 @@
           <p class="eyebrow">Verifiable model execution</p>
           <h1 id="intro-title">Verify how a model<br><span class="soft">produced its answer.</span></h1>
           <p class="lede">
-            A model answer alone does not show how it was produced. MLVM runs the compiled model
-            inside a RISC-V virtual machine. The VM executes RISC-V instructions in software,
-            reads model files from its in-memory file system, and handles supported Linux system
-            calls such as opening a file. Another computer can repeat the run and compare a hash
-            of the VM's registers, memory and files, even when the displayed words match. If the
-            runs disagree, a checker can find and re-execute the disputed RISC-V instruction.
+            MLVM runs compiled models inside a RISC-V virtual machine. It executes RISC-V
+            instructions in software, serves model files from an in-memory file system, and
+            handles supported Linux system calls. Another computer can repeat the run and
+            compare a hash of the VM's registers, memory, files and saved answer. If the hashes
+            differ, MLVM locates and re-executes the disputed instruction—even when the words
+            on screen match.
           </p>
           <div class="hero-actions">
             <a class="button-link primary" href="#run">Run a model and check it <span aria-hidden="true">↓</span></a>
@@ -298,6 +313,29 @@
       </details>
 
       <p class="more-detail"><a href="blog.html#lies">Read what these experiments show →</a></p>
+    </section>
+
+    <section id="framework" class="act framework-section">
+      <p class="eyebrow">The full framework</p>
+      <h2>From a RISC-V program to an instruction check.</h2>
+      <p class="lede small">The examples above use the same path: load a compiled model and its files into the RISC-V virtual machine, execute its instructions, compare hashes from two runs, then check the instruction where they first disagree.</p>
+      <figure class="repo-figure">
+        <div class="figure-heading"><h3>The checking path</h3><a href="figures/overview.svg">Open full-size diagram ↗</a></div>
+        <p class="figure-mobile-hint">Swipe sideways to read the diagram →</p>
+        <div class="figure-image"><img src="figures/overview.svg" alt="An answer alone cannot show how a model ran. MLVM compares hashes of two RISC-V VM runs, narrows a disagreement to one instruction, and re-executes that instruction from saved VM values." loading="lazy" width="960" height="464"></div>
+        <figcaption>The two runs use the same RISC-V program, model files and prompt. If their final VM hashes differ, comparisons during execution locate a disputed instruction for a separate check.</figcaption>
+      </figure>
+      <details class="technical-details framework-details">
+        <summary>Explore the complete MLVM architecture</summary>
+        <p class="reading-copy">The full diagram includes the VM's software floating-point math, in-memory file system and supported Linux system calls, as well as the values saved to re-execute a disputed instruction.</p>
+        <figure class="repo-figure">
+          <div class="figure-heading"><h3>Inside MLVM</h3><a href="figures/architecture.svg">Open full-size diagram ↗</a></div>
+          <p class="figure-mobile-hint">Swipe sideways to read the diagram →</p>
+          <div class="figure-image"><img src="figures/architecture.svg" alt="Six-part MLVM architecture: fixed RISC-V program and files enter the virtual machine; software executes instructions and Linux system calls; a hash summarizes registers, memory, files and answer; two runs narrow a disagreement; a checker re-executes one instruction; the VM runs on computers and in a browser." loading="lazy" width="960" height="1150"></div>
+          <figcaption>MLVM contains the model's execution environment, records the VM values needed for comparison, and checks the RISC-V instruction where two runs disagree.</figcaption>
+        </figure>
+      </details>
+      <p class="more-detail"><a href="blog.html#overview">Read the detailed walkthrough →</a></p>
     </section>
 
     <section id="install" class="act">

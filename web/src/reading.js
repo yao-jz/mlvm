@@ -6,6 +6,40 @@ if (contents) {
   wideScreen.addEventListener("change", (event) => { contents.open = event.matches; });
 }
 
+const homeContents = document.querySelector(".home-toc-menu");
+if (homeContents) {
+  const railScreen = window.matchMedia("(min-width: 1500px)");
+  const links = [...homeContents.querySelectorAll('nav a[href^="#"]')];
+  const sections = links.map((link) => document.querySelector(link.getAttribute("href")));
+  homeContents.open = railScreen.matches;
+  railScreen.addEventListener("change", (event) => { homeContents.open = event.matches; });
+  homeContents.addEventListener("click", (event) => {
+    if (event.target.closest("nav a") && !railScreen.matches) homeContents.open = false;
+  });
+
+  let queued = false;
+  const markCurrent = () => {
+    queued = false;
+    let current = 0;
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i] && sections[i].getBoundingClientRect().top <= 160) current = i;
+    }
+    links.forEach((link, i) => {
+      link.classList.toggle("active", i === current);
+      if (i === current) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  };
+  const queueMark = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(markCurrent);
+  };
+  window.addEventListener("scroll", queueMark, { passive: true });
+  window.addEventListener("resize", queueMark);
+  queueMark();
+}
+
 function reveal(hash) {
   if (!hash) return null;
   let id;

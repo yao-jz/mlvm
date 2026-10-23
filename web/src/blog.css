@@ -134,6 +134,7 @@
 .post .repo-figure figcaption { font-size: 14px; line-height: 1.65; }
 .post .table th { color: var(--ink-2); font-weight: 600; }
 .post .table tbody tr:nth-child(even) { background: var(--surface-2); }
+.tldr, .fig-body, .post blockquote, .callout { border-radius: 2px; }
 
 @media (max-width: 1000px) {
   .post-wrap { grid-template-columns: 1fr; gap: 0; }
