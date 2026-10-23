@@ -292,6 +292,47 @@
       <p class="more-detail"><a href="blog.html#lies">Read what these experiments show →</a></p>
     </section>
 
+
+    <section id="install" class="act">
+      <p class="eyebrow">On your own machine</p>
+      <h2>Explore MLVM on your machine.</h2>
+      <p class="lede small">The command-line tool runs the same virtual machine on Linux, macOS and Windows. Try the built-in model, or run a local dispute with your own compiled RISC-V program.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>1. Install MLVM</h3>
+          <pre class="code"><code>brew install yao-jz/tap/mlvm</code></pre>
+          <details class="technical-details"><summary>Linux, Windows or building from source</summary>
+          <p class="note">For Linux and macOS:</p>
+          <pre class="code"><code>curl -fsSL https://raw.githubusercontent.com/yao-jz/mlvm/main/install.sh | sh</code></pre>
+          <p class="note">or from source, with Go 1.23+</p>
+          <pre class="code"><code>git clone https://github.com/yao-jz/mlvm && cd mlvm && make build</code></pre>
+          <p class="note">On Windows, download the zip from <a href="https://github.com/yao-jz/mlvm/releases">GitHub Releases</a>. See the <a href="https://github.com/yao-jz/mlvm/blob/main/docs/INSTALL.md">installation guide</a> for details.</p>
+          </details>
+        </div>
+        <div class="card">
+          <h3>2. Run a model and test a disagreement</h3>
+          <pre class="code"><code><span class="c"># Run the model and print its final fingerprint</span>
+mlvm demo "Once upon a time"
+
+<span class="c"># Deliberately change one result and find the step</span>
+mlvm liar
+
+<span class="c"># Count instructions by function</span>
+mlvm xray --svg flame.svg</code></pre>
+          <details class="technical-details"><summary>Save the evidence, or use your own program</summary>
+          <pre class="code"><code><span class="c"># Save the evidence, then verify it independently</span>
+mlvm liar --lie token --word Tim --json > dispute.json
+mlvm referee dispute.json
+
+<span class="c"># Use a statically linked RV64IMAFD executable</span>
+mlvm xray --elf ./your-program
+mlvm liar --elf ./your-program</code></pre>
+          <p class="note">The native CLI also runs the integer verdict through RISCV.sol's compiled bytecode in an in-process EVM.</p>
+          <p class="note"><a href="https://github.com/yao-jz/mlvm#bring-your-own-model">How to build and run your own model →</a></p>
+          </details>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">

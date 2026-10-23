@@ -127,7 +127,7 @@
           instruction. MLVM does this locally today.
         </p>
         <p>
-          This requires honest machines to agree bit for bit. Floating point makes that harder,
+          This requires correct runs to agree bit for bit. Floating point makes that harder,
           which is why Asterisc, the RISC-V fault-proof VM that MLVM builds on, left it out.
           Its ISA notes explain the decision:
         </p>
@@ -639,7 +639,7 @@ filesystemRoot = keccak256("MLVM-FILESYSTEM-V2\0" || filePointer || nextFd || fi
           A dispute checks a transition between machine states. For that check to say anything
           about the model's answer, the answer has to remain in the final state. MLVM does not
           include the stdout stream in its state hash. A machine can therefore print a different
-          answer and still finish with the honest machine's root.
+          answer and still finish with the original run's root.
         </p>
         <p>
           MLVM guests write their answer into a fixed location in memory and leave it there. The
@@ -667,7 +667,7 @@ static inline void mlvm_commit_result(const void *data, uint64_t len) {
         </p>
         <div class="table-scroll">
           <table class="table">
-            <thead><tr><th>all-MiniLM-L6-v2, 1.06B instructions</th><th>Liar prints</th><th>Liar commits</th><th>Final states</th><th>Dispute</th></tr></thead>
+            <thead><tr><th>all-MiniLM-L6-v2, 1.06B instructions</th><th>Faulty run prints</th><th>Faulty run stores</th><th>Final states</th><th>Dispute</th></tr></thead>
             <tbody>
               <tr><td><code>--lie output</code></td><td class="mono">score: 0.9110916734</td><td class="mono">score: 0.6110916734</td><td>identical</td><td>none: nothing to rule on</td></tr>
               <tr><td><code>--lie commit</code></td><td class="mono">score: 0.6110916734</td><td class="mono">score: 0.9110916734</td><td>differ</td><td>30 questions, one <code>sb</code>; <code>RISCV.sol</code> rules for 131,492 gas</td></tr>
@@ -722,7 +722,7 @@ for n := 1; hi-lo &gt; 1; n++ {
 t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for instruction lo</span></code></pre>
         </details>
         <p>
-          A lie can change how long a run is (on MiniLM-L12 the liar's run was 16 instructions
+          A fault can change how long a run is (on MiniLM-L12 the faulty run was 16 instructions
           shorter, on bge-base 68 longer), which is why <code>hi</code> starts at the longer run. A
           party asked about a step after its own halt answers with its final hash. The number of
           questions is <span class="mono">⌊log₂&nbsp;N⌋</span> or <span class="mono">⌈log₂&nbsp;N⌉</span>,
@@ -907,12 +907,12 @@ func (m *Memory) writablePage(pageIndex uint64) (*CachedPage, bool) {
           <table class="table">
             <thead><tr><th>Dispute</th><th class="num">Instructions</th><th class="num">Questions</th><th class="num">CPU</th><th class="num">Peak memory</th></tr></thead>
             <tbody>
-              <tr><td>TinyStories-260K (C), one-ULP lie</td><td class="num">38,186,542</td><td class="num">26</td><td class="num">3.9 s</td><td class="num">58 MB</td></tr>
-              <tr><td>all-MiniLM-L6-v2 (Candle), one-ULP lie</td><td class="num">1,062,488,466</td><td class="num">30</td><td class="num">100 s</td><td class="num">2.5 GB</td></tr>
-              <tr><td>bert-base-uncased (Candle), one-ULP lie</td><td class="num">6,752,543,098</td><td class="num">32</td><td class="num">618 s</td><td class="num">8.6 GB</td></tr>
+              <tr><td>TinyStories-260K (C), one-ULP fault</td><td class="num">38,186,542</td><td class="num">26</td><td class="num">3.9 s</td><td class="num">58 MB</td></tr>
+              <tr><td>all-MiniLM-L6-v2 (Candle), one-ULP fault</td><td class="num">1,062,488,466</td><td class="num">30</td><td class="num">100 s</td><td class="num">2.5 GB</td></tr>
+              <tr><td>bert-base-uncased (Candle), one-ULP fault</td><td class="num">6,752,543,098</td><td class="num">32</td><td class="num">618 s</td><td class="num">8.6 GB</td></tr>
               <tr><td>SmolLM2-135M (Candle), forged token</td><td class="num">14,764,379,315</td><td class="num">34</td><td class="num">1,511 s</td><td class="num">9.9 GB</td></tr>
             </tbody>
-            <caption>CPU time for the whole command on an Apple M3 Max: both machines' full runs, the lie, the bisection and the verdict.</caption>
+            <caption>CPU time for the whole command on an Apple M3 Max: both full runs, the fault, the bisection and the verdict.</caption>
           </table>
         </div>
       </section>
@@ -922,7 +922,7 @@ func (m *Memory) writablePage(pageIndex uint64) (*CachedPage, bool) {
         <h2><span class="num">8</span>Checking the disputed instruction</h2>
         <h3>8.1 Recovering the instruction from the proof</h3>
         <p>
-          At the end of bisection, the honest party supplies a 674-byte witness for the state
+          At the end of bisection, the party defending the original run supplies a 674-byte witness for the state
           before instruction <code>lo</code>, along with the memory proofs needed to execute it.
           The referee first hashes the witness and checks it against the root both parties agreed
           on. It then reads the program counter from the witness and recovers the instruction word
@@ -1043,7 +1043,7 @@ return post.StateHash()</code></pre>
         <figure class="fig" id="fig6">
           <div class="fig-body">
             <svg viewBox="0 0 760 146" role="img" aria-labelledby="fig6-t">
-              <title id="fig6-t">The same GEMM takes 903,446 instructions with float instructions and 22,898,400 with compiler soft-float, 25.3 times as many. A lie needs 20 questions in the first build, ruled by SoftFloat locally, and 25 in the second, ruled by RISCV.sol.</title>
+              <title id="fig6-t">The same GEMM takes 903,446 instructions with float instructions and 22,898,400 with compiler soft-float, 25.3 times as many. A fault needs 20 questions in the first build, ruled by SoftFloat locally, and 25 in the second, ruled by RISCV.sol.</title>
               <text class="f-t" x="0" y="26">rv64imafd</text>
               <text class="f-s" x="0" y="44">fmul.d in the ISA</text>
               <rect class="f-bar" x="200" y="12" width="19" height="26" rx="3"/>
@@ -1055,7 +1055,7 @@ return post.StateHash()</code></pre>
               <text class="f-s" x="200" y="132">22,898,400 instructions · 25 questions · RISCV.sol rules, 48,576 gas</text>
             </svg>
           </div>
-          <figcaption><b>Figure 6.</b> One multiplication, lied about in each build. Both builds print
+          <figcaption><b>Figure 6.</b> One multiplication, made wrong in each build. Both builds print
           the same bits (<code>trace = 0xbfe61436da4b68e0</code>), from two independent IEEE-754
           implementations: MLVM's SoftFloat port and Rust's <code>compiler_builtins</code>.</figcaption>
         </figure>
@@ -1119,12 +1119,12 @@ return post.StateHash()</code></pre>
         <h3>9.1 Finding a change that survives</h3>
         <p>
           To test bisection and the referee, we built a version of the VM that deliberately makes
-          one run diverge. We call it the <em>liar</em>. We ran it on the gallery's 13 programs, from a
+          one run diverge; the <code>mlvm liar</code> command runs it. We ran it on the gallery's 13 programs, from a
           263,030-instruction C program to SmolLM2-135M, with five kinds of fault:
         </p>
         <div class="table-scroll">
           <table class="table">
-            <thead><tr><th><code>--lie</code></th><th>The lying machine…</th><th>Ruled by</th></tr></thead>
+            <thead><tr><th><code>--lie</code></th><th>The faulty run…</th><th>Ruled by</th></tr></thead>
             <tbody>
               <tr><td><code>ulp</code></td><td>rounds one float result one unit in the last place the wrong way</td><td>SoftFloat, from the witness</td></tr>
               <tr><td><code>load</code></td><td>reads one bit of one loaded value wrong (a weight or an activation)</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
@@ -1137,23 +1137,23 @@ return post.StateHash()</code></pre>
         <p>
           Many small changes disappear before the program finishes. Rounding can absorb them,
           or a later write can overwrite the affected value. That leaves no difference in the
-          final roots for bisection to find. To select a useful test case, the liar forks at a
+          final roots for bisection to find. To select a useful test case, MLVM forks the run at a
           candidate instruction and runs two copies in lockstep: one unchanged, one with a bit
           flipped. It compares registers and every word either copy stores. When those match,
           it checks the full state hash as well, covering syscall writes, file state and the
           randomness cursor. If the states have converged, it abandons that candidate.
         </p>
         <p>
-          The liar keeps a change if it survives 2.5 million instructions, longer than one
+          MLVM keeps a change if it survives 2.5 million instructions, longer than one
           TinyStories forward pass (about 1.8 million). By then it has often reached data that
           later passes retain, such as the KV cache. This is only a heuristic. If the difference
-          disappears later, or the program crashes, the liar starts again with the next candidate.
+          disappears later, or the program crashes, MLVM starts again with the next candidate.
         </p>
         <figure class="fig" id="fig7">
           <div class="fig-body">
             <svg viewBox="0 0 760 200" role="img" aria-labelledby="fig7-t">
-              <title id="fig7-t">(a) A flipped bit is absorbed by rounding: the lie copy converges with the honest shadow and is abandoned. (b) The difference outlives the 2.5-million-instruction lockstep window and is kept.</title>
-              <text class="f-panel" x="0" y="16">(a) erased: abandon the lie</text>
+              <title id="fig7-t">(a) A flipped bit is absorbed by rounding: the faulty copy converges with the original copy and is abandoned. (b) The difference outlives the 2.5-million-instruction lockstep window and is kept.</title>
+              <text class="f-panel" x="0" y="16">(a) erased: abandon the fault</text>
               <line class="f-thin" x1="10" y1="80" x2="60" y2="80" style="stroke-width:2.5"/>
               <path class="f-honest" d="M60,80 L340,80"/>
               <path class="f-liar" d="M60,80 C88,118 150,120 198,82"/>
@@ -1161,45 +1161,45 @@ return post.StateHash()</code></pre>
               <circle cx="200" cy="80" r="5" class="f-ckpt"/>
               <text class="f-s" x="60" y="62" text-anchor="middle">flip one bit</text>
               <text class="f-s" x="200" y="62" text-anchor="middle">identical state hash</text>
-              <text class="f-s" x="248" y="100">honest shadow</text>
-              <text class="f-s" x="110" y="134" text-anchor="middle">lie copy</text>
-              <text class="f-s" x="10" y="166">MiniLM-L6, SmolLM2: erased lies were</text>
+              <text class="f-s" x="248" y="100">original copy</text>
+              <text class="f-s" x="110" y="134" text-anchor="middle">faulty copy</text>
+              <text class="f-s" x="10" y="166">MiniLM-L6, SmolLM2: erased faults were</text>
               <text class="f-s" x="10" y="184">gone within 3 to 1,425 instructions</text>
 
-              <text class="f-panel" x="400" y="16">(b) survived: keep the lie</text>
+              <text class="f-panel" x="400" y="16">(b) survived: keep the fault</text>
               <line class="f-thin" x1="410" y1="80" x2="450" y2="80" style="stroke-width:2.5"/>
               <path class="f-honest" d="M450,80 L690,80"/>
               <path class="f-honest-dash" d="M690,80 L750,80"/>
               <path class="f-liar" d="M450,80 C475,116 505,118 540,118 L750,118"/>
               <circle cx="450" cy="80" r="5" class="f-node"/>
               <text class="f-s" x="450" y="62" text-anchor="middle">flip one bit</text>
-              <text class="f-s" x="560" y="72">honest shadow</text>
-              <text class="f-s" x="560" y="110">lie copy</text>
+              <text class="f-s" x="560" y="72">original copy</text>
+              <text class="f-s" x="560" y="110">faulty copy</text>
               <line class="f-thin" x1="450" y1="140" x2="690" y2="140"/>
               <line class="f-thin" x1="450" y1="134" x2="450" y2="146"/>
               <line class="f-thin" x1="690" y1="134" x2="690" y2="146"/>
               <line class="f-dash" x1="690" y1="56" x2="690" y2="134"/>
               <text class="f-s" x="570" y="164" text-anchor="middle">lockstep window: 2.5M instructions</text>
-              <text class="f-s" x="410" y="188">kept: this machine is now the liar</text>
+              <text class="f-s" x="410" y="188">kept: this copy becomes the faulty run</text>
             </svg>
           </div>
-          <figcaption><b>Figure 7.</b> How the liar chooses a lie that a referee will have to find.
-          The shadow is discarded once a lie is kept.</figcaption>
+          <figcaption><b>Figure 7.</b> How MLVM picks a fault that the search will have to find.
+          The original copy is discarded once a fault is kept.</figcaption>
         </figure>
 
         <h3>9.2 Why small changes disappear</h3>
         <div class="table-scroll">
           <table class="table">
-            <thead><tr><th>Program</th><th>Lie</th><th class="num">Tries</th><th>What happened to the others</th></tr></thead>
+            <thead><tr><th>Program</th><th>Fault</th><th class="num">Tries</th><th>What happened to the others</th></tr></thead>
             <tbody>
               <tr><td>GEMM with float instructions (f64)</td><td>1 ULP</td><td class="num">153</td><td>absorbed by the rounding of the dot product's sum</td></tr>
               <tr><td>bge-small-en-v1.5</td><td>1 ULP</td><td class="num">16</td><td>fifteen vanished before one stuck</td></tr>
               <tr><td>all-MiniLM-L6-v2</td><td>misread one bit</td><td class="num">13</td><td>gone 397,422 instructions later, once the packed operand buffer was consumed and packed again</td></tr>
-              <tr><td>SmolLM2-135M</td><td>1 ULP</td><td class="num">11</td><td>nine erased within 3 to 1,425 instructions; one outlived the window but vanished before the end, so the liar ran again</td></tr>
+              <tr><td>SmolLM2-135M</td><td>1 ULP</td><td class="num">11</td><td>nine erased within 3 to 1,425 instructions; one outlived the window but vanished before the end, so MLVM tried again</td></tr>
               <tr><td>all-MiniLM-L6-v2</td><td>1 ULP</td><td class="num">8</td><td>seven erased within 3 to 364 instructions</td></tr>
               <tr><td>MLP (C)</td><td>one integer bit</td><td class="num">5</td><td>the first four crashed the program</td></tr>
               <tr><td>TinyStories-260K (C)</td><td>1 ULP</td><td class="num">4</td><td>two erased within 20 instructions, one after 308,787</td></tr>
-              <tr><td>bert-base-uncased</td><td>1 ULP</td><td class="num">1</td><td>the first lie stuck</td></tr>
+              <tr><td>bert-base-uncased</td><td>1 ULP</td><td class="num">1</td><td>the first fault survived</td></tr>
             </tbody>
           </table>
         </div>
@@ -1283,7 +1283,7 @@ return post.StateHash()</code></pre>
         <p>
           On an Apple M3 Max in Chrome, the 38-million-instruction TinyStories run takes about
           8 seconds with profiling on (5.3 million instructions per second). The native CLI takes
-          about 1.2 seconds. A lying run in the browser takes about 9 seconds, and bisection takes
+          about 1.2 seconds. A faulty run in the browser takes about 9 seconds, and bisection takes
           about 5 with both parties answering in parallel. Each party keeps up to eleven
           machine copies, about 90 MB, and half as many on small devices.
         </p>
@@ -1291,7 +1291,7 @@ return post.StateHash()</code></pre>
           The browser build leaves out the EVM, so integer verdicts there use <code>slow.Step</code>
           only. The WebAssembly build is one of the six
           in the determinism matrix, and CI plays a full dispute across three WebAssembly instances
-          in Node worker threads, failing unless bisection lands on the lie.
+          in Node worker threads, failing unless bisection lands on the fault.
         </p>
       </section>
 
@@ -1356,7 +1356,7 @@ return post.StateHash()</code></pre>
         <p>The measurements on this page come from the repository's documents and recorded runs. These commands run the demo, inspect a dispute record and reproduce the gallery experiments:</p>
 <pre class="code"><code>brew install yao-jz/tap/mlvm         <span class="c"># or: git clone … &amp;&amp; make build</span>
 mlvm demo "Once upon a time"         <span class="c"># the run, its prestate and poststate</span>
-mlvm liar --json &gt; dispute.json      <span class="c"># a one-ULP lie, found by bisection</span>
+mlvm liar --json &gt; dispute.json      <span class="c"># a one-ULP fault, found by bisection</span>
 mlvm referee dispute.json            <span class="c"># rule on it again from the record</span>
 mlvm xray --svg flame.svg            <span class="c"># the exact profile</span>
 
