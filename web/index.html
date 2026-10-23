@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MLVM · find the step where two model runs disagree</title>
-  <meta name="description" content="When two runs of the same model disagree, MLVM narrows the difference to one instruction and checks that step locally. Explore the research demo in your browser.">
-  <meta property="og:title" content="MLVM · find the step where two model runs disagree">
-  <meta property="og:description" content="See how a local experiment narrowed a disagreement in a 14.8-billion-instruction model run to one step. Try a smaller run in your browser.">
+  <title>MLVM · verify how a model produced its answer</title>
+  <meta name="description" content="MLVM lets another person check a model run on their own computer. Compare the run, then investigate a disagreement without repeating the whole computation.">
+  <meta property="og:title" content="MLVM · verify how a model produced its answer">
+  <meta property="og:description" content="An answer alone cannot show how a model was run. MLVM lets another computer repeat and check the computation, even on different hardware.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://yao-jz.github.io/mlvm/social-card.png">
   <meta property="og:url" content="https://yao-jz.github.io/mlvm/">
@@ -37,61 +37,35 @@
     <section id="problem" class="hero" aria-labelledby="intro-title">
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">A research demo for checking model runs</p>
-          <h1 id="intro-title">Two model runs disagree.<br><span class="soft">Find the step where they split.</span></h1>
+          <p class="eyebrow">Verifiable model execution</p>
+          <h1 id="intro-title">Verify how a model<br><span class="soft">produced its answer.</span></h1>
           <p class="lede">
-            An answer alone cannot show that a model ran as claimed. MLVM gives the same program
-            and inputs the same software rules, including floating-point math, on different computers.
-            In CI, five TinyStories prompts produce <a href="blog.html#cross-platform">matching state fingerprints across x86 and ARM hosts and WebAssembly</a>.
-            In the demo, a disagreement is narrowed to one instruction and checked locally.
+            Suppose a service runs a model for you and returns an answer. The answer alone cannot
+            show whether it used the model and input you agreed on. MLVM lets another computer
+            repeat the run and compare what happened inside, even when the displayed words match.
+            If the runs disagree, a separate checker can redo the disputed calculation without
+            rerunning the whole model.
           </p>
           <div class="hero-actions">
-            <a class="button-link primary" href="#run">Try it in your browser <span aria-hidden="true">↓</span></a>
+            <a class="button-link primary" href="#run">Run a model and check it <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="#how-it-works">See how it works</a>
           </div>
-          <p class="hero-note"><strong>Research prototype.</strong> The demo runs locally in your browser. Disputes run locally today; an on-chain dispute system is not built yet. <a href="blog.html#limits">What it can and cannot verify →</a></p>
         </div>
         <aside class="reading-invite" aria-labelledby="read-title">
-          <p class="eyebrow">Recorded experiment</p>
-          <h2 id="read-title">One changed step in 14.8 billion</h2>
-          <p>We deliberately changed one result in a SmolLM2 run. A local search found that step in 34 rounds, then checked it from a saved record.</p>
-          <a class="button-link primary" href="blog.html#lies">See the experiment <span aria-hidden="true">→</span></a>
+          <p class="eyebrow">Independent checks</p>
+          <h2 id="read-title">The checker can use a different computer.</h2>
+          <p>One person can run the model on a Mac; another can check it on Linux, Windows or in a browser. For the built-in story model, we recorded matching runs across these systems with the same model and input.</p>
+          <a class="button-link primary" href="blog.html#cross-platform">See the cross-computer test <span aria-hidden="true">→</span></a>
         </aside>
       </div>
-      <ul class="feature-links" aria-label="What MLVM provides">
-        <li><a href="blog.html#why-riscv"><strong>A RISC-V virtual machine</strong><span>Models compile to RV64IMAFD and run in software, floating point included. No GPU or RISC-V hardware needed.</span></a></li>
-        <li><a href="blog.html#cross-platform"><strong>Deterministic across platforms</strong><span>The same program and inputs give bit-identical states. CI checks Linux, macOS, Windows and WebAssembly.</span></a></li>
-        <li><a href="#how-it-works"><strong>Verifiable, one instruction at a time</strong><span>Any machine state has a 32-byte fingerprint. One instruction can be rechecked from a few kilobytes.</span></a></li>
-        <li><a href="#liar"><strong>Disputable</strong><span>When two runs end differently, about log₂ N rounds find the step where they split: 34 for 14.8 billion.</span></a></li>
-      </ul>
-    </section>
-
-    <section id="how-it-works" class="act concept-section">
-      <p class="eyebrow">The idea in three steps</p>
-      <h2>Compare two runs.<br>Check one step.</h2>
-      <p class="lede small">An instruction is one small operation, such as adding two numbers or reading memory. MLVM gives the same program and inputs the same rules on different computers. It can summarize the virtual machine's state with a short fingerprint after any instruction.</p>
-      <ol class="concept-steps">
-        <li><span class="step-number">1</span><h3>Summarize the state</h3><p>A 32-byte fingerprint represents the machine's memory, registers and tracked files after any instruction. The model's stored answer is included.</p></li>
-        <li><span class="step-number">2</span><h3>Find a step where they split</h3><p>If two runs start alike but finish differently, compare their fingerprints halfway through. Repeat in the half where they differ until one instruction remains.</p></li>
-        <li><span class="step-number">3</span><h3>Check that instruction</h3><p>A local referee checks the disputed instruction using a saved state and proof of the memory it used. It does not need to rerun the model. This demo supports selected steps; a complete dispute system is still future work.</p></li>
-      </ol>
-      <figure class="repo-figure">
-        <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="When two runs start alike but finish differently, MLVM compares their machine states halfway through until one instruction remains, then locally checks that instruction from a saved state and memory proof."></a>
-        <figcaption>The three steps in one picture. <a href="figures/overview.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
-      </figure>
-      <p class="more-detail"><a href="blog.html#overview">Read the illustrated technical walkthrough →</a></p>
     </section>
 
     <section id="run" class="act demo-section">
       <div class="section-heading">
         <p class="eyebrow">Try it · Step 1 of 2</p>
-        <h2>Run a small model in your browser.</h2>
-        <p class="lede small">TinyStories continues your story in this tab. MLVM then shows a fingerprint of the finished machine, including the answer it stored. Next, you can change one result and see how the disagreement is found. Your prompt and result stay on your device.</p>
+        <h2>Run the model yourself.</h2>
+        <p class="lede small">Type the start of a story. TinyStories, a small language model, continues it on your device. MLVM gives the finished run an identifying code that includes its saved answer. With the default prompt, compare your code with runs on other computers.</p>
       </div>
-      <ol class="journey" aria-label="Explore the demo">
-        <li><a href="#run"><span class="step-number">01</span><span><strong>Run the model</strong><span>See its answer and final fingerprint.</span></span><span aria-hidden="true">↓</span></a></li>
-        <li><a href="#liar"><span class="step-number">02</span><span><strong>Change one result</strong><span>Find the step where the runs split.</span></span><span aria-hidden="true">↓</span></a></li>
-      </ol>
       <div class="demo-surface">
       <div class="demo-label"><span>Live demo · TinyStories-260K</span><span>Everything runs in this tab</span></div>
 
@@ -109,68 +83,66 @@
         <button id="run-button" type="submit" disabled>Loading…</button>
       </form>
       <p class="form-note">A token is a small piece of text. The default run usually takes a few seconds on a laptop; slower devices may take longer.</p>
-      <noscript><p class="banner">The live demo needs JavaScript. You can still read the <a href="blog.html">illustrated explanation</a> and the diagrams on this page.</p></noscript>
+      <noscript><p class="banner">The interactive example needs JavaScript. You can still read the <a href="blog.html">illustrated explanation</a>.</p></noscript>
 
       <div class="console">
         <p id="story" class="story"><span class="prompt-text">Once upon a time</span><span class="gen-text"></span><span class="caret" aria-hidden="true"></span></p>
         <div class="meter" aria-hidden="true"><div id="meter" class="meter-fill"></div></div>
         <div class="stats">
-          <div class="stat stat-hero"><span id="steps" class="stat-value">0</span><span class="stat-label">instructions executed</span></div>
-          <div class="stat"><span id="mips" class="stat-value">–</span><span class="stat-label">million instructions / s</span></div>
+          <div class="stat stat-hero"><span id="steps" class="stat-value">0</span><span class="stat-label">small operations performed</span></div>
           <div class="stat"><span id="elapsed" class="stat-value">–</span><span class="stat-label">seconds</span></div>
-          <div class="stat"><span id="float-share" class="stat-value">–</span><span class="stat-label">floating-point instructions</span></div>
         </div>
-        <p id="status" class="status" role="status">Loading the model and its virtual machine…</p>
+        <p id="status" class="status" role="status">Loading the story model…</p>
       </div>
       </div>
 
       <div id="receipt" class="card receipt hidden">
         <div class="card-head">
-          <h3>Your run's final fingerprint</h3>
+          <h3>The identifying code for your run</h3>
           <button id="share" class="ghost" type="button">Copy a link to this result</button>
         </div>
-        <p class="reading-copy">This <strong>state hash</strong> summarizes the machine's memory, registers and stored answer. In our recorded experiments, a changed result sometimes left the printed words unchanged but changed this hash.</p>
+        <p class="result-code"><code id="r-post"></code></p>
+        <p class="reading-copy">This code is called a <strong>hash</strong>. It summarizes the values the program held when it finished, including its stored answer. Two runs can display the same words yet have different hashes if one kept a wrong value.</p>
         <details class="technical-details">
-          <summary>View this run's full hashes and token IDs</summary>
+          <summary>See the starting code and token IDs</summary>
           <dl class="kv">
             <dt>Starting state (prestate)</dt><dd><code id="r-pre"></code></dd>
-            <dt>Final state (poststate)</dt><dd><code id="r-post"></code></dd>
             <dt>Work performed</dt><dd id="r-steps"></dd>
             <dt>Stored answer (token IDs)</dt><dd><code id="r-tokens"></code></dd>
           </dl>
           <p class="note">The starting hash covers the program, model, tokenizer and prompt. The final hash also covers the generated answer stored in memory.</p>
         </details>
-        <details class="technical-details">
-          <summary>Compare this run with saved results from other computers</summary>
-          <p class="reading-copy">For a saved prompt and length, these rows compare your browser's final fingerprint with runs of the same program on other platforms.</p>
+        <details class="technical-details" open>
+          <summary>Compare your run with other computers</summary>
+          <p class="reading-copy">For the example prompts, compare your code with saved runs of the same model on Mac, Windows, Linux and in a browser. Matching codes mean those runs finished with the same recorded values.</p>
           <div id="compare" class="compare"></div>
         </details>
-        <div class="next-actions"><a class="button-link primary" href="#liar">Next: change one result →</a><a href="#xray">See where the work went</a></div>
+        <div class="next-actions"><a class="button-link primary" href="#liar">Next: test a disagreement →</a></div>
       </div>
     </section>
 
     <section id="liar" class="act">
       <p class="eyebrow">Try it · Step 2 of 2</p>
-      <h2>Change one result.<br>Locate the changed step.</h2>
+      <h2>What if two runs disagree?</h2>
       <div class="two-col">
         <div>
           <p>
-            A second copy runs the same program but changes one result, as a faulty machine might. The story may look the same even when the machine's final fingerprint differs.
+            MLVM runs the same model again, but deliberately makes one calculation wrong. You can choose other mistakes below. The two runs may print the same words while holding different numbers inside.
           </p>
           <p class="muted">
-            The search compares the two machine states halfway through the run, then repeats in the half where they first differ. For the default prompt, about 26 rounds narrow 38 million instructions to one. The local referee checks that step.
+            If their identifying codes differ, MLVM finds where the runs first changed and checks what should have happened there. The default example takes about 26 comparisons to find one operation among 38 million.
           </p>
-          <aside class="explainer-note"><strong>Try the default first.</strong> It makes one number slightly wrong. If later calculations erase the change, the demo tries another location until a difference survives.</aside>
+          <aside class="explainer-note"><strong>Try the default first.</strong> It makes a tiny change to one calculation. Later calculations can erase the change, so MLVM tries another place until the finished runs differ.</aside>
           <p class="note"><a href="#how-it-works">Revisit how the search works ↑</a></p>
         </div>
         <form id="liar-form" class="liar-form" autocomplete="off">
           <fieldset>
-            <legend>What should the second machine change?</legend>
-            <label class="choice"><input type="radio" name="lie" value="ulp" checked> <span><strong>A rounding result</strong><span class="choice-detail">Make one tiny arithmetic error.</span></span></label>
-            <label class="choice"><input type="radio" name="lie" value="load"> <span><strong>A value read from memory</strong><span class="choice-detail">Read one bit incorrectly.</span></span></label>
-            <label class="choice"><input type="radio" name="lie" value="int"> <span><strong>An integer calculation</strong><span class="choice-detail">Change one bit in a counter, index or other result.</span></span></label>
-            <label class="choice"><input type="radio" name="lie" value="output"> <span><strong>The displayed answer</strong><span class="choice-detail">Print a different word without storing it. This may leave no difference to check.</span></span></label>
-            <label class="choice"><input type="radio" name="lie" value="token"> <span><strong>The stored answer</strong><span class="choice-detail">Write a different word into the final state.</span></span></label>
+            <legend>What should go wrong in the second run?</legend>
+            <label class="choice"><input type="radio" name="lie" value="ulp" checked> <span><strong>One calculation</strong><span class="choice-detail">Make one number in the model's math slightly wrong.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="load"> <span><strong>One value read from memory</strong><span class="choice-detail">Read a weight or other number incorrectly.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="int"> <span><strong>One whole-number calculation</strong><span class="choice-detail">Change a counter, index or other number.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="output"> <span><strong>Only the words on screen</strong><span class="choice-detail">Print a different word without saving it in the run.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="token"> <span><strong>The answer saved by the model</strong><span class="choice-detail">Store a different word as part of the answer.</span></span></label>
           </fieldset>
           <p id="lie-about" class="hint"></p>
           <details id="step-controls" class="technical-details">
@@ -211,12 +183,12 @@
         <article class="card machine honest">
           <h3><span class="key key-honest" aria-hidden="true"></span>Original run</h3>
           <p class="machine-text" id="m-honest-text"></p>
-          <p class="machine-hash"><span>Final state hash</span> <code id="m-honest-post"></code></p>
+          <p class="machine-hash"><span>Identifying code</span> <code id="m-honest-post"></code></p>
         </article>
         <article class="card machine liar">
-          <h3><span class="key key-liar" aria-hidden="true"></span>Run with a changed result</h3>
+          <h3><span class="key key-liar" aria-hidden="true"></span>Run with the chosen mistake</h3>
           <p class="machine-text" id="m-liar-text">…</p>
-          <p class="machine-hash"><span>Final state hash</span> <code id="m-liar-post">running…</code></p>
+          <p class="machine-hash"><span>Identifying code</span> <code id="m-liar-post">running…</code></p>
           <div class="meter small" aria-hidden="true"><div id="liar-meter" class="meter-fill liar-fill"></div></div>
           <ol id="attempts" class="attempts"></ol>
         </article>
@@ -225,8 +197,8 @@
 
       <div id="ladder-wrap" class="card hidden">
         <div class="card-head">
-          <h3 id="ladder-title">Narrowing down the disagreement</h3>
-          <p class="legend"><span class="sw kept"></span>still in dispute <span class="sw dropped"></span>ruled out</p>
+          <h3 id="ladder-title">Finding where the runs first differ</h3>
+          <p class="legend"><span class="sw kept"></span>still possible <span class="sw dropped"></span>ruled out</p>
         </div>
         <div id="ladder" class="ladder"></div>
       </div>
@@ -234,37 +206,49 @@
       <div id="verdict" class="card verdict hidden">
         <div id="verdict-body"></div>
         <div class="record-actions">
-          <button id="v-download" class="ghost" type="button">Download the evidence</button>
-          <span class="note">Save the dispute as a small JSON file. You can <a href="#referee">recheck the recorded search and disputed step</a> without rerunning the model.</span>
+          <button id="v-download" class="ghost" type="button">Download what MLVM checked</button>
+          <span class="note">The file contains each comparison and the information needed to redo the one disputed operation. <a href="#referee">Check the file again</a> without rerunning the model.</span>
         </div>
       </div>
     </section>
 
+    <section id="how-it-works" class="act concept-section">
+      <p class="eyebrow">How the check works</p>
+      <h2>Find the difference. Check the calculation.</h2>
+      <p class="lede small">A model run is a long sequence of tiny operations, such as multiplying two numbers or reading a value from memory. MLVM can summarize everything the program holds after any operation in a short code. If the recorded values change, the code changes too.</p>
+      <ol class="concept-steps">
+        <li><span class="step-number">1</span><h3>Start with the same model and input</h3><p>Both runs load the same program, model weights and prompt. If they finish with different codes, they held different values, even if they printed the same words.</p></li>
+        <li><span class="step-number">2</span><h3>Compare the halfway point</h3><p>Ask each run for its code halfway through. If the codes match, the difference came later; if they differ, it came earlier. Keep halving until one operation remains.</p></li>
+        <li><span class="step-number">3</span><h3>Redo that one operation</h3><p>Using values saved just before it ran, a separate checker calculates what that operation should have produced. It does not need to rerun the whole model.</p></li>
+      </ol>
+      <p class="more-detail"><a href="blog.html#overview">See the detailed explanation →</a></p>
+    </section>
+
     <section id="gallery" class="act">
-      <p class="eyebrow">Recorded examples</p>
-      <h2>We tried this on larger programs, too.</h2>
+      <p class="eyebrow">A larger example</p>
+      <h2>The same words can hide a wrong calculation.</h2>
       <p class="lede small">
-        We deliberately changed one result in each recorded dispute, then searched for the changed step. Every search ended at that instruction. The largest run took 14.8 billion instructions; 34 comparisons narrowed its disagreement to one step. Open a record to replay the search and check that step locally.
+        We made one multiplication slightly wrong during a SmolLM2 language-model run. It printed the same text, but held a different number inside. The run performed 14.8 billion operations; MLVM found and checked the faulty one after 34 comparisons. Open the saved example to see the check yourself.
       </p>
       <div id="featured-runs" class="featured-runs"></div>
-      <p id="gallery-status" class="note" role="status">Loading the recorded experiments…</p>
+      <p id="gallery-status" class="note" role="status">Loading the saved example…</p>
       <details class="technical-details gallery-card" id="gallery-details">
-        <summary>Browse all recorded runs</summary>
+        <summary>Browse the other recorded tests</summary>
         <div class="table-scroll">
           <table class="table gallery-table" id="gallery-table">
             <thead><tr>
-              <th>Program</th><th class="num">Instructions</th><th>Changed result</th>
+              <th>Program</th><th class="num">Instructions</th><th>Injected fault</th>
               <th class="num">Search rounds</th><th>Instruction found</th><th>Checked by</th><th><span class="visually-hidden">Replay</span></th>
             </tr></thead>
             <tbody></tbody>
           </table>
         </div>
-        <p class="note" id="gallery-note">Loading recorded runs…</p>
+        <p class="note" id="gallery-note">Loading recorded tests…</p>
       </details>
 
       <div id="replay" class="card replay hidden">
         <div class="card-head">
-          <h3 id="replay-title">Replay</h3>
+          <h3 id="replay-title">Saved run</h3>
           <button id="replay-close" class="ghost" type="button">Close</button>
         </div>
         <p id="replay-lede" class="note"></p>
@@ -272,131 +256,42 @@
           <div class="machine panel">
             <h3><span class="key key-honest" aria-hidden="true"></span>Original run</h3>
             <p class="machine-text" id="rp-honest-text"></p>
-            <p class="machine-hash"><span>Final state hash</span> <code id="rp-honest-post"></code></p>
+            <p class="machine-hash"><span>Identifying code</span> <code id="rp-honest-post"></code></p>
           </div>
           <div class="machine panel">
-            <h3><span class="key key-liar" aria-hidden="true"></span>Run with a changed result</h3>
+            <h3><span class="key key-liar" aria-hidden="true"></span>Run with the injected fault</h3>
             <p class="machine-text" id="rp-liar-text"></p>
-            <p class="machine-hash"><span>Final state hash</span> <code id="rp-liar-post"></code></p>
+            <p class="machine-hash"><span>Identifying code</span> <code id="rp-liar-post"></code></p>
             <ol id="rp-attempts" class="attempts"></ol>
           </div>
         </div>
         <div class="card-head replay-ladder-head">
-          <h3 id="rp-ladder-title">Search</h3>
-          <p class="legend"><span class="sw kept"></span>still in dispute <span class="sw dropped"></span>ruled out</p>
+          <h3 id="rp-ladder-title">Finding the difference</h3>
+          <p class="legend"><span class="sw kept"></span>still possible <span class="sw dropped"></span>ruled out</p>
         </div>
         <div id="rp-ladder" class="ladder"></div>
         <div id="rp-verdict" class="verdict"></div>
         <div class="record-actions">
-          <button id="rp-check" type="button">Check this record on my device</button>
-          <a id="rp-download" class="button-link" download>Download the record</a>
+          <button id="rp-check" type="button">Check this run on my device</button>
+          <a id="rp-download" class="button-link" download>Download the check file</a>
         </div>
         <div id="rp-check-out" class="check-out" aria-live="polite"></div>
       </div>
 
       <details id="referee" class="technical-details">
-        <summary>Check a saved dispute record</summary>
+        <summary>Open a saved check file</summary>
         <p class="note">
-          Open a record downloaded from this page or saved with <code>mlvm liar --json</code>.
-          This page checks the recorded search, checks the supplied state against the fingerprint both runs agreed on, and re-executes the disputed instruction when supported. It does not prove how either full run was produced. The file stays on your device.
+          Open a file downloaded from this page or saved with <code>mlvm liar --json</code>.
+          It contains the two runs' comparisons and the values needed to check their disputed operation. This page checks the file and redoes that operation when supported. The file stays on your device.
           <a href="blog.html#referee">How this check works →</a>
         </p>
-        <label class="file-pick"><span>Open a record</span> <input id="record-file" type="file" accept=".json,application/json"></label>
+        <label class="file-pick"><span>Open a file</span> <input id="record-file" type="file" accept=".json,application/json"></label>
         <div id="record-out" class="check-out" aria-live="polite"></div>
       </details>
 
       <p class="more-detail"><a href="blog.html#lies">Read what these experiments show →</a></p>
     </section>
 
-    <section id="xray" class="act">
-      <p class="eyebrow">Extra: inspect the work</p>
-      <h2>Where did the instructions go?</h2>
-      <p class="lede small">
-        MLVM counts every instruction in the virtual machine. This chart groups them by function: wider
-        blocks mean more instructions, and stacked blocks show which function called which.
-      </p>
-      <div id="xray-empty" class="profile-preview">
-        <figure class="repo-figure">
-          <div class="figure-heading"><span class="eyebrow">Recorded example</span><a href="figures/xray-flame.svg" target="_blank" rel="noopener">Open full-size ↗</a></div>
-          <a class="figure-image" href="figures/xray-flame.svg" target="_blank" rel="noopener"><img src="figures/xray-flame.svg" width="1200" height="380" loading="lazy" alt="TinyStories flame graph. The matmul block accounts for 83.2% of the run's 38.2 million instructions."></a>
-          <figcaption><strong>Most of the work is matrix multiplication.</strong> In this recorded example,
-            <code>matmul</code> accounts for 83.2% of the instructions. <a href="#run">Run your prompt</a> to replace this example with an interactive profile of your own.</figcaption>
-        </figure>
-      </div>
-      <div id="xray-body" class="hidden">
-        <div class="card">
-          <div class="card-head">
-            <h3>Your run, by function</h3>
-            <div class="legend">
-              <span>width = instructions · color = share of a frame's own instructions that are floating point</span>
-              <span class="ramp" aria-hidden="true"></span><span>0% → 100%</span>
-              <span class="sw caller"></span><span>caller</span>
-              <button id="flame-reset" class="ghost hidden" type="button">Reset zoom</button>
-            </div>
-          </div>
-          <div id="flame" class="flame"></div>
-          <p class="note">Click a block to zoom into that function. Hover or focus a block to see its instruction count.</p>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Types of work</h3>
-            <div id="classes" class="bars"></div>
-          </div>
-          <div class="card">
-            <h3>Functions with the most instructions</h3>
-            <table class="table" id="functions">
-              <thead><tr><th>function</th><th class="num">own instructions</th><th class="num">share</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <h3>The work behind each new token</h3>
-          <p id="timeline-note" class="note"></p>
-          <div id="token-timeline" class="timeline"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="install" class="act">
-      <p class="eyebrow">On your own machine</p>
-      <h2>Explore MLVM on your machine.</h2>
-      <p class="lede small">The command-line tool runs the same virtual machine on Linux, macOS and Windows. Try the built-in model, or run a local dispute with your own compiled RISC-V program.</p>
-      <div class="grid-2">
-        <div class="card">
-          <h3>1. Install MLVM</h3>
-          <pre class="code"><code>brew install yao-jz/tap/mlvm</code></pre>
-          <details class="technical-details"><summary>Linux, Windows or building from source</summary>
-          <p class="note">For Linux and macOS:</p>
-          <pre class="code"><code>curl -fsSL https://raw.githubusercontent.com/yao-jz/mlvm/main/install.sh | sh</code></pre>
-          <p class="note">or from source, with Go 1.23+</p>
-          <pre class="code"><code>git clone https://github.com/yao-jz/mlvm && cd mlvm && make build</code></pre>
-          <p class="note">On Windows, download the zip from <a href="https://github.com/yao-jz/mlvm/releases">GitHub Releases</a>. See the <a href="https://github.com/yao-jz/mlvm/blob/main/docs/INSTALL.md">installation guide</a> for details.</p>
-          </details>
-        </div>
-        <div class="card">
-          <h3>2. Run a model and test a disagreement</h3>
-          <pre class="code"><code><span class="c"># Run the model and print its final fingerprint</span>
-mlvm demo "Once upon a time"
-
-<span class="c"># Deliberately change one result and find the step</span>
-mlvm liar
-
-<span class="c"># Count instructions by function</span>
-mlvm xray --svg flame.svg</code></pre>
-          <details class="technical-details"><summary>Save the evidence, or use your own program</summary>
-          <pre class="code"><code><span class="c"># Save the evidence, then verify it independently</span>
-mlvm liar --lie token --word Tim --json > dispute.json
-mlvm referee dispute.json
-
-<span class="c"># Use a statically linked RV64IMAFD executable</span>
-mlvm xray --elf ./your-program
-mlvm liar --elf ./your-program</code></pre>
-          <p class="note">The native CLI also runs the integer verdict through RISCV.sol's compiled bytecode in an in-process EVM.</p>
-          </details>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="footer">

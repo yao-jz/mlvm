@@ -152,7 +152,7 @@ button.ghost:hover { color: var(--ink); }
 .meter-fill.indeterminate { width: 30% !important; animation: slide 1.4s ease-in-out infinite; }
 @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(340%); } }
 
-.stats { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; }
+.stats { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
 .stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .stat-value { font-size: 22px; font-weight: 600; }
 .stat-hero .stat-value { font-size: clamp(30px, 5vw, 48px); font-weight: 650; letter-spacing: -0.02em; line-height: 1.05; }
@@ -165,6 +165,8 @@ button.ghost:hover { color: var(--ink); }
 .card-head h2, .card-head h3 { margin: 0; }
 .receipt h2 { font-size: 20px; }
 .receipt > h3 { margin-top: 22px; }
+.result-code { margin: 16px 0; padding: 12px 14px; border-radius: 8px; background: var(--surface-2); overflow-wrap: anywhere; }
+.result-code code { font-size: 13px; }
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 12px 0 0; font-size: 14px; }
 .kv dt { color: var(--muted); display: flex; align-items: center; gap: 6px; }
 .kv dd { margin: 0; overflow-wrap: anywhere; }
@@ -302,7 +304,6 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 @media (max-width: 820px) {
   .two-col, .machines, .grid-2 { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr 1fr; }
-  .stat-hero { grid-column: 1 / -1; }
   .rung { grid-template-columns: 22px 1fr 1fr; }
   .rung-mini, .rung-left { display: none; }
   .rung-answer { grid-column: 2 / -1; }
@@ -430,7 +431,7 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 .repo-figure figcaption strong { color: var(--ink); }
 .technical-details .repo-figure { margin: 12px 0 0; padding: 0; border: 0; }
 .evidence-figure { margin-top: 40px; }
-.featured-runs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+.featured-runs { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 600px; gap: 18px; margin-top: 28px; }
 .model-card { padding: 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); display: flex; flex-direction: column; }
 .model-card h3 { font-size: 19px; margin: 10px 0; overflow-wrap: anywhere; }
 .model-card p { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.65; }

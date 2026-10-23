@@ -1,8 +1,7 @@
-// MLVM playground: three acts on one page, each backed by real WebAssembly machines in
-// Web Workers. Act 1 runs the honest machine (and profiles it), Act 2 runs a lying machine
-// and a referee against it, Act 3 renders the profile from Act 1.
+// MLVM playground: a model run and a local dispute, backed by WebAssembly machines in
+// Web Workers.
 import { bisect, adjudicate, disputeRecord } from "./dispute.js";
-import { renderFlame, renderBars, renderTimeline, Ladder, el, fmt, pct, shortHash, tooltip } from "./viz.js";
+import { renderTimeline, Ladder, el, fmt, pct, shortHash, tooltip } from "./viz.js";
 
 const $ = (id) => document.getElementById(id);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -67,12 +66,12 @@ async function loadWasm() {
     if (done) break;
     chunks.push(value);
     got += value.length;
-    status.textContent = `Downloading the model and virtual machine: ${(got / 1e6).toFixed(1)} MB${total && got <= total ? ` of ${(total / 1e6).toFixed(1)}` : ""}…`;
+    status.textContent = `Loading the story model: ${(got / 1e6).toFixed(1)} MB${total && got <= total ? ` of ${(total / 1e6).toFixed(1)}` : ""}…`;
   }
   const bytes = new Uint8Array(got);
   let off = 0;
   for (const c of chunks) { bytes.set(c, off); off += c.length; }
-  status.textContent = "Preparing the virtual machine in your browser…";
+  status.textContent = "Preparing the model in your browser…";
   return WebAssembly.compile(bytes);
 }
 
@@ -100,17 +99,16 @@ async function runHonest(prompt, tokens) {
   $("run-button").disabled = true;
   $("liar-button").disabled = true;
   $("receipt").classList.add("hidden");
-  for (const id of ["machines", "liar-headline", "ladder-wrap", "verdict", "xray-body"]) $(id).classList.add("hidden");
-  $("xray-empty").classList.remove("hidden");
+  for (const id of ["machines", "liar-headline", "ladder-wrap", "verdict"]) $(id).classList.add("hidden");
   $("liar-button").textContent = "Wait for the story to finish";
-  for (const id of ["steps", "mips", "elapsed", "float-share"]) $(id).textContent = id === "steps" ? "0" : "–";
+  for (const id of ["steps", "elapsed"]) $(id).textContent = id === "steps" ? "0" : "–";
   $("status").classList.remove("error");
   setStory(prompt, "");
   $("story").classList.add("running");
   const meter = $("meter");
   meter.style.width = "0";
   meter.classList.add("indeterminate");
-  $("status").textContent = "Loading the model into the machine and reading your prompt…";
+  $("status").textContent = "Starting the model with your prompt…";
 
   const start = performance.now();
   let generated = "";
@@ -121,7 +119,6 @@ async function runHonest(prompt, tokens) {
     if (ev.type === "tick" || ev.type === "token") {
       lastStep = Math.max(lastStep, ev.step);
       $("steps").textContent = fmt(lastStep);
-      $("mips").textContent = (lastStep / secs / 1e6).toFixed(1);
       $("elapsed").textContent = secs.toFixed(1);
       const known = findPrecomputed(prompt, tokens);
       if (known) {
@@ -137,7 +134,7 @@ async function runHonest(prompt, tokens) {
         meter.classList.remove("indeterminate");
         meter.style.width = `${(100 * count) / tokens}%`;
       }
-      $("status").textContent = `Generated ${count} of ${tokens} tokens. Each new piece of text takes another pass through the model.`;
+      $("status").textContent = `Generated ${count} of ${tokens} pieces of text…`;
     }
   };
   try {
@@ -149,14 +146,11 @@ async function runHonest(prompt, tokens) {
     const secs = r.millis / 1000;
     setStory(prompt, r.text);
     $("steps").textContent = fmt(r.steps);
-    $("mips").textContent = (r.steps / r.millis / 1000).toFixed(1);
     $("elapsed").textContent = secs.toFixed(1);
-    $("float-share").textContent = pct(r.xray.floatShare, 0);
     meter.classList.remove("indeterminate");
     meter.style.width = "100%";
-    $("status").textContent = `Finished in ${secs.toFixed(1)} seconds. Next, change one result and find where the runs differ.`;
+    $("status").textContent = `Finished in ${secs.toFixed(1)} seconds. Compare this run with another computer, or test what happens when the second run goes wrong.`;
     showReceipt(r);
-    showXray(r);
     prepareLiar(r);
   } catch (err) {
     $("status").textContent = `Error: ${err.message}`;
@@ -193,7 +187,7 @@ function showReceipt(r) {
     div.append(mark, label, code);
     box.append(div);
   };
-  row(true, "this browser (WebAssembly)", r.poststate);
+  row(true, "this browser", r.poststate);
 
   const params = new URLSearchParams(location.search);
   const shared = params.get("h");
@@ -202,21 +196,25 @@ function showReceipt(r) {
   }
   const known = findPrecomputed(r.prompt, act.tokens);
   if (known) {
-    const where = determinism.source === "ci" ? "CI" : "local build";
+    const platformName = {
+      "linux/amd64": "Linux on Intel or AMD",
+      "linux/arm64": "Linux on ARM",
+      "darwin/amd64": "Mac on Intel",
+      "darwin/arm64": "Mac on Apple Silicon",
+      "windows/amd64": "Windows on Intel or AMD",
+      wasm: "another browser-compatible run",
+    };
     for (const p of known.platforms) {
-      const name = p.platform === "wasm" ? "WebAssembly in Node" : `native ${p.platform}`;
-      row(p.poststate === r.poststate, `${name} (${where})`, p.poststate);
+      row(p.poststate === r.poststate, platformName[p.platform] || p.platform, p.poststate);
     }
     const note = document.createElement("p");
     note.className = "note";
-    note.textContent = determinism.source === "ci"
-      ? `Native and WebAssembly builds of commit ${determinism.commit.slice(0, 7)}, recorded by CI on ${determinism.generated.slice(0, 10)}.`
-      : `Recorded by a local build (${determinism.commit.slice(0, 7)}); CI records the full platform matrix.`;
+    note.textContent = "These saved runs used the same model, input and MLVM version as this one.";
     box.append(note);
   } else {
     const note = document.createElement("p");
     note.className = "note";
-    note.textContent = `There is no saved comparison for this prompt and length. Share this run, or use mlvm demo ${JSON.stringify(r.prompt)}${act.tokens !== 16 ? ` --max-new-tokens ${act.tokens}` : ""} on another machine and compare its final state hash.`;
+    note.textContent = "There is no saved comparison for this prompt and answer length. Try the default prompt, or share a link so someone else can run it on another computer.";
     box.append(note);
   }
 }
@@ -236,40 +234,7 @@ async function shareLink() {
   setTimeout(() => { $("share").textContent = "Copy a link to this result"; }, 3000);
 }
 
-// ---------------------------------------------------------------- Act 3
-
-function showXray(r) {
-  const x = r.xray;
-  $("xray-empty").classList.add("hidden");
-  $("xray-body").classList.remove("hidden");
-  const flame = renderFlame($("flame"), x, (_, zoomed) => $("flame-reset").classList.toggle("hidden", !zoomed));
-  $("flame-reset").onclick = () => flame.reset();
-  renderBars($("classes"), x.classes.map((c) => ({ name: c.name, share: c.share, count: c.count })), { max: x.classes[0].share });
-
-  const tbody = $("functions").querySelector("tbody");
-  tbody.replaceChildren();
-  for (const f of x.functions.slice(0, 12)) {
-    const tr = document.createElement("tr");
-    for (const [text, cls] of [[f.name, ""], [fmt(f.self), "num"], [pct(f.share), "num"]]) {
-      const td = document.createElement("td");
-      td.textContent = text;
-      if (cls) td.className = cls;
-      tr.append(td);
-    }
-    tbody.append(tr);
-  }
-
-  const marks = x.marks || [];
-  const tokenSteps = marks.filter((m) => m.label !== "first token starts").map((m) => m.step);
-  const first = marks.find((m) => m.label === "first token starts");
-  if (tokenSteps.length > 1 && first) {
-    const per = (tokenSteps[tokenSteps.length - 1] - tokenSteps[0]) / (tokenSteps.length - 1);
-    $("timeline-note").textContent = `${fmt(first.step)} instructions to start up, load 1 MB of weights and read the prompt (gray), then one dot per generated token: about ${fmt(per)} instructions per forward pass. Hover a dot for its token.`;
-  }
-  renderTimeline($("token-timeline"), x.steps, marks);
-}
-
-// ---------------------------------------------------------------- Act 2
+// ---------------------------------------------------------------- faulty run
 
 let liarRun = null;
 let liarTokenIndex = 9;
@@ -277,11 +242,11 @@ let lastRecord = null;
 
 // What each lie does, shown under the choices.
 const LIE_ABOUT = {
-  ulp: "Makes one number slightly wrong. The words may stay the same. The local referee recalculates that operation.",
-  load: "Changes one bit as a value is read from memory. The local referee checks the read against the saved memory proof.",
-  int: "Changes the last bit of an integer result. Some changes crash the program; this demo looks for one that survives to the end.",
-  output: "Displays a different word but leaves the stored answer unchanged. If later work erases the change, both runs can finish with the same fingerprint.",
-  token: "Stores a different answer in the machine's memory. Because that answer is part of the final state, the search can find the instruction that wrote it.",
+  ulp: "One calculation returns a slightly wrong number. The words may stay the same; the checker recalculates that operation.",
+  load: "The model reads one number incorrectly. The checker compares it with the saved number in memory.",
+  int: "A whole-number calculation returns a wrong value. Some mistakes stop the run, so MLVM tries one that lasts to the end.",
+  output: "The screen shows a different word, but the model does not save it. If nothing else changes, the two finished runs can still match.",
+  token: "The model saves a different word as its answer. MLVM can find and check the operation that wrote it.",
 };
 const STEP_LIES = new Set(["ulp", "load", "int"]);
 const lieKind = () => document.querySelector('input[name="lie"]:checked').value;
@@ -326,7 +291,7 @@ function updateWordNote() {
 
 function prepareLiar(r) {
   $("liar-button").disabled = false;
-  $("liar-button").textContent = "Run with this change";
+  $("liar-button").textContent = "Run again with this mistake";
   renderTimeline($("lie-timeline"), r.steps, r.xray.marks || [], { lieStep: lieStepFromSlider() });
 
   // Functions to aim at: the hottest ones of this run.
@@ -477,20 +442,20 @@ async function runLiar() {
     headline.classList.remove("hidden");
     if (l.poststate === honestResult.poststate) {
       headline.textContent = kind === "output"
-        ? `The screen shows “${print.forged.trim()}”, but the stored answer is still “${print.old.trim()}”. Both runs ended with the same fingerprint. The printed text is not part of that fingerprint. Try changing “The stored answer” instead.`
-        : "The changed value was overwritten or rounded away. Both runs finished in the same state, so there is no remaining disagreement to check.";
+        ? `The screen shows “${print.forged.trim()}”, but the saved answer is still “${print.old.trim()}”. Both runs finished with the same identifying code. Printed words alone are not included in that code. Try changing “The answer saved by the model” instead.`
+        : "Later calculations erased the mistake. Both runs finished with the same identifying code, so there is no remaining difference to check.";
       return;
     }
     const erased = (l.attempts || []).filter((a) => !a.kept).length;
     headline.textContent = l.text === honestResult.text
-      ? `The stories match, but the state hashes differ.${erased ? ` The demo tried ${erased} earlier ${erased === 1 ? "change" : "changes"} before finding one that survived.` : ""} Now the search narrows down where they differ.`
-      : "The stories and state hashes differ. Now the search narrows down where.";
+      ? `The stories match, but the runs' identifying codes differ.${erased ? ` MLVM tried ${erased} earlier ${erased === 1 ? "mistake" : "mistakes"} before finding one that lasted.` : ""} Now it finds where the runs first differed.`
+      : "The stories and identifying codes differ. Now MLVM finds where the runs first differed.";
 
     // Bisection: questions to both machines run in parallel workers.
     const total = Math.max(honestResult.steps, l.steps);
     $("ladder-wrap").classList.remove("hidden");
     const ladder = new Ladder($("ladder"), total);
-    $("ladder-title").textContent = `Searching ${fmt(total)} instructions`;
+    $("ladder-title").textContent = `Comparing ${fmt(total)} small operations`;
     renderTimeline($("lie-timeline"), honestResult.steps, honestResult.xray.marks || [], { lieStep: l.deviation?.step });
     const t0 = performance.now();
     const { lo, rounds, noDispute } = await bisect(act.honest, liar, total, async (round) => {
@@ -498,10 +463,10 @@ async function runLiar() {
       await sleep(90);
     });
     if (noDispute) {
-      headline.textContent = "The change left no trace: both runs ended in the same state, so there is nothing to verify.";
+      headline.textContent = "The mistake left no trace: both runs finished alike, so there is no difference to check.";
       return;
     }
-    $("ladder-title").textContent = `${rounds.length} rounds narrowed ${fmt(total)} instructions to one (${((performance.now() - t0) / 1000).toFixed(1)} s)`;
+    $("ladder-title").textContent = `${rounds.length} comparisons found one differing operation among ${fmt(total)} (${((performance.now() - t0) / 1000).toFixed(1)} s)`;
 
     const referee = new Machine("referee");
     const { verdict } = await adjudicate(act.honest, liar, referee, lo);
@@ -531,10 +496,10 @@ function renderVerdict(container, v, forged) {
   inst.append(el("code", {}, v.instruction), el("span", { class: "muted" }, ` in ${v.function || "?"} · step ${fmt(v.step)} · pc 0x${v.pc.toString(16)}`));
   const dl = el("dl", { class: "kv hashes" });
   for (const [key, label, hash] of [
-    ["", "both agree on the state before it", v.agreedPrestate],
-    ["honest", "the original run claims after it", v.honestPost],
-    ["liar", "the changed run claims after it", v.liarPost],
-    ["", "the referee recomputes", v.refereePost],
+    ["", "the runs agree before this operation", v.agreedPrestate],
+    ["honest", "original run after the operation", v.honestPost],
+    ["liar", "second run after the operation", v.liarPost],
+    ["", "checker after redoing the operation", v.refereePost],
   ]) {
     const dt = el("dt");
     if (key) dt.append(el("span", { class: `key key-${key}` }));
@@ -546,17 +511,17 @@ function renderVerdict(container, v, forged) {
   const caught = v.winner === "honest";
   const winner = el("p", { class: "winner" });
   winner.append(el("span", { class: caught ? "ok" : "bad" }, caught ? "✓ " : "✗ "), document.createTextNode(caught
-    ? `The local check matches the original run at this step. This is the instruction that ${forged ? "stored the changed answer" : "produced the changed result"}.`
+    ? `The checker agrees with the original run. The second run ${forged ? "saved a different answer" : "used the wrong value for this operation"}.`
     : `Unexpected ruling: ${v.winner}.`));
   const bytes = (v.stateWitness.length - 2) / 2;
   const evm = v.evm ? ` RISCV.sol's result matches, for ${fmt(v.evm.gasUsed)} gas.` : "";
   const details = el("details", { class: "technical-details verdict-details" });
   details.append(
-    el("summary", {}, "Inspect the state hashes and verification method"), dl,
+    el("summary", {}, "See the exact instruction and how it was checked"), inst, dl,
     el("p", { class: "note" }, `Checked by ${v.method}. Evidence: a ${fmt(bytes)}-byte state witness and ${fmt(v.proofBytes)} bytes of Merkle proof.${evm}`),
     el("p", { class: "note boundary" }, v.boundary),
   );
-  container.replaceChildren(el("p", { class: "eyebrow" }, "Verdict"), winner, inst, details);
+  container.replaceChildren(el("p", { class: "eyebrow" }, "Check complete"), winner, details);
 }
 
 function download(name, text) {
@@ -598,27 +563,21 @@ function renderCheck(container, rec, res, err) {
   li(`${rec.rounds.length} recorded midpoint comparisons narrow ${fmt(total)} instructions to step ${fmt(v.step)}.`);
   li(`The ${fmt((v.stateWitness.length - 2) / 2)}-byte state witness hashes to the state both machines agreed on before it, `, el("code", {}, shortHash(v.agreedPrestate)), ".");
   li("The instruction word, ", el("code", {}, v.instruction), ", is in its Merkle proof against the witness's memory root.");
-  const who = { honest: "the original run's claim. The original run is right.", liar: "the changed run's claim. The changed run is right." }[v.winner]
-    || "neither run's claim.";
+  const who = { honest: "matching the original run. The original run is right at this operation.", liar: "matching the second run. The second run is right at this operation." }[v.winner]
+    || "matching neither run.";
   li(`${v.method.startsWith("SoftFloat") ? "Software arithmetic recalculates it" : "The Go referee executes it"}: `, el("code", {}, shortHash(v.refereePost)), `, ${who}`);
   const parts = [ul];
   if (res.matchesRecord) li("The record's own verdict is the one reached here.");
   else {
     const bad = el("ul", { class: "crosses" });
-    bad.append(el("li", {}, `The record claims a different ruling: ${{ honest: "the original run", liar: "the changed run" }[rec.verdict.winner] || rec.verdict.winner} is right, with ${shortHash(rec.verdict.refereePost)}.`));
+    bad.append(el("li", {}, `The file reports a different result: ${{ honest: "the original run", liar: "the second run" }[rec.verdict.winner] || rec.verdict.winner} is right, with ${shortHash(rec.verdict.refereePost)}.`));
     parts.push(bad);
   }
   const evm = rec.verdict.evm && !v.evm
     ? ` The native mlvm referee also runs RISCV.sol itself in an EVM; the record says ${fmt(rec.verdict.evm.gasUsed)} gas.`
     : "";
-  parts.push(el("p", { class: "note" }, `Checked in ${(res.micros / 1000).toFixed(1)} ms in this tab, without rerunning the model. This rechecks the saved record; it does not independently prove the full run.${evm}`));
+  parts.push(el("p", { class: "note" }, `Checked in ${(res.micros / 1000).toFixed(1)} ms in this tab, without rerunning the model. The file lets us check this operation; it cannot show that either computer performed every earlier operation.${evm}`));
   container.replaceChildren(...parts);
-}
-
-function duration(seconds) {
-  if (seconds < 1) return "under a second";
-  if (seconds < 90) return `${Math.round(seconds)} s`;
-  return `${Math.round(seconds / 60)} min`;
 }
 
 let replaying = null; // { rec, text } of the open replay
@@ -633,8 +592,8 @@ async function openReplay(entry, lie, row) {
   row.classList.add("playing");
   $("replay").classList.remove("hidden");
   $("replay-title").textContent = `${entry.title}: ${lie.lie}`;
-  $("replay-lede").textContent = "Loading the record…";
-  $("rp-ladder-title").textContent = "Narrowing down the disagreement";
+  $("replay-lede").textContent = "Loading the saved check…";
+  $("rp-ladder-title").textContent = "Finding the difference";
   for (const id of ["rp-honest-text", "rp-liar-text", "rp-honest-post", "rp-liar-post"]) $(id).textContent = "";
   for (const id of ["rp-attempts", "rp-ladder", "rp-verdict", "rp-check-out"]) $(id).replaceChildren();
   $("rp-check").disabled = true;
@@ -648,7 +607,7 @@ async function openReplay(entry, lie, row) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     text = await res.text();
   } catch (err) {
-    $("replay-lede").textContent = `Could not load the record: ${err.message}`;
+    $("replay-lede").textContent = `Could not load the saved check: ${err.message}`;
     return;
   }
   if (token !== replayToken) return;
@@ -657,9 +616,9 @@ async function openReplay(entry, lie, row) {
   $("rp-check").disabled = false;
   const total = Math.max(rec.honestSteps, rec.liarSteps);
   const steps = rec.honestSteps === rec.liarSteps
-    ? `${fmt(total)} instructions on each machine`
-    : `${fmt(rec.honestSteps)} instructions in the original run and ${fmt(rec.liarSteps)} in the changed one`;
-  $("replay-lede").textContent = `${steps}, run natively by mlvm liar on an Apple M3 Max${lie.cpuSeconds ? ` (${duration(lie.cpuSeconds)} of CPU for the whole dispute)` : ""}. Replayed here from its record.`;
+    ? `${fmt(total)} small operations in each run`
+    : `${fmt(rec.honestSteps)} operations in the original run and ${fmt(rec.liarSteps)} in the second`;
+  $("replay-lede").textContent = `${steps}. The comparisons below were saved during the original test; this page plays them back without rerunning the model.`;
 
   const answer = (node, text, committed, base, baseCommitted) => {
     setDiff(node, "", base, text);
@@ -694,14 +653,14 @@ async function openReplay(entry, lie, row) {
   }
 
   const ladder = new Ladder($("rp-ladder"), total);
-  $("rp-ladder-title").textContent = `Searching ${fmt(total)} instructions`;
+  $("rp-ladder-title").textContent = `Comparing ${fmt(total)} operations`;
   for (const round of rec.rounds) {
     if (token !== replayToken) return;
     ladder.add(round);
     await sleep(60);
   }
   if (token !== replayToken) return;
-  $("rp-ladder-title").textContent = `${rec.rounds.length} rounds narrowed ${fmt(total)} instructions to one`;
+  $("rp-ladder-title").textContent = `${rec.rounds.length} comparisons found one differing operation among ${fmt(total)}`;
   renderVerdict($("rp-verdict"), verdict, lie.kind === "token" || lie.kind === "commit");
 }
 
@@ -744,7 +703,7 @@ function wire() {
     const { rec, text } = replaying;
     const out = $("rp-check-out");
     $("rp-check").disabled = true;
-    out.textContent = "Loading the referee…";
+    out.textContent = "Checking the saved run…";
     try {
       renderCheck(out, rec, await referee(text));
     } catch (err) {
@@ -757,7 +716,7 @@ function wire() {
     const file = e.target.files[0];
     if (!file) return;
     const out = $("record-out");
-    out.textContent = "Loading the referee…";
+    out.textContent = "Checking the saved run…";
     let text;
     let rec;
     try {
@@ -782,7 +741,7 @@ function wire() {
     if (params.get("h")) {
       const banner = $("shared");
       banner.classList.remove("hidden");
-      banner.textContent = `This shared run ended with state hash ${shortHash(params.get("h"))}. Generate the story on your device to compare the results.`;
+      banner.textContent = `This shared run ended with identifying code ${shortHash(params.get("h"))}. Run the story on your device to compare the results.`;
     }
   }
 }
@@ -839,7 +798,7 @@ async function showGallery() {
       }
       tr.append(td(l.lie));
       if (l.noDispute) {
-        const why = td(`Nothing to verify: the changed run printed "${l.liar.slice(0, 32)}…", but both runs ended in the same state, because printed output is not part of it.`, "gallery-at");
+        const why = td(`Nothing to check: the second run printed "${l.liar.slice(0, 32)}…", but both runs finished with the same internal values. The printed words are not included.`, "gallery-at");
         why.colSpan = 3;
         tr.append(td("–", "num"), why);
         body.append(tr);
@@ -870,30 +829,28 @@ async function showGallery() {
     `${found} of ${disputes} searches ended on the instruction that was changed, and the referee ruled for the original run.${span} ` +
     "Reproduce with scripts/gallery.sh; the full reports are in results/gallery/ on GitHub.";
 
-  $("gallery-status").textContent = `${entries.length} programs · ${disputes} recorded disputes. Each search found the changed instruction. Choose an example or browse the table.`;
+  $("gallery-status").textContent = "The saved SmolLM2 example is ready. More recorded tests are below.";
   const featured = $("featured-runs");
   featured.replaceChildren();
   const descriptions = {
-    decoder: ["The browser model", "A small text generator. Start here to follow the search."],
-    "minilm-l6": ["A sentence encoder", "A BERT-family model that compares the meaning of sentences."],
-    smollm2: ["A larger language model", "A 135-million-parameter model generating 16 tokens."],
+    smollm2: ["Saved example", "One multiplication was made slightly wrong, although the model printed the same text."],
   };
   const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
   for (const [id, [label, about]] of Object.entries(descriptions)) {
     const entry = entries.find((e) => e.id === id);
     if (!entry) continue;
-    const lie = entry.lies.find((l) => l.kind === "token" && l.record)
-      || entry.lies.find((l) => l.kind === "ulp" && l.record)
+    const lie = entry.lies.find((l) => l.kind === "ulp" && l.record)
+      || entry.lies.find((l) => l.kind === "token" && l.record)
       || entry.lies.find((l) => l.record);
     if (!lie) continue;
     const card = el("article", { class: "model-card" });
-    const button = el("button", { type: "button", "aria-label": `Watch the recorded search for ${entry.title}` }, "Watch the recorded search →");
+    const button = el("button", { type: "button", "aria-label": `Open the saved check for ${entry.title}` }, "Open the saved check →");
     button.addEventListener("click", () => openReplay(entry, lie, replayRows.get(`${id}:${lie.kind}`)));
     card.append(
       el("p", { class: "eyebrow" }, label), el("h3", {}, entry.title), el("p", {}, about),
       el("span", { class: "model-count" }, compact.format(lie.instructions)),
-      el("p", {}, "instructions in the run"),
-      el("p", { class: "model-result" }, `${lie.rounds} rounds of search → 1 instruction to check`), button,
+      el("p", {}, "small operations in the run"),
+      el("p", { class: "model-result" }, `One wrong operation found and checked after ${lie.rounds} comparisons.`), button,
     );
     featured.append(card);
   }
@@ -914,7 +871,7 @@ async function main() {
     await wasmReady;
     $("run-button").disabled = false;
     $("run-button").textContent = "Generate a story";
-    $("status").textContent = "Ready. Run the model, then change one result and find where the runs differ.";
+    $("status").textContent = "Ready. Run the model, compare its identifying code, then test a second run with a mistake.";
   } catch (err) {
     $("status").textContent = `Could not load MLVM: ${err.message}`;
     $("status").classList.add("error");

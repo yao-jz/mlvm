@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How MLVM works · finding one wrong instruction in 14.8 billion</title>
-  <meta name="description" content="In a local experiment, MLVM found one deliberately changed result in a 14.8-billion-instruction model run. See how the search and single-step check work, and where the prototype stops.">
-  <meta property="og:title" content="How MLVM works: finding one wrong instruction in 14.8 billion">
-  <meta property="og:description" content="MLVM found a deliberately wrong step in a 14.8-billion-instruction language model run with 34 rounds of binary search. Here is how it works, and what it cannot verify yet.">
+  <title>How MLVM found one faulty multiplication among 14.8 billion instructions</title>
+  <meta name="description" content="We flipped one bit in the result of a SmolLM2 multiplication. The answer stayed the same, but the machine state changed. MLVM found the instruction in 34 comparisons and checked it from a saved record.">
+  <meta property="og:title" content="How MLVM found one faulty multiplication among 14.8 billion instructions">
+  <meta property="og:description" content="We made one SmolLM2 multiplication wrong by 1 ULP. MLVM found the instruction in 34 comparisons and checked it from a saved record.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://yao-jz.github.io/mlvm/social-card.png">
   <meta property="og:url" content="https://yao-jz.github.io/mlvm/blog.html">
@@ -46,7 +46,7 @@
         <li><a href="#answers">Keeping the answer in the state</a></li>
         <li><a href="#bisection">Finding one step among 14.8 billion</a></li>
         <li><a href="#referee">Checking the disputed instruction</a></li>
-        <li><a href="#lies">What happened when we changed one result</a></li>
+        <li><a href="#lies">What happened when we introduced faults</a></li>
         <li><a href="#xray">Where the instructions go</a></li>
         <li><a href="#browser">The same machine in a browser tab</a></li>
         <li><a href="#limits">Limits</a></li>
@@ -59,33 +59,34 @@
 
     <article class="post" id="article">
       <p class="eyebrow">Inside MLVM / An illustrated walkthrough</p>
-      <h1>Finding one wrong instruction in 14.8 billion</h1>
+      <h1>One faulty multiplication among 14.8 billion instructions</h1>
       <p class="dek">
-        We ran SmolLM2-135M inside MLVM and deliberately changed one result among 14.8 billion
-        instructions. In a local test, 34 comparisons found the changed step. A referee then
-        checked that single step from a saved record, without running the model again.
+        We ran SmolLM2-135M twice and flipped the lowest bit of one <code>fmul.s</code> result in the
+        second run. Both runs generated the same 16 tokens, but their final machine states differed.
+        MLVM found the faulty instruction in 34 comparisons. A referee then recomputed its result
+        from a saved record without running the model again.
       </p>
       <p class="byline">Jianzhu Yao (<a href="https://x.com/alexbert135" rel="noopener">@alexbert135</a>) and Pramod Viswanath · Princeton University · 22 October 2026</p>
 
       <nav class="reading-path" aria-label="Suggested reading routes">
         <p class="eyebrow">Choose a way in</p>
         <a href="#overview"><strong>Understand the idea</strong><span>The machine, the state and the search.</span><span aria-hidden="true">↓</span></a>
-        <a href="#lies"><strong>See what we found</strong><span>What changes when one calculation is wrong.</span><span aria-hidden="true">↓</span></a>
+        <a href="#lies"><strong>See the faulty instruction</strong><span>What we changed and what MLVM caught.</span><span aria-hidden="true">↓</span></a>
         <a href="#floats"><strong>Follow the implementation</strong><span>Floating point, memory and the verifier.</span><span aria-hidden="true">↓</span></a>
       </nav>
 
       <aside class="tldr" aria-labelledby="tldr-h">
         <h2 id="tldr-h">What MLVM does</h2>
         <ul>
-          <li>It runs a compiled program in a RISC-V virtual machine, including floating-point
-            arithmetic in software. With the same program and inputs, machines should agree on
-            every bit of the result. CI checks the decoder demo across six platforms.</li>
-          <li>It can summarize the machine's state at any instruction with a 32-byte hash. If two
-            runs start alike but end differently, a search narrows the disagreement to one
-            instruction. A local referee checks that step when it is supported.</li>
-          <li>The current implementation is a local research prototype. It cannot yet settle
-            single-precision arithmetic on a blockchain, and no complete dispute system is
-            deployed. The measured BERT runs are roughly a thousand times slower than native code.</li>
+          <li>MLVM runs a compiled model in software, including its floating-point instructions.
+            CI runs the same TinyStories program and prompts on six platforms and requires the
+            same starting hash, instruction count and final hash.</li>
+          <li>To test a fault, we change the value produced by one instruction in a second run.
+            If the final hashes differ, comparing intermediate hashes finds the step where the
+            runs split. A local referee re-executes that instruction from a saved state.</li>
+          <li>This is a local check of a disputed step, not a proof that either full run happened
+            as claimed. There is no deployed on-chain dispute system, and single-precision
+            arithmetic cannot yet be settled on chain.</li>
         </ul>
       </aside>
 
@@ -111,18 +112,19 @@
         <p>
           You could run the model again, provided you trust the machine doing the check and can
           afford another inference. But even matching outputs leave a gap. In the experiments
-          below, we changed individual instruction results and often got exactly the same text
-          back. The computation had changed; the answer had not.
+          below, we deliberately made one instruction return a wrong value. The text often stayed
+          the same even when the final machine state changed. Comparing answers alone would have
+          missed that error.
         </p>
         <p>
-          Optimistic verification, used in blockchain fault proofs such as Truebit, Arbitrum,
-          Cannon and Asterisc, reduces the work required of a referee. Two parties run the
-          computation and report a hash of the final machine state. If they disagree, the referee
-          asks for the hash halfway through each run. If those hashes match, the disagreement is
-          in the second half; otherwise, it is in the first. Repeating this search leaves one
-          instruction to check, after about log<sub>2</sub>&nbsp;N rounds for a run of N steps.
-          Both parties still run the program. The referee checks only the disputed step. MLVM
-          demonstrates this process locally; a complete on-chain dispute system is not built yet.
+          MLVM hashes the machine's memory and registers after any instruction. Two copies run the
+          same program from the same starting state. If their final hashes differ, MLVM asks for
+          each run's hash halfway through. Matching hashes put the error later; different hashes
+          put it earlier. Repeating this search leaves one instruction to check, after about
+          log<sub>2</sub>&nbsp;N comparisons for N instructions. This approach is called optimistic
+          verification and is used in blockchain fault proofs such as Truebit, Arbitrum, Cannon
+          and Asterisc. Both parties still run the program; the referee only checks the disputed
+          instruction. MLVM does this locally today.
         </p>
         <p>
           This requires honest machines to agree bit for bit. Floating point makes that harder,
@@ -153,9 +155,10 @@
         </p>
         <p>
           The RISC-V executable runs inside MLVM, so the host does not need a RISC-V processor.
-          MLVM supplies the arithmetic, memory and system-call behavior. Keeping those rules
-          fixed lets the same executable run on different hosts and gives the referee a precise
-          transition to check. The cost is interpretation overhead; the
+          MLVM performs each arithmetic operation, memory access and supported system call using
+          the same rules on every host. That lets an x86 computer and an ARM computer compare the
+          hashes of the same run. It also gives the referee an exact instruction result to check.
+          The cost is interpretation overhead; the
           <a href="#limits">measurements and limitations</a> describe that tradeoff.
         </p>
 
@@ -176,8 +179,8 @@
         <h2><span class="num">2</span>From a model run to a disputed step</h2>
         <figure class="repo-figure" id="fig1">
           <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="When two runs start alike but finish differently, MLVM compares their machine states halfway through until one instruction remains, then locally checks that instruction from a saved state and memory proof."></a>
-          <figcaption><b>Figure 1.</b> The state after any instruction can be summarized by a 32-byte fingerprint. When two runs start alike but end differently, halving the run finds an
-          instruction where they split. A local referee checks that instruction using
+          <figcaption><b>Figure 1.</b> MLVM hashes the memory, registers and stored answer after any instruction. If we make one instruction return a wrong value and the error survives, the final hashes differ. Comparing hashes halfway through the runs finds
+          the instruction where they split. A local referee re-executes that instruction using
           <code>RISCV.sol</code> in an EVM, its Go counterpart <code>slow.Step</code>, or SoftFloat
           for float arithmetic. <a href="figures/overview.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
         </figure>
@@ -1112,12 +1115,12 @@ return post.StateHash()</code></pre>
 
       <!-- 9 ------------------------------------------------------------------------------ -->
       <section id="lies">
-        <h2><span class="num">9</span>What happened when we changed one result</h2>
+        <h2><span class="num">9</span>What happened when we introduced faults</h2>
         <h3>9.1 Finding a change that survives</h3>
         <p>
-          To test bisection and the referee, we built a version of the VM that deliberately changes
-          one result. We call it the <em>liar</em>. We ran it on the gallery's 13 programs, from a
-          263,030-instruction C program to SmolLM2-135M, with five kinds of change:
+          To test bisection and the referee, we built a version of the VM that deliberately makes
+          one run diverge. We call it the <em>liar</em>. We ran it on the gallery's 13 programs, from a
+          263,030-instruction C program to SmolLM2-135M, with five kinds of fault:
         </p>
         <div class="table-scroll">
           <table class="table">
