@@ -249,9 +249,9 @@ export class Ladder {
     const mini = el("span", { class: "rung-mini" });
     mini.append(where);
     const verdict = el("span", { class: `rung-answer ${round.agree ? "agree" : "differ"}` },
-      round.agree ? "✓ same hash → lie is later" : "✗ different → lie is earlier");
-    const ask = el("span", { class: "rung-ask" }, `step ${fmt(round.mid)}`);
-    const left2 = el("span", { class: "rung-left" }, `${fmt(round.hi - round.lo)} in dispute`);
+      round.agree ? "✓ same VM hash → search later" : "✗ different VM hashes → search earlier");
+    const ask = el("span", { class: "rung-ask" }, `after ${fmt(round.mid)} instructions`);
+    const left2 = el("span", { class: "rung-left" }, `${fmt(round.hi - round.lo)} instructions left`);
     row.append(bar, mini, ask, verdict, left2);
     this.container.append(row);
     this.container.scrollTop = this.container.scrollHeight;

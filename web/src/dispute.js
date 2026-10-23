@@ -9,7 +9,7 @@ export async function bisect(honest, liar, total, onRound) {
   const [h0, l0, hEnd, lEnd] = await Promise.all([
     honest.hashAt(0), liar.hashAt(0), honest.hashAt(total), liar.hashAt(total),
   ]);
-  if (h0 !== l0) throw new Error("the machines start from different prestates");
+  if (h0 !== l0) throw new Error("the two RISC-V VMs started with different programs or inputs");
   if (hEnd === lEnd) return { lo: null, rounds: [], noDispute: true };
   let lo = 0;
   let hi = total;
@@ -36,7 +36,7 @@ export async function adjudicate(honest, liar, referee, lo) {
     liar.hashAt(lo + 1),
   ]);
   if (agreed !== transition.pre) {
-    throw new Error("bisection ended on a step the machines do not agree on");
+    throw new Error("the two VM hashes do not match before the disputed RISC-V instruction");
   }
   const verdict = await referee.referee(transition, liarPost);
   return { transition, verdict };

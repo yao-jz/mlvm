@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MLVM · verify how a model produced its answer</title>
-  <meta name="description" content="MLVM lets another person check a model run on their own computer. Compare the run, then investigate a disagreement without repeating the whole computation.">
+  <meta name="description" content="MLVM runs compiled models in a RISC-V virtual machine with an in-memory file system and supported Linux system calls. Repeat a run across hardware and check a disputed instruction.">
   <meta property="og:title" content="MLVM · verify how a model produced its answer">
-  <meta property="og:description" content="An answer alone cannot show how a model was run. MLVM lets another computer repeat and check the computation, even on different hardware.">
+  <meta property="og:description" content="Run a model inside a RISC-V virtual machine. Repeat it on different hardware and check the instruction where two runs disagree.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://yao-jz.github.io/mlvm/social-card.png">
   <meta property="og:url" content="https://yao-jz.github.io/mlvm/">
@@ -23,7 +23,7 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
-    <a class="wordmark" href="./" aria-label="MLVM home">MLVM<span class="wordmark-note"> / checking model runs</span></a>
+    <a class="wordmark" href="./" aria-label="MLVM home">MLVM<span class="wordmark-note"> / verifiable model execution</span></a>
     <nav aria-label="Sections">
       <a href="#how-it-works">How it works</a>
       <a href="#run">Try it</a>
@@ -40,11 +40,12 @@
           <p class="eyebrow">Verifiable model execution</p>
           <h1 id="intro-title">Verify how a model<br><span class="soft">produced its answer.</span></h1>
           <p class="lede">
-            Suppose a service runs a model for you and returns an answer. The answer alone cannot
-            show whether it used the model and input you agreed on. MLVM lets another computer
-            repeat the run and compare what happened inside, even when the displayed words match.
-            If the runs disagree, a separate checker can redo the disputed calculation without
-            rerunning the whole model.
+            A model answer alone does not show how it was produced. MLVM runs the compiled model
+            inside a RISC-V virtual machine. The VM executes RISC-V instructions in software,
+            reads model files from its in-memory file system, and handles supported Linux system
+            calls such as opening a file. Another computer can repeat the run and compare a hash
+            of the VM's registers, memory and files, even when the displayed words match. If the
+            runs disagree, a checker can find and re-execute the disputed RISC-V instruction.
           </p>
           <div class="hero-actions">
             <a class="button-link primary" href="#run">Run a model and check it <span aria-hidden="true">↓</span></a>
@@ -54,17 +55,23 @@
         <aside class="reading-invite" aria-labelledby="read-title">
           <p class="eyebrow">Independent checks</p>
           <h2 id="read-title">The checker can use a different computer.</h2>
-          <p>One person can run the model on a Mac; another can check it on Linux, Windows or in a browser. For the built-in story model, we recorded matching runs across these systems with the same model and input.</p>
+          <p>One person can run the RISC-V program inside MLVM on a Mac; another can repeat it on Linux, Windows or in a browser. The same virtual machine and staged inputs produced matching runs for the built-in story model.</p>
           <a class="button-link primary" href="blog.html#cross-platform">See the cross-computer test <span aria-hidden="true">→</span></a>
         </aside>
       </div>
+      <ul class="feature-links" aria-label="What MLVM does">
+        <li><a href="blog.html#why-riscv"><strong>Run a RISC-V model program</strong><span>MLVM executes compiled RISC-V instructions in software, including floating-point math. The host needs no RISC-V processor.</span></a></li>
+        <li><a href="blog.html#doors"><strong>Control OS calls and files</strong><span>The VM answers supported Linux system calls and serves model files from its in-memory file system.</span></a></li>
+        <li><a href="blog.html#cross-platform"><strong>Repeat it across hardware</strong><span>The same TinyStories program and inputs produced matching VM hashes on Mac, Linux, Windows and WebAssembly.</span></a></li>
+        <li><a href="#how-it-works"><strong>Check one RISC-V instruction</strong><span>When two final hashes differ, compare VM states during the runs and re-execute a disputed instruction from saved values.</span></a></li>
+      </ul>
     </section>
 
     <section id="run" class="act demo-section">
       <div class="section-heading">
-        <p class="eyebrow">Try it · Step 1 of 2</p>
+        <p class="eyebrow">Try it · Part 1 of 2</p>
         <h2>Run the model yourself.</h2>
-        <p class="lede small">Type the start of a story. TinyStories, a small language model, continues it on your device. MLVM gives the finished run an identifying code that includes its saved answer. With the default prompt, compare your code with runs on other computers.</p>
+        <p class="lede small">Type the start of a story. MLVM runs the compiled TinyStories model inside its RISC-V virtual machine in this tab. When it finishes, compare the hash of its registers, memory, files and saved answer with runs on other computers.</p>
       </div>
       <div class="demo-surface">
       <div class="demo-label"><span>Live demo · TinyStories-260K</span><span>Everything runs in this tab</span></div>
@@ -89,32 +96,32 @@
         <p id="story" class="story"><span class="prompt-text">Once upon a time</span><span class="gen-text"></span><span class="caret" aria-hidden="true"></span></p>
         <div class="meter" aria-hidden="true"><div id="meter" class="meter-fill"></div></div>
         <div class="stats">
-          <div class="stat stat-hero"><span id="steps" class="stat-value">0</span><span class="stat-label">small operations performed</span></div>
+          <div class="stat stat-hero"><span id="steps" class="stat-value">0</span><span class="stat-label">RISC-V instructions executed</span></div>
           <div class="stat"><span id="elapsed" class="stat-value">–</span><span class="stat-label">seconds</span></div>
         </div>
-        <p id="status" class="status" role="status">Loading the story model…</p>
+        <p id="status" class="status" role="status">Loading the RISC-V virtual machine and story model…</p>
       </div>
       </div>
 
       <div id="receipt" class="card receipt hidden">
         <div class="card-head">
-          <h3>The identifying code for your run</h3>
+          <h3>Hash of your finished VM</h3>
           <button id="share" class="ghost" type="button">Copy a link to this result</button>
         </div>
         <p class="result-code"><code id="r-post"></code></p>
-        <p class="reading-copy">This code is called a <strong>hash</strong>. It summarizes the values the program held when it finished, including its stored answer. Two runs can display the same words yet have different hashes if one kept a wrong value.</p>
+        <p class="reading-copy">A <strong>hash</strong> is a short identifier for the VM's final registers, memory, files and saved answer. Two runs can display the same words yet have different hashes if one kept a wrong value.</p>
         <details class="technical-details">
-          <summary>See the starting code and token IDs</summary>
+          <summary>See the starting hash and saved answer</summary>
           <dl class="kv">
-            <dt>Starting state (prestate)</dt><dd><code id="r-pre"></code></dd>
-            <dt>Work performed</dt><dd id="r-steps"></dd>
-            <dt>Stored answer (token IDs)</dt><dd><code id="r-tokens"></code></dd>
+            <dt>Hash before execution</dt><dd><code id="r-pre"></code></dd>
+            <dt>RISC-V instructions executed</dt><dd id="r-steps"></dd>
+            <dt>Saved answer as token IDs</dt><dd><code id="r-tokens"></code></dd>
           </dl>
-          <p class="note">The starting hash covers the program, model, tokenizer and prompt. The final hash also covers the generated answer stored in memory.</p>
+          <p class="note">The starting hash covers the RISC-V program, model weights, prompt and tokenizer, which turns text into numbered pieces. The final hash also covers the answer saved in VM memory. The numbers above are those pieces' token IDs.</p>
         </details>
         <details class="technical-details" open>
           <summary>Compare your run with other computers</summary>
-          <p class="reading-copy">For the example prompts, compare your code with saved runs of the same model on Mac, Windows, Linux and in a browser. Matching codes mean those runs finished with the same recorded values.</p>
+          <p class="reading-copy">For the example prompts, compare your hash with saved runs of the same RISC-V program on Mac, Windows, Linux and in a browser. Matching hashes mean the VMs finished with the same recorded values.</p>
           <div id="compare" class="compare"></div>
         </details>
         <div class="next-actions"><a class="button-link primary" href="#liar">Next: test a disagreement →</a></div>
@@ -122,25 +129,25 @@
     </section>
 
     <section id="liar" class="act">
-      <p class="eyebrow">Try it · Step 2 of 2</p>
+      <p class="eyebrow">Try it · Part 2 of 2</p>
       <h2>What if two runs disagree?</h2>
       <div class="two-col">
         <div>
           <p>
-            MLVM runs the same model again, but deliberately makes one calculation wrong. You can choose other mistakes below. The two runs may print the same words while holding different numbers inside.
+            MLVM runs the same RISC-V program again, but deliberately changes the result of one instruction. You can choose other mistakes below. The two runs may print the same words while holding different numbers inside.
           </p>
           <p class="muted">
-            If their identifying codes differ, MLVM finds where the runs first changed and checks what should have happened there. The default example takes about 26 comparisons to find one operation among 38 million.
+            If their final hashes differ, MLVM narrows the disagreement to one RISC-V instruction and checks what it should have done. The default example takes about 26 hash comparisons to find one instruction among 38 million.
           </p>
-          <aside class="explainer-note"><strong>Try the default first.</strong> It makes a tiny change to one calculation. Later calculations can erase the change, so MLVM tries another place until the finished runs differ.</aside>
+          <aside class="explainer-note"><strong>Try the default first.</strong> It makes a tiny change to one floating-point instruction's result. Later instructions can erase the change, so MLVM tries another place until the finished runs differ.</aside>
           <p class="note"><a href="#how-it-works">Revisit how the search works ↑</a></p>
         </div>
         <form id="liar-form" class="liar-form" autocomplete="off">
           <fieldset>
             <legend>What should go wrong in the second run?</legend>
-            <label class="choice"><input type="radio" name="lie" value="ulp" checked> <span><strong>One calculation</strong><span class="choice-detail">Make one number in the model's math slightly wrong.</span></span></label>
-            <label class="choice"><input type="radio" name="lie" value="load"> <span><strong>One value read from memory</strong><span class="choice-detail">Read a weight or other number incorrectly.</span></span></label>
-            <label class="choice"><input type="radio" name="lie" value="int"> <span><strong>One whole-number calculation</strong><span class="choice-detail">Change a counter, index or other number.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="ulp" checked> <span><strong>One floating-point instruction</strong><span class="choice-detail">Make its numeric result slightly wrong.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="load"> <span><strong>One memory-load instruction</strong><span class="choice-detail">Read a weight or other number incorrectly.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="int"> <span><strong>One integer instruction</strong><span class="choice-detail">Change a counter, index or other whole number.</span></span></label>
             <label class="choice"><input type="radio" name="lie" value="output"> <span><strong>Only the words on screen</strong><span class="choice-detail">Print a different word without saving it in the run.</span></span></label>
             <label class="choice"><input type="radio" name="lie" value="token"> <span><strong>The answer saved by the model</strong><span class="choice-detail">Store a different word as part of the answer.</span></span></label>
           </fieldset>
@@ -148,28 +155,29 @@
           <details id="step-controls" class="technical-details">
             <summary>Choose where to change it (optional)</summary>
             <div class="controls">
-            <label for="lie-at">Where in the run? <output id="lie-at-out">50%</output></label>
+            <label for="lie-at">Position in the instruction sequence <output id="lie-at-out">50%</output></label>
             <input id="lie-at" type="range" min="1" max="99" value="50">
+            <p class="hint">The percentage chooses an approximate point in the RISC-V program's execution.</p>
             <div id="lie-timeline" class="timeline"></div>
             <div class="control-row">
               <div id="lie-op-wrap" class="controls">
                 <label for="lie-op">Instruction</label>
                 <select id="lie-op">
-                  <option value="">Any float operation</option>
-                  <option value="fadd.s">fadd.s</option>
-                  <option value="fmul.s">fmul.s</option>
-                  <option value="fmadd.s">fmadd.s</option>
+                  <option value="">Any floating-point instruction</option>
+                  <option value="fadd.s">fadd.s · add</option>
+                  <option value="fmul.s">fmul.s · multiply</option>
+                  <option value="fmadd.s">fmadd.s · multiply and add</option>
                 </select>
               </div>
               <div class="controls">
-                <label for="lie-fn">In function</label>
+                <label for="lie-fn">In program function</label>
                 <select id="lie-fn"><option value="">Any function</option></select>
               </div>
             </div>
             </div>
           </details>
           <div id="word-controls" class="controls hidden">
-            <p class="hint">Click a word of the original answer.</p>
+            <p class="hint">Click a generated piece of text in the original answer.</p>
             <p id="token-picker" class="token-picker"></p>
             <label for="forge-word">Replace it with</label>
             <input id="forge-word" value="Tim" maxlength="24" spellcheck="false">
@@ -183,12 +191,12 @@
         <article class="card machine honest">
           <h3><span class="key key-honest" aria-hidden="true"></span>Original run</h3>
           <p class="machine-text" id="m-honest-text"></p>
-          <p class="machine-hash"><span>Identifying code</span> <code id="m-honest-post"></code></p>
+          <p class="machine-hash"><span>Final VM hash</span> <code id="m-honest-post"></code></p>
         </article>
         <article class="card machine liar">
           <h3><span class="key key-liar" aria-hidden="true"></span>Run with the chosen mistake</h3>
           <p class="machine-text" id="m-liar-text">…</p>
-          <p class="machine-hash"><span>Identifying code</span> <code id="m-liar-post">running…</code></p>
+          <p class="machine-hash"><span>Final VM hash</span> <code id="m-liar-post">running…</code></p>
           <div class="meter small" aria-hidden="true"><div id="liar-meter" class="meter-fill liar-fill"></div></div>
           <ol id="attempts" class="attempts"></ol>
         </article>
@@ -197,7 +205,7 @@
 
       <div id="ladder-wrap" class="card hidden">
         <div class="card-head">
-          <h3 id="ladder-title">Finding where the runs first differ</h3>
+          <h3 id="ladder-title">Finding a disputed RISC-V instruction</h3>
           <p class="legend"><span class="sw kept"></span>still possible <span class="sw dropped"></span>ruled out</p>
         </div>
         <div id="ladder" class="ladder"></div>
@@ -206,29 +214,29 @@
       <div id="verdict" class="card verdict hidden">
         <div id="verdict-body"></div>
         <div class="record-actions">
-          <button id="v-download" class="ghost" type="button">Download what MLVM checked</button>
-          <span class="note">The file contains each comparison and the information needed to redo the one disputed operation. <a href="#referee">Check the file again</a> without rerunning the model.</span>
+          <button id="v-download" class="ghost" type="button">Download the instruction check file</button>
+          <span class="note">The file contains each comparison and the information needed to redo the disputed RISC-V instruction. <a href="#referee">Check the file again</a> without rerunning the model.</span>
         </div>
       </div>
     </section>
 
     <section id="how-it-works" class="act concept-section">
       <p class="eyebrow">How the check works</p>
-      <h2>Find the difference. Check the calculation.</h2>
-      <p class="lede small">A model run is a long sequence of tiny operations, such as multiplying two numbers or reading a value from memory. MLVM can summarize everything the program holds after any operation in a short code. If the recorded values change, the code changes too.</p>
+      <h2>Find the difference. Check the instruction.</h2>
+      <p class="lede small">A compiled model runs as RISC-V instructions: multiply numbers, read memory, take a branch. MLVM executes them inside its virtual machine. Its in-memory file system supplies staged inputs, and the VM answers supported Linux system calls without booting Linux. A hash summarizes the VM state after any instruction.</p>
       <ol class="concept-steps">
-        <li><span class="step-number">1</span><h3>Start with the same model and input</h3><p>Both runs load the same program, model weights and prompt. If they finish with different codes, they held different values, even if they printed the same words.</p></li>
-        <li><span class="step-number">2</span><h3>Compare the halfway point</h3><p>Ask each run for its code halfway through. If the codes match, the difference came later; if they differ, it came earlier. Keep halving until one operation remains.</p></li>
-        <li><span class="step-number">3</span><h3>Redo that one operation</h3><p>Using values saved just before it ran, a separate checker calculates what that operation should have produced. It does not need to rerun the whole model.</p></li>
+        <li><span class="step-number">1</span><h3>Fix the program and its inputs</h3><p>Both runs use the same RISC-V executable, model weights and prompt. Input files are staged in the VM before execution, so the program reads the same bytes on either computer.</p></li>
+        <li><span class="step-number">2</span><h3>Compare VM state halfway through</h3><p>Ask each run for its hash after the same number of instructions. Keep halving the range where the hashes differ until one RISC-V instruction remains.</p></li>
+        <li><span class="step-number">3</span><h3>Re-execute that instruction</h3><p>Using the saved VM state and memory values from just before it ran, a separate checker determines the instruction's correct result without rerunning the model.</p></li>
       </ol>
       <p class="more-detail"><a href="blog.html#overview">See the detailed explanation →</a></p>
     </section>
 
     <section id="gallery" class="act">
       <p class="eyebrow">A larger example</p>
-      <h2>The same words can hide a wrong calculation.</h2>
+      <h2>The same words can hide a wrong instruction result.</h2>
       <p class="lede small">
-        We made one multiplication slightly wrong during a SmolLM2 language-model run. It printed the same text, but held a different number inside. The run performed 14.8 billion operations; MLVM found and checked the faulty one after 34 comparisons. Open the saved example to see the check yourself.
+        We changed the result of one RISC-V floating-point multiplication during a SmolLM2 language-model run. It printed the same text, but held a different number inside. The VM executed 14.8 billion instructions; MLVM found and checked the faulty one after 34 comparisons. Open the saved example to see the check yourself.
       </p>
       <div id="featured-runs" class="featured-runs"></div>
       <p id="gallery-status" class="note" role="status">Loading the saved example…</p>
@@ -237,8 +245,8 @@
         <div class="table-scroll">
           <table class="table gallery-table" id="gallery-table">
             <thead><tr>
-              <th>Program</th><th class="num">Instructions</th><th>Injected fault</th>
-              <th class="num">Search rounds</th><th>Instruction found</th><th>Checked by</th><th><span class="visually-hidden">Replay</span></th>
+              <th>Program</th><th class="num">Instructions</th><th>Deliberate mistake</th>
+              <th class="num">Hash comparisons</th><th>Instruction checked</th><th>Checker used</th><th><span class="visually-hidden">Replay</span></th>
             </tr></thead>
             <tbody></tbody>
           </table>
@@ -256,12 +264,12 @@
           <div class="machine panel">
             <h3><span class="key key-honest" aria-hidden="true"></span>Original run</h3>
             <p class="machine-text" id="rp-honest-text"></p>
-            <p class="machine-hash"><span>Identifying code</span> <code id="rp-honest-post"></code></p>
+            <p class="machine-hash"><span>Final VM hash</span> <code id="rp-honest-post"></code></p>
           </div>
           <div class="machine panel">
-            <h3><span class="key key-liar" aria-hidden="true"></span>Run with the injected fault</h3>
+            <h3><span class="key key-liar" aria-hidden="true"></span>Run with the deliberate mistake</h3>
             <p class="machine-text" id="rp-liar-text"></p>
-            <p class="machine-hash"><span>Identifying code</span> <code id="rp-liar-post"></code></p>
+            <p class="machine-hash"><span>Final VM hash</span> <code id="rp-liar-post"></code></p>
             <ol id="rp-attempts" class="attempts"></ol>
           </div>
         </div>
@@ -272,7 +280,7 @@
         <div id="rp-ladder" class="ladder"></div>
         <div id="rp-verdict" class="verdict"></div>
         <div class="record-actions">
-          <button id="rp-check" type="button">Check this run on my device</button>
+          <button id="rp-check" type="button">Recheck the instruction on my device</button>
           <a id="rp-download" class="button-link" download>Download the check file</a>
         </div>
         <div id="rp-check-out" class="check-out" aria-live="polite"></div>
@@ -282,7 +290,7 @@
         <summary>Open a saved check file</summary>
         <p class="note">
           Open a file downloaded from this page or saved with <code>mlvm liar --json</code>.
-          It contains the two runs' comparisons and the values needed to check their disputed operation. This page checks the file and redoes that operation when supported. The file stays on your device.
+          It contains the two runs' comparisons and the values needed to check their disputed RISC-V instruction. This page checks the file and re-executes that instruction when supported. The file stays on your device.
           <a href="blog.html#referee">How this check works →</a>
         </p>
         <label class="file-pick"><span>Open a file</span> <input id="record-file" type="file" accept=".json,application/json"></label>
@@ -293,46 +301,6 @@
     </section>
 
 
-    <section id="install" class="act">
-      <p class="eyebrow">On your own machine</p>
-      <h2>Explore MLVM on your machine.</h2>
-      <p class="lede small">The command-line tool runs the same virtual machine on Linux, macOS and Windows. Try the built-in model, or run a local dispute with your own compiled RISC-V program.</p>
-      <div class="grid-2">
-        <div class="card">
-          <h3>1. Install MLVM</h3>
-          <pre class="code"><code>brew install yao-jz/tap/mlvm</code></pre>
-          <details class="technical-details"><summary>Linux, Windows or building from source</summary>
-          <p class="note">For Linux and macOS:</p>
-          <pre class="code"><code>curl -fsSL https://raw.githubusercontent.com/yao-jz/mlvm/main/install.sh | sh</code></pre>
-          <p class="note">or from source, with Go 1.23+</p>
-          <pre class="code"><code>git clone https://github.com/yao-jz/mlvm && cd mlvm && make build</code></pre>
-          <p class="note">On Windows, download the zip from <a href="https://github.com/yao-jz/mlvm/releases">GitHub Releases</a>. See the <a href="https://github.com/yao-jz/mlvm/blob/main/docs/INSTALL.md">installation guide</a> for details.</p>
-          </details>
-        </div>
-        <div class="card">
-          <h3>2. Run a model and test a disagreement</h3>
-          <pre class="code"><code><span class="c"># Run the model and print its final fingerprint</span>
-mlvm demo "Once upon a time"
-
-<span class="c"># Deliberately change one result and find the step</span>
-mlvm liar
-
-<span class="c"># Count instructions by function</span>
-mlvm xray --svg flame.svg</code></pre>
-          <details class="technical-details"><summary>Save the evidence, or use your own program</summary>
-          <pre class="code"><code><span class="c"># Save the evidence, then verify it independently</span>
-mlvm liar --lie token --word Tim --json > dispute.json
-mlvm referee dispute.json
-
-<span class="c"># Use a statically linked RV64IMAFD executable</span>
-mlvm xray --elf ./your-program
-mlvm liar --elf ./your-program</code></pre>
-          <p class="note">The native CLI also runs the integer verdict through RISCV.sol's compiled bytecode in an in-process EVM.</p>
-          <p class="note"><a href="https://github.com/yao-jz/mlvm#bring-your-own-model">How to build and run your own model →</a></p>
-          </details>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="footer">

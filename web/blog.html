@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How MLVM found one faulty multiplication among 14.8 billion instructions</title>
-  <meta name="description" content="We flipped one bit in the result of a SmolLM2 multiplication. The answer stayed the same, but the machine state changed. MLVM found the instruction in 34 comparisons and checked it from a saved record.">
-  <meta property="og:title" content="How MLVM found one faulty multiplication among 14.8 billion instructions">
-  <meta property="og:description" content="We made one SmolLM2 multiplication wrong by 1 ULP. MLVM found the instruction in 34 comparisons and checked it from a saved record.">
+  <title>How MLVM found one faulty RISC-V multiplication among 14.8 billion instructions</title>
+  <meta name="description" content="SmolLM2 ran inside MLVM's RISC-V virtual machine. We changed one floating-point instruction's result. MLVM found it among 14.8 billion instructions and checked it from a saved VM state.">
+  <meta property="og:title" content="How MLVM found one faulty RISC-V multiplication among 14.8 billion instructions">
+  <meta property="og:description" content="We changed one RISC-V multiplication result during a SmolLM2 run. MLVM found the instruction in 34 hash comparisons and re-executed it from a saved VM state.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://yao-jz.github.io/mlvm/social-card.png">
   <meta property="og:url" content="https://yao-jz.github.io/mlvm/blog.html">
@@ -39,12 +39,12 @@
       <summary>On this page</summary>
       <ol>
         <li><a href="#problem">The problem</a></li>
-        <li><a href="#overview">From a model run to a disputed step</a></li>
+        <li><a href="#overview">From a model run to a disputed instruction</a></li>
         <li><a href="#floats">Making floating-point math repeatable</a></li>
         <li><a href="#doors">Keeping other inputs the same</a></li>
-        <li><a href="#state">One fingerprint for the whole machine</a></li>
+        <li><a href="#state">One hash for the whole virtual machine</a></li>
         <li><a href="#answers">Keeping the answer in the state</a></li>
-        <li><a href="#bisection">Finding one step among 14.8 billion</a></li>
+        <li><a href="#bisection">Finding one instruction among 14.8 billion</a></li>
         <li><a href="#referee">Checking the disputed instruction</a></li>
         <li><a href="#lies">What happened when we introduced faults</a></li>
         <li><a href="#xray">Where the instructions go</a></li>
@@ -59,12 +59,12 @@
 
     <article class="post" id="article">
       <p class="eyebrow">Inside MLVM / An illustrated walkthrough</p>
-      <h1>One faulty multiplication among 14.8 billion instructions</h1>
+      <h1>One faulty RISC-V multiplication among 14.8 billion instructions</h1>
       <p class="dek">
-        We ran SmolLM2-135M twice and flipped the lowest bit of one <code>fmul.s</code> result in the
-        second run. Both runs generated the same 16 tokens, but their final machine states differed.
-        MLVM found the faulty instruction in 34 comparisons. A referee then recomputed its result
-        from a saved record without running the model again.
+        We ran SmolLM2-135M twice inside MLVM's RISC-V virtual machine. In the second run, we
+        flipped the lowest bit of one floating-point multiplication instruction's result.
+        Both runs generated the same 16 tokens, but their final VM hashes differed. MLVM found
+        the faulty instruction in 34 hash comparisons and re-executed it from a saved VM state.
       </p>
       <p class="byline">Jianzhu Yao (<a href="https://x.com/alexbert135" rel="noopener">@alexbert135</a>) and Pramod Viswanath · Princeton University · 22 October 2026</p>
 
@@ -78,25 +78,24 @@
       <aside class="tldr" aria-labelledby="tldr-h">
         <h2 id="tldr-h">What MLVM does</h2>
         <ul>
-          <li>MLVM runs a compiled model in software, including its floating-point instructions.
-            CI runs the same TinyStories program and prompts on six platforms and requires the
-            same starting hash, instruction count and final hash.</li>
-          <li>To test a fault, we change the value produced by one instruction in a second run.
-            If the final hashes differ, comparing intermediate hashes finds the step where the
-            runs split. A local referee re-executes that instruction from a saved state.</li>
-          <li>This is a local check of a disputed step, not a proof that either full run happened
-            as claimed. There is no deployed on-chain dispute system, and single-precision
-            arithmetic cannot yet be settled on chain.</li>
+          <li>MLVM executes compiled RISC-V model programs inside a virtual machine. Its in-memory
+            file system supplies model files, and the VM answers supported Linux system calls.</li>
+          <li>The same RISC-V program and inputs can run on different hardware. A hash of VM
+            registers, memory and files lets the two runs compare their results, including a
+            saved answer.</li>
+          <li>When final hashes differ, MLVM compares hashes during the runs to locate a disputed
+            RISC-V instruction. A separate checker re-executes that instruction from saved VM
+            values, without running the whole model again.</li>
         </ul>
       </aside>
 
       <details class="technical-details glossary">
-        <summary>Four terms used throughout this article</summary>
+        <summary>Four terms used in the technical sections</summary>
         <dl>
-          <div><dt>Instruction</dt><dd>One operation the virtual machine executes, such as adding numbers or reading memory.</dd></div>
-          <div><dt>State root</dt><dd>A short hash of the machine's state. It acts as a fingerprint of its memory, registers and other tracked values.</dd></div>
-          <div><dt>Bisection</dt><dd>Binary search over two runs. Compare the midpoint, keep the half containing the disagreement, then repeat.</dd></div>
-          <div><dt>Witness</dt><dd>The state information supplied to the referee, together with memory proofs, so it can check one instruction.</dd></div>
+          <div><dt>Instruction</dt><dd>One command in a compiled RISC-V program, such as adding numbers or loading a value from VM memory.</dd></div>
+          <div><dt>State root</dt><dd>A hash of the VM's registers, memory and file system at a particular instruction count.</dd></div>
+          <div><dt>Bisection</dt><dd>Compare both VM hashes halfway through a range of instructions, then keep halving the range where they differ.</dd></div>
+          <div><dt>Witness</dt><dd>The saved VM values before a disputed instruction, plus proofs of the memory values that instruction uses.</dd></div>
         </dl>
       </details>
 
@@ -117,14 +116,14 @@
           missed that error.
         </p>
         <p>
-          MLVM hashes the machine's memory and registers after any instruction. Two copies run the
-          same program from the same starting state. If their final hashes differ, MLVM asks for
+          MLVM hashes the RISC-V VM's registers, memory and file system after any instruction.
+          Two copies run the same executable with the same staged inputs. If their final hashes differ, MLVM asks for
           each run's hash halfway through. Matching hashes put the error later; different hashes
           put it earlier. Repeating this search leaves one instruction to check, after about
           log<sub>2</sub>&nbsp;N comparisons for N instructions. This approach is called optimistic
           verification and is used in blockchain fault proofs such as Truebit, Arbitrum, Cannon
-          and Asterisc. Both parties still run the program; the referee only checks the disputed
-          instruction. MLVM does this locally today.
+          and Asterisc. Both computers still run the RISC-V program; a separate checker, called
+          the referee, only re-executes the disputed instruction. MLVM does this locally today.
         </p>
         <p>
           This requires correct runs to agree bit for bit. Floating point makes that harder,
@@ -147,16 +146,17 @@
 
         <h3 id="why-riscv">Why use a RISC-V virtual machine?</h3>
         <p>
-          To settle a disagreement, both parties and the referee need an exact definition of a
-          step. RISC-V gives us a common instruction set with operations small enough to check
+          To settle a disagreement, both runs and the checker need an exact definition of an
+          instruction. RISC-V gives us a common instruction set with commands small enough to check
           individually: add two values, read memory, take a branch. C and Rust compilers already
           target it. That lets us run compiled inference code, including the code that loads
           inputs and prepares the answer, through the same machine.
         </p>
         <p>
           The RISC-V executable runs inside MLVM, so the host does not need a RISC-V processor.
-          MLVM performs each arithmetic operation, memory access and supported system call using
-          the same rules on every host. That lets an x86 computer and an ARM computer compare the
+          MLVM interprets its arithmetic and memory instructions, serves staged files from an
+          in-memory file system, and answers supported Linux system calls under fixed rules.
+          That lets an x86 computer and an ARM computer compare the
           hashes of the same run. It also gives the referee an exact instruction result to check.
           The cost is interpretation overhead; the
           <a href="#limits">measurements and limitations</a> describe that tradeoff.
@@ -176,7 +176,7 @@
 
       <!-- 2 ------------------------------------------------------------------------------ -->
       <section id="overview">
-        <h2><span class="num">2</span>From a model run to a disputed step</h2>
+        <h2><span class="num">2</span>From a model run to a disputed instruction</h2>
         <figure class="repo-figure" id="fig1">
           <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="When two runs start alike but finish differently, MLVM compares their machine states halfway through until one instruction remains, then locally checks that instruction from a saved state and memory proof."></a>
           <figcaption><b>Figure 1.</b> MLVM hashes the memory, registers and stored answer after any instruction. If we make one instruction return a wrong value and the error survives, the final hashes differ. Comparing hashes halfway through the runs finds
@@ -208,11 +208,11 @@
         <p>
           If two runs start with the same root but finish with different roots, the referee uses
           the binary search described above, also called <em>bisection</em>. To check the remaining
-          instruction, it needs a <em>witness</em>: an encoding of the state before the step,
-          plus proofs for the memory that step reads or writes. These fit in a small dispute
-          record. Anyone with the record can repeat that single-step check without loading the model
-          or replaying the full run. The record contains the parties' claims about the search;
-          checking it does not independently establish that either full run happened as claimed.
+          instruction, it needs a <em>witness</em>: the saved VM state before that instruction,
+          plus proofs for the memory values it reads or writes. These fit in a small file.
+          Anyone with the file can repeat that instruction check without loading the model
+          or replaying the full run. The file also contains the hashes each VM reported during
+          the search; checking it does not independently prove that either full run happened.
         </p>
         <details class="technical-details" open>
           <summary>How the components fit together in the implementation</summary>
@@ -228,10 +228,10 @@
       <!-- 3 ------------------------------------------------------------------------------ -->
       <section id="floats">
         <h2><span class="num">3</span>Making floating-point math repeatable</h2>
-        <p class="section-intro">These models represent weights and intermediate values as floating-point numbers. MLVM needs each operation to produce the same bits on every host, including its rounding and exception flags.</p>
+        <p class="section-intro">These models represent weights and intermediate values as floating-point numbers. MLVM needs each RISC-V floating-point instruction to produce the same bits on every host, including its rounding and exception flags.</p>
         <figure class="repo-figure">
           <a class="figure-image" href="figures/model-instruction-mix.svg" target="_blank" rel="noopener"><img src="figures/model-instruction-mix.svg" width="900" height="340" loading="lazy" alt="Five BERT-family instruction profiles. Floating-point arithmetic and loads or stores make up 58 to 69 percent of execution."></a>
-          <figcaption><strong>Floating point is a large part of these runs.</strong> The green and purple segments are float arithmetic and float memory operations. Together they account for 58–69% of instructions in the five BERT-family models. <a href="figures/model-instruction-mix.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+          <figcaption><strong>Floating point is a large part of these runs.</strong> The green and purple segments show floating-point arithmetic instructions and instructions that load or store floating-point values. Together they account for 58–69% of instructions in the five BERT-family models. <a href="figures/model-instruction-mix.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
         </figure>
         <h3>3.1 Why a Go float addition is not enough</h3>
         <p>
@@ -447,7 +447,7 @@ beginFloatOp := func(rm U64) {
 
       <!-- 5 ------------------------------------------------------------------------------ -->
       <section id="state">
-        <h2><span class="num">5</span>One fingerprint for the whole machine</h2>
+        <h2><span class="num">5</span>One hash for the whole virtual machine</h2>
         <p class="section-intro">A referee needs to check small pieces of a potentially large machine. The state root makes this possible: each supplied piece can be checked against the same hash.</p>
         <h3>5.1 The 674-byte state witness</h3>
         <p>
@@ -617,7 +617,7 @@ filesystemRoot = keccak256("MLVM-FILESYSTEM-V2\0" || filePointer || nextFd || fi
           measurable cost. Candle's MiniLM spends 12.8% of its billion instructions reading staged files.
         </p>
 
-        <h3>5.4 How much evidence one step needs</h3>
+        <h3>5.4 How much data one instruction check needs</h3>
         <div class="table-scroll">
           <table class="table">
             <thead><tr><th>Piece</th><th class="num">Bytes</th><th>When</th></tr></thead>
@@ -691,7 +691,7 @@ static inline void mlvm_commit_result(const void *data, uint64_t len) {
 
       <!-- 7 ------------------------------------------------------------------------------ -->
       <section id="bisection">
-        <h2><span class="num">7</span>Finding one step among 14.8 billion</h2>
+        <h2><span class="num">7</span>Finding one instruction among 14.8 billion</h2>
         <p class="section-intro">Each round cuts the search interval in half. A longer model run needs more work from the two machines, but only a few more questions from the referee.</p>
         <h3>7.1 Narrowing the interval</h3>
         <p>

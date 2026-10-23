@@ -66,12 +66,12 @@ async function loadWasm() {
     if (done) break;
     chunks.push(value);
     got += value.length;
-    status.textContent = `Loading the story model: ${(got / 1e6).toFixed(1)} MB${total && got <= total ? ` of ${(total / 1e6).toFixed(1)}` : ""}…`;
+    status.textContent = `Loading the RISC-V VM and story model: ${(got / 1e6).toFixed(1)} MB${total && got <= total ? ` of ${(total / 1e6).toFixed(1)}` : ""}…`;
   }
   const bytes = new Uint8Array(got);
   let off = 0;
   for (const c of chunks) { bytes.set(c, off); off += c.length; }
-  status.textContent = "Preparing the model in your browser…";
+  status.textContent = "Preparing the RISC-V VM in your browser…";
   return WebAssembly.compile(bytes);
 }
 
@@ -108,7 +108,7 @@ async function runHonest(prompt, tokens) {
   const meter = $("meter");
   meter.style.width = "0";
   meter.classList.add("indeterminate");
-  $("status").textContent = "Starting the model with your prompt…";
+  $("status").textContent = "Running the model's RISC-V program with your prompt…";
 
   const start = performance.now();
   let generated = "";
@@ -149,7 +149,7 @@ async function runHonest(prompt, tokens) {
     $("elapsed").textContent = secs.toFixed(1);
     meter.classList.remove("indeterminate");
     meter.style.width = "100%";
-    $("status").textContent = `Finished in ${secs.toFixed(1)} seconds. Compare this run with another computer, or test what happens when the second run goes wrong.`;
+    $("status").textContent = `The RISC-V program finished in ${secs.toFixed(1)} seconds. Compare its final VM hash with another computer, or run it again with a deliberate mistake.`;
     showReceipt(r);
     prepareLiar(r);
   } catch (err) {
@@ -167,7 +167,7 @@ function showReceipt(r) {
   $("receipt").classList.remove("hidden");
   $("r-pre").textContent = r.prestate;
   $("r-post").textContent = r.poststate;
-  $("r-steps").textContent = `${fmt(r.steps)} · ${fmt(r.pages)} committed memory pages`;
+  $("r-steps").textContent = fmt(r.steps);
   $("r-tokens").textContent = r.tokens.join(" ");
 
   const box = $("compare");
@@ -209,12 +209,12 @@ function showReceipt(r) {
     }
     const note = document.createElement("p");
     note.className = "note";
-    note.textContent = "These saved runs used the same model, input and MLVM version as this one.";
+    note.textContent = "These saved runs used the same RISC-V program, model files, prompt and MLVM version as this run.";
     box.append(note);
   } else {
     const note = document.createElement("p");
     note.className = "note";
-    note.textContent = "There is no saved comparison for this prompt and answer length. Try the default prompt, or share a link so someone else can run it on another computer.";
+    note.textContent = "No other computer has a saved hash for this prompt and answer length. Try the default prompt, or share a link so someone else can run the same program and input.";
     box.append(note);
   }
 }
@@ -227,7 +227,7 @@ async function shareLink() {
   try {
     if (!navigator.clipboard) throw new Error("Clipboard unavailable");
     await navigator.clipboard.writeText(url.toString());
-    $("share").textContent = "Link copied — compare on another device";
+    $("share").textContent = "Link copied — run the same input on another device";
   } catch {
     $("share").textContent = "Could not copy the link";
   }
@@ -242,11 +242,11 @@ let lastRecord = null;
 
 // What each lie does, shown under the choices.
 const LIE_ABOUT = {
-  ulp: "One calculation returns a slightly wrong number. The words may stay the same; the checker recalculates that operation.",
-  load: "The model reads one number incorrectly. The checker compares it with the saved number in memory.",
-  int: "A whole-number calculation returns a wrong value. Some mistakes stop the run, so MLVM tries one that lasts to the end.",
-  output: "The screen shows a different word, but the model does not save it. If nothing else changes, the two finished runs can still match.",
-  token: "The model saves a different word as its answer. MLVM can find and check the operation that wrote it.",
+  ulp: "One RISC-V floating-point instruction returns a slightly wrong number. The words may stay the same; the checker re-executes that instruction.",
+  load: "One RISC-V load instruction reads a number incorrectly. The checker compares it with the value saved in VM memory.",
+  int: "One RISC-V integer instruction returns a wrong value. Some mistakes stop the run, so MLVM tries one that lasts to the end.",
+  output: "The VM prints a different word but does not save it in its answer. If no VM value changes, the final hashes still match.",
+  token: "The model saves a different word as its answer. MLVM can find and check the RISC-V instruction that wrote it.",
 };
 const STEP_LIES = new Set(["ulp", "load", "int"]);
 const lieKind = () => document.querySelector('input[name="lie"]:checked').value;
@@ -285,8 +285,8 @@ function updateWordNote() {
   const ok = utf8(old) === utf8(forged);
   note.classList.toggle("error", !ok);
   note.textContent = ok
-    ? `It will print “${forged.trim()}” where it computed “${old.trim()}”.`
-    : `Printed bytes keep their length: “${old.trim()}” needs a word of ${utf8(old.trim())} letters.`;
+    ? `The VM will print “${forged.trim()}” where the model generated “${old.trim()}”.`
+    : `Choose replacement text with ${utf8(old.trim())} UTF-8 bytes, the same length as “${old.trim()}”.`;
 }
 
 function prepareLiar(r) {
@@ -353,15 +353,15 @@ function setDiff(node, prefix, base, text) {
 
 // What the liar's deviation did, in one line.
 function deviationLine(d, fn) {
-  const where = `${d.instruction}${fn ? ` in ${fn}` : ""} at step ${fmt(d.step)}`;
+  const where = `${d.instruction}${fn ? ` in ${fn}` : ""} (RISC-V instruction #${fmt(d.step)})`;
   switch (d.kind) {
     case "token":
     case "commit":
-      return `${where} stores ${d.forged} instead of ${d.honest} at ${d.location}`;
+      return `${where}: the second run stores ${d.forged} instead of ${d.honest} at ${d.location}`;
     case "output":
-      return `${d.location} holds ${d.forged} instead of ${d.honest} (after ${where})`;
+      return `${where}: printed output has ${d.forged} instead of ${d.honest} at ${d.location}`;
     default:
-      return `kept: ${where}: ${d.location} = ${d.honest}, kept as ${d.forged}`;
+      return `${where}: ${d.location} should be ${d.honest}; the second run kept ${d.forged}`;
   }
 }
 
@@ -417,7 +417,7 @@ async function runLiar() {
       if (ev.type === "restart") {
         printed = "";
         meter.style.width = "0";
-        $("m-liar-text").textContent = `the change vanished or crashed the program; trying another (run ${ev.run})…`;
+        $("m-liar-text").textContent = `The changed value disappeared or stopped the program. Trying another instruction (attempt ${ev.run})…`;
       }
     });
     meter.style.width = "100%";
@@ -427,11 +427,11 @@ async function runLiar() {
 
     const list = $("attempts");
     for (const a of l.attempts || []) {
-      const at = `${a.instruction} in ${a.function} at step ${fmt(a.step)}`;
-      let text = `${at}: ${kind === "int" ? "overwritten" : "erased by rounding"} ${fmt(a.erasedAfter)} instructions later`;
-      if (a.kept) text = `kept: ${at}`;
-      else if (a.vanished) text = `${at}: survived the lockstep window, then vanished before the end`;
-      else if (a.faulted) text = `${at}: kept, then crashed the program or ran away; abandoned`;
+      const at = `${a.instruction} in ${a.function} (RISC-V instruction #${fmt(a.step)})`;
+      let text = `${at}: the changed value was ${kind === "int" ? "overwritten" : "erased by rounding"} ${fmt(a.erasedAfter)} instructions later`;
+      if (a.kept) text = `${at}: the changed value remained in the final VM state`;
+      else if (a.vanished) text = `${at}: the changed value disappeared before the program finished`;
+      else if (a.faulted) text = `${at}: the change stopped the program or made it run too long`;
       list.append(el("li", a.kept ? { class: "kept" } : {}, text));
     }
     if (l.deviation && !STEP_LIES.has(l.deviation.kind)) {
@@ -442,20 +442,20 @@ async function runLiar() {
     headline.classList.remove("hidden");
     if (l.poststate === honestResult.poststate) {
       headline.textContent = kind === "output"
-        ? `The screen shows “${print.forged.trim()}”, but the saved answer is still “${print.old.trim()}”. Both runs finished with the same identifying code. Printed words alone are not included in that code. Try changing “The answer saved by the model” instead.`
-        : "Later calculations erased the mistake. Both runs finished with the same identifying code, so there is no remaining difference to check.";
+        ? `The screen shows “${print.forged.trim()}”, but the saved answer is still “${print.old.trim()}”. Both VMs finished with the same hash because printed output is not included in it. Try changing “The answer saved by the model” instead.`
+        : "Later instructions erased the mistake. Both VMs finished with the same hash, so there is no remaining difference to check.";
       return;
     }
     const erased = (l.attempts || []).filter((a) => !a.kept).length;
     headline.textContent = l.text === honestResult.text
-      ? `The stories match, but the runs' identifying codes differ.${erased ? ` MLVM tried ${erased} earlier ${erased === 1 ? "mistake" : "mistakes"} before finding one that lasted.` : ""} Now it finds where the runs first differed.`
-      : "The stories and identifying codes differ. Now MLVM finds where the runs first differed.";
+      ? `The stories match, but the final VM hashes differ.${erased ? ` MLVM tried ${erased} earlier ${erased === 1 ? "mistake" : "mistakes"} before finding one that remained.` : ""} Now MLVM locates a disputed RISC-V instruction.`
+      : "The stories and final VM hashes differ. Now MLVM locates a disputed RISC-V instruction.";
 
     // Bisection: questions to both machines run in parallel workers.
     const total = Math.max(honestResult.steps, l.steps);
     $("ladder-wrap").classList.remove("hidden");
     const ladder = new Ladder($("ladder"), total);
-    $("ladder-title").textContent = `Comparing ${fmt(total)} small operations`;
+    $("ladder-title").textContent = `Comparing ${fmt(total)} RISC-V instructions`;
     renderTimeline($("lie-timeline"), honestResult.steps, honestResult.xray.marks || [], { lieStep: l.deviation?.step });
     const t0 = performance.now();
     const { lo, rounds, noDispute } = await bisect(act.honest, liar, total, async (round) => {
@@ -463,10 +463,10 @@ async function runLiar() {
       await sleep(90);
     });
     if (noDispute) {
-      headline.textContent = "The mistake left no trace: both runs finished alike, so there is no difference to check.";
+      headline.textContent = "The changed value left no trace in the final VM state, so there is no remaining difference to check.";
       return;
     }
-    $("ladder-title").textContent = `${rounds.length} comparisons found one differing operation among ${fmt(total)} (${((performance.now() - t0) / 1000).toFixed(1)} s)`;
+    $("ladder-title").textContent = `${rounds.length} comparisons found one disputed instruction among ${fmt(total)} (${((performance.now() - t0) / 1000).toFixed(1)} s)`;
 
     const referee = new Machine("referee");
     const { verdict } = await adjudicate(act.honest, liar, referee, lo);
@@ -493,13 +493,13 @@ async function runLiar() {
 // renderVerdict fills container with the referee's ruling on the disputed instruction.
 function renderVerdict(container, v, forged) {
   const inst = el("p", { class: "instruction" });
-  inst.append(el("code", {}, v.instruction), el("span", { class: "muted" }, ` in ${v.function || "?"} · step ${fmt(v.step)} · pc 0x${v.pc.toString(16)}`));
+  inst.append(el("code", {}, v.instruction), el("span", { class: "muted" }, ` in ${v.function || "?"} · instruction ${fmt(v.step)} · program counter 0x${v.pc.toString(16)}`));
   const dl = el("dl", { class: "kv hashes" });
   for (const [key, label, hash] of [
-    ["", "the runs agree before this operation", v.agreedPrestate],
-    ["honest", "original run after the operation", v.honestPost],
-    ["liar", "second run after the operation", v.liarPost],
-    ["", "checker after redoing the operation", v.refereePost],
+    ["", "the runs agree before this instruction", v.agreedPrestate],
+    ["honest", "original run after the instruction", v.honestPost],
+    ["liar", "second run after the instruction", v.liarPost],
+    ["", "checker after re-executing the instruction", v.refereePost],
   ]) {
     const dt = el("dt");
     if (key) dt.append(el("span", { class: `key key-${key}` }));
@@ -511,14 +511,14 @@ function renderVerdict(container, v, forged) {
   const caught = v.winner === "honest";
   const winner = el("p", { class: "winner" });
   winner.append(el("span", { class: caught ? "ok" : "bad" }, caught ? "✓ " : "✗ "), document.createTextNode(caught
-    ? `The checker agrees with the original run. The second run ${forged ? "saved a different answer" : "used the wrong value for this operation"}.`
+    ? `Re-executing this RISC-V instruction gives the original run's result. The second run ${forged ? "saved a different answer" : "used the wrong value"}.`
     : `Unexpected ruling: ${v.winner}.`));
   const bytes = (v.stateWitness.length - 2) / 2;
   const evm = v.evm ? ` RISCV.sol's result matches, for ${fmt(v.evm.gasUsed)} gas.` : "";
   const details = el("details", { class: "technical-details verdict-details" });
   details.append(
     el("summary", {}, "See the exact instruction and how it was checked"), inst, dl,
-    el("p", { class: "note" }, `Checked by ${v.method}. Evidence: a ${fmt(bytes)}-byte state witness and ${fmt(v.proofBytes)} bytes of Merkle proof.${evm}`),
+    el("p", { class: "note" }, `Checked by ${v.method} using a ${fmt(bytes)}-byte snapshot of the VM state before this instruction and ${fmt(v.proofBytes)} bytes proving the memory values it used.${evm}`),
     el("p", { class: "note boundary" }, v.boundary),
   );
   container.replaceChildren(el("p", { class: "eyebrow" }, "Check complete"), winner, details);
@@ -548,7 +548,7 @@ async function referee(text) {
 function renderCheck(container, rec, res, err) {
   if (err || !res) {
     const ul = el("ul", { class: "crosses" });
-    ul.append(el("li", {}, `The record does not hold up: ${err ? err.message : "no ruling"}`));
+    ul.append(el("li", {}, `This file could not be verified: ${err ? err.message : "the checker returned no result"}`));
     container.replaceChildren(ul);
     return;
   }
@@ -560,23 +560,23 @@ function renderCheck(container, rec, res, err) {
     for (const p of parts) item.append(typeof p === "string" ? document.createTextNode(p) : p);
     ul.append(item);
   };
-  li(`${rec.rounds.length} recorded midpoint comparisons narrow ${fmt(total)} instructions to step ${fmt(v.step)}.`);
-  li(`The ${fmt((v.stateWitness.length - 2) / 2)}-byte state witness hashes to the state both machines agreed on before it, `, el("code", {}, shortHash(v.agreedPrestate)), ".");
-  li("The instruction word, ", el("code", {}, v.instruction), ", is in its Merkle proof against the witness's memory root.");
-  const who = { honest: "matching the original run. The original run is right at this operation.", liar: "matching the second run. The second run is right at this operation." }[v.winner]
+  li(`${rec.rounds.length} recorded hash comparisons narrow ${fmt(total)} RISC-V instructions to instruction ${fmt(v.step)}.`);
+  li(`The saved VM state before that instruction matches the hash both runs agreed on: `, el("code", {}, shortHash(v.agreedPrestate)), ".");
+  li("The memory proof shows that the RISC-V instruction was ", el("code", {}, v.instruction), ".");
+  const who = { honest: "matching the original run's result for this instruction.", liar: "matching the second run's result for this instruction." }[v.winner]
     || "matching neither run.";
-  li(`${v.method.startsWith("SoftFloat") ? "Software arithmetic recalculates it" : "The Go referee executes it"}: `, el("code", {}, shortHash(v.refereePost)), `, ${who}`);
+  li(`${v.method.startsWith("SoftFloat") ? "Software floating-point arithmetic re-executes it" : "The Go checker re-executes it"}: `, el("code", {}, shortHash(v.refereePost)), `, ${who}`);
   const parts = [ul];
-  if (res.matchesRecord) li("The record's own verdict is the one reached here.");
+  if (res.matchesRecord) li("The result matches the verdict saved in this file.");
   else {
     const bad = el("ul", { class: "crosses" });
-    bad.append(el("li", {}, `The file reports a different result: ${{ honest: "the original run", liar: "the second run" }[rec.verdict.winner] || rec.verdict.winner} is right, with ${shortHash(rec.verdict.refereePost)}.`));
+    bad.append(el("li", {}, `The file's saved verdict differs from this check. It says ${{ honest: "the original run", liar: "the second run" }[rec.verdict.winner] || rec.verdict.winner} is right, with hash ${shortHash(rec.verdict.refereePost)}.`));
     parts.push(bad);
   }
   const evm = rec.verdict.evm && !v.evm
     ? ` The native mlvm referee also runs RISCV.sol itself in an EVM; the record says ${fmt(rec.verdict.evm.gasUsed)} gas.`
     : "";
-  parts.push(el("p", { class: "note" }, `Checked in ${(res.micros / 1000).toFixed(1)} ms in this tab, without rerunning the model. The file lets us check this operation; it cannot show that either computer performed every earlier operation.${evm}`));
+  parts.push(el("p", { class: "note" }, `Re-executed this RISC-V instruction in ${(res.micros / 1000).toFixed(1)} ms without rerunning the model. The saved file checks this instruction; it does not prove that either computer executed every earlier instruction.${evm}`));
   container.replaceChildren(...parts);
 }
 
@@ -616,14 +616,14 @@ async function openReplay(entry, lie, row) {
   $("rp-check").disabled = false;
   const total = Math.max(rec.honestSteps, rec.liarSteps);
   const steps = rec.honestSteps === rec.liarSteps
-    ? `${fmt(total)} small operations in each run`
-    : `${fmt(rec.honestSteps)} operations in the original run and ${fmt(rec.liarSteps)} in the second`;
-  $("replay-lede").textContent = `${steps}. The comparisons below were saved during the original test; this page plays them back without rerunning the model.`;
+    ? `${fmt(total)} RISC-V instructions in each run`
+    : `${fmt(rec.honestSteps)} RISC-V instructions in the original run and ${fmt(rec.liarSteps)} in the second`;
+  $("replay-lede").textContent = `${steps}. The hash comparisons below were saved during the original test. Replaying them here does not rerun the model.`;
 
   const answer = (node, text, committed, base, baseCommitted) => {
     setDiff(node, "", base, text);
     if (committed) {
-      const line = el("span", { class: "commit-line" }, "commits ");
+      const line = el("span", { class: "commit-line" }, "saved answer: ");
       const code = el("code");
       setDiff(code, "", baseCommitted, committed);
       line.append(code);
@@ -642,9 +642,9 @@ async function openReplay(entry, lie, row) {
   const vanished = atts.filter((a) => a.vanished).length;
   const faulted = atts.filter((a) => a.faulted).length;
   const list = $("rp-attempts");
-  if (erased) list.append(el("li", {}, `${erased} earlier ${erased === 1 ? "change left" : "changes left"} no trace: later instructions erased ${erased === 1 ? "it" : "them"}`));
-  if (vanished) list.append(el("li", {}, `${vanished} outlived the lockstep window but vanished before the end, so the program ran again with another change`));
-  if (faulted) list.append(el("li", {}, `${faulted} crashed the program or ran away`));
+  if (erased) list.append(el("li", {}, `${erased} earlier ${erased === 1 ? "changed value was" : "changed values were"} erased by later instructions`));
+  if (vanished) list.append(el("li", {}, `${vanished} ${vanished === 1 ? "changed value disappeared" : "changed values disappeared"} before the program finished`));
+  if (faulted) list.append(el("li", {}, `${faulted} ${faulted === 1 ? "change stopped" : "changes stopped"} the program or made it run too long`));
   // The gallery's short function names: Rust paths inside <...> keep their last segment.
   const verdict = { ...rec.verdict, function: lie.function || rec.verdict.function };
   if (rec.deviation) {
@@ -653,14 +653,14 @@ async function openReplay(entry, lie, row) {
   }
 
   const ladder = new Ladder($("rp-ladder"), total);
-  $("rp-ladder-title").textContent = `Comparing ${fmt(total)} operations`;
+  $("rp-ladder-title").textContent = `Comparing ${fmt(total)} RISC-V instructions`;
   for (const round of rec.rounds) {
     if (token !== replayToken) return;
     ladder.add(round);
     await sleep(60);
   }
   if (token !== replayToken) return;
-  $("rp-ladder-title").textContent = `${rec.rounds.length} comparisons found one differing operation among ${fmt(total)}`;
+  $("rp-ladder-title").textContent = `${rec.rounds.length} comparisons found one disputed instruction among ${fmt(total)}`;
   renderVerdict($("rp-verdict"), verdict, lie.kind === "token" || lie.kind === "commit");
 }
 
@@ -741,7 +741,7 @@ function wire() {
     if (params.get("h")) {
       const banner = $("shared");
       banner.classList.remove("hidden");
-      banner.textContent = `This shared run ended with identifying code ${shortHash(params.get("h"))}. Run the story on your device to compare the results.`;
+      banner.textContent = `The shared run ended with VM hash ${shortHash(params.get("h"))}. Run the same story prompt on your device to compare hashes.`;
     }
   }
 }
@@ -754,13 +754,13 @@ async function showGallery() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     data = await res.json();
   } catch {
-    $("gallery-status").textContent = "The recorded examples could not be loaded. You can still open a saved dispute record below.";
+    $("gallery-status").textContent = "The recorded examples could not be loaded. You can still open a saved check file below.";
     $("gallery-details").classList.add("hidden");
     return;
   }
   const entries = data.entries.filter((e) => e.lies.length > 0);
   if (entries.length === 0) {
-    $("gallery-status").textContent = "This build has no recorded disputes. You can still open a saved record below.";
+    $("gallery-status").textContent = "This build has no recorded tests with differing VM hashes. You can still open a saved check file below.";
     $("gallery-details").classList.add("hidden");
     return;
   }
@@ -798,7 +798,7 @@ async function showGallery() {
       }
       tr.append(td(l.lie));
       if (l.noDispute) {
-        const why = td(`Nothing to check: the second run printed "${l.liar.slice(0, 32)}…", but both runs finished with the same internal values. The printed words are not included.`, "gallery-at");
+        const why = td(`Both runs ended with the same VM hash. The second run printed "${l.liar.slice(0, 32)}…", but printed text is not part of the VM hash.`, "gallery-at");
         why.colSpan = 3;
         tr.append(td("–", "num"), why);
         body.append(tr);
@@ -823,17 +823,17 @@ async function showGallery() {
   }
   const cpu = entries.flatMap((e) => e.lies.map((l) => l.cpuSeconds)).filter((x) => x != null);
   const span = cpu.length
-    ? ` Each dispute took ${Math.min(...cpu) < 1 ? "under a second" : `${Math.round(Math.min(...cpu))} s`} to ${Math.round(Math.max(...cpu) / 60)} min of CPU time on an Apple M3 Max, including both runs.`
+    ? ` These tests took ${Math.min(...cpu) < 1 ? "under a second" : `${Math.round(Math.min(...cpu))} s`} to ${Math.round(Math.max(...cpu) / 60)} min of CPU time on an Apple M3 Max, including both VM runs.`
     : "";
   $("gallery-note").textContent =
-    `${found} of ${disputes} searches ended on the instruction that was changed, and the referee ruled for the original run.${span} ` +
-    "Reproduce with scripts/gallery.sh; the full reports are in results/gallery/ on GitHub.";
+    `${found} of ${disputes} tests located the changed RISC-V instruction; re-executing it matched the original run.${span} ` +
+    "The test script and full results are in the GitHub repository.";
 
   $("gallery-status").textContent = "The saved SmolLM2 example is ready. More recorded tests are below.";
   const featured = $("featured-runs");
   featured.replaceChildren();
   const descriptions = {
-    smollm2: ["Saved example", "One multiplication was made slightly wrong, although the model printed the same text."],
+    smollm2: ["Saved example", "We changed the result of one RISC-V floating-point multiplication. The model still printed the same text."],
   };
   const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
   for (const [id, [label, about]] of Object.entries(descriptions)) {
@@ -849,8 +849,8 @@ async function showGallery() {
     card.append(
       el("p", { class: "eyebrow" }, label), el("h3", {}, entry.title), el("p", {}, about),
       el("span", { class: "model-count" }, compact.format(lie.instructions)),
-      el("p", {}, "small operations in the run"),
-      el("p", { class: "model-result" }, `One wrong operation found and checked after ${lie.rounds} comparisons.`), button,
+      el("p", {}, "RISC-V instructions in the run"),
+      el("p", { class: "model-result" }, `The changed instruction was located and checked after ${lie.rounds} hash comparisons.`), button,
     );
     featured.append(card);
   }
@@ -871,7 +871,7 @@ async function main() {
     await wasmReady;
     $("run-button").disabled = false;
     $("run-button").textContent = "Generate a story";
-    $("status").textContent = "Ready. Run the model, compare its identifying code, then test a second run with a mistake.";
+    $("status").textContent = "Ready. Run the RISC-V model program in the VM, compare its final hash, then try a second run with a deliberate mistake.";
   } catch (err) {
     $("status").textContent = `Could not load MLVM: ${err.message}`;
     $("status").classList.add("error");
