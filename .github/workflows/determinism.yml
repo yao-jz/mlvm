@@ -33,14 +33,14 @@ jobs:
           - { os: macos-15-intel, platform: darwin/amd64, exe: mlvm }
           - { os: windows-latest, platform: windows/amd64, exe: mlvm.exe }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -54,7 +54,7 @@ jobs:
           python scripts/determinism-record.py --mlvm "./${{ matrix.exe }}" \
             --platform "${{ matrix.platform }}" --runner "${{ matrix.os }}" --out record.json
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: record-${{ strategy.job-index }}
           path: record.json
@@ -64,14 +64,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -84,7 +84,7 @@ jobs:
       - name: Record state roots
         run: node web/test/record.mjs mlvm.wasm "$(go env GOROOT)/lib/wasm/wasm_exec.js" record.json
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: record-wasm
           path: record.json
@@ -95,14 +95,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: record-*
           path: records
@@ -115,7 +115,7 @@ jobs:
       - name: Build the playground
         run: bash scripts/build-web.sh site
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           path: site
@@ -133,4 +133,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
