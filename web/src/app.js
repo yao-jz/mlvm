@@ -154,7 +154,7 @@ async function runHonest(prompt, tokens) {
     $("float-share").textContent = pct(r.xray.floatShare, 0);
     meter.classList.remove("indeterminate");
     meter.style.width = "100%";
-    $("status").textContent = `Finished in ${secs.toFixed(1)} seconds. Next, change one instruction and watch it get caught.`;
+    $("status").textContent = `Finished in ${secs.toFixed(1)} seconds. Next, change one result and find where the runs differ.`;
     showReceipt(r);
     showXray(r);
     prepareLiar(r);
@@ -221,13 +221,18 @@ function showReceipt(r) {
   }
 }
 
-function shareLink() {
+async function shareLink() {
   if (!act.result) return;
   const url = new URL(location.href);
   url.search = new URLSearchParams({ p: act.result.prompt, n: String(act.tokens), h: act.result.poststate }).toString();
   url.hash = "run";
-  navigator.clipboard?.writeText(url.toString());
-  $("share").textContent = "Link copied — compare this run on another device";
+  try {
+    if (!navigator.clipboard) throw new Error("Clipboard unavailable");
+    await navigator.clipboard.writeText(url.toString());
+    $("share").textContent = "Link copied — compare on another device";
+  } catch {
+    $("share").textContent = "Could not copy the link";
+  }
   setTimeout(() => { $("share").textContent = "Copy a link to this result"; }, 3000);
 }
 
@@ -272,10 +277,10 @@ let lastRecord = null;
 
 // What each lie does, shown under the choices.
 const LIE_ABOUT = {
-  ulp: "Makes one number slightly wrong. The words often stay the same, but the final state can differ. The referee recomputes the operation to check it.",
-  load: "Changes one bit as a value is read from memory. The referee checks the read against the proven memory.",
+  ulp: "Makes one number slightly wrong. The words may stay the same. The local referee recalculates that operation.",
+  load: "Changes one bit as a value is read from memory. The local referee checks the read against the saved memory proof.",
   int: "Changes the last bit of an integer result. Some changes crash the program; this demo looks for one that survives to the end.",
-  output: "Displays a different word while leaving the stored answer unchanged. If the changed bytes are later overwritten, the final state will not reveal the altered output.",
+  output: "Displays a different word but leaves the stored answer unchanged. If later work erases the change, both runs can finish with the same fingerprint.",
   token: "Stores a different answer in the machine's memory. Because that answer is part of the final state, the search can find the instruction that wrote it.",
 };
 const STEP_LIES = new Set(["ulp", "load", "int"]);
@@ -308,7 +313,7 @@ function updateWordNote() {
   const note = $("word-note");
   note.classList.remove("error");
   if (lieKind() !== "output" || !act.result) {
-    note.textContent = lieKind() === "token" ? "One word of the model's 512-token vocabulary." : "";
+    note.textContent = lieKind() === "token" ? "Choose a word from the generated story to replace." : "";
     return;
   }
   const { old, forged } = forgedPrint();
@@ -472,7 +477,7 @@ async function runLiar() {
     headline.classList.remove("hidden");
     if (l.poststate === honestResult.poststate) {
       headline.textContent = kind === "output"
-        ? `The screen shows “${print.forged.trim()}”, but the stored answer is still “${print.old.trim()}”. Both runs ended with the same state hash. Printed output is not part of the state. Try changing “The stored answer” instead.`
+        ? `The screen shows “${print.forged.trim()}”, but the stored answer is still “${print.old.trim()}”. Both runs ended with the same fingerprint. The printed text is not part of that fingerprint. Try changing “The stored answer” instead.`
         : "The changed value was overwritten or rounded away. Both runs finished in the same state, so there is no remaining disagreement to check.";
       return;
     }
@@ -541,7 +546,7 @@ function renderVerdict(container, v, forged) {
   const caught = v.winner === "honest";
   const winner = el("p", { class: "winner" });
   winner.append(el("span", { class: caught ? "ok" : "bad" }, caught ? "✓ " : "✗ "), document.createTextNode(caught
-    ? `The check matches the original run. This is the instruction that ${forged ? "stored the changed answer" : "produced the changed result"}.`
+    ? `The local check matches the original run at this step. This is the instruction that ${forged ? "stored the changed answer" : "produced the changed result"}.`
     : `Unexpected ruling: ${v.winner}.`));
   const bytes = (v.stateWitness.length - 2) / 2;
   const evm = v.evm ? ` RISCV.sol's result matches, for ${fmt(v.evm.gasUsed)} gas.` : "";
@@ -590,12 +595,12 @@ function renderCheck(container, rec, res, err) {
     for (const p of parts) item.append(typeof p === "string" ? document.createTextNode(p) : p);
     ul.append(item);
   };
-  li(`${rec.rounds.length} questions, each about the midpoint of the instructions still in dispute, narrow ${fmt(total)} instructions to step ${fmt(v.step)}.`);
+  li(`${rec.rounds.length} recorded midpoint comparisons narrow ${fmt(total)} instructions to step ${fmt(v.step)}.`);
   li(`The ${fmt((v.stateWitness.length - 2) / 2)}-byte state witness hashes to the state both machines agreed on before it, `, el("code", {}, shortHash(v.agreedPrestate)), ".");
   li("The instruction word, ", el("code", {}, v.instruction), ", is in its Merkle proof against the witness's memory root.");
   const who = { honest: "the original run's claim. The original run is right.", liar: "the changed run's claim. The changed run is right." }[v.winner]
     || "neither run's claim.";
-  li(`${v.method.startsWith("SoftFloat") ? "SoftFloat re-executes it" : "slow.Step executes it"}: `, el("code", {}, shortHash(v.refereePost)), `, ${who}`);
+  li(`${v.method.startsWith("SoftFloat") ? "Software arithmetic recalculates it" : "The Go referee executes it"}: `, el("code", {}, shortHash(v.refereePost)), `, ${who}`);
   const parts = [ul];
   if (res.matchesRecord) li("The record's own verdict is the one reached here.");
   else {
@@ -606,7 +611,7 @@ function renderCheck(container, rec, res, err) {
   const evm = rec.verdict.evm && !v.evm
     ? ` The native mlvm referee also runs RISCV.sol itself in an EVM; the record says ${fmt(rec.verdict.evm.gasUsed)} gas.`
     : "";
-  parts.push(el("p", { class: "note" }, `Checked in ${(res.micros / 1000).toFixed(1)} ms in this tab, without running either machine.${evm}`));
+  parts.push(el("p", { class: "note" }, `Checked in ${(res.micros / 1000).toFixed(1)} ms in this tab, without rerunning the model. This rechecks the saved record; it does not independently prove the full run.${evm}`));
   container.replaceChildren(...parts);
 }
 
@@ -790,7 +795,7 @@ async function showGallery() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     data = await res.json();
   } catch {
-    $("gallery-status").textContent = "The recorded experiments could not be loaded. You can still read the diagram below or open a saved dispute record.";
+    $("gallery-status").textContent = "The recorded examples could not be loaded. You can still open a saved dispute record below.";
     $("gallery-details").classList.add("hidden");
     return;
   }
@@ -865,7 +870,7 @@ async function showGallery() {
     `${found} of ${disputes} searches ended on the instruction that was changed, and the referee ruled for the original run.${span} ` +
     "Reproduce with scripts/gallery.sh; the full reports are in results/gallery/ on GitHub.";
 
-  $("gallery-status").textContent = `${entries.length} programs · ${disputes} recorded searches, each ending on the changed instruction. Choose one, or expand the full table.`;
+  $("gallery-status").textContent = `${entries.length} programs · ${disputes} recorded disputes. Each search found the changed instruction. Choose an example or browse the table.`;
   const featured = $("featured-runs");
   featured.replaceChildren();
   const descriptions = {
@@ -893,30 +898,7 @@ async function showGallery() {
     featured.append(card);
   }
 
-  // Flame graphs of the featured entries: the same model in C and in Candle, and the
-  // smallest and largest BERT.
-  const pick = data.entries.filter((e) => e.flame && e.featured);
-  const grid = $("gallery-flames");
-  grid.replaceChildren();
-  for (const e of pick) {
-    const card = document.createElement("figure");
-    card.className = "card flame-card";
-    const link = document.createElement("a");
-    link.href = e.flame;
-    link.target = "_blank";
-    link.rel = "noopener";
-    const img = document.createElement("img");
-    img.src = e.flame;
-    img.loading = "lazy";
-    img.alt = `Flame graph of ${e.title}: ${e.top.map((t) => `${t.name} ${pct(t.share)}`).join(", ")}`;
-    link.append(img);
-    const cap = document.createElement("figcaption");
-    const title = document.createElement("strong");
-    title.textContent = e.title;
-    cap.append(title, document.createTextNode(` · ${fmt(e.instructions)} instructions · ${pct(e.floatShare)} floating point · top: ${e.top[0].name} ${pct(e.top[0].share)}`));
-    card.append(link, cap);
-    grid.append(card);
-  }
+
 }
 
 async function main() {
@@ -932,7 +914,7 @@ async function main() {
     await wasmReady;
     $("run-button").disabled = false;
     $("run-button").textContent = "Generate a story";
-    $("status").textContent = "Ready. Run the model, then change one instruction and watch MLVM catch it.";
+    $("status").textContent = "Ready. Run the model, then change one result and find where the runs differ.";
   } catch (err) {
     $("status").textContent = `Could not load MLVM: ${err.message}`;
     $("status").classList.add("error");

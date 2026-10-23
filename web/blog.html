@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How MLVM works · finding one wrong instruction in 14.8 billion</title>
-  <meta name="description" content="How do you find one wrong instruction in a language model run? MLVM uses reproducible execution and binary search to narrow 14.8 billion instructions to one step that a referee can check.">
+  <meta name="description" content="In a local experiment, MLVM found one deliberately changed result in a 14.8-billion-instruction model run. See how the search and single-step check work, and where the prototype stops.">
   <meta property="og:title" content="How MLVM works: finding one wrong instruction in 14.8 billion">
   <meta property="og:description" content="MLVM found a deliberately wrong step in a 14.8-billion-instruction language model run with 34 rounds of binary search. Here is how it works, and what it cannot verify yet.">
   <meta property="og:type" content="article">
@@ -25,7 +25,7 @@
     <nav aria-label="Site">
       <a href="./#run">Try it</a>
       <a href="./#how-it-works">The idea</a>
-      <a href="./#gallery">Model runs</a>
+      <a href="./#gallery">Recorded examples</a>
       <a href="blog.html" aria-current="page">Blog</a>
       <a href="https://github.com/yao-jz/mlvm" rel="noopener">GitHub ↗</a>
     </nav>
@@ -38,11 +38,11 @@
       <ol>
         <li><a href="#problem">The problem</a></li>
         <li><a href="#overview">From a model run to a disputed step</a></li>
-        <li><a href="#floats">Floating point without the host FPU</a></li>
-        <li><a href="#doors">Making the rest of the run reproducible</a></li>
-        <li><a href="#state">One root for the whole machine</a></li>
+        <li><a href="#floats">Making floating-point math repeatable</a></li>
+        <li><a href="#doors">Keeping other inputs the same</a></li>
+        <li><a href="#state">One fingerprint for the whole machine</a></li>
         <li><a href="#answers">Keeping the answer in the state</a></li>
-        <li><a href="#bisection">Bisection at 14.8 billion instructions</a></li>
+        <li><a href="#bisection">Finding one step among 14.8 billion</a></li>
         <li><a href="#referee">Checking the disputed instruction</a></li>
         <li><a href="#lies">What happened when we changed one result</a></li>
         <li><a href="#xray">Where the instructions go</a></li>
@@ -59,9 +59,9 @@
       <p class="eyebrow">Inside MLVM / An illustrated walkthrough</p>
       <h1>Finding one wrong instruction in 14.8 billion</h1>
       <p class="dek">
-        A run of SmolLM2-135M took 14.8 billion instructions inside MLVM. We deliberately changed
-        one result. It took 34 rounds of binary search to find the step responsible, then a check
-        of that one instruction to decide which machine was right.
+        We ran SmolLM2-135M inside MLVM and deliberately changed one result among 14.8 billion
+        instructions. In a local test, 34 comparisons found the changed step. A referee then
+        checked that single step from a saved record, without running the model again.
       </p>
       <p class="byline">Jianzhu Yao · Princeton University · 22 October 2026</p>
 
@@ -78,11 +78,12 @@
           <li>It runs a compiled program in a RISC-V virtual machine, including floating-point
             arithmetic in software. With the same program and inputs, machines should agree on
             every bit of the result. CI checks the decoder demo across six platforms.</li>
-          <li>It represents the machine's state with a 32-byte hash. If two runs end with different
-            hashes, a referee can narrow the disagreement to one instruction and check that step.</li>
-          <li>The current implementation is a local research prototype. There is no deployed
-            dispute game, <code>f32</code> arithmetic cannot yet be settled on chain, and the BERT
-            runs measured here are about a thousand times slower than native code.</li>
+          <li>It can summarize the machine's state at any instruction with a 32-byte hash. If two
+            runs start alike but end differently, a search narrows the disagreement to one
+            instruction. A local referee checks that step when it is supported.</li>
+          <li>The current implementation is a local research prototype. It cannot yet settle
+            single-precision arithmetic on a blockchain, and no complete dispute system is
+            deployed. The measured BERT runs are roughly a thousand times slower than native code.</li>
         </ul>
       </aside>
 
@@ -118,7 +119,8 @@
           asks for the hash halfway through each run. If those hashes match, the disagreement is
           in the second half; otherwise, it is in the first. Repeating this search leaves one
           instruction to check, after about log<sub>2</sub>&nbsp;N rounds for a run of N steps.
-          The parties still do the execution. The referee only checks the disputed step.
+          Both parties still run the program. The referee checks only the disputed step. MLVM
+          demonstrates this process locally; a complete on-chain dispute system is not built yet.
         </p>
         <p>
           This requires honest machines to agree bit for bit. Floating point makes that harder,
@@ -171,10 +173,9 @@
       <section id="overview">
         <h2><span class="num">2</span>From a model run to a disputed step</h2>
         <figure class="repo-figure" id="fig1">
-          <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="From an answer to one checked instruction. Someone runs a model and returns an answer that cannot be checked by itself. Step 1: MLVM fingerprints the machine after every instruction. Step 2: when two runs end with different fingerprints, halving the run about log2 N times finds the first instruction where they differ. Step 3: a referee re-executes only that instruction, from a 674-byte state record and a memory proof."></a>
-          <figcaption><b>Figure 1.</b> Every instruction leaves a 32-byte fingerprint of the whole
-          machine. When two runs end with different fingerprints, halving the run finds the first
-          instruction where they differ, and the referee checks only that instruction:
+          <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="When two runs start alike but finish differently, MLVM compares their machine states halfway through until one instruction remains, then locally checks that instruction from a saved state and memory proof."></a>
+          <figcaption><b>Figure 1.</b> The state after any instruction can be summarized by a 32-byte fingerprint. When two runs start alike but end differently, halving the run finds an
+          instruction where they split. A local referee checks that instruction using
           <code>RISCV.sol</code> in an EVM, its Go counterpart <code>slow.Step</code>, or SoftFloat
           for float arithmetic. <a href="figures/overview.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
         </figure>
@@ -191,7 +192,7 @@
           belongs to that machine state. We call the initial hash the <em>prestate root</em> and
           the hash after the program halts the <em>poststate root</em>. The former identifies
           the computation's starting point; the latter includes what the program left in memory,
-          including its answer.
+          including its answer if the program stored it there.
         </p>
         <p>
           The first byte of every state hash is replaced by a status code: 0 for halted normally,
@@ -204,13 +205,14 @@
           the binary search described above, also called <em>bisection</em>. To check the remaining
           instruction, it needs a <em>witness</em>: an encoding of the state before the step,
           plus proofs for the memory that step reads or writes. These fit in a small dispute
-          record. Anyone with the record can repeat the referee's check without loading the model
-          or replaying the full run.
+          record. Anyone with the record can repeat that single-step check without loading the model
+          or replaying the full run. The record contains the parties' claims about the search;
+          checking it does not independently establish that either full run happened as claimed.
         </p>
         <details class="technical-details" open>
           <summary>How the components fit together in the implementation</summary>
           <figure class="repo-figure">
-            <a class="figure-image" href="figures/architecture.svg" target="_blank" rel="noopener"><img src="figures/architecture.svg" width="960" height="1150" loading="lazy" alt="How MLVM works, in six parts: the inputs of a run (program, input files, fixed random bytes); running one instruction at a time (fetch, decode, execute, write back; integer math, software floating point, system calls); the 32-byte fingerprint of the whole machine (a 674-byte state record with the roots of memory, files and the stored answer); finding the first instruction where two runs differ; checking that one instruction with RISCV.sol, slow.Step or SoftFloat; and where it runs (command line, browser, CI on six platforms)."></a>
+            <a class="figure-image" href="figures/architecture.svg" target="_blank" rel="noopener"><img src="figures/architecture.svg" width="960" height="1150" loading="lazy" alt="How MLVM works, in six parts: the inputs of a run (program, input files, fixed random bytes); running one instruction at a time (fetch, decode, execute, write back; integer math, software floating point, system calls); the 32-byte fingerprint of the whole machine (a 674-byte state record with the roots of memory, files and the stored answer); finding a step where two runs split; checking that one instruction with RISCV.sol, slow.Step or SoftFloat; and where it runs (command line, browser, CI on six platforms)."></a>
             <figcaption><strong>The implementation map.</strong> Follow the six numbered sections from inputs to verification. Each part says in plain words what it does; the grey lines give the package, address or proof size behind it. <a href="figures/architecture.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
           </figure>
         </details>
@@ -220,7 +222,7 @@
 
       <!-- 3 ------------------------------------------------------------------------------ -->
       <section id="floats">
-        <h2><span class="num">3</span>Floating point without the host FPU</h2>
+        <h2><span class="num">3</span>Making floating-point math repeatable</h2>
         <p class="section-intro">These models represent weights and intermediate values as floating-point numbers. MLVM needs each operation to produce the same bits on every host, including its rounding and exception flags.</p>
         <figure class="repo-figure">
           <a class="figure-image" href="figures/model-instruction-mix.svg" target="_blank" rel="noopener"><img src="figures/model-instruction-mix.svg" width="900" height="340" loading="lazy" alt="Five BERT-family instruction profiles. Floating-point arithmetic and loads or stores make up 58 to 69 percent of execution."></a>
@@ -389,7 +391,7 @@ beginFloatOp := func(rm U64) {
 
       <!-- 4 ------------------------------------------------------------------------------ -->
       <section id="doors">
-        <h2><span class="num">4</span>Making the rest of the run reproducible</h2>
+        <h2><span class="num">4</span>Keeping other inputs the same</h2>
         <p>
           Floating-point arithmetic is only part of the problem. A program can also change its
           behavior based on the clock, random bytes, available CPUs or files on the host. MLVM
@@ -440,7 +442,7 @@ beginFloatOp := func(rm U64) {
 
       <!-- 5 ------------------------------------------------------------------------------ -->
       <section id="state">
-        <h2><span class="num">5</span>One root for the whole machine</h2>
+        <h2><span class="num">5</span>One fingerprint for the whole machine</h2>
         <p class="section-intro">A referee needs to check small pieces of a potentially large machine. The state root makes this possible: each supplied piece can be checked against the same hash.</p>
         <h3>5.1 The 674-byte state witness</h3>
         <p>
@@ -610,12 +612,12 @@ filesystemRoot = keccak256("MLVM-FILESYSTEM-V2\0" || filePointer || nextFd || fi
           measurable cost. Candle's MiniLM spends 12.8% of its billion instructions reading staged files.
         </p>
 
-        <h3>5.4 What one step costs to prove</h3>
+        <h3>5.4 How much evidence one step needs</h3>
         <div class="table-scroll">
           <table class="table">
             <thead><tr><th>Piece</th><th class="num">Bytes</th><th>When</th></tr></thead>
             <tbody>
-              <tr><td>State witness</td><td class="num">674</td><td>every step</td></tr>
+              <tr><td>State witness</td><td class="num">674</td><td>every checked step</td></tr>
               <tr><td>Memory proof</td><td class="num">1,920</td><td>per 32-byte word touched: the instruction fetch, plus the word a load or store touches (two if it straddles a 32-byte boundary)</td></tr>
               <tr><td>File-system proof</td><td class="num">992</td><td>file syscalls only</td></tr>
               <tr><td>Typical CPU step</td><td class="num">2,594</td><td>witness and one branch; 4,514 with two</td></tr>
@@ -684,7 +686,7 @@ static inline void mlvm_commit_result(const void *data, uint64_t len) {
 
       <!-- 7 ------------------------------------------------------------------------------ -->
       <section id="bisection">
-        <h2><span class="num">7</span>Bisection at 14.8 billion instructions</h2>
+        <h2><span class="num">7</span>Finding one step among 14.8 billion</h2>
         <p class="section-intro">Each round cuts the search interval in half. A longer model run needs more work from the two machines, but only a few more questions from the referee.</p>
         <h3>7.1 Narrowing the interval</h3>
         <p>
@@ -1073,8 +1075,10 @@ return post.StateHash()</code></pre>
         <p>
           A finished dispute can be saved as a JSON record (<code>mlvm.dispute-record/1</code>)
           of a few kilobytes. It contains the questions, both parties' answers, and the witness
-          and Merkle proofs for the disputed instruction. A new referee can check that record
-          by verifying the following:
+          and Merkle proofs for the disputed instruction. A new referee can check whether those
+          recorded claims are internally consistent and whether the supported disputed step is
+          correct. The record alone cannot prove that either party ran the entire program as
+          claimed. The referee checks:
         </p>
         <ol>
           <li>Each round asks about the midpoint of the interval still in dispute, starting from
@@ -1099,8 +1103,8 @@ return post.StateHash()</code></pre>
           The tests tamper with a valid record by changing a question, an answer, a witness byte
           or a proof sibling, and require the referee to reject it. Checking the gallery records
           in the playground takes about a millisecond, including the SmolLM2 record. Its 34 rounds
-          refer to a 14.8-billion-instruction run, but the referee only needs the record to check
-          the verdict.
+          refer to a 14.8-billion-instruction run, but the referee only needs the record to repeat
+          the local verdict on the disputed step.
         </p>
       </section>
 

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 464" width="960" height="464" role="img" aria-label="From an answer to one checked instruction: someone runs a model and returns an answer that cannot be checked by itself; MLVM fingerprints every step, finds the first instruction where two runs differ in about log2 N rounds, and a referee re-executes only that instruction">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 464" width="960" height="464" role="img" aria-label="When two model runs disagree, MLVM compares their machine states halfway through until one instruction remains, then locally checks that instruction">
 
   <style>
     .bg    { fill: #ffffff; }
@@ -43,7 +43,7 @@
 <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <rect class="bg" width="960" height="464"/>
 <text class="title" x="24" y="34">From an answer to one checked instruction</text>
-<text class="sub" x="24" y="56">How MLVM lets you verify a model run without running it again.</text>
+<text class="sub" x="24" y="56">How a local dispute narrows two different runs to one step.</text>
 <rect class="panel" x="24" y="72" width="912" height="104" rx="8"/>
 <text class="hdr" x="38" y="94">THE PROBLEM</text>
 <rect class="card" x="38" y="106" width="190" height="54" rx="6"/>
@@ -61,17 +61,17 @@
 <text class="d" x="686" y="143">The answer alone cannot show it,</text>
 <text class="d" x="686" y="160">and running the model again is expensive.</text>
 <line class="wire" x1="480" y1="176" x2="480" y2="206" marker-end="url(#ah)"/>
-<text class="c" x="492" y="197">MLVM makes the run checkable in three steps</text>
+<text class="c" x="492" y="197">MLVM compares the runs in three steps</text>
 <rect class="panel" x="24" y="210" width="294.667" height="240" rx="8"/>
 <text class="hdr" x="38" y="234">STEP 1</text>
-<text class="mt" x="38" y="255">Fingerprint every step</text>
+<text class="mt" x="38" y="255">Summarize the machine state</text>
 <text class="d" x="38" y="382">After any instruction, the machine's</text>
 <text class="d" x="38" y="399">memory and registers hash to one</text>
 <text class="d" x="38" y="416">32-byte fingerprint. The same run gives</text>
-<text class="d" x="38" y="433">the same fingerprints on any computer.</text>
+<text class="d" x="38" y="433">the same fingerprint on tested platforms.</text>
 <rect class="panel" x="332.667" y="210" width="294.667" height="240" rx="8"/>
 <text class="hdr" x="346.667" y="234">STEP 2</text>
-<text class="mt" x="346.667" y="255">Find the first disagreement</text>
+<text class="mt" x="346.667" y="255">Find a disputed step</text>
 <text class="d" x="346.667" y="382">If two runs end with different</text>
 <text class="d" x="346.667" y="399">fingerprints, compare them halfway and</text>
 <text class="d" x="346.667" y="416">keep the half where they differ. About</text>
@@ -83,7 +83,7 @@
 <text class="d" x="655.333" y="382">A referee re-executes only that</text>
 <text class="d" x="655.333" y="399">instruction. It never runs the model,</text>
 <text class="d" x="655.333" y="416">and the evidence is a few kilobytes</text>
-<text class="d" x="655.333" y="433">that anyone can check again.</text>
+<text class="d" x="655.333" y="433">you can check locally again.</text>
 <line class="wire" x1="628.333" y1="314" x2="639.333" y2="314" marker-end="url(#ah)"/>
 <line x1="60" y1="298" x2="284" y2="298" stroke="#3b7dd8" stroke-width="2"/>
 <text class="c" x="60" y="286" text-anchor="middle">1</text>
@@ -103,7 +103,7 @@
 <circle class="card" cx="284" cy="298" r="4"/>
 <rect class="card" x="259" y="310" width="50" height="20" rx="4"/>
 <text class="c" x="284" y="324" text-anchor="middle">0xbe…</text>
-<text class="c" x="38" y="350">a fingerprint after every instruction</text>
+<text class="c" x="38" y="350">a fingerprint can be taken at any step</text>
 <text class="c" x="346.667" y="276" fill="#3b7dd8">original</text>
 <line x1="404.667" y1="280" x2="568.667" y2="280" stroke="#3b7dd8" stroke-width="2"/>
 <text class="c" x="346.667" y="300" fill="#c9743a">changed</text>
@@ -127,5 +127,5 @@
 <rect x="655.3333333333334" y="318" width="3" height="12" rx="1.5" fill="#8b6cc9"/>
 <text class="c" x="669.333" y="328">re-execute</text>
 <text class="m" x="749.333" y="329">fmul.s ft3, ft4, ft5</text>
-<text class="ok" x="655.333" y="358">✓ the original run is right</text>
+<text class="ok" x="655.333" y="358">✓ local check matches the original</text>
 </svg>

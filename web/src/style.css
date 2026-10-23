@@ -373,7 +373,7 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 .feature-links a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
 .feature-links strong { display: block; font-size: 14px; font-weight: 600; }
 .feature-links span { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.6; margin-top: 4px; }
-.journey { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.journey { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .journey li + li { border-left: 1px solid var(--border); }
 .journey a { display: flex; align-items: flex-start; gap: 14px; height: 100%; padding: 24px 20px; color: var(--ink); text-decoration: none; }
 .journey a:hover { background: var(--surface-2); }
@@ -382,6 +382,7 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 .journey strong + span { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.5; }
 .step-number { font-family: var(--mono); color: var(--accent); font-size: 13px; flex-shrink: 0; }
 .section-heading .lede { max-width: 65ch; line-height: 1.7; }
+.more-detail { margin-top: 24px; font-size: 14px; }
 .demo-surface { padding: 24px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 18px; margin-top: 28px; }
 .demo-label { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 20px; margin: 0 0 18px; font-size: 12px; color: var(--ink-2); }
 .demo-label span:first-child { font-weight: 600; color: var(--ink); }

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1150" width="960" height="1150" role="img" aria-label="How MLVM works: the inputs of a run, executing one instruction at a time, fingerprinting the whole machine, finding the first disagreement between two runs, and checking that one instruction">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1150" width="960" height="1150" role="img" aria-label="How MLVM works: the inputs of a run, executing one instruction at a time, fingerprinting the whole machine, finding a disputed step between two runs, and checking that one instruction">
 
   <style>
     .bg    { fill: #ffffff; }
@@ -157,7 +157,7 @@
 <text class="c" x="742" y="692">state record + memory proofs</text>
 <rect class="panel" x="24" y="702" width="480" height="286" rx="8"/>
 <text class="hdr" x="38" y="724">04 · FIND</text>
-<text class="lbl" x="38" y="744">Find the first instruction where two runs differ</text>
+<text class="lbl" x="38" y="744">Find a step where two runs split</text>
 <text class="d" x="38" y="772" fill="#3b7dd8">original run</text>
 <line x1="136" y1="768" x2="486" y2="768" stroke="#3b7dd8" stroke-width="2"/>
 <circle class="card" cx="136" cy="768" r="3.5"/>
@@ -184,7 +184,7 @@
 <text class="c" x="352" y="822" text-anchor="middle">the search ends here</text>
 <text class="d" x="38" y="852">1. The two runs end with different fingerprints.</text>
 <text class="d" x="38" y="871">2. Ask both for their fingerprint halfway through.</text>
-<text class="d" x="38" y="890">3. Keep the half where they first differ, and repeat.</text>
+<text class="d" x="38" y="890">3. Keep the half whose endpoints differ, and repeat.</text>
 <text class="d" x="38" y="909">About log₂ N rounds: 26 for 38 million instructions,</text>
 <text class="d" x="38" y="928">34 for 14.8 billion. Saved checkpoints let each side answer</text>
 <text class="d" x="38" y="947">without running from the start.</text>

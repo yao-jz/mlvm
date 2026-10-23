@@ -294,7 +294,7 @@ def architecture_svg() -> str:
     p = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" '
         f'role="img" aria-label="How MLVM works: the inputs of a run, executing one instruction '
-        f'at a time, fingerprinting the whole machine, finding the first disagreement between two '
+        f'at a time, fingerprinting the whole machine, finding a disputed step between two '
         f'runs, and checking that one instruction">',
         ARCH_STYLE,
         '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" '
@@ -411,7 +411,7 @@ def architecture_svg() -> str:
     arrow(732, y1 + ph1, 732, y2 - 2)
     t(742, y1 + ph1 + 18, "state record + memory proofs", "c")
     rect(24, y2, 480, ph2, "panel")
-    section(38, y2 + 22, "04", "FIND", "Find the first instruction where two runs differ")
+    section(38, y2 + 22, "04", "FIND", "Find a step where two runs split")
     lanes = (("original run", y2 + 66, C_EXEC), ("changed run", y2 + 94, C_LIAR))
     lie_x = 352
     for name, y, colour in lanes:
@@ -430,7 +430,7 @@ def architecture_svg() -> str:
     for n, line in enumerate((
             "1. The two runs end with different fingerprints.",
             "2. Ask both for their fingerprint halfway through.",
-            "3. Keep the half where they first differ, and repeat.",
+            "3. Keep the half whose endpoints differ, and repeat.",
             "About log₂ N rounds: 26 for 38 million instructions,",
             "34 for 14.8 billion. Saved checkpoints let each side answer",
             "without running from the start.")):
@@ -515,15 +515,13 @@ def blog_figure_svg(fig_id: str, pad: int = 16) -> str:
 
 def overview_svg() -> str:
     """The story the README and the playground tell: someone runs a model and returns an
-    answer you cannot check; MLVM fingerprints every step, finds the first instruction where
-    two runs differ, and has a referee re-execute only that one."""
+    answer you cannot check; when two runs disagree, MLVM finds a step where they split and a
+    local referee checks only that one."""
     w, h = 960, 464
     p = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" '
-        f'role="img" aria-label="From an answer to one checked instruction: someone runs a model and '
-        f'returns an answer that cannot be checked by itself; MLVM fingerprints every step, finds the '
-        f'first instruction where two runs differ in about log2 N rounds, and a referee re-executes '
-        f'only that instruction">',
+        f'role="img" aria-label="When two model runs disagree, MLVM compares their machine states '
+        f'halfway through until one instruction remains, then locally checks that instruction">',
         ARCH_STYLE,
         '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" '
         'markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse">'
@@ -546,7 +544,7 @@ def overview_svg() -> str:
         p.append(f'<line x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" stroke="{colour}" stroke-width="{width}"/>')
 
     t(24, 34, "From an answer to one checked instruction", "title")
-    t(24, 56, "How MLVM lets you verify a model run without running it again.", "sub")
+    t(24, 56, "How a local dispute narrows two different runs to one step.", "sub")
 
     # The problem ------------------------------------------------------------------------
     rect(24, 72, 912, 104, "panel")
@@ -565,17 +563,17 @@ def overview_svg() -> str:
     t(686, 160, "and running the model again is expensive.")
 
     arrow(480, 176, 480, 206)
-    t(492, 197, "MLVM makes the run checkable in three steps", "c")
+    t(492, 197, "MLVM compares the runs in three steps", "c")
 
     # The three steps ------------------------------------------------------------------
     y, ph, pw = 210, 240, (912 - 2 * 14) / 3
     steps = (
-        ("STEP 1", "Fingerprint every step",
+        ("STEP 1", "Summarize the machine state",
          ("After any instruction, the machine's",
           "memory and registers hash to one",
           "32-byte fingerprint. The same run gives",
-          "the same fingerprints on any computer.")),
-        ("STEP 2", "Find the first disagreement",
+          "the same fingerprint on tested platforms.")),
+        ("STEP 2", "Find a disputed step",
          ("If two runs end with different",
           "fingerprints, compare them halfway and",
           "keep the half where they differ. About",
@@ -584,7 +582,7 @@ def overview_svg() -> str:
          ("A referee re-executes only that",
           "instruction. It never runs the model,",
           "and the evidence is a few kilobytes",
-          "that anyone can check again.")),
+          "you can check locally again.")),
     )
     for i, (num, title, caption) in enumerate(steps):
         px = 24 + i * (pw + 14)
@@ -607,7 +605,7 @@ def overview_svg() -> str:
             p.append(f'<circle class="card" cx="{x}" cy="{y + 88}" r="4"/>')
             rect(x - 25, y + 100, 50, 20, "card", rx=4)
             t(x, y + 114, fp, "c", "middle")
-    t(px + 14, y + 140, "a fingerprint after every instruction", "c")
+    t(px + 14, y + 140, "a fingerprint can be taken at any step", "c")
 
     # Step 2: two runs that differ from one instruction on, and the halving search.
     px = 24 + pw + 14
@@ -639,7 +637,7 @@ def overview_svg() -> str:
     p.append(f'<rect x="{px + 14}" y="{y + 108}" width="3" height="12" rx="1.5" fill="{C_FP}"/>')
     t(px + 28, y + 118, "re-execute", "c")
     t(px + 108, y + 119, "fmul.s ft3, ft4, ft5", "m")
-    t(px + 14, y + 148, "\u2713 the original run is right", "ok")
+    t(px + 14, y + 148, "\u2713 local check matches the original", "ok")
     p.append("</svg>")
     return "\n".join(p)
 
