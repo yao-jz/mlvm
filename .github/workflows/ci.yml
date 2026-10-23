@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
@@ -47,9 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
@@ -66,7 +66,7 @@ jobs:
       - name: Unpack Linux archive smoke
         run: bash scripts/archive-unpack-smoke.sh dist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mlvm-snapshot-dist
           path: dist/*
@@ -78,8 +78,8 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: mlvm-snapshot-dist
           path: dist
@@ -92,8 +92,8 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: mlvm-snapshot-dist
           path: dist
@@ -113,7 +113,7 @@ jobs:
     timeout-minutes: 240
     steps:
       - id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /opt/riscv
           key: riscv-gnu-toolchain-2024.02.02-rv64imafd-lp64d-v1
@@ -139,15 +139,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
       - name: Restore the RV64IMAFD cross toolchain
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: /opt/riscv
           key: riscv-gnu-toolchain-2024.02.02-rv64imafd-lp64d-v1
@@ -217,9 +217,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
@@ -269,15 +269,15 @@ jobs:
     # The only job that needs all three toolchains at once: Go for the VM, Rust nightly for
     # the RV64IMA co-processor, and Foundry for the experimental terminal verifier path.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
       - name: Restore the RV64IMAFD cross toolchain
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: /opt/riscv
           key: riscv-gnu-toolchain-2024.02.02-rv64imafd-lp64d-v1
