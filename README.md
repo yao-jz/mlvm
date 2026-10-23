@@ -51,8 +51,8 @@ tokenizer and guest the demos use are embedded in the binary.
 
 ## How it works
 
-- **Software IEEE-754.** F and D instructions run through [softfloat-go](https://github.com/yao-jz/softfloat-go), our Go port of
-  Berkeley SoftFloat 3e.
+- **Software IEEE-754.** F and D instructions run through `rvgo/comp`, our Go port of Berkeley
+  SoftFloat 3e, which began as [softfloat-go](https://github.com/yao-jz/softfloat-go).
   Rounding modes, NaN boxing and `fcsr` flags are machine state; the host FPU is never used.
 - **One root.** A 674-byte witness holds the registers, float state and PC, the root of a
   sparse Merkle tree over 2⁶⁴ bytes of memory, and a root over staged files and descriptors.
@@ -130,7 +130,7 @@ Methodology and raw rows: [docs/BENCHMARKS.md](docs/BENCHMARKS.md), [results/](r
 ```text
 cmd/mlvm        the CLI: demo, liar, referee, xray, run, witness, ...
 rvgo/fast       interpreter, Merkle memory, witness, staged files
-rvgo/comp       Berkeley SoftFloat 3e in Go, from softfloat-go
+rvgo/comp       Berkeley SoftFloat 3e in Go (began as softfloat-go)
 rvgo/slow       the state oracle that mirrors RISCV.sol
 rvgo/internal   dispute, profiler, disassembler, EVM stepper
 rvgo/wasm       the WebAssembly build behind the playground
@@ -179,6 +179,6 @@ vulnerabilities as described in [SECURITY](.github/SECURITY.md).
 ## License
 
 MIT. The VM derives from [Asterisc](https://github.com/ethereum-optimism/asterisc) (MIT),
-floating point comes from [softfloat-go](https://github.com/yao-jz/softfloat-go), a Go port of
-[Berkeley SoftFloat 3e](http://www.jhauser.us/arithmetic/SoftFloat.html) (BSD), and the TinyStories-260K weights come from [llama2.c](https://github.com/karpathy/llama2.c)
+floating point is a Go port of [Berkeley SoftFloat 3e](http://www.jhauser.us/arithmetic/SoftFloat.html)
+(BSD) that began as [softfloat-go](https://github.com/yao-jz/softfloat-go) (MIT), and the TinyStories-260K weights come from [llama2.c](https://github.com/karpathy/llama2.c)
 (MIT). See [LICENSE](LICENSE).

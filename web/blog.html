@@ -264,8 +264,8 @@
         <h3>3.2 SoftFloat in Go</h3>
         <p>
           MLVM implements all 62 instructions in RISC-V's F and D extensions, for single- and
-          double-precision floating point. The arithmetic comes from <code>rvgo/comp</code>, taken from
-          <a href="https://github.com/yao-jz/softfloat-go">softfloat-go</a>, our hand port of Berkeley SoftFloat Release 3e to Go. It has 121 files and about 5,800 lines,
+          double-precision floating point. The arithmetic comes from <code>rvgo/comp</code>, our hand port of
+          Berkeley SoftFloat Release 3e to Go, which began as <a href="https://github.com/yao-jz/softfloat-go">softfloat-go</a>. It has 121 files and about 5,800 lines,
           or about 6,100 including support types and RISC-V-specific NaN handling.
           <code>fast/vm.go</code> decodes each RISC-V floating-point instruction and calls the corresponding SoftFloat function.
           Before that call, it selects the rounding mode:
@@ -1382,7 +1382,7 @@ make test-all                        <span class="c"># fast, slow and EVM cross-
 
   <footer class="footer post-foot">
     <p class="footer-author">Built by <strong>Jianzhu Yao</strong> (<a href="https://x.com/alexbert135" rel="noopener">@alexbert135</a>) and <strong>Pramod Viswanath</strong> at Princeton University</p>
-    <p>MLVM is MIT licensed and derived from <a href="https://github.com/ethereum-optimism/asterisc">Asterisc</a>; floating point comes from <a href="https://github.com/yao-jz/softfloat-go">softfloat-go</a>, a Go port of Berkeley SoftFloat 3e; the TinyStories-260K model is from <a href="https://github.com/karpathy/llama2.c">karpathy/llama2.c</a> (MIT).</p>
+    <p>MLVM is MIT licensed and derived from <a href="https://github.com/ethereum-optimism/asterisc">Asterisc</a>; floating point is a Go port of Berkeley SoftFloat 3e that began as <a href="https://github.com/yao-jz/softfloat-go">softfloat-go</a>; the TinyStories-260K model is from <a href="https://github.com/karpathy/llama2.c">karpathy/llama2.c</a> (MIT).</p>
     <p><a href="./">Playground</a> · <a href="https://github.com/yao-jz/mlvm">github.com/yao-jz/mlvm</a></p>
   </footer>
 

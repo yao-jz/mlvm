@@ -43,7 +43,7 @@ cmd/, rvgo/, rvsol/, tests/
 
 rvgo/comp, include, riscv
     A hand port to Go of Berkeley SoftFloat Release 3e by John R. Hauser,
-    http://www.jhauser.us/arithmetic/SoftFloat.html, taken from softfloat-go
+    http://www.jhauser.us/arithmetic/SoftFloat.html, derived from softfloat-go
     (https://github.com/yao-jz/softfloat-go, MIT).
     Copyright (c) 2011-2018 The Regents of the University of California.
     Distributed under a 3-clause BSD-style license; see the upstream
