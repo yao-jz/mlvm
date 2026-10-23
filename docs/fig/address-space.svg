@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" role="img" aria-label="MLVM guest address space">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .title { fill: #14161a; font: 600 17px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #5b6270; font: 400 12px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #14161a; font: 500 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .note  { fill: #5b6270; font: 400 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .addr  { fill: #5b6270; font: 400 11.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .axis  { stroke: #c9ced6; stroke-width: 1; }
+    .brk   { stroke: #c9ced6; stroke-width: 1; stroke-dasharray: 3 3; }
+    .box   { stroke: #ffffff; stroke-width: 1.5; }
+    .ontop { fill: #ffffff; font: 600 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0d1117; }
+      .title { fill: #e6edf3; }
+      .sub   { fill: #9198a1; }
+      .lbl   { fill: #e6edf3; }
+      .note  { fill: #9198a1; }
+      .addr  { fill: #9198a1; }
+      .axis  { stroke: #30363d; }
+      .brk   { stroke: #30363d; }
+      .box   { stroke: #0d1117; }
+      .ontop { fill: #0d1117; }
+    }
+  </style>
+
+<rect class="bg" width="900" height="560"/>
+<text class="title" x="40" y="42">MLVM guest address space</text>
+<text class="sub" x="40" y="64">64-bit, merkleized as a binary tree of 4 KiB pages. Bands are equal-height, not to scale - the gaps between them are enormous.</text>
+<rect class="box" x="250" y="96.0" width="610" height="62.0" rx="5" fill="#c04a6e"/>
+<text class="ontop" x="264" y="120.0">staged files</text>
+<text class="ontop" x="264" y="138.0" opacity="0.85" style="font-weight:400">one 64 GiB slot per file</text>
+<text class="addr" x="40" y="116.0">0x2000000000000000</text>
+<text class="note" x="40" y="134.0">openat/read/lseek are served</text>
+<text class="note" x="40" y="149.0">from here; no host I/O ever</text>
+<text class="note" x="40" y="164.0">happens</text>
+<line class="brk" x1="250" y1="166.0" x2="860" y2="166.0"/>
+<rect class="box" x="250" y="174.0" width="610" height="62.0" rx="5" fill="#8b6cc9"/>
+<text class="ontop" x="264" y="198.0">randomness</text>
+<text class="ontop" x="264" y="216.0" opacity="0.85" style="font-weight:400">5 MiB pre-generated blob</text>
+<text class="addr" x="40" y="194.0">0x1500000000000000</text>
+<text class="note" x="40" y="212.0">getrandom(2) walks a cursor</text>
+<text class="note" x="40" y="227.0">through it; committed, not</text>
+<text class="note" x="40" y="242.0">sampled from the host</text>
+<line class="brk" x1="250" y1="244.0" x2="860" y2="244.0"/>
+<rect class="box" x="250" y="252.0" width="610" height="62.0" rx="5" fill="#c9743a"/>
+<text class="ontop" x="264" y="276.0">stack</text>
+<text class="ontop" x="264" y="294.0" opacity="0.85" style="font-weight:400">grows down from 2^60</text>
+<text class="addr" x="40" y="272.0">0x1000000000000000</text>
+<text class="note" x="40" y="290.0">argc/argv/envp/auxv are written</text>
+<text class="note" x="40" y="305.0">here at load time, including</text>
+<text class="note" x="40" y="320.0">AT_RANDOM</text>
+<line class="brk" x1="250" y1="322.0" x2="860" y2="322.0"/>
+<rect class="box" x="250" y="330.0" width="610" height="62.0" rx="5" fill="#2ea08c"/>
+<text class="ontop" x="264" y="354.0">heap</text>
+<text class="ontop" x="264" y="372.0" opacity="0.85" style="font-weight:400">grows up, mmap serves from here</text>
+<text class="addr" x="40" y="350.0">0x00007F0000000000</text>
+<text class="note" x="40" y="368.0">brk() reports a 1 GiB break;</text>
+<text class="note" x="40" y="383.0">mmap hands out anonymous pages</text>
+<text class="note" x="40" y="398.0">from this cursor</text>
+<line class="brk" x1="250" y1="400.0" x2="860" y2="400.0"/>
+<rect class="box" x="250" y="408.0" width="610" height="62.0" rx="5" fill="#3b7dd8"/>
+<text class="ontop" x="264" y="432.0">ELF image</text>
+<text class="ontop" x="264" y="450.0" opacity="0.85" style="font-weight:400">text, rodata, data, bss</text>
+<text class="addr" x="40" y="428.0">0x0000000000000000</text>
+<text class="note" x="40" y="446.0">mapped from PT_LOAD segments;</text>
+<text class="note" x="40" y="461.0">entry is typically 0x10000</text>
+<text class="note" x="40" y="520">Every byte above is covered by the memory root in the state witness. A proof for one instruction carries only the 60-node</text>
+<text class="note" x="40" y="536">merkle branch to the 32-byte words it touched - never a memory dump.</text>
+</svg>

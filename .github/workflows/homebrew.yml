@@ -1,0 +1,62 @@
+name: Homebrew install
+
+# Installs MLVM from yao-jz/homebrew-tap with brew, on macOS and Linux, and runs the
+# formula's own test. Runs after each published release and on demand.
+#
+# While this repository is private, release assets are not downloadable without a token,
+# so `brew install yao-jz/tap/mlvm` cannot fetch them. In that case the job downloads the
+# same assets with the workflow token and installs the tap's formula from a local tap whose
+# only change is file:// download URLs; brew still checks every SHA-256 in the formula.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  brew:
+    name: brew install on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+      HOMEBREW_NO_INSTALL_CLEANUP: '1'
+    steps:
+      - uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Tap
+        run: brew tap yao-jz/tap
+
+      - name: Install the tap's formula
+        run: |
+          if [ "${{ github.event.repository.private }}" = "true" ]; then
+            tag="$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)"
+            mkdir -p "$RUNNER_TEMP/assets"
+            gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern 'mlvm_*.tar.gz' --dir "$RUNNER_TEMP/assets"
+            brew tap-new local/mlvm --no-git
+            sed -E "s#https://github.com/$GITHUB_REPOSITORY/releases/download/[^/]+/#file://$RUNNER_TEMP/assets/#" \
+              "$(brew --repository yao-jz/tap)/Formula/mlvm.rb" > "$(brew --repository local/mlvm)/Formula/mlvm.rb"
+            diff "$(brew --repository yao-jz/tap)/Formula/mlvm.rb" "$(brew --repository local/mlvm)/Formula/mlvm.rb" || true
+            echo "FORMULA=local/mlvm/mlvm" >> "$GITHUB_ENV"
+          else
+            echo "FORMULA=yao-jz/tap/mlvm" >> "$GITHUB_ENV"
+          fi
+
+      - name: brew install
+        run: brew install "$FORMULA"
+
+      - name: brew test
+        run: brew test "$FORMULA"
+
+      - name: Run it
+        run: |
+          mlvm --version
+          mlvm demo --max-new-tokens 4

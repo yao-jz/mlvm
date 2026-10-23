@@ -1,0 +1,11 @@
+[package]
+name = "tinystories-candle"
+version = "0.1.0"
+edition = "2021"
+description = "TinyStories-260K generating text through Hugging Face Candle, inside MLVM"
+
+[dependencies]
+anyhow = "1"
+candle-core = "0.4.1"
+candle-nn = "0.4.1"
+candle-transformers = "0.4.1"

@@ -1,0 +1,24 @@
+# Third-party dependencies, pinned to the versions MLVM is developed against.
+#
+#   git submodule update --init --recursive
+#
+# rvsol/lib/* are Foundry's convention for Solidity dependencies and are only needed to
+# build or test the on-chain verifier. third_party/* are only needed to rebuild the Rust
+# ML guests. Neither is required to build or run the VM itself - see docs/INSTALL.md.
+
+[submodule "rvsol/lib/forge-std"]
+	path = rvsol/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+	branch = v1.7.6
+
+[submodule "rvsol/lib/optimism"]
+	path = rvsol/lib/optimism
+	url = https://github.com/ethereum-optimism/optimism
+
+[submodule "third_party/candle"]
+	path = third_party/candle
+	url = https://github.com/huggingface/candle
+
+[submodule "third_party/MLinRust"]
+	path = third_party/MLinRust
+	url = https://github.com/Raibows/MLinRust

@@ -1,0 +1,107 @@
+package fast
+
+import (
+	"encoding/binary"
+	"errors"
+	"fmt"
+
+	preimage "github.com/ethereum-optimism/optimism/op-preimage"
+	"github.com/ethereum/go-ethereum/common"
+)
+
+type LocalContext common.Hash // [32]byte
+
+type StepWitness struct {
+	// encoded state witness
+	State []byte
+
+	MemProof []byte
+
+	// FileSystemProof follows the memory branches in the ABI proof byte string. It is empty
+	// for transitions that do not inspect staged-file metadata.
+	FileSystemProof []byte
+
+	PreimageKey    [32]byte // zeroed when no pre-image is accessed
+	PreimageValue  []byte   // including the 8-byte length prefix
+	PreimageOffset uint64
+}
+
+func uint64ToBytes32(v uint64) []byte {
+	var out [32]byte
+	binary.BigEndian.PutUint64(out[32-8:], v)
+	return out[:]
+}
+
+func (wit *StepWitness) EncodeStepInput(localContext LocalContext) []byte {
+	proofData := wit.ProofData()
+	abiStatePadding := (32 - (uint64(len(wit.State)) % 32)) % 32 // abi: 32 bytes aligned
+	abiProofPadding := (32 - (uint64(len(proofData)) % 32)) % 32
+
+	var input []byte
+	input = append(input, StepBytes4...) // 4 bytes
+	// state data offset in bytes
+	input = append(input, uint64ToBytes32(32*3)...) // 32 bytes
+	// proof data offset in bytes
+	input = append(input, uint64ToBytes32(32*3+32+uint64(len(wit.State))+abiStatePadding)...) // 32 bytes
+	// local context in bytes
+	input = append(input, common.Hash(localContext).Bytes()...) // 32 bytes
+
+	// state data length in bytes
+	input = append(input, uint64ToBytes32(uint64(len(wit.State)))...)
+	input = append(input, wit.State[:]...)
+	input = append(input, make([]byte, abiStatePadding)...)
+	// proof data length in bytes
+	input = append(input, uint64ToBytes32(uint64(len(proofData)))...)
+	input = append(input, proofData...)
+	input = append(input, make([]byte, abiProofPadding)...)
+	return input
+}
+
+func (wit *StepWitness) ProofData() []byte {
+	out := make([]byte, 0, len(wit.MemProof)+len(wit.FileSystemProof))
+	out = append(out, wit.MemProof...)
+	out = append(out, wit.FileSystemProof...)
+	return out
+}
+
+func (wit *StepWitness) HasPreimage() bool {
+	return wit.PreimageKey != ([32]byte{})
+}
+
+func (wit *StepWitness) EncodePreimageOracleInput(localContext LocalContext) ([]byte, error) {
+	if wit.PreimageKey == ([32]byte{}) {
+		return nil, errors.New("cannot encode pre-image oracle input, witness has no pre-image to proof")
+	}
+
+	switch preimage.KeyType(wit.PreimageKey[0]) {
+	case preimage.LocalKeyType:
+		if len(wit.PreimageValue) > 32+8 {
+			return nil, fmt.Errorf("local pre-image exceeds maximum size of 32 bytes with key 0x%x", wit.PreimageKey)
+		}
+		var input []byte
+		input = append(input, LoadLocalDataBytes4...)
+		input = append(input, wit.PreimageKey[:]...)
+		input = append(input, common.Hash(localContext).Bytes()...)
+
+		preimagePart := wit.PreimageValue[8:]
+		var tmp [32]byte
+		copy(tmp[:], preimagePart)
+		input = append(input, tmp[:]...)
+		input = append(input, uint64ToBytes32(uint64(len(wit.PreimageValue)-8))...)
+		input = append(input, uint64ToBytes32(wit.PreimageOffset)...)
+		// Note: we can pad calldata to 32 byte multiple, but don't strictly have to
+		return input, nil
+	case preimage.Keccak256KeyType:
+		var input []byte
+		input = append(input, LoadKeccak256PreimagePartBytes4...)
+		input = append(input, uint64ToBytes32(wit.PreimageOffset)...)
+		input = append(input, uint64ToBytes32(32+32)...) // partOffset, calldata offset
+		input = append(input, uint64ToBytes32(uint64(len(wit.PreimageValue))-8)...)
+		input = append(input, wit.PreimageValue[8:]...)
+		// Note: we can pad calldata to 32 byte multiple, but don't strictly have to
+		return input, nil
+	default:
+		return nil, fmt.Errorf("unsupported pre-image type %d, cannot prepare preimage with key %x offset %d for oracle",
+			wit.PreimageKey[0], wit.PreimageKey, wit.PreimageOffset)
+	}
+}

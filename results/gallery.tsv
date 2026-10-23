@@ -1,0 +1,38 @@
+entry	run	instructions	float_pct	rounds	disputed	function	checked_by	evm_gas	cpu_seconds	peak_rss_mb
+decoder	xray	38186542	45.5						1.4	44
+decoder	liar-ulp	38186542		26	fmadd.s fs0,fa4,fa5,fs0	attention	SoftFloat re-execution		3.9	58
+decoder	liar-token	38186542		25	sb a4,-1(a5)	main	RISCV.sol (EVM) + slow.Step	131482	4.1	57
+tinystories-candle	xray	122197182	24.1						4.4	55
+tinystories-candle	liar-ulp	122197182		27	fcvt.s.d fs1,fs1	<candle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage>::affine	SoftFloat re-execution		9.7	99
+tinystories-candle	liar-token	122197182		27	sb a4,0(a1)	tinystories_candle::main	RISCV.sol (EVM) + slow.Step	131514	10.2	101
+mlp	xray	289482	6.0						0.0	33
+mlp	liar-ulp	289519		18	fcvt.d.w fa5,a4	expm1	SoftFloat re-execution		0.2	38
+mlp	liar-load	289534		18	fld fa5,1316(a5)	expm1	RISCV.sol (EVM) + slow.Step	83675	0.2	36
+mlp	liar-int	289482		19	addi s7,a6,0	dense	RISCV.sol (EVM) + slow.Step	47888	0.4	36
+mlp	liar-output	289482		18	addi a7,zero,64	write	RISCV.sol (EVM) + slow.Step	47921	0.2	38
+mlp	liar-commit	289482		19	sb a4,-1(a5)	main	RISCV.sol (EVM) + slow.Step	131482	0.2	37
+matmul	xray	486505	29.3						0.0	33
+matmul	liar-ulp	486505		19	fcvt.d.w fa5,a6	main	SoftFloat re-execution		0.3	37
+matmul	liar-load	491971		19	fld fa3,-1896(a5)	main	RISCV.sol (EVM) + slow.Step	83632	0.3	35
+ieee	xray	263030	6.9						0.0	32
+ieee	liar-ulp	263030		18	fsqrt.d fs1,fs1	main	SoftFloat re-execution		0.2	36
+gemm-float	xray	903446	54.8						0.0	29
+gemm-float	liar-ulp	903446		20	fmul.d fa3,fa3,fa2	_start	SoftFloat re-execution		0.3	32
+gemm-softfloat	xray	22898400	0						0.7	29
+gemm-softfloat	liar-int	22898417		25	mulhu a1,a2,a1	compiler_builtins::float::mul::__muldf3	RISCV.sol (EVM) + slow.Step	48576	1.9	33
+minilm-l6	xray	1062488466	50.2						37.9	755
+minilm-l6	liar-ulp	1062488466		30	fadd.s fa5,fa5,ft4	gemm_f32::microkernel::scalar::f32::x2x4	SoftFloat re-execution		100.1	2570
+minilm-l6	liar-load	1062488466		30	flw fa5,0(s4)	gemm_common::pack_operands::pack_lhs	RISCV.sol (EVM) + slow.Step	80250	146.1	2439
+minilm-l6	liar-output	1062488466			no dispute (same poststate)				97.2	2533
+minilm-l6	liar-commit	1062488466		30	sb a6,0(a3)	myriscvcandleapp::main	RISCV.sol (EVM) + slow.Step	131492	103.2	2576
+smollm2	xray	14764379315	65.8						578.1	3039
+smollm2	liar-ulp	14764379315		34	fmul.s ft3,ft4,ft5	gemm_f32::gemm::f32::scalar::gemm_basic	SoftFloat re-execution		2205.6	10484
+smollm2	liar-token	14764379315		34	sb a4,0(a1)	llm_candle::main	RISCV.sol (EVM) + slow.Step	131569	1510.8	10161
+minilm-l12	xray	1889889048	56.4						67.4	986
+minilm-l12	liar-ulp	1889889048		31	fadd.s ft1,ft1,ft5	gemm_f32::microkernel::scalar::f32::x2x4	SoftFloat re-execution		250.4	2911
+bge-small	xray	1896458947	56.3						67.5	1007
+bge-small	liar-ulp	1896458947		31	fadd.s ft1,ft1,ft5	gemm_f32::microkernel::scalar::f32::x2x4	SoftFloat re-execution		173.4	3019
+bge-base	xray	6705827787	62.4						230.7	3067
+bge-base	liar-ulp	6705827855		32	fmul.s ft5,ft6,ft7	gemm_f32::microkernel::scalar::f32::x2x4	SoftFloat re-execution		628.3	8348
+bert-base	xray	6752543098	61.9						232.1	3082
+bert-base	liar-ulp	6752543098		32	fadd.s fa4,fa4,ft4	gemm_f32::microkernel::scalar::f32::x2x4	SoftFloat re-execution		618.1	8827

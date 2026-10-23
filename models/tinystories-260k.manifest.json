@@ -1,0 +1,42 @@
+{
+  "manifestVersion": 1,
+  "profile": "mlvm-1",
+  "name": "tinystories-260k",
+  "description": "Karpathy TinyStories 260K Llama2-C checkpoint for MLVM decoder demos and CI",
+  "license": {
+    "model": "MIT",
+    "source": "https://huggingface.co/karpathy/tinyllamas",
+    "datasetNote": "Trained on TinyStories (CDLA-Sharing-1.0). Model weights are MIT."
+  },
+  "artifacts": [
+    {
+      "guestPath": "model.bin",
+      "sourceName": "stories260K.bin",
+      "url": "https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K/stories260K.bin",
+      "sha256": "b0a507e7ad0f626624f17112325e66691f9076d622e1d3274d103d00299f2696",
+      "size": 1056540
+    },
+    {
+      "guestPath": "tokenizer.bin",
+      "sourceName": "tok512.bin",
+      "url": "https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K/tok512.bin",
+      "sha256": "037cb335abb25d1fa9e8ecae30ed2a3a8ace9302862ebcdc05d51a6bbb10c312",
+      "size": 6227
+    }
+  ],
+  "generation": {
+    "requestVersion": 1,
+    "maxNewTokens": 16,
+    "temperatureMilli": 0,
+    "defaultPrompt": "Once upon a time"
+  },
+  "config": {
+    "dim": 64,
+    "hiddenDim": 768,
+    "nLayers": 5,
+    "nHeads": 8,
+    "nKvHeads": 4,
+    "vocabSize": 512,
+    "seqLen": 512
+  }
+}

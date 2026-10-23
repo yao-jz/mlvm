@@ -1,0 +1,5 @@
+{
+  "comment": "Prompts every platform runs for the determinism matrix (scripts/determinism-record.py, web/test/record.mjs).",
+  "maxNewTokens": 16,
+  "prompts": ["Once upon a time", "The dragon", "Lily and Ben", "One day, a little cat", "Tom wanted to"]
+}

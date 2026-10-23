@@ -1,0 +1,32 @@
+[package]
+name = "float-coprocessor"
+version = "0.1.0"
+edition = "2021"
+
+# Route C: settle a floating-point instruction on chain without implementing IEEE-754 in
+# Solidity, by nesting.
+#
+# Cartesi's on-chain UArchStep.sol implements only RV64I; the full RV64GC machine runs as a
+# guest inside that micro-architecture, so the ISA never has to exist in Solidity. MLVM can
+# do the same thing more cheaply, because it only needs the nesting for *float* instructions
+# and a float operation expands to ~91 integer instructions rather than Cartesi's 2^20.
+#
+# This crate is that float operation, compiled to RV64IMA - no F, no D - so every one of
+# those instructions is one RISCV.sol already executes and has been cross-checked on 84
+# conformance suites.
+#
+# Build for two targets and diff the step counts to get the marginal cost per operation.
+
+[dependencies]
+# For sqrt and rint, which core does not provide and compiler_builtins does not either.
+# libm is a pure-Rust no_std port of fdlibm, so it compiles to the same RV64I soft-float as
+# everything else here. Both functions are correctly rounded, which is what makes them
+# agree with Berkeley SoftFloat bit-for-bit - and TestFloatSubGameMatchesSoftFloat checks it
+# rather than assuming it.
+libm = { version = "0.2", default-features = false }
+
+[profile.release]
+opt-level = 2
+panic = "abort"
+lto = true
+debug = false

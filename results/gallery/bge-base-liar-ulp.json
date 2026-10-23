@@ -1,0 +1,370 @@
+{
+  "format": "mlvm.dispute-record/1",
+  "guest": "Candle BERT (Rust), bge-base-en-v1.5",
+  "lie": "1 ULP on a floating-point arithmetic instruction at or after step 3352913893",
+  "honestText": "score: 0.7760061622 'The cat sits outside' 'The cat plays in the garden'",
+  "liarText": "score: 0.7760063410 'The cat sits outside' 'The cat plays in the garden'",
+  "honestCommitted": "score: 0.7760061622",
+  "liarCommitted": "score: 0.7760063410",
+  "attempts": [
+    {
+      "step": 3352918879,
+      "pc": 3785488,
+      "instruction": "fmul.s ft7,ft4,ft5",
+      "erasedAfter": 367
+    },
+    {
+      "step": 3352919246,
+      "pc": 3785612,
+      "instruction": "fmul.s ft5,ft6,ft5",
+      "erasedAfter": 3
+    },
+    {
+      "step": 3352919251,
+      "pc": 3785632,
+      "instruction": "fadd.s ft1,ft1,ft5",
+      "erasedAfter": 198
+    },
+    {
+      "step": 3352919449,
+      "pc": 3785528,
+      "instruction": "fmul.s ft5,ft6,fa6",
+      "erasedAfter": 3
+    },
+    {
+      "step": 3352919454,
+      "pc": 3785548,
+      "instruction": "fadd.s fa2,fa2,ft5",
+      "erasedAfter": 561
+    },
+    {
+      "step": 3352920015,
+      "pc": 3785552,
+      "instruction": "fmul.s ft5,ft6,ft7",
+      "kept": true
+    }
+  ],
+  "honestSteps": 6705827787,
+  "liarSteps": 6705827855,
+  "prestate": "0x036991f7de28bf28d9e94e0e2cf5d56a03637a790ab22db17e1fd780e91e565c",
+  "honestPost": "0x00f062cc6a2fafabec25212aa30142db38fe0e0fb8696ff39f1a7e2a12834809",
+  "liarPost": "0x000d142058fb6f36c07c6ab8073c6007ced792c087d14f633bfe24d58ee4585e",
+  "deviation": {
+    "kind": "ulp",
+    "step": 3352920015,
+    "pc": 3785552,
+    "instruction": "fmul.s ft5,ft6,ft7",
+    "location": "ft5",
+    "honest": "-0.0885645971 (0xbdb5615b)",
+    "forged": "-0.0885645896 (0xbdb5615a)"
+  },
+  "rounds": [
+    {
+      "n": 1,
+      "lo": 0,
+      "hi": 6705827855,
+      "mid": 3352913927,
+      "honest": "0x03218b062e8f2b975a3618404b9238df804789f970fdd4e41fc3f20f117c13ee",
+      "liar": "0x03218b062e8f2b975a3618404b9238df804789f970fdd4e41fc3f20f117c13ee",
+      "agree": true
+    },
+    {
+      "n": 2,
+      "lo": 3352913927,
+      "hi": 6705827855,
+      "mid": 5029370891,
+      "honest": "0x03f2d580e0e11bc3c2c30b5ba07c0ed048a2b4ecc0053a80a84bce396718aa9a",
+      "liar": "0x031577a8bb256df4744358c409808ab573319e820b6b7406e2288ff340730f8d",
+      "agree": false
+    },
+    {
+      "n": 3,
+      "lo": 3352913927,
+      "hi": 5029370891,
+      "mid": 4191142409,
+      "honest": "0x035faaa68dd5eabcbec3b276047efeda0e69e64aa39a1d0e33a2c4e4b48cd1d3",
+      "liar": "0x035778b8a7598cc920b58c2398fddd53f13f9ba801025f48bf67499d66bff7e7",
+      "agree": false
+    },
+    {
+      "n": 4,
+      "lo": 3352913927,
+      "hi": 4191142409,
+      "mid": 3772028168,
+      "honest": "0x0319f11130eb046bf81fd7c3b326c676080efc7b9c79aba9baee97913c072c57",
+      "liar": "0x037925b39c9a67e7be31c211f0a840f5f0d5e41debbb9b16d8069b84988f9e99",
+      "agree": false
+    },
+    {
+      "n": 5,
+      "lo": 3352913927,
+      "hi": 3772028168,
+      "mid": 3562471047,
+      "honest": "0x033e9c66eaa00af530954d8f8ccdce6bd9c062de1e01e091137447c9a3d3ecd2",
+      "liar": "0x03a1316503b4590c5ec50f21953c19e6cb009bc29e83431689fd30922d613ef7",
+      "agree": false
+    },
+    {
+      "n": 6,
+      "lo": 3352913927,
+      "hi": 3562471047,
+      "mid": 3457692487,
+      "honest": "0x030735ccf35fcc072586a1736e59c7ac27d600e9933c6eb9b2cfdc589e935e02",
+      "liar": "0x0322736b050f379aad641266732aadb9eb521c0d00a293e373db489d32efddb4",
+      "agree": false
+    },
+    {
+      "n": 7,
+      "lo": 3352913927,
+      "hi": 3457692487,
+      "mid": 3405303207,
+      "honest": "0x03566efd97c7c585bd611e0b576e21f2b285b6ae16422e8cd7b83d8788958514",
+      "liar": "0x0310d4236e86d29b63059aa8e8a088528ff5b7584007e0fca53f600d8569ea79",
+      "agree": false
+    },
+    {
+      "n": 8,
+      "lo": 3352913927,
+      "hi": 3405303207,
+      "mid": 3379108567,
+      "honest": "0x03c1b4da816d41223babd1ac7f4d2bd827c111003b1f0c7cc8e23f02b7559f60",
+      "liar": "0x03a8eb2336405b896e7f8c3f56f234d48d8587556febf83a7a77aa339d5cd98c",
+      "agree": false
+    },
+    {
+      "n": 9,
+      "lo": 3352913927,
+      "hi": 3379108567,
+      "mid": 3366011247,
+      "honest": "0x036bac11ced3fa83b4d955450e297293f92642bf9183b4c16c86e85a95115e98",
+      "liar": "0x034214ad564787d37d4db296c14722f13e87181224af2244976276e28952f8af",
+      "agree": false
+    },
+    {
+      "n": 10,
+      "lo": 3352913927,
+      "hi": 3366011247,
+      "mid": 3359462587,
+      "honest": "0x0340e4f7082451ab0fd75aa5b72314d2021ec2385f76ae4f8fff19cf1d5e18ba",
+      "liar": "0x0354aef33acd111a27ca01fce22b64e1721946d9fe339c80c40395d1b20fbedf",
+      "agree": false
+    },
+    {
+      "n": 11,
+      "lo": 3352913927,
+      "hi": 3359462587,
+      "mid": 3356188257,
+      "honest": "0x035739172e11b50d0d8285470ba7ac3f7fa10da10bdc263dba163d32ef9e9dad",
+      "liar": "0x039ab484022a4b7260ea130f512d062e92d0dee5c0e42016619c28749213ae46",
+      "agree": false
+    },
+    {
+      "n": 12,
+      "lo": 3352913927,
+      "hi": 3356188257,
+      "mid": 3354551092,
+      "honest": "0x03db41b1b2abdf238aeda0493b9513ddd918ad81a1004fe08fc0137341664dfb",
+      "liar": "0x03c35d06a37d4588d17323b591c488c28a2a1ab4ea8e7f8fc5edabef4ac8914b",
+      "agree": false
+    },
+    {
+      "n": 13,
+      "lo": 3352913927,
+      "hi": 3354551092,
+      "mid": 3353732509,
+      "honest": "0x03c504fd2df623f5dc266a02dada7a4be7abe092f145e897a2ae52235bf5e43d",
+      "liar": "0x031757b6a7ceceb7c13a93860ca7e99c37d849c6f05b4a351c98426f3332422e",
+      "agree": false
+    },
+    {
+      "n": 14,
+      "lo": 3352913927,
+      "hi": 3353732509,
+      "mid": 3353323218,
+      "honest": "0x03c9c917c93f7a456c9f2a201c44f7427c82c3b4c0ddb42526ea23dddee6f252",
+      "liar": "0x0358bb4db19444e576c1475eed4dd827a4c2d6628fcb2123f6370b48adfa9165",
+      "agree": false
+    },
+    {
+      "n": 15,
+      "lo": 3352913927,
+      "hi": 3353323218,
+      "mid": 3353118572,
+      "honest": "0x038ce98cc992b9dbfb912c82ab511bd413ded3ace0e7672fcd09b4a2cc6089e8",
+      "liar": "0x0306995a471966d0acf28befca6ff0f02e0588121b92b785df8a8190d439e888",
+      "agree": false
+    },
+    {
+      "n": 16,
+      "lo": 3352913927,
+      "hi": 3353118572,
+      "mid": 3353016249,
+      "honest": "0x03d01e7068fc4c949320a61d457f18cf7cc27f797fc565e7e43c7b3581d8fd6d",
+      "liar": "0x034a72eeb7eae75c23d24c368520ce6b46d062a03bc8f6cb98c82caa6a3fde4a",
+      "agree": false
+    },
+    {
+      "n": 17,
+      "lo": 3352913927,
+      "hi": 3353016249,
+      "mid": 3352965088,
+      "honest": "0x032d447f46a25e3f25bdd1e0b623e0c74314668b12b3b748416343648df83500",
+      "liar": "0x03ebe2ec1abd6a1ea05cd81fc73538d9c0183343560e6ee677abf1fa0015a57c",
+      "agree": false
+    },
+    {
+      "n": 18,
+      "lo": 3352913927,
+      "hi": 3352965088,
+      "mid": 3352939507,
+      "honest": "0x03d39a20e423c9da2ec87135ab53703bd2a2b448fb8876c5063588988ff3de0f",
+      "liar": "0x037db2b38888688068590ae055403bc1276ff0ca5acbe56d54da60a329c32e09",
+      "agree": false
+    },
+    {
+      "n": 19,
+      "lo": 3352913927,
+      "hi": 3352939507,
+      "mid": 3352926717,
+      "honest": "0x038a09a8c58b5b401a5abaa7a98b4e930c77a0d7f4ff3d009459cc42ca3281e0",
+      "liar": "0x03333dbd39633ae562dc8e42f642b2034f3f6325334d254889d6756ae2370c69",
+      "agree": false
+    },
+    {
+      "n": 20,
+      "lo": 3352913927,
+      "hi": 3352926717,
+      "mid": 3352920322,
+      "honest": "0x03bdbb1d6c7818c9c455d9a43e56816840c4326db9b4ae757dd6daf1b0ead455",
+      "liar": "0x0322c890449ad8cf179ebbdd7acdae660ea1133ae4f2e094fabe751bcd872b96",
+      "agree": false
+    },
+    {
+      "n": 21,
+      "lo": 3352913927,
+      "hi": 3352920322,
+      "mid": 3352917124,
+      "honest": "0x03d1298f7f43d5ea13fafcb1916f9dc4429cf592701e71a4ab902691db90339e",
+      "liar": "0x03d1298f7f43d5ea13fafcb1916f9dc4429cf592701e71a4ab902691db90339e",
+      "agree": true
+    },
+    {
+      "n": 22,
+      "lo": 3352917124,
+      "hi": 3352920322,
+      "mid": 3352918723,
+      "honest": "0x03b9c2cc6aac25fc92ec61809d7dae02c3a19b96e1fc7b3c7da1b82707b8918d",
+      "liar": "0x03b9c2cc6aac25fc92ec61809d7dae02c3a19b96e1fc7b3c7da1b82707b8918d",
+      "agree": true
+    },
+    {
+      "n": 23,
+      "lo": 3352918723,
+      "hi": 3352920322,
+      "mid": 3352919522,
+      "honest": "0x03bf850129de10288118e3bd6280eb0d6a5c85941399450fcd7528ba10dcadf7",
+      "liar": "0x03bf850129de10288118e3bd6280eb0d6a5c85941399450fcd7528ba10dcadf7",
+      "agree": true
+    },
+    {
+      "n": 24,
+      "lo": 3352919522,
+      "hi": 3352920322,
+      "mid": 3352919922,
+      "honest": "0x03e9b7f9a63fa374a77a48437b7139cb9a6f5518867bd6f9aba8d8a07ae405ef",
+      "liar": "0x03e9b7f9a63fa374a77a48437b7139cb9a6f5518867bd6f9aba8d8a07ae405ef",
+      "agree": true
+    },
+    {
+      "n": 25,
+      "lo": 3352919922,
+      "hi": 3352920322,
+      "mid": 3352920122,
+      "honest": "0x034f0b8b97b56dd21eecc7203dd28a002337beb5ef50703efd92258a60c36e96",
+      "liar": "0x03ba702e313c3fdcf87ecbe029e621966f0d16cd1653212544cb8e8c6531c067",
+      "agree": false
+    },
+    {
+      "n": 26,
+      "lo": 3352919922,
+      "hi": 3352920122,
+      "mid": 3352920022,
+      "honest": "0x03d7d583f60fc50d788f4298d25fd4ef0309523a447c55fc74bdbcf25a5dbad5",
+      "liar": "0x032be1d4d8cfd7670d865bdf4ee0a5a4c4d0809f3cbdc6f3e973ac13392e8509",
+      "agree": false
+    },
+    {
+      "n": 27,
+      "lo": 3352919922,
+      "hi": 3352920022,
+      "mid": 3352919972,
+      "honest": "0x032937e7df601995422f15a8f3af1763464b0c6130a1d8b42c52ebbb6ac9f365",
+      "liar": "0x032937e7df601995422f15a8f3af1763464b0c6130a1d8b42c52ebbb6ac9f365",
+      "agree": true
+    },
+    {
+      "n": 28,
+      "lo": 3352919972,
+      "hi": 3352920022,
+      "mid": 3352919997,
+      "honest": "0x03133616cc3f4371d115f09009483627a45c5cf23ede87db7b1ff9c1ecef5508",
+      "liar": "0x03133616cc3f4371d115f09009483627a45c5cf23ede87db7b1ff9c1ecef5508",
+      "agree": true
+    },
+    {
+      "n": 29,
+      "lo": 3352919997,
+      "hi": 3352920022,
+      "mid": 3352920009,
+      "honest": "0x039f283e627fdf2b7a733e65615cfd505edd80033fc16f72dbb5cca68e632d1c",
+      "liar": "0x039f283e627fdf2b7a733e65615cfd505edd80033fc16f72dbb5cca68e632d1c",
+      "agree": true
+    },
+    {
+      "n": 30,
+      "lo": 3352920009,
+      "hi": 3352920022,
+      "mid": 3352920015,
+      "honest": "0x03b5f7772dcd89fb5bf2eb3aa0181532f41577b2d03a67a672fa57364b28c41e",
+      "liar": "0x03b5f7772dcd89fb5bf2eb3aa0181532f41577b2d03a67a672fa57364b28c41e",
+      "agree": true
+    },
+    {
+      "n": 31,
+      "lo": 3352920015,
+      "hi": 3352920022,
+      "mid": 3352920018,
+      "honest": "0x03b1320f1ed2d938a7d159348871d9530dca8187b6f10b4ca7c90723729c68a5",
+      "liar": "0x035fdec29affeb8eb52741f02d4e5fdf8fc3e282a1b7ae9109763e19555e10ca",
+      "agree": false
+    },
+    {
+      "n": 32,
+      "lo": 3352920015,
+      "hi": 3352920018,
+      "mid": 3352920016,
+      "honest": "0x03c6c1301ce739875f10eec6effa43d068da37bb26569da6c8ecd87e6cf6161c",
+      "liar": "0x03101072086a66ae37ee34c3fc3f270adb0f57a3619deae79184eb2a2cf9a2cd",
+      "agree": false
+    }
+  ],
+  "verdict": {
+    "step": 3352920015,
+    "pc": 3785552,
+    "word": "0x107372d3",
+    "instruction": "fmul.s ft5,ft6,ft7",
+    "function": "gemm_f32::microkernel::scalar::f32::x2x4",
+    "class": "float-arith",
+    "agreedPrestate": "0x03b5f7772dcd89fb5bf2eb3aa0181532f41577b2d03a67a672fa57364b28c41e",
+    "honestPost": "0x03c6c1301ce739875f10eec6effa43d068da37bb26569da6c8ecd87e6cf6161c",
+    "liarPost": "0x03101072086a66ae37ee34c3fc3f270adb0f57a3619deae79184eb2a2cf9a2cd",
+    "refereePost": "0x03c6c1301ce739875f10eec6effa43d068da37bb26569da6c8ecd87e6cf6161c",
+    "method": "SoftFloat re-execution of this one instruction from the 674-byte state witness, after checking the instruction word's Merkle proof against the witness memory root",
+    "winner": "honest",
+    "stateWitness": "0xba9d0b9eaa94fc11107c3464e8d1cf7bd5ae7814f10f7a037980181bd501931500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000039c350000000000000c7d97fcf0000848000000000000000000000000000000000000000000000000000397f6c0fffffffffffccc000000000006d146800007f00000007600000000000000001000000000000000000000000000001ec0000000000001000000000000000002000000000000000020000000000000004000000000000000800007fa0000db75800007fa00005ed2000007fa0000ecd80000000000000030000000000000000010000000000000010000000000000001c00000000000000180000000000000014000000000000000800007fa0000ed00000007fa00005ee6000007fa0000ed00c0000000000000004000000000000000500000000000000040000000000000004000000000000000c0000000000000400ffffffffbb676064ffffffffbca4cba0ffffffffbbcb189affffffff3cad93b4ffffffffbcc4c000ffffffffbcf764d8ffffffffbd904000ffffffff3fa0f290ffffffff3f800000ffffffff3f800000ffffffff3f800000ffffffff3f800000ffffffffbce71982ffffffffb9a33724ffffffff3ce1281dffffffffbcd85c5affffffff3c17b6830000000000000000ffffffff00000000ffffffff3f800000ffffffff3f800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000005800000000000000037f445112d376770a2c89b3f3f3e40f8dd13240cddf6243fd71641c676b3d7a5f",
+    "memProof": "0xd3727210b38ceb0107a80c0053765600d3727310d3f656005372021153774700b38c2b01330c6c0107220c0087a20c0053730311d3f7670007234c00d3735210607fef9d7fd4f21467234e1d4c2baa989e63bfafefedc1d21475c3c6798acfc459d9da9720a99120d48d19a736e10c12e06e12e0a58ff40c8bc9f6f7372d29d8da5fd803f9a20749982f1033800ad24f7794e68e2b840657a01f9abf0cc1869afbe15a4903374af693a61d60dfd17714d5d2580815a65bf90e1b8d521a9257331bd672377dc55f98b5169a8c2b5bbac60990784633812ce7b411eeb0ec3ec1cf15ccd3ed1d7b0d4dff09d93b69399445c259ecd9762565e5b5a50fd605832071ec9aee765c5e5991b096471fd6fef2be90e0a83ca96bce098d68272339a90e36df02a7a8e1f3992b4c66746483e680ad4027eeea3b4d2acec373c58015da3eb4733d18a5faecaa667eb1afa00876d67efc7524bb8beb22c1a858fdd357696099d2a004bce48f4b38c5a3f6def8637051b6d31d74458d97afb8d1df4b647c74ea517780185100a63bbba8a2dce54414615328b718f4c818c74f3645a72fcf4af67a952e6647136886e23144510e4a0873c2857af659237bb88a8db62b66192c615e3271ceebbcefb8e50f0067457325d11f90b165632d2d314118c132f6bade6ced9eeabc0bed52b92531f9ebc3a3df7638b10c48c7c0c904b900d0a2ecc6883820631b2b46752894074ab97dd83b75e0f617a4c995fb41c8b355e629ee5cefeb859a14306b92b8f9be5234c7d072bb33e6c668dc4513d7051a97e04627a27dab1975435ed6350d023cbed112925f4edc53915007d30fa5bcaa44368f541bd68d5a2dce0a8a7f68bb74560f8f71837c2c2ebbcbf7fffb42ae1896f13f7c7479a0b46a28b6f55540f89444f63de0378e3d121be09e06cc9ded1c20e65876d36aa0c65e9645644786b620e2dd2ad648ddfcbf4a7e5b1a3a4ecfe7f64667a3f0b7e2f4418588ed35a2458cffeb39b93d26f18d2ab13bdce6aee58e7b99359ec2dfd95a9c16dc00d6ef18b7933a6f8dc65ccb55667138776f7dea101070dc8796e3774df84f40ae0c8229d0d6069e5c8f39a7c299677a09d367fc7b05e3bc380ee652cdc72595f74c7b1043d0e1ffbab734648c838dfb0527d971b602bc216c9619ef0abf5ac974a1ed57f4050aa510dd9c74f508277b39d7973bb2dfccc5eeb0618db8cd74046ff337f0a7bf2c8e03e10f642c1886798d71806ab1e888d9e5ee87d0838c5655cb21c6cb83313b5a631175dff4963772cce9108188b34ac87c81c41e662ee4dd2dd7b2bc707961b1e646c4047669dcb6584f0d8d770daf5d7e7deb2e388ab20e2573d171a88108e79d820e98f26c0b84aa8b2f4aa4968dbb818ea32293237c50ba75ee485f4c22adf2f741400bdf8d6a9cc7df7ecae576221665d7358448818bb4ae4562849e949e17ac16e0be16688e156b5cf15e098c627c0056a927ae5ba08d7291c96c8cbddcc148bf48a6d68c7974b94356f53754ef6171d757bf558bebd2ceec7f3c5dce04a4782f88c2c6036ae78ee206d0bc5289d20461a2e21908c2968c0699040a6fd866a577a99a9d2ec88745c815fd4a472c789244daae824d72ddc272aab68a8c3022e36f10454437c1886f3ff9927b64f232df414f27e429a4bef3083bc31a671d046ea5c1f5b8c3094d72868d9dfdc12c7334ac5f743cc5c365a9a6a15c1f240ac25880c7a9d1de290696cb766074a1d83d9278164adcf616c3bfabf63999a01966c998b7bb572774035a63ead49da73b5987f34775786645d0c5dd7c04a2f8a75dcae085213652f5bce3ea8b9b9bedd1cab3c5e9b88b152c9b8a7b79637d35911848b0c41e7cc7cca2ab4fe9a15f9c38bb4bb9392c15b821d858f3298190703c85a3c1775086d8dc75c295b0ea2554bc713f21a251fee46120dbbc1c34283b93fce125dfa4f67335052d388efb4705c90edd654ea10d3ef857d04d9c03ead7c6317d797a090fa1271ad9c7addfbcb412e9643d4fb33b1809c42623f474055fa9400a2027a7a885c8dfa4efe20666b4ee27d7529c134d7f28d53f175f6bf4b62faa2110d5b76f0f770c15e628181c1fcc18f970a9c34d24b2fc8c50ca9c07a7156ef4e5ff4bdf002eda0b11c1d359d0b59a54680704dbb9db631457879b27e0dfdbe50158fd9cf9b4cf77605c4ac4c95bd65fc9f6f9295a686647cb999090819cda700820c282c613cedcd218540bbc6f37b01c6567c4a1ea624f092a3a5cca2d6f0f0db231972fce627f0ecca0dee60f17551c5f8fdaeb5ab560b2ceb781cdb339361a0fbee1b9dffad59115138c8d6a70dda9ccc1bf0bbdd7fee15764845db875f6432559ff8dbc9055324431bc34e5b93d15da307317849eccd90c0c7b98870b9317c15a5959dcfb84c76dcc908c4fe6ba92126339bf06e458f6646df5e83ba7c3d35bc263b3222c8e9040068847749ca8e8f9861dbd4ec30603e8d2feaed7915ab1fc6aca862ad4ac40a570bd3db47748957705f9cb3f2f0a7a897d86f193db33ff4ec2870062559c54471a4de0d6869122d7645577e86ee6288f805b146d803e702b82621e7b3b2e01d4f76ff3a80d3fcd893c5cbbeb3834b7a5c1cba9aa5fee0c95ec3f17a33ec3d8047fff799187f5ae2040bbe913c226c34c9fbe4389dd728984257a816892b3cae3e43191dd291f0eb5",
+    "proofBytes": 1920,
+    "boundary": "Not on-chain settlement: RISCV.sol does not implement floating-point arithmetic, and MLVM's experimental nested float sub-game covers only f64 in round-to-nearest-even mode."
+  },
+  "seconds": 546.267236583
+}

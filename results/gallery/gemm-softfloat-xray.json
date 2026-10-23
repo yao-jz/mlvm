@@ -1,0 +1,356 @@
+{
+  "steps": 22898400,
+  "floatShare": 0,
+  "floatArith": 0,
+  "floatArithByPrecision": {},
+  "classes": [
+    {
+      "name": "int-alu",
+      "count": 13917117,
+      "share": 0.607776831569018
+    },
+    {
+      "name": "load",
+      "count": 2509988,
+      "share": 0.10961412151067323
+    },
+    {
+      "name": "branch",
+      "count": 2484918,
+      "share": 0.10851928519023163
+    },
+    {
+      "name": "store",
+      "count": 2279581,
+      "share": 0.09955197743073751
+    },
+    {
+      "name": "jump",
+      "count": 1408190,
+      "share": 0.06149730985571044
+    },
+    {
+      "name": "int-muldiv",
+      "count": 298599,
+      "share": 0.013040168745414527
+    },
+    {
+      "name": "system",
+      "count": 7,
+      "share": 3.05698214722426e-7
+    }
+  ],
+  "mnemonics": [
+    {
+      "name": "addi",
+      "count": 3747496,
+      "share": 0.16365754812563324
+    },
+    {
+      "name": "ld",
+      "count": 2509940,
+      "share": 0.1096120252943437
+    },
+    {
+      "name": "sd",
+      "count": 2279500,
+      "share": 0.09954844006568145
+    },
+    {
+      "name": "slli",
+      "count": 2055678,
+      "share": 0.08977387066345247
+    },
+    {
+      "name": "srli",
+      "count": 1719920,
+      "share": 0.07511092478077071
+    },
+    {
+      "name": "or",
+      "count": 1432162,
+      "share": 0.06254419522761416
+    },
+    {
+      "name": "and",
+      "count": 1398402,
+      "share": 0.06106985640918143
+    },
+    {
+      "name": "jalr",
+      "count": 1070742,
+      "share": 0.046760559689759985
+    },
+    {
+      "name": "add",
+      "count": 879660,
+      "share": 0.038415784508961326
+    },
+    {
+      "name": "addiw",
+      "count": 676052,
+      "share": 0.02952398420850365
+    },
+    {
+      "name": "auipc",
+      "count": 664421,
+      "share": 0.029016044789155575
+    },
+    {
+      "name": "bltu",
+      "count": 584749,
+      "share": 0.025536675051531985
+    },
+    {
+      "name": "beq",
+      "count": 461819,
+      "share": 0.020168177689270865
+    },
+    {
+      "name": "bne",
+      "count": 460713,
+      "share": 0.020119877371344724
+    },
+    {
+      "name": "bge",
+      "count": 358548,
+      "share": 0.015658211927470914
+    },
+    {
+      "name": "bgeu",
+      "count": 341814,
+      "share": 0.014927418509590189
+    },
+    {
+      "name": "jal",
+      "count": 337448,
+      "share": 0.01473675016595046
+    },
+    {
+      "name": "blt",
+      "count": 277275,
+      "share": 0.012108924641022954
+    },
+    {
+      "name": "subw",
+      "count": 250643,
+      "share": 0.010945873947524718
+    },
+    {
+      "name": "xor",
+      "count": 233878,
+      "share": 0.010213726723264508
+    },
+    {
+      "name": "lui",
+      "count": 217493,
+      "share": 0.009498174544946373
+    },
+    {
+      "name": "mul",
+      "count": 177060,
+      "share": 0.007732417985536108
+    },
+    {
+      "name": "andi",
+      "count": 148104,
+      "share": 0.006467875484750026
+    },
+    {
+      "name": "sll",
+      "count": 126472,
+      "share": 0.005523180658910666
+    },
+    {
+      "name": "mulhu",
+      "count": 121539,
+      "share": 0.00530775075987842
+    },
+    {
+      "name": "sub",
+      "count": 113704,
+      "share": 0.0049655871152569616
+    },
+    {
+      "name": "srl",
+      "count": 98758,
+      "share": 0.00431287775565105
+    },
+    {
+      "name": "sltu",
+      "count": 98710,
+      "share": 0.004310781539321525
+    },
+    {
+      "name": "xori",
+      "count": 55524,
+      "share": 0.0024247982391782832
+    },
+    {
+      "name": "sb",
+      "count": 81,
+      "share": 0.000003537365056073787
+    },
+    {
+      "name": "lbu",
+      "count": 48,
+      "share": 0.000002096216329525207
+    },
+    {
+      "name": "sltiu",
+      "count": 32,
+      "share": 0.0000013974775530168047
+    },
+    {
+      "name": "addw",
+      "count": 8,
+      "share": 3.4936938825420117e-7
+    },
+    {
+      "name": "ecall",
+      "count": 7,
+      "share": 3.05698214722426e-7
+    }
+  ],
+  "functions": [
+    {
+      "name": "compiler_builtins::float::add::__adddf3",
+      "self": 10160779,
+      "total": 12449239,
+      "share": 0.4437331429270167
+    },
+    {
+      "name": "compiler_builtins::float::mul::__muldf3",
+      "self": 8285372,
+      "total": 8406908,
+      "share": 0.3618319183873109
+    },
+    {
+      "name": "\u003cu64 as compiler_builtins::int::Int\u003e::leading_zeros",
+      "self": 2288460,
+      "total": 2288460,
+      "share": 0.09993973378052615
+    },
+    {
+      "name": "_start",
+      "self": 1489071,
+      "total": 22898400,
+      "share": 0.06502947804213395
+    },
+    {
+      "name": "__muldf3",
+      "self": 243072,
+      "total": 243072,
+      "share": 0.010615239492715648
+    },
+    {
+      "name": "__adddf3",
+      "self": 233904,
+      "total": 233904,
+      "share": 0.010214862173776334
+    },
+    {
+      "name": "compiler_builtins::int::DInt::lo_hi",
+      "self": 121536,
+      "total": 121536,
+      "share": 0.005307619746357824
+    },
+    {
+      "name": "compiler_builtins::float::conv::int_to_float::u64_to_f64_bits",
+      "self": 65664,
+      "total": 65664,
+      "share": 0.002867623938790483
+    },
+    {
+      "name": "compiler_builtins::float::conv::__floatundidf",
+      "self": 8064,
+      "total": 73728,
+      "share": 0.0003521643433602348
+    },
+    {
+      "name": "__floatundidf",
+      "self": 2304,
+      "total": 2304,
+      "share": 0.00010061838381720994
+    },
+    {
+      "name": "memset",
+      "self": 174,
+      "total": 174,
+      "share": 0.0000075987841945288756
+    }
+  ],
+  "tree": {
+    "name": "all",
+    "value": 22898400,
+    "self": 0,
+    "float": 0,
+    "children": [
+      {
+        "name": "_start",
+        "value": 22898400,
+        "self": 1491549,
+        "float": 0,
+        "children": [
+          {
+            "name": "compiler_builtins::float::add::__adddf3",
+            "value": 12449239,
+            "self": 10160779,
+            "float": 0,
+            "children": [
+              {
+                "name": "\u003cu64 as compiler_builtins::int::Int\u003e::leading_zeros",
+                "value": 2288460,
+                "self": 2288460,
+                "float": 0
+              }
+            ]
+          },
+          {
+            "name": "compiler_builtins::float::mul::__muldf3",
+            "value": 8406908,
+            "self": 8285372,
+            "float": 0,
+            "children": [
+              {
+                "name": "compiler_builtins::int::DInt::lo_hi",
+                "value": 121536,
+                "self": 121536,
+                "float": 0
+              }
+            ]
+          },
+          {
+            "name": "__muldf3",
+            "value": 243072,
+            "self": 243072,
+            "float": 0
+          },
+          {
+            "name": "__adddf3",
+            "value": 233904,
+            "self": 233904,
+            "float": 0
+          },
+          {
+            "name": "compiler_builtins::float::conv::__floatundidf",
+            "value": 73728,
+            "self": 8064,
+            "float": 0,
+            "children": [
+              {
+                "name": "compiler_builtins::float::conv::int_to_float::u64_to_f64_bits",
+                "value": 65664,
+                "self": 65664,
+                "float": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "uniquePCs": 863,
+  "frames": 11,
+  "description": "GEMM, compiler soft-float (Rust no_std)"
+}

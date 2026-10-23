@@ -1,0 +1,152 @@
+/* The technical write-up (blog.html). Colors, fonts and the top bar come from style.css. */
+
+.topbar nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+.post-wrap {
+  max-width: 1080px; margin: 0 auto; padding: 0 16px;
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px;
+}
+.post-wrap > * { min-width: 0; }
+
+.toc { position: sticky; top: 72px; align-self: start; padding-top: 56px; font-size: 13.5px; max-height: calc(100vh - 80px); overflow-y: auto; }
+.toc p { margin: 0 0 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; counter-reset: toc; }
+.toc li { counter-increment: toc; }
+.toc li a { color: var(--ink-2); text-decoration: none; display: grid; grid-template-columns: 22px 1fr; line-height: 1.5; padding: 3px 0; }
+.toc li a::before { content: counter(toc); color: var(--muted); font-variant-numeric: tabular-nums; }
+.toc li.unnumbered a::before { content: ""; }
+.toc a:hover, .toc a.active { color: var(--ink); }
+.toc a.active { font-weight: 600; }
+
+.post { width: 100%; max-width: 720px; padding: 56px 0 0; font-size: 17px; line-height: 1.8; scroll-margin-top: 96px; }
+.post > p, .post section > p { margin: 0 0 18px; }
+.post h1 { font-size: clamp(32px, 5vw, 46px); max-width: 20ch; margin: 10px 0 16px; }
+.post .dek { font-size: 20px; line-height: 1.5; color: var(--ink-2); margin: 0 0 20px; }
+.post .byline { font-size: 14px; color: var(--muted); margin: 0 0 32px; }
+.post section { padding: 0; scroll-margin-top: 96px; }
+.post h2 { font-size: 27px; line-height: 1.3; margin: 64px 0 18px; padding-top: 24px; border-top: 1px solid var(--border); scroll-margin-top: 80px; text-wrap: balance; }
+.post h2 .num { color: var(--muted); font-weight: 500; margin-right: 10px; }
+.post h3 { font-size: 19px; margin: 36px 0 12px; scroll-margin-top: 96px; }
+.post ul, .post ol { padding-left: 22px; margin: 0 0 18px; }
+.post li { margin: 6px 0; }
+.post li::marker { color: var(--muted); }
+.post :not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 5px; font-size: 0.86em; overflow-wrap: anywhere; }
+.post blockquote { margin: 0 0 20px; padding: 10px 18px; border-left: 3px solid var(--axis); color: var(--ink-2); background: var(--surface); border-radius: 0 10px 10px 0; }
+.post blockquote p { margin: 0; }
+.post blockquote cite { display: block; margin-top: 6px; font-size: 13.5px; font-style: normal; color: var(--muted); }
+.post hr { border: 0; border-top: 1px solid var(--border); margin: 48px 0; }
+.post a { overflow-wrap: anywhere; }
+.post .mono { font-family: var(--mono); font-size: 0.9em; white-space: nowrap; }
+
+.tldr { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; margin: 0 0 8px; box-shadow: var(--shadow); }
+.post .tldr h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 8px; border: 0; padding: 0; }
+.tldr ul { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.6; }
+
+.contrib { counter-reset: c; list-style: none; padding: 0 !important; display: grid; gap: 12px; }
+.contrib li { counter-increment: c; position: relative; padding-left: 36px; margin: 0; }
+.contrib li::before {
+  content: counter(c); position: absolute; left: 0; top: 2px; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--surface-2); color: var(--ink-2); font-size: 13px; font-weight: 650; display: grid; place-items: center;
+}
+
+.callout { border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; padding: 12px 18px; margin: 0 0 20px; }
+.callout p { margin: 0; }
+.callout strong { color: var(--ink); }
+
+.post pre.code { font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+.post pre.code .c { color: var(--muted); }
+.post pre.code .k { color: var(--accent); }
+.post pre.code .hl { background: color-mix(in srgb, var(--accent) 14%, transparent); display: inline-block; width: 100%; }
+.post .code-label, .post section > p.code-label { font-size: 12.5px; color: var(--muted); margin: 0 0 6px; font-family: var(--mono); }
+
+.post .table-scroll { margin: 0 0 22px; }
+.post .table { font-size: 14px; }
+.post .table td:first-child { font-family: var(--sans); font-size: 14px; }
+.post .table td code, .post .table th code { font-size: 12.5px; }
+.post .table td.mono { font-family: var(--mono); font-size: 12.5px; }
+.post .table caption { caption-side: bottom; text-align: left; font-size: 13.5px; color: var(--ink-2); padding-top: 8px; }
+
+/* Figures: inline SVG drawn with the page's tokens, so they follow light and dark mode. */
+.fig { margin: 28px 0 30px; }
+.fig-body { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; overflow-x: auto; }
+.fig svg { display: block; width: 100%; height: auto; min-width: 600px; }
+.fig figcaption { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin-top: 10px; }
+.fig figcaption b { color: var(--ink); }
+.fig text { font-family: var(--sans); }
+.f-box { fill: var(--surface); stroke: var(--axis); stroke-width: 1.25; }
+.f-box-alt { fill: var(--surface-2); stroke: var(--axis); stroke-width: 1.25; }
+.f-box-hi { fill: color-mix(in srgb, var(--accent) 12%, var(--surface)); stroke: var(--accent); stroke-width: 1.5; }
+.f-box-liar { fill: color-mix(in srgb, var(--liar) 12%, var(--surface)); stroke: var(--liar); stroke-width: 1.5; }
+.f-t { fill: var(--ink); font-size: 16px; font-weight: 600; }
+.f-s { fill: var(--ink-2); font-size: 14.5px; }
+.f-m { fill: var(--ink-2); font-family: var(--mono) !important; font-size: 13.5px; }
+.f-panel { fill: var(--ink); font-size: 15px; font-weight: 600; }
+.f-line { stroke: var(--ink-2); stroke-width: 1.5; fill: none; }
+.f-thin { stroke: var(--muted); stroke-width: 1; fill: none; }
+.f-dash { stroke: var(--muted); stroke-width: 1.25; stroke-dasharray: 4 3; fill: none; }
+.f-head { fill: var(--ink-2); }
+.f-grid { stroke: var(--grid); stroke-width: 1; }
+.f-axis { stroke: var(--axis); stroke-width: 1; }
+.f-tick { fill: var(--muted); font-size: 13px; }
+.f-ref { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+.f-dot { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+.f-label { fill: var(--ink-2); font-size: 14px; }
+.f-seg { fill: var(--caller); stroke: var(--surface); stroke-width: 2; }
+.f-seg-new { fill: color-mix(in srgb, var(--accent) 34%, var(--surface)); stroke: var(--surface); stroke-width: 2; }
+.f-tri { fill: var(--surface-2); stroke: var(--axis); stroke-width: 1.25; }
+.f-path { stroke: var(--accent); stroke-width: 2.25; fill: none; }
+.f-node { fill: var(--accent); }
+.f-honest { stroke: var(--honest); stroke-width: 2.5; fill: none; }
+.f-liar { stroke: var(--liar); stroke-width: 2.5; fill: none; }
+.f-honest-dash { stroke: var(--honest); stroke-width: 2; stroke-dasharray: 5 4; fill: none; opacity: 0.6; }
+.f-band { fill: color-mix(in srgb, var(--accent) 14%, transparent); }
+.f-bar { fill: var(--accent); }
+.f-ckpt { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.5; }
+.f-mark-lo { stroke: var(--honest); stroke-width: 2; }
+.f-mark-hi { stroke: var(--liar); stroke-width: 2; }
+
+.post-foot { margin-top: 56px; }
+
+.toc-menu > summary { cursor: pointer; color: var(--ink); font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+.toc .toc-demo { display: block; margin-top: 24px; font-size: 13px; text-decoration: none; }
+.reading-path { margin: 32px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 18px 0; }
+.reading-path > p { margin: 0 0 10px; }
+.reading-path a { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding: 12px 0; color: var(--ink); text-decoration: none; }
+.reading-path a + a { border-top: 1px solid var(--border); }
+.reading-path strong { font-size: 15px; font-weight: 600; }
+.reading-path a span:first-of-type { grid-column: 1; font-size: 14px; color: var(--ink-2); }
+.reading-path a span:last-child { grid-column: 2; grid-row: 1 / 3; align-self: center; color: var(--accent); }
+.reading-path a:hover strong { color: var(--accent); }
+.post .technical-details { font-size: 16px; margin: 24px 0; }
+.post .technical-details > summary { font-size: 14px; }
+.post .technical-details p { margin: 14px 0; }
+.post .technical-details .code-label { margin-bottom: 6px; }
+.post .technical-details pre { margin-bottom: 0; }
+.glossary dl { margin: 0; }
+.glossary dl > div { padding: 12px 0; }
+.glossary dl > div + div { border-top: 1px solid var(--border); }
+.glossary dt { font-size: 15px; font-weight: 600; }
+.glossary dd { font-size: 15px; margin: 4px 0 0; color: var(--ink-2); line-height: 1.65; }
+.post .section-intro { font-size: 18px; color: var(--ink-2); line-height: 1.7; }
+.post .reading-signpost { border-left: 2px solid var(--accent); padding-left: 18px; color: var(--ink-2); font-size: 15px; }
+.post .repo-figure { margin: 28px 0; }
+.post .technical-details .repo-figure { margin: 12px 0 0; }
+.post .repo-figure figcaption { font-size: 14px; line-height: 1.65; }
+.post .table th { color: var(--ink-2); font-weight: 600; }
+.post .table tbody tr:nth-child(even) { background: var(--surface-2); }
+
+@media (max-width: 1000px) {
+  .post-wrap { grid-template-columns: 1fr; gap: 0; }
+  .toc { position: static; max-height: none; padding-top: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+  .toc ol { grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  .toc .toc-demo { display: none; }
+  .toc-menu:not([open]) > summary { margin-bottom: 0; }
+  .post { padding-top: 28px; justify-self: center; }
+}
+@media (max-width: 600px) {
+  .toc ol { grid-template-columns: 1fr; }
+  .post { font-size: 16px; }
+  .post .dek { font-size: 18px; }
+  .post h2 { font-size: 23px; margin-top: 48px; }
+  .fig-body { padding: 10px; }
+}

@@ -1,0 +1,68 @@
+{
+  "profile": "mlvm-1",
+  "guest": "examples/decoder (TinyStories-260K)",
+  "rows": [
+    {
+      "kind": "alu_int",
+      "examples": "ADD/SUB/MUL/DIV/shift/branch",
+      "route": "direct"
+    },
+    {
+      "kind": "load_store",
+      "examples": "LB/LH/LW/LD/SB/SH/SW/SD",
+      "route": "direct"
+    },
+    {
+      "kind": "float_load_store",
+      "examples": "FLW/FSW/FLD/FSD",
+      "route": "direct"
+    },
+    {
+      "kind": "float_bitmanip",
+      "examples": "FSGNJ/FMV",
+      "route": "direct"
+    },
+    {
+      "kind": "float_arith_f32",
+      "examples": "FADD.S/FMUL.S/FMADD.S/FSQRT.S",
+      "route": "nested"
+    },
+    {
+      "kind": "float_arith_f64",
+      "examples": "FADD.D/\u2026 (MLP path)",
+      "route": "nested"
+    },
+    {
+      "kind": "syscall_exit",
+      "examples": "exit/exit_group",
+      "route": "direct"
+    },
+    {
+      "kind": "syscall_file",
+      "examples": "openat/read/close/lseek",
+      "route": "direct"
+    },
+    {
+      "kind": "syscall_mmap",
+      "examples": "mmap/munmap/mprotect/brk",
+      "route": "direct"
+    },
+    {
+      "kind": "syscall_sysinfo",
+      "examples": "sysinfo(179)",
+      "route": "stub"
+    },
+    {
+      "kind": "syscall_getrandom",
+      "examples": "getrandom(278)",
+      "route": "gap"
+    }
+  ],
+  "summary": {
+    "direct": 7,
+    "nested": 2,
+    "stub": 1,
+    "gap": 1
+  },
+  "launchClaim": "Public demo claims deterministic fast execution + selected integer settlement preview. Full decoder-trace settlement requires closing nested f32 and getrandom equivalence."
+}

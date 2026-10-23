@@ -1,0 +1,5412 @@
+{
+  "steps": 6705827787,
+  "floatShare": 0.624037324536202,
+  "floatArith": 2758164223,
+  "floatArithByPrecision": {
+    "d": 28928858,
+    "s": 2729235365
+  },
+  "classes": [
+    {
+      "name": "float-arith",
+      "count": 2758164223,
+      "share": 0.41130853797752026
+    },
+    {
+      "name": "int-alu",
+      "count": 1716419319,
+      "share": 0.25595934961638467
+    },
+    {
+      "name": "float-loadstore",
+      "count": 1404725868,
+      "share": 0.2094783690573174
+    },
+    {
+      "name": "branch",
+      "count": 357728715,
+      "share": 0.053345944208930816
+    },
+    {
+      "name": "load",
+      "count": 216164322,
+      "share": 0.032235292773109804
+    },
+    {
+      "name": "store",
+      "count": 166993017,
+      "share": 0.024902670081050203
+    },
+    {
+      "name": "jump",
+      "count": 48636676,
+      "share": 0.007252896666133845
+    },
+    {
+      "name": "float-move",
+      "count": 21796740,
+      "share": 0.003250417501364325
+    },
+    {
+      "name": "system",
+      "count": 13713947,
+      "share": 0.002045078912790756
+    },
+    {
+      "name": "int-muldiv",
+      "count": 1402330,
+      "share": 0.0002091210875887052
+    },
+    {
+      "name": "atomic",
+      "count": 82630,
+      "share": 0.00001232211780925653
+    }
+  ],
+  "mnemonics": [
+    {
+      "name": "fadd.s",
+      "count": 1364232624,
+      "share": 0.2034398537112328
+    },
+    {
+      "name": "fmul.s",
+      "count": 1363741105,
+      "share": 0.20336655642182838
+    },
+    {
+      "name": "flw",
+      "count": 1200078417,
+      "share": 0.17896051839065816
+    },
+    {
+      "name": "add",
+      "count": 1068354189,
+      "share": 0.15931727192146578
+    },
+    {
+      "name": "addi",
+      "count": 470416729,
+      "share": 0.07015043391241804
+    },
+    {
+      "name": "bne",
+      "count": 249190077,
+      "share": 0.037160226136895874
+    },
+    {
+      "name": "ld",
+      "count": 190896354,
+      "share": 0.028467231796509004
+    },
+    {
+      "name": "fsw",
+      "count": 177639239,
+      "share": 0.026490277508225548
+    },
+    {
+      "name": "sd",
+      "count": 157438102,
+      "share": 0.023477802741253127
+    },
+    {
+      "name": "bltu",
+      "count": 64670367,
+      "share": 0.009643905130604572
+    },
+    {
+      "name": "beq",
+      "count": 40345472,
+      "share": 0.0060164789913356
+    },
+    {
+      "name": "jalr",
+      "count": 36247518,
+      "share": 0.005405375615262576
+    },
+    {
+      "name": "auipc",
+      "count": 33160417,
+      "share": 0.004945014702627048
+    },
+    {
+      "name": "sub",
+      "count": 31915940,
+      "share": 0.00475943328903743
+    },
+    {
+      "name": "fld",
+      "count": 22329973,
+      "share": 0.003329935350157539
+    },
+    {
+      "name": "lw",
+      "count": 16617090,
+      "share": 0.0024780072688735154
+    },
+    {
+      "name": "and",
+      "count": 16601895,
+      "share": 0.0024757413293828748
+    },
+    {
+      "name": "addiw",
+      "count": 16551837,
+      "share": 0.002468276479167508
+    },
+    {
+      "name": "sltu",
+      "count": 14493831,
+      "share": 0.00216137835035041
+    },
+    {
+      "name": "lui",
+      "count": 14389626,
+      "share": 0.0021458388818000823
+    },
+    {
+      "name": "slli",
+      "count": 14306821,
+      "share": 0.002133490667287248
+    },
+    {
+      "name": "subw",
+      "count": 13750724,
+      "share": 0.002050563246890611
+    },
+    {
+      "name": "ecall",
+      "count": 13708702,
+      "share": 0.002044296757303529
+    },
+    {
+      "name": "jal",
+      "count": 12389158,
+      "share": 0.0018475210508712696
+    },
+    {
+      "name": "fmul.d",
+      "count": 11398404,
+      "share": 0.0016997758311206688
+    },
+    {
+      "name": "fadd.d",
+      "count": 9636937,
+      "share": 0.0014370987902019023
+    },
+    {
+      "name": "srli",
+      "count": 9209697,
+      "share": 0.001373387043707569
+    },
+    {
+      "name": "sb",
+      "count": 8783304,
+      "share": 0.0013098016052585516
+    },
+    {
+      "name": "lbu",
+      "count": 7978147,
+      "share": 0.0011897333563302256
+    },
+    {
+      "name": "fsgnj.d",
+      "count": 6289936,
+      "share": 0.0009379805446530773
+    },
+    {
+      "name": "andi",
+      "count": 5443471,
+      "share": 0.0008117522806882664
+    },
+    {
+      "name": "fsd",
+      "count": 4678239,
+      "share": 0.0006976378082761521
+    },
+    {
+      "name": "or",
+      "count": 4625968,
+      "share": 0.0006898429466035436
+    },
+    {
+      "name": "fmadd.d",
+      "count": 4433454,
+      "share": 0.00066113448493186
+    },
+    {
+      "name": "flt.d",
+      "count": 4115084,
+      "share": 0.000613657870543224
+    },
+    {
+      "name": "fmv.d.x",
+      "count": 3922114,
+      "share": 0.0005848814083182181
+    },
+    {
+      "name": "bgeu",
+      "count": 2532457,
+      "share": 0.00037765016944059496
+    },
+    {
+      "name": "fsgnj.s",
+      "count": 2051595,
+      "share": 0.00030594209472203373
+    },
+    {
+      "name": "fdiv.d",
+      "count": 1724761,
+      "share": 0.00025720329462436284
+    },
+    {
+      "name": "fsgnjn.d",
+      "count": 1686009,
+      "share": 0.00025142444058413155
+    },
+    {
+      "name": "mul",
+      "count": 1369263,
+      "share": 0.00020419000360469592
+    },
+    {
+      "name": "feq.d",
+      "count": 1179664,
+      "share": 0.00017591623845260554
+    },
+    {
+      "name": "fsub.d",
+      "count": 1108392,
+      "share": 0.00016528787126754766
+    },
+    {
+      "name": "fmv.x.d",
+      "count": 1108374,
+      "share": 0.00016528518703517968
+    },
+    {
+      "name": "blt",
+      "count": 969186,
+      "share": 0.00014452891287767273
+    },
+    {
+      "name": "srliw",
+      "count": 746712,
+      "share": 0.00011135269555349826
+    },
+    {
+      "name": "sw",
+      "count": 653615,
+      "share": 0.00009746969662225834
+    },
+    {
+      "name": "srai",
+      "count": 648356,
+      "share": 0.00009668545339874532
+    },
+    {
+      "name": "fcvt.s.d",
+      "count": 608432,
+      "share": 0.00009073182600655414
+    },
+    {
+      "name": "fcvt.d.s",
+      "count": 608256,
+      "share": 0.00009070558017895606
+    },
+    {
+      "name": "fclass.d",
+      "count": 589824,
+      "share": 0.00008795692623413921
+    },
+    {
+      "name": "fle.d",
+      "count": 589824,
+      "share": 0.00008795692623413921
+    },
+    {
+      "name": "xor",
+      "count": 576606,
+      "share": 0.00008598580493191542
+    },
+    {
+      "name": "srl",
+      "count": 479622,
+      "share": 0.00007152316093321112
+    },
+    {
+      "name": "lhu",
+      "count": 386519,
+      "share": 0.00005763926725784854
+    },
+    {
+      "name": "fdiv.s",
+      "count": 327169,
+      "share": 0.000048788756644519535
+    },
+    {
+      "name": "fsub.s",
+      "count": 325632,
+      "share": 0.00004855955302509769
+    },
+    {
+      "name": "fmv.w.x",
+      "count": 225906,
+      "share": 0.00003368801096233699
+    },
+    {
+      "name": "ori",
+      "count": 209460,
+      "share": 0.00003123551732212118
+    },
+    {
+      "name": "xori",
+      "count": 197834,
+      "share": 0.00002950180146044362
+    },
+    {
+      "name": "slliw",
+      "count": 190264,
+      "share": 0.000028372932625685398
+    },
+    {
+      "name": "lwu",
+      "count": 184650,
+      "share": 0.0000275357503749149
+    },
+    {
+      "name": "sh",
+      "count": 117996,
+      "share": 0.000017596037916265683
+    },
+    {
+      "name": "lb",
+      "count": 98328,
+      "share": 0.000014663066682180516
+    },
+    {
+      "name": "amoswap.w",
+      "count": 65022,
+      "share": 0.000009696342057285223
+    },
+    {
+      "name": "sllw",
+      "count": 50429,
+      "share": 0.00000752017522695144
+    },
+    {
+      "name": "sll",
+      "count": 44302,
+      "share": 0.000006606492353693365
+    },
+    {
+      "name": "sraiw",
+      "count": 34117,
+      "share": 0.0000050876642054750695
+    },
+    {
+      "name": "divu",
+      "count": 28250,
+      "share": 0.000004212753577532337
+    },
+    {
+      "name": "bge",
+      "count": 21156,
+      "share": 0.000003154867776505278
+    },
+    {
+      "name": "sltiu",
+      "count": 20424,
+      "share": 0.0000030457089935405466
+    },
+    {
+      "name": "flt.s",
+      "count": 18438,
+      "share": 0.000002749548688939512
+    },
+    {
+      "name": "fmv.x.w",
+      "count": 18434,
+      "share": 0.000002748952192857738
+    },
+    {
+      "name": "fmsub.d",
+      "count": 18432,
+      "share": 0.0000027486539448168505
+    },
+    {
+      "name": "amoswap.d.aq",
+      "count": 5685,
+      "share": 8.477700562219941e-7
+    },
+    {
+      "name": "amoadd.d.rl",
+      "count": 5551,
+      "share": 8.277874374825486e-7
+    },
+    {
+      "name": "fence",
+      "count": 5245,
+      "share": 7.821554872268002e-7
+    },
+    {
+      "name": "lh",
+      "count": 3234,
+      "share": 4.822670821146753e-7
+    },
+    {
+      "name": "mulhu",
+      "count": 2940,
+      "share": 4.3842462010425023e-7
+    },
+    {
+      "name": "amoadd.d",
+      "count": 2794,
+      "share": 4.1665251311948133e-7
+    },
+    {
+      "name": "feq.s",
+      "count": 1536,
+      "share": 2.290544954014042e-7
+    },
+    {
+      "name": "lr.w.aq",
+      "count": 1062,
+      "share": 1.5836970971112713e-7
+    },
+    {
+      "name": "sc.w",
+      "count": 1062,
+      "share": 1.5836970971112713e-7
+    },
+    {
+      "name": "remu",
+      "count": 1059,
+      "share": 1.5792233764979625e-7
+    },
+    {
+      "name": "amoadd.w.rl",
+      "count": 1044,
+      "share": 1.556854773431419e-7
+    },
+    {
+      "name": "remuw",
+      "count": 671,
+      "share": 1.0006221771767072e-7
+    },
+    {
+      "name": "fsqrt.s",
+      "count": 403,
+      "share": 6.009698023877988e-8
+    },
+    {
+      "name": "amoadd.w",
+      "count": 160,
+      "share": 2.3859843270979604e-8
+    },
+    {
+      "name": "fcvt.d.lu",
+      "count": 138,
+      "share": 2.0579114821219908e-8
+    },
+    {
+      "name": "mulw",
+      "count": 137,
+      "share": 2.0429990800776285e-8
+    },
+    {
+      "name": "amomaxu.d.aq",
+      "count": 88,
+      "share": 1.3122913799038781e-8
+    },
+    {
+      "name": "fsqrt.d",
+      "count": 84,
+      "share": 1.2526417717264292e-8
+    },
+    {
+      "name": "amomaxu.w.aq",
+      "count": 80,
+      "share": 1.1929921635489802e-8
+    },
+    {
+      "name": "slti",
+      "count": 41,
+      "share": 6.114084838188523e-9
+    },
+    {
+      "name": "amoswap.w.rl",
+      "count": 18,
+      "share": 2.6842323679852055e-9
+    },
+    {
+      "name": "lr.d",
+      "count": 14,
+      "share": 2.0877362862107153e-9
+    },
+    {
+      "name": "sc.d",
+      "count": 12,
+      "share": 1.7894882453234704e-9
+    },
+    {
+      "name": "amoswap.d",
+      "count": 9,
+      "share": 1.3421161839926028e-9
+    },
+    {
+      "name": "divuw",
+      "count": 8,
+      "share": 1.1929921635489803e-9
+    },
+    {
+      "name": "lr.d.aq",
+      "count": 8,
+      "share": 1.1929921635489803e-9
+    },
+    {
+      "name": "addw",
+      "count": 7,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "sc.d.aq",
+      "count": 7,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "lr.w",
+      "count": 5,
+      "share": 7.456201022181126e-10
+    },
+    {
+      "name": "sc.w.aq",
+      "count": 5,
+      "share": 7.456201022181126e-10
+    },
+    {
+      "name": "sc.d.rl",
+      "count": 3,
+      "share": 4.473720613308676e-10
+    },
+    {
+      "name": "fclass.s",
+      "count": 2,
+      "share": 2.982480408872451e-10
+    },
+    {
+      "name": "amoswap.d.aqrl",
+      "count": 1,
+      "share": 1.4912402044362254e-10
+    },
+    {
+      "name": "divw",
+      "count": 1,
+      "share": 1.4912402044362254e-10
+    },
+    {
+      "name": "remw",
+      "count": 1,
+      "share": 1.4912402044362254e-10
+    }
+  ],
+  "functions": [
+    {
+      "name": "gemm_f32::microkernel::scalar::f32::x2x4",
+      "self": 4799586816,
+      "total": 4799586816,
+      "share": 0.7157336824701251
+    },
+    {
+      "name": "gemm_common::pack_operands::pack_lhs",
+      "self": 686277216,
+      "total": 686277216,
+      "share": 0.10234041758877635
+    },
+    {
+      "name": "std::io::default_read_to_end",
+      "self": 438663228,
+      "total": 646336522,
+      "share": 0.06541522418013745
+    },
+    {
+      "name": "read",
+      "self": 205625550,
+      "total": 205625550,
+      "share": 0.030663708721931127
+    },
+    {
+      "name": "_wordcopy_fwd_aligned",
+      "self": 204856888,
+      "total": 204856888,
+      "share": 0.03054908275412889
+    },
+    {
+      "name": "candle_core::cpu::erf::erf_impl",
+      "self": 83689272,
+      "total": 109848328,
+      "share": 0.012480080708639886
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+      "self": 82582369,
+      "total": 193857243,
+      "share": 0.012315014883038778
+    },
+    {
+      "name": "__ieee754_exp",
+      "self": 26158844,
+      "total": 26158844,
+      "share": 0.0039009119874375323
+    },
+    {
+      "name": "bcmp",
+      "self": 17159558,
+      "total": 17159558,
+      "share": 0.0025589022779955264
+    },
+    {
+      "name": "gemm_common::gemm::gemm_basic_generic::{{closure}}",
+      "self": 16404288,
+      "total": 5502439104,
+      "share": 0.002446273379075072
+    },
+    {
+      "name": "alloc::collections::btree::map::BTreeMap\u003cK,V,A\u003e::insert",
+      "self": 15560632,
+      "total": 45098544,
+      "share": 0.002320464004483687
+    },
+    {
+      "name": "hashbrown::map::HashMap\u003cK,V,S,A\u003e::insert",
+      "self": 15272969,
+      "total": 21350326,
+      "share": 0.0022775665413908132
+    },
+    {
+      "name": "_int_malloc",
+      "self": 10810849,
+      "total": 11301458,
+      "share": 0.0016121572672889162
+    },
+    {
+      "name": "memcpy",
+      "self": 9398850,
+      "total": 214128868,
+      "share": 0.0014015942995465416
+    },
+    {
+      "name": "_int_free",
+      "self": 6263818,
+      "total": 10522022,
+      "share": 0.0009340857234871307
+    },
+    {
+      "name": "core::hash::Hasher::write_str",
+      "self": 5486655,
+      "total": 5486655,
+      "share": 0.0008181920523871038
+    },
+    {
+      "name": "gemm_common::pack_operands::pack_rhs",
+      "self": 4658880,
+      "total": 4658880,
+      "share": 0.0006947509163643841
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cserde_core::private::content::Content\u003e",
+      "self": 4239074,
+      "total": 4303896,
+      "share": 0.0006321477578380287
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentVisitor as serde_core::de::Visitor\u003e::visit_map",
+      "self": 4225015,
+      "total": 20864787,
+      "share": 0.0006300512232346119
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::reduce_op",
+      "self": 4203810,
+      "total": 4470064,
+      "share": 0.0006268890483811048
+    },
+    {
+      "name": "\u003cserde_json::de::MapAccess\u003cR\u003e as serde_core::de::MapAccess\u003e::next_key_seed",
+      "self": 4086526,
+      "total": 7830829,
+      "share": 0.000609399186767395
+    },
+    {
+      "name": "\u003cserde_json::read::StrRead as serde_json::read::Read\u003e::parse_str",
+      "self": 3863998,
+      "total": 3864562,
+      "share": 0.0005762149167461165
+    },
+    {
+      "name": "alloc::collections::btree::node::Handle\u003calloc::collections::btree::node::NodeRef\u003calloc::collections::btree::node::marker::Mut,K,V,alloc::collections::btree::node::marker::Leaf\u003e,alloc::collections::btree::node::marker::Edge\u003e::insert_recursing",
+      "self": 3422564,
+      "total": 10946178,
+      "share": 0.0005103865039056065
+    },
+    {
+      "name": "malloc",
+      "self": 3335487,
+      "total": 14077414,
+      "share": 0.0004974012315774372
+    },
+    {
+      "name": "serde::private::de::content::content_clone",
+      "self": 3327121,
+      "total": 3328717,
+      "share": 0.0004961536600224058
+    },
+    {
+      "name": "malloc_consolidate",
+      "self": 2998609,
+      "total": 4306294,
+      "share": 0.0004471646298184305
+    },
+    {
+      "name": "_wordcopy_bwd_aligned",
+      "self": 2775804,
+      "total": 2775804,
+      "share": 0.00041393905244348916
+    },
+    {
+      "name": "serde_json::de::Deserializer\u003cR\u003e::parse_integer",
+      "self": 2698384,
+      "total": 2698599,
+      "share": 0.0004023938707807439
+    },
+    {
+      "name": "memset",
+      "self": 2581847,
+      "total": 2581847,
+      "share": 0.0003850154048103055
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::unary_impl",
+      "self": 2318278,
+      "total": 129941357,
+      "share": 0.00034571093586600036
+    },
+    {
+      "name": "memmove",
+      "self": 2254331,
+      "total": 5276980,
+      "share": 0.000336174902130692
+    },
+    {
+      "name": "serde_core::de::Deserializer::__deserialize_content_v1",
+      "self": 2227947,
+      "total": 20890366,
+      "share": 0.00033224041397530746
+    },
+    {
+      "name": "__free",
+      "self": 2206865,
+      "total": 12674415,
+      "share": 0.000329096581376315
+    },
+    {
+      "name": "serde_json::value::de::visit_object",
+      "self": 1832239,
+      "total": 38722192,
+      "share": 0.00027323084609360247
+    },
+    {
+      "name": "\u003cserde::private::de::content::MapRefDeserializer\u003cE\u003e as serde_core::de::MapAccess\u003e::next_entry_seed",
+      "self": 1617873,
+      "total": 12310025,
+      "share": 0.00024126372632718492
+    },
+    {
+      "name": "alloc::collections::btree::map::entry::VacantEntry\u003cK,V,A\u003e::insert",
+      "self": 1557345,
+      "total": 12504717,
+      "share": 0.00023223754761777333
+    },
+    {
+      "name": "unlink_chunk",
+      "self": 1500469,
+      "total": 1500469,
+      "share": 0.00022375596983102185
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_string",
+      "self": 1414032,
+      "total": 9456864,
+      "share": 0.00021086613687593646
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ctokenizers::models::ModelWrapper\u003e",
+      "self": 1379969,
+      "total": 8339237,
+      "share": 0.00020578652536756533
+    },
+    {
+      "name": "alloc::collections::btree::map::IntoIter\u003cK,V,A\u003e::dying_next",
+      "self": 1343071,
+      "total": 1931112,
+      "share": 0.00020028414726123655
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_any",
+      "self": 1313065,
+      "total": 58262836,
+      "share": 0.0001958095319038052
+    },
+    {
+      "name": "read_encoded_value_with_base",
+      "self": 1245226,
+      "total": 1245226,
+      "share": 0.0001856931074809303
+    },
+    {
+      "name": "\u003calloc::string::String as core::clone::Clone\u003e::clone",
+      "self": 1219140,
+      "total": 9100561,
+      "share": 0.00018180305828363797
+    },
+    {
+      "name": "num_cpus::linux::get_num_cpus",
+      "self": 986127,
+      "total": 998347,
+      "share": 0.00014705522290800815
+    },
+    {
+      "name": "\u003cserde_json::value::de::\u003cimpl serde_core::de::Deserialize for serde_json::value::Value\u003e::deserialize::ValueVisitor as serde_core::de::Visitor\u003e::visit_map",
+      "self": 855296,
+      "total": 58267796,
+      "share": 0.00012754517818934857
+    },
+    {
+      "name": "\u003cahash::hash_map::AHashMap\u003cK,V\u003e as core::iter::traits::collect::FromIterator\u003c(K,V)\u003e\u003e::from_iter",
+      "self": 850705,
+      "total": 17937876,
+      "share": 0.0001268605498114919
+    },
+    {
+      "name": "serde_json::value::de::\u003cimpl serde_core::de::Deserializer for serde_json::value::Value\u003e::deserialize_u32",
+      "self": 824094,
+      "total": 1190358,
+      "share": 0.00012289221050346667
+    },
+    {
+      "name": "classify_object_over_fdes",
+      "self": 791736,
+      "total": 2115400,
+      "share": 0.00011806685544995193
+    },
+    {
+      "name": "core::str::converts::from_utf8",
+      "self": 715598,
+      "total": 715598,
+      "share": 0.00010671285078141539
+    },
+    {
+      "name": "__expf",
+      "self": 645152,
+      "total": 645152,
+      "share": 0.00009620766003724396
+    },
+    {
+      "name": "__rdl_alloc",
+      "self": 527782,
+      "total": 860005,
+      "share": 0.00007870497375777599
+    },
+    {
+      "name": "\u003ccore::hash::sip::Hasher\u003cS\u003e as core::hash::Hasher\u003e::write",
+      "self": 405366,
+      "total": 405366,
+      "share": 0.00006044980767114949
+    },
+    {
+      "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+      "self": 403108,
+      "total": 5509436296,
+      "share": 0.00006011308563298779
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cserde_json::value::Value\u003e",
+      "self": 366306,
+      "total": 366306,
+      "share": 0.00005462502343262159
+    },
+    {
+      "name": "alloc::collections::btree::node::Handle\u003calloc::collections::btree::node::NodeRef\u003calloc::collections::btree::node::marker::Mut,K,V,alloc::collections::btree::node::marker::Leaf\u003e,alloc::collections::btree::node::marker::KV\u003e::split",
+      "self": 357994,
+      "total": 1938171,
+      "share": 0.0000533855045746942
+    },
+    {
+      "name": "candle_core::cpu_backend::copy_strided_src_",
+      "self": 342022,
+      "total": 1910877,
+      "share": 0.00005100369572016866
+    },
+    {
+      "name": "alloc_perturb",
+      "self": 248864,
+      "total": 248864,
+      "share": 0.000037111600223681675
+    },
+    {
+      "name": "candle_core::cpu_backend::Map1Any::map",
+      "self": 192520,
+      "total": 193551,
+      "share": 0.00002870935641580621
+    },
+    {
+      "name": "core::hash::BuildHasher::hash_one",
+      "self": 188823,
+      "total": 594189,
+      "share": 0.000028158044912226137
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::affine",
+      "self": 177792,
+      "total": 197679,
+      "share": 0.000026513057842712535
+    },
+    {
+      "name": "__rdl_dealloc",
+      "self": 152186,
+      "total": 152186,
+      "share": 0.000022694588175233138
+    },
+    {
+      "name": "__rust_dealloc",
+      "self": 152186,
+      "total": 152186,
+      "share": 0.000022694588175233138
+    },
+    {
+      "name": "__rust_alloc",
+      "self": 149434,
+      "total": 149434,
+      "share": 0.000022284198870972287
+    },
+    {
+      "name": "candle_core::tensor::from_storage",
+      "self": 125036,
+      "total": 800021,
+      "share": 0.000018645871020188788
+    },
+    {
+      "name": "_wordcopy_fwd_dest_aligned",
+      "self": 119975,
+      "total": 119975,
+      "share": 0.00001789115435272361
+    },
+    {
+      "name": "_int_memalign",
+      "self": 119539,
+      "total": 294985,
+      "share": 0.000017826136279810192
+    },
+    {
+      "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+      "self": 107591,
+      "total": 4793716,
+      "share": 0.000016044402483549792
+    },
+    {
+      "name": "__calloc",
+      "self": 93792,
+      "total": 516646,
+      "share": 0.000013986640125448245
+    },
+    {
+      "name": "alloc::collections::btree::node::Handle\u003calloc::collections::btree::node::NodeRef\u003calloc::collections::btree::node::marker::Mut,K,V,alloc::collections::btree::node::marker::Internal\u003e,alloc::collections::btree::node::marker::KV\u003e::split",
+      "self": 89535,
+      "total": 339962,
+      "share": 0.000013351819170419743
+    },
+    {
+      "name": "chunk_ok_for_memalign",
+      "self": 85394,
+      "total": 85394,
+      "share": 0.000012734296601762702
+    },
+    {
+      "name": "candle_core::cpu_backend::Map2::map",
+      "self": 80932,
+      "total": 5511590143,
+      "share": 0.000012068905222543258
+    },
+    {
+      "name": "alloc::raw_vec::RawVec\u003cT,A\u003e::grow_one",
+      "self": 59313,
+      "total": 667897,
+      "share": 0.000008844993024572583
+    },
+    {
+      "name": "dyn_stack::DynStack::split_buffer",
+      "self": 56448,
+      "total": 56448,
+      "share": 0.000008417752706001604
+    },
+    {
+      "name": "alloc::str::join_generic_copy",
+      "self": 55718,
+      "total": 151745,
+      "share": 0.00000830889217107776
+    },
+    {
+      "name": "__realloc",
+      "self": 53073,
+      "total": 2521019,
+      "share": 0.000007914459137004379
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_struct",
+      "self": 50499,
+      "total": 252143,
+      "share": 0.000007530613908382494
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_map",
+      "self": 50040,
+      "total": 1929527,
+      "share": 0.000007462165982998871
+    },
+    {
+      "name": "alloc::raw_vec::finish_grow",
+      "self": 49494,
+      "total": 2759392,
+      "share": 0.0000073807442678366535
+    },
+    {
+      "name": "get_cie_encoding",
+      "self": 47202,
+      "total": 94052,
+      "share": 0.0000070389520129798704
+    },
+    {
+      "name": "\u003cserde_json::de::SeqAccess\u003cR\u003e as serde_core::de::SeqAccess\u003e::next_element_seed",
+      "self": 44768,
+      "total": 221248,
+      "share": 0.000006675984147220093
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentVisitor as serde_core::de::Visitor\u003e::visit_seq",
+      "self": 43128,
+      "total": 495183,
+      "share": 0.000006431420753692552
+    },
+    {
+      "name": "hashbrown::raw::RawTable\u003cT,A\u003e::reserve_rehash",
+      "self": 42372,
+      "total": 519395,
+      "share": 0.0000063186829942371736
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::binary_impl",
+      "self": 41271,
+      "total": 65536824,
+      "share": 0.0000061544974477287455
+    },
+    {
+      "name": "candle_core::layout::Layout::broadcast_as",
+      "self": 40014,
+      "total": 184003,
+      "share": 0.000005967048554031112
+    },
+    {
+      "name": "_int_realloc",
+      "self": 39075,
+      "total": 2467826,
+      "share": 0.000005827021098834551
+    },
+    {
+      "name": "__strlen",
+      "self": 36756,
+      "total": 36756,
+      "share": 0.0000054812024954257895
+    },
+    {
+      "name": "\u003cstd::collections::hash::map::HashMap\u003calloc::string::String,candle_core::tensor::Tensor\u003e as candle_nn::var_builder::SimpleBackend\u003e::get",
+      "self": 36115,
+      "total": 187812,
+      "share": 0.000005385613998321428
+    },
+    {
+      "name": "unicode_categories::table_binary_search",
+      "self": 32818,
+      "total": 32818,
+      "share": 0.000004893952102918804
+    },
+    {
+      "name": "gemm_common::cache::kernel_params",
+      "self": 28795,
+      "total": 32958,
+      "share": 0.00000429402616867411
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_as",
+      "self": 26982,
+      "total": 261198,
+      "share": 0.000004023664319609823
+    },
+    {
+      "name": "candle_core::shape::Shape::broadcast_shape_binary_op",
+      "self": 26973,
+      "total": 88489,
+      "share": 0.00000402232220342583
+    },
+    {
+      "name": "\u003calloc::vec::into_iter::IntoIter\u003cT,A\u003e as core::iter::traits::iterator::Iterator\u003e::fold",
+      "self": 23614,
+      "total": 29894,
+      "share": 0.000003521414618755702
+    },
+    {
+      "name": "_mid_memalign",
+      "self": 22949,
+      "total": 317934,
+      "share": 0.0000034222471451606934
+    },
+    {
+      "name": "candle_core::tensor::Tensor::storage",
+      "self": 22752,
+      "total": 22752,
+      "share": 0.0000033928697131332996
+    },
+    {
+      "name": "__rdl_alloc_zeroed",
+      "self": 22096,
+      "total": 22096,
+      "share": 0.0000032950443557222835
+    },
+    {
+      "name": "\u003cserde::private::de::content::SeqRefDeserializer\u003cE\u003e as serde_core::de::SeqAccess\u003e::next_element_seed",
+      "self": 21987,
+      "total": 21987,
+      "share": 0.0000032787898374939283
+    },
+    {
+      "name": "daachorse::build_helper::BuildHelper::new",
+      "self": 20537,
+      "total": 20796,
+      "share": 0.0000030625600078506756
+    },
+    {
+      "name": "candle_core::tensor::Tensor::matmul",
+      "self": 20496,
+      "total": 5511756441,
+      "share": 0.0000030564459230124873
+    },
+    {
+      "name": "candle_core::tensor::Tensor::add",
+      "self": 19434,
+      "total": 44195457,
+      "share": 0.00000289807621330136
+    },
+    {
+      "name": "candle_core::tensor::Tensor::transpose",
+      "self": 19116,
+      "total": 107616,
+      "share": 0.0000028506547748002883
+    },
+    {
+      "name": "\u003calloc::vec::into_iter::IntoIter\u003cT,A\u003e as core::iter::traits::iterator::Iterator\u003e::try_fold",
+      "self": 18877,
+      "total": 199328369,
+      "share": 0.0000028150141339142624
+    },
+    {
+      "name": "safetensors::tensor::SafeTensors::tensors",
+      "self": 18273,
+      "total": 155773,
+      "share": 0.0000027249432255663143
+    },
+    {
+      "name": "candle_core::storage::Storage::binary_impl",
+      "self": 17854,
+      "total": 65560328,
+      "share": 0.0000026624602610004367
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT,A\u003e as core::clone::Clone\u003e::clone",
+      "self": 17608,
+      "total": 111067,
+      "share": 0.0000026257757519713055
+    },
+    {
+      "name": "core::slice::sort::stable::quicksort::quicksort",
+      "self": 17500,
+      "total": 213518,
+      "share": 0.000002609670357763394
+    },
+    {
+      "name": "candle_core::layout::Layout::strided_blocks",
+      "self": 16598,
+      "total": 32051,
+      "share": 0.000002475160491323247
+    },
+    {
+      "name": "\u003cserde_core::de::impls::\u003cimpl serde_core::de::Deserialize for alloc::vec::Vec\u003cT\u003e\u003e::deserialize::VecVisitor\u003cT\u003e as serde_core::de::Visitor\u003e::visit_seq",
+      "self": 16558,
+      "total": 113664,
+      "share": 0.0000024691955305055017
+    },
+    {
+      "name": "candle_transformers::models::bert::BertLayer::load",
+      "self": 16140,
+      "total": 815643,
+      "share": 0.0000024068616899600674
+    },
+    {
+      "name": "core::slice::sort::shared::smallsort::small_sort_general_with_scratch",
+      "self": 15855,
+      "total": 86915,
+      "share": 0.0000023643613441336353
+    },
+    {
+      "name": "candle_core::layout::Layout::transpose",
+      "self": 15708,
+      "total": 47868,
+      "share": 0.000002342440113128423
+    },
+    {
+      "name": "__rdl_realloc",
+      "self": 15380,
+      "total": 15380,
+      "share": 0.0000022935274344229146
+    },
+    {
+      "name": "candle_core::layout::Layout::offsets_b",
+      "self": 15307,
+      "total": 15307,
+      "share": 0.0000022826413809305302
+    },
+    {
+      "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+      "self": 15168,
+      "total": 119012,
+      "share": 0.0000022619131420888664
+    },
+    {
+      "name": "candle_core::tensor::Tensor::new_impl",
+      "self": 14785,
+      "total": 198843183,
+      "share": 0.000002204798642258959
+    },
+    {
+      "name": "__posix_memalign",
+      "self": 14289,
+      "total": 332223,
+      "share": 0.0000021308331281189225
+    },
+    {
+      "name": "candle_core::safetensors::convert_slice",
+      "self": 14200,
+      "total": 198880740,
+      "share": 0.00000211756109029944
+    },
+    {
+      "name": "\u003csafetensors::tensor::_::\u003cimpl serde_core::de::Deserialize for safetensors::tensor::Dtype\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 13213,
+      "total": 35650,
+      "share": 0.0000019703756821215843
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::push_prefix",
+      "self": 12762,
+      "total": 242046,
+      "share": 0.0000019031207489015106
+    },
+    {
+      "name": "candle_core::device::Device::storage",
+      "self": 12059,
+      "total": 198541619,
+      "share": 0.000001798286562529644
+    },
+    {
+      "name": "myriscvcandleapp::main",
+      "self": 11991,
+      "total": 6703703775,
+      "share": 0.0000017881461291394778
+    },
+    {
+      "name": "candle_core::tensor::Tensor::same_shape_binary_op",
+      "self": 11526,
+      "total": 20042,
+      "share": 0.0000017188034596331932
+    },
+    {
+      "name": "ahash::random_state::RandomState::from_keys",
+      "self": 11288,
+      "total": 11288,
+      "share": 0.000001683311942767611
+    },
+    {
+      "name": "dyn_stack::mem::GlobalMemBuffer::new",
+      "self": 11258,
+      "total": 352141,
+      "share": 0.0000016788382221543024
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::get_with_hints",
+      "self": 11038,
+      "total": 420374,
+      "share": 0.0000016460309376567054
+    },
+    {
+      "name": "daachorse::bytewise::builder::DoubleArrayAhoCorasickBuilder::build_with_values",
+      "self": 10718,
+      "total": 51994,
+      "share": 0.0000015983112511147461
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sum_impl",
+      "self": 10707,
+      "total": 4354846,
+      "share": 0.0000015966708868898663
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::path",
+      "self": 9894,
+      "total": 179172,
+      "share": 0.0000014754330582692012
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_add",
+      "self": 9408,
+      "total": 41569882,
+      "share": 0.0000014029587843336007
+    },
+    {
+      "name": "candle_nn::linear::linear",
+      "self": 9408,
+      "total": 367374,
+      "share": 0.0000014029587843336007
+    },
+    {
+      "name": "\u003ccore::marker::PhantomData\u003cT\u003e as serde_core::de::DeserializeSeed\u003e::deserialize",
+      "self": 9385,
+      "total": 22186,
+      "share": 0.0000013995289318633973
+    },
+    {
+      "name": "candle_core::safetensors::convert",
+      "self": 9200,
+      "total": 198889940,
+      "share": 0.0000013719409880813272
+    },
+    {
+      "name": "safetensors::tensor::SafeTensors::read_metadata",
+      "self": 8867,
+      "total": 2321205,
+      "share": 0.000001322282689273601
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_device",
+      "self": 8865,
+      "total": 8865,
+      "share": 0.0000013219844412327136
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003csafetensors::tensor::SafeTensorError\u003e",
+      "self": 8822,
+      "total": 8822,
+      "share": 0.000001315572108353638
+    },
+    {
+      "name": "candle_core::tensor::Tensor::reshape",
+      "self": 8797,
+      "total": 42407,
+      "share": 0.0000013118440078425474
+    },
+    {
+      "name": "candle_core::tensor::Tensor::affine",
+      "self": 8184,
+      "total": 294202,
+      "share": 0.0000012204309833106068
+    },
+    {
+      "name": "candle_core::tensor::Tensor::contiguous",
+      "self": 8112,
+      "total": 2362543,
+      "share": 0.000001209694053838666
+    },
+    {
+      "name": "\u003cserde::private::de::content::EnumRefDeserializer\u003cE\u003e as serde_core::de::EnumAccess\u003e::variant_seed",
+      "self": 8082,
+      "total": 55178,
+      "share": 0.0000012052203332253572
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_seq",
+      "self": 8050,
+      "total": 83323,
+      "share": 0.0000012004483645711614
+    },
+    {
+      "name": "candle_core::storage::Storage::same_dtype",
+      "self": 8050,
+      "total": 8050,
+      "share": 0.0000012004483645711614
+    },
+    {
+      "name": "candle_core::storage::Storage::matmul",
+      "self": 7968,
+      "total": 5511600511,
+      "share": 0.0000011882201948947843
+    },
+    {
+      "name": "candle_core::layout::Layout::contiguous_with_offset",
+      "self": 7564,
+      "total": 29819,
+      "share": 0.0000011279740906355609
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_dtype",
+      "self": 7410,
+      "total": 7410,
+      "share": 0.000001105008991487243
+    },
+    {
+      "name": "daachorse::bytewise::builder::DoubleArrayAhoCorasickBuilder::remove_invalid_checks",
+      "self": 6924,
+      "total": 6924,
+      "share": 0.0000010325347175516424
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003csafetensors::tensor::SafeTensors\u003e",
+      "self": 6654,
+      "total": 52112,
+      "share": 9.922712320318644e-7
+    },
+    {
+      "name": "\u003ccandle_nn::layer_norm::LayerNorm as candle_core::Module\u003e::forward",
+      "self": 6650,
+      "total": 34989901,
+      "share": 9.916747359500899e-7
+    },
+    {
+      "name": "\u003ctokenizers::normalizers::bert::BertNormalizer as tokenizers::tokenizer::Normalizer\u003e::normalize",
+      "self": 6522,
+      "total": 112371,
+      "share": 9.72586861333306e-7
+    },
+    {
+      "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+      "self": 6408,
+      "total": 5530371847,
+      "share": 9.555867230027332e-7
+    },
+    {
+      "name": "core::ops::function::impls::\u003cimpl core::ops::function::FnOnce\u003cA\u003e for \u0026mut F\u003e::call_once",
+      "self": 6397,
+      "total": 43227,
+      "share": 9.539463587778533e-7
+    },
+    {
+      "name": "candle_core::shape::Shape::stride_contiguous",
+      "self": 6365,
+      "total": 24681,
+      "share": 9.491743901236574e-7
+    },
+    {
+      "name": "\u003cstd::io::buffered::linewritershim::LineWriterShim\u003cW\u003e as std::io::Write\u003e::write_all",
+      "self": 6348,
+      "total": 18519,
+      "share": 9.466392817761158e-7
+    },
+    {
+      "name": "core::slice::memchr::memrchr",
+      "self": 6332,
+      "total": 6332,
+      "share": 9.442532974490179e-7
+    },
+    {
+      "name": "hashbrown::map::HashMap\u003cK,V,S,A\u003e::get_inner",
+      "self": 6128,
+      "total": 12355,
+      "share": 9.138319972785188e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_core::cpu_backend::CpuStorage\u003e",
+      "self": 6086,
+      "total": 6086,
+      "share": 9.075687884198867e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::div",
+      "self": 6042,
+      "total": 6961676,
+      "share": 9.010073315203673e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::normalizer::NormalizedString::slice",
+      "self": 5896,
+      "total": 12984,
+      "share": 8.792352245355984e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sub",
+      "self": 5883,
+      "total": 6921658,
+      "share": 8.772966122698313e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::normalizer::NormalizedString::transform_range",
+      "self": 5518,
+      "total": 75825,
+      "share": 8.228663448079091e-7
+    },
+    {
+      "name": "\u003cunicode_normalization_alignments::decompose::Decompositions\u003cI\u003e as core::iter::traits::iterator::Iterator\u003e::next",
+      "self": 5413,
+      "total": 10442,
+      "share": 8.072083226613287e-7
+    },
+    {
+      "name": "\u003chashbrown::raw::RawTable\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 5381,
+      "total": 32779,
+      "share": 8.024363540071329e-7
+    },
+    {
+      "name": "\u003calloc::vec::splice::Splice\u003cI,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 5268,
+      "total": 5268,
+      "share": 7.855853396970034e-7
+    },
+    {
+      "name": "dyn_stack::stack_req::unwrap",
+      "self": 5188,
+      "total": 5188,
+      "share": 7.736554180615137e-7
+    },
+    {
+      "name": "dyn_stack::stack_req::round_up_pow2",
+      "self": 5184,
+      "total": 5184,
+      "share": 7.730589219797392e-7
+    },
+    {
+      "name": "serde_json::de::Deserializer\u003cR\u003e::end_map",
+      "self": 5148,
+      "total": 5148,
+      "share": 7.676904572437688e-7
+    },
+    {
+      "name": "\u003csafetensors::tensor::_::\u003cimpl serde_core::de::Deserialize for safetensors::tensor::Dtype\u003e::deserialize::__Visitor as serde_core::de::Visitor\u003e::visit_enum",
+      "self": 5000,
+      "total": 48050,
+      "share": 7.456201022181127e-7
+    },
+    {
+      "name": "candle_transformers::models::bert::BertSelfAttention::transpose_for_scores",
+      "self": 4824,
+      "total": 1886497,
+      "share": 7.193742746200351e-7
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003cusize\u003e\u003e::from",
+      "self": 4800,
+      "total": 15200,
+      "share": 7.157952981293881e-7
+    },
+    {
+      "name": "std::env::_var",
+      "self": 4704,
+      "total": 29376,
+      "share": 7.014793921668003e-7
+    },
+    {
+      "name": "core::fmt::write",
+      "self": 4698,
+      "total": 47478,
+      "share": 7.005846480441386e-7
+    },
+    {
+      "name": "\u003cmyriscvcandleapp::Args as clap_builder::derive::Args\u003e::augment_args",
+      "self": 4649,
+      "total": 47278,
+      "share": 6.932775710424011e-7
+    },
+    {
+      "name": "\u003ctokenizers::models::wordpiece::WordPiece as tokenizers::tokenizer::Model\u003e::tokenize",
+      "self": 4600,
+      "total": 11878,
+      "share": 6.859704940406636e-7
+    },
+    {
+      "name": "core::ffi::c_str::CStr::from_bytes_with_nul",
+      "self": 4541,
+      "total": 4541,
+      "share": 6.771721768344899e-7
+    },
+    {
+      "name": "\u003ccore::iter::adapters::flatten::FlatMap\u003cI,U,F\u003e as core::iter::traits::iterator::Iterator\u003e::next",
+      "self": 4474,
+      "total": 31566,
+      "share": 6.671808674647672e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::mul",
+      "self": 4452,
+      "total": 7760112,
+      "share": 6.639001390150075e-7
+    },
+    {
+      "name": "std::sys::pal::unix::os::getenv::{{closure}}",
+      "self": 4416,
+      "total": 13056,
+      "share": 6.58531674279037e-7
+    },
+    {
+      "name": "\u003ccore::iter::adapters::map::Map\u003cI,F\u003e as core::iter::traits::iterator::Iterator\u003e::fold",
+      "self": 4363,
+      "total": 17645,
+      "share": 6.506281011955251e-7
+    },
+    {
+      "name": "\u003cstd::io::Write::write_fmt::Adapter\u003cT\u003e as core::fmt::Write\u003e::write_str",
+      "self": 4270,
+      "total": 22789,
+      "share": 6.367595672942682e-7
+    },
+    {
+      "name": "daachorse::build_helper::BuildHelper::push_block",
+      "self": 4167,
+      "total": 4167,
+      "share": 6.21399793188575e-7
+    },
+    {
+      "name": "\u003cusize as candle_core::shape::Dim\u003e::to_index",
+      "self": 4158,
+      "total": 4158,
+      "share": 6.200576770045824e-7
+    },
+    {
+      "name": "sysmalloc",
+      "self": 4146,
+      "total": 9970,
+      "share": 6.18268188759259e-7
+    },
+    {
+      "name": "__tls_get_addr",
+      "self": 4136,
+      "total": 4136,
+      "share": 6.167769485548228e-7
+    },
+    {
+      "name": "sysmalloc_mmap",
+      "self": 4080,
+      "total": 4640,
+      "share": 6.084260034099799e-7
+    },
+    {
+      "name": "candle_core::shape::Dims::to_indexes",
+      "self": 4072,
+      "total": 9492,
+      "share": 6.072330112464309e-7
+    },
+    {
+      "name": "\u003ccandle_transformers::models::bert::BertSelfAttention as candle_core::Module\u003e::forward",
+      "self": 3960,
+      "total": 1407459614,
+      "share": 5.905311209567452e-7
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuDevice as candle_core::backend::BackendDevice\u003e::zeros_impl",
+      "self": 3880,
+      "total": 392757,
+      "share": 5.786011993212554e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_div",
+      "self": 3876,
+      "total": 7031768,
+      "share": 5.780047032394809e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_sub",
+      "self": 3774,
+      "total": 6986202,
+      "share": 5.627940531542314e-7
+    },
+    {
+      "name": "getenv",
+      "self": 3672,
+      "total": 9170,
+      "share": 5.475834030689819e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_left",
+      "self": 3600,
+      "total": 139648,
+      "share": 5.368464735970411e-7
+    },
+    {
+      "name": "candle_transformers::models::with_tracing::linear",
+      "self": 3600,
+      "total": 370974,
+      "share": 5.368464735970411e-7
+    },
+    {
+      "name": "\u003ccandle_core::shape::D as candle_core::shape::Dim\u003e::to_index",
+      "self": 3588,
+      "total": 3588,
+      "share": 5.350569853517176e-7
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_enum",
+      "self": 3435,
+      "total": 66304,
+      "share": 5.122410102238433e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sqr",
+      "self": 3432,
+      "total": 2199781,
+      "share": 5.117936381625125e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sqrt",
+      "self": 3432,
+      "total": 35394,
+      "share": 5.117936381625125e-7
+    },
+    {
+      "name": "unicode_normalization_alignments::decompose::Decompositions\u003cI\u003e::push_back",
+      "self": 3384,
+      "total": 5029,
+      "share": 5.046356851812186e-7
+    },
+    {
+      "name": "candle_nn::layer_norm::layer_norm",
+      "self": 3200,
+      "total": 118965,
+      "share": 4.771968654195921e-7
+    },
+    {
+      "name": "candle_core::storage::Storage::reduce_op",
+      "self": 3192,
+      "total": 4455823,
+      "share": 4.760038732560431e-7
+    },
+    {
+      "name": "\u003calloc::string::String as core::fmt::Write\u003e::write_str",
+      "self": 3135,
+      "total": 10631,
+      "share": 4.675038040907566e-7
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 2823,
+      "total": 2252270,
+      "share": 4.209771097123464e-7
+    },
+    {
+      "name": "__rust_alloc_zeroed",
+      "self": 2762,
+      "total": 2762,
+      "share": 4.1188054446528544e-7
+    },
+    {
+      "name": "unicode_categories::UnicodeCategories::is_punctuation",
+      "self": 2691,
+      "total": 19149,
+      "share": 4.012927390137882e-7
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_struct",
+      "self": 2623,
+      "total": 124599708,
+      "share": 3.9115230562362187e-7
+    },
+    {
+      "name": "candle_core::utils::get_num_threads",
+      "self": 2592,
+      "total": 31968,
+      "share": 3.865294609898696e-7
+    },
+    {
+      "name": "candle_core::op::BackpropOp::new1",
+      "self": 2565,
+      "total": 2565,
+      "share": 3.825031124378918e-7
+    },
+    {
+      "name": "munmap_chunk",
+      "self": 2560,
+      "total": 2560,
+      "share": 3.8175749233567366e-7
+    },
+    {
+      "name": "core::fmt::Formatter::pad_integral",
+      "self": 2440,
+      "total": 3280,
+      "share": 3.6386260988243894e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_mul",
+      "self": 2400,
+      "total": 7780720,
+      "share": 3.5789764906469404e-7
+    },
+    {
+      "name": "\u003cserde::private::de::FlatMapDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_struct",
+      "self": 2365,
+      "total": 16282,
+      "share": 3.5267830834916727e-7
+    },
+    {
+      "name": "\u003ctokenizers::tokenizer::encoding::Encoding as core::iter::traits::collect::FromIterator\u003c(u32,alloc::string::String,(usize,usize),core::option::Option\u003cu32\u003e,u32)\u003e\u003e::from_iter",
+      "self": 2352,
+      "total": 19993,
+      "share": 3.5073969608340017e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::is_contiguous",
+      "self": 2329,
+      "total": 2329,
+      "share": 3.4730984361319687e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::elem_count",
+      "self": 2308,
+      "total": 2308,
+      "share": 3.441782391838808e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::with_tracing::Linear\u003e",
+      "self": 2304,
+      "total": 154934,
+      "share": 3.435817431021063e-7
+    },
+    {
+      "name": "serde::private::de::flat_map_take_entry",
+      "self": 2295,
+      "total": 4360,
+      "share": 3.422396269181137e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::added_vocabulary::AddedVocabulary::split_with_indices",
+      "self": 2219,
+      "total": 9033,
+      "share": 3.3090620136439836e-7
+    },
+    {
+      "name": "__sched_getaffinity_new",
+      "self": 2208,
+      "total": 7008,
+      "share": 3.292658371395185e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::t",
+      "self": 2184,
+      "total": 67800,
+      "share": 3.256868606488716e-7
+    },
+    {
+      "name": "candle_core::cpu_backend::Map1::map",
+      "self": 2134,
+      "total": 100922,
+      "share": 3.182306596266905e-7
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c(usize,usize)\u003e\u003e::from",
+      "self": 2100,
+      "total": 15097,
+      "share": 3.1316044293160733e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::reduce_impl",
+      "self": 2088,
+      "total": 209547,
+      "share": 3.113709546862838e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::added_vocabulary::AddedVocabulary::add_tokens",
+      "self": 2049,
+      "total": 74196,
+      "share": 3.0555511788898253e-7
+    },
+    {
+      "name": "\u003ccandle_transformers::models::bert::BertLayer as candle_core::Module\u003e::forward",
+      "self": 1992,
+      "total": 5713816493,
+      "share": 2.970550487236961e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::encoding::Encoding::merge_with",
+      "self": 1980,
+      "total": 19423,
+      "share": 2.952655604783726e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::normalizer::NormalizedString::lowercase",
+      "self": 1891,
+      "total": 17247,
+      "share": 2.819935226588902e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::pre_tokenizer::PreTokenizedString::split",
+      "self": 1846,
+      "total": 194904,
+      "share": 2.752829417389272e-7
+    },
+    {
+      "name": "alloc::vec::in_place_collect::\u003cimpl alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e for alloc::vec::Vec\u003cT\u003e\u003e::from_iter",
+      "self": 1810,
+      "total": 22926,
+      "share": 2.699144770029568e-7
+    },
+    {
+      "name": "clap_builder::builder::command::Command::_build_self",
+      "self": 1775,
+      "total": 10242,
+      "share": 2.6469513628743e-7
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_map",
+      "self": 1770,
+      "total": 63687950,
+      "share": 2.639495161852119e-7
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT,A\u003e as alloc::vec::spec_extend::SpecExtend\u003cT,I\u003e\u003e::spec_extend",
+      "self": 1761,
+      "total": 6449,
+      "share": 2.626074000012193e-7
+    },
+    {
+      "name": "candle_transformers::models::with_tracing::layer_norm",
+      "self": 1725,
+      "total": 122815,
+      "share": 2.5723893526524884e-7
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c\u0026[usize]\u003e\u003e::from",
+      "self": 1656,
+      "total": 6120,
+      "share": 2.469493778546389e-7
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+      "self": 1650,
+      "total": 1916937,
+      "share": 2.4605463373197716e-7
+    },
+    {
+      "name": "unicode_normalization_alignments::lookups::canonical_combining_class",
+      "self": 1645,
+      "total": 1645,
+      "share": 2.453090136297591e-7
+    },
+    {
+      "name": "serde_json::error::make_error",
+      "self": 1633,
+      "total": 3908,
+      "share": 2.4351952538443556e-7
+    },
+    {
+      "name": "\u003ccandle_transformers::models::bert::BertAttention as candle_core::Module\u003e::forward",
+      "self": 1620,
+      "total": 1888094573,
+      "share": 2.4158091311866847e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::gelu_erf",
+      "self": 1584,
+      "total": 126973803,
+      "share": 2.3621244838269807e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::exp",
+      "self": 1572,
+      "total": 814756,
+      "share": 2.344229601373746e-7
+    },
+    {
+      "name": "candle_core::tensor::Tensor::flatten_",
+      "self": 1560,
+      "total": 16944,
+      "share": 2.3263347189205114e-7
+    },
+    {
+      "name": "__rust_realloc",
+      "self": 1538,
+      "total": 1538,
+      "share": 2.2935274344229143e-7
+    },
+    {
+      "name": "clap_builder::parser::matches::arg_matches::ArgMatches::try_remove_one",
+      "self": 1528,
+      "total": 18827,
+      "share": 2.2786150323785522e-7
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Div\u003cf64\u003e\u003e::div",
+      "self": 1512,
+      "total": 295225,
+      "share": 2.2547551891075725e-7
+    },
+    {
+      "name": "clap_builder::parser::parser::Parser::push_arg_values",
+      "self": 1501,
+      "total": 20132,
+      "share": 2.238351546858774e-7
+    },
+    {
+      "name": "core::str::pattern::StrSearcher::new",
+      "self": 1460,
+      "total": 1520,
+      "share": 2.1772106984768888e-7
+    },
+    {
+      "name": "\u003ccore::iter::adapters::map::Map\u003cI,F\u003e as core::iter::traits::iterator::Iterator\u003e::try_fold",
+      "self": 1443,
+      "total": 850720,
+      "share": 2.151859615001473e-7
+    },
+    {
+      "name": "serde_core::de::MapAccess::next_value",
+      "self": 1407,
+      "total": 2829,
+      "share": 2.098174967641769e-7
+    },
+    {
+      "name": "candle_nn::ops::softmax",
+      "self": 1368,
+      "total": 2125670,
+      "share": 2.0400165996687563e-7
+    },
+    {
+      "name": "\u003cserde_json::read::SliceRead as serde_json::read::Read\u003e::ignore_str",
+      "self": 1318,
+      "total": 1318,
+      "share": 1.9654545894469448e-7
+    },
+    {
+      "name": "candle_core::shape::Shape::elem_count",
+      "self": 1285,
+      "total": 1285,
+      "share": 1.9162436627005494e-7
+    },
+    {
+      "name": "candle_core::tensor::TensorId::new",
+      "self": 1280,
+      "total": 1280,
+      "share": 1.9087874616783683e-7
+    },
+    {
+      "name": "\u003cserde::private::de::content::VariantRefDeserializer\u003cE\u003e as serde_core::de::VariantAccess\u003e::struct_variant",
+      "self": 1215,
+      "total": 2810,
+      "share": 1.8118568483900136e-7
+    },
+    {
+      "name": "alloc::fmt::format::format_inner",
+      "self": 1210,
+      "total": 15674,
+      "share": 1.8044006473678326e-7
+    },
+    {
+      "name": "core::fmt::Formatter::pad",
+      "self": 1209,
+      "total": 1209,
+      "share": 1.8029094071633963e-7
+    },
+    {
+      "name": "\u003ctokenizers::tokenizer::serialization::TokenizerVisitor\u003cM,N,PT,PP,D\u003e as serde_core::de::Visitor\u003e::visit_map",
+      "self": 1182,
+      "total": 124581756,
+      "share": 1.7626459216436182e-7
+    },
+    {
+      "name": "clap_builder::parser::arg_matcher::ArgMatcher::start_custom_arg",
+      "self": 1138,
+      "total": 5814,
+      "share": 1.6970313526484243e-7
+    },
+    {
+      "name": "\u003calloc::vec::into_iter::IntoIter\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 1128,
+      "total": 1128,
+      "share": 1.6821189506040622e-7
+    },
+    {
+      "name": "clap_builder::parser::arg_matcher::ArgMatcher::check_explicit",
+      "self": 1121,
+      "total": 1757,
+      "share": 1.6716802691730086e-7
+    },
+    {
+      "name": "alloc::string::String::push",
+      "self": 1113,
+      "total": 2154,
+      "share": 1.6597503475375188e-7
+    },
+    {
+      "name": "\u003cstr as core::fmt::Debug\u003e::fmt",
+      "self": 1097,
+      "total": 4061,
+      "share": 1.635890504266539e-7
+    },
+    {
+      "name": "candle_core::storage::Storage::device",
+      "self": 1079,
+      "total": 1079,
+      "share": 1.609048180586687e-7
+    },
+    {
+      "name": "candle_core::storage::Storage::dtype",
+      "self": 1079,
+      "total": 1079,
+      "share": 1.609048180586687e-7
+    },
+    {
+      "name": "clap_builder::util::flat_map::FlatMap\u003cK,V\u003e::remove_entry",
+      "self": 1064,
+      "total": 6150,
+      "share": 1.5866795775201436e-7
+    },
+    {
+      "name": "candle_core::storage::Storage::copy_strided_src",
+      "self": 1050,
+      "total": 1917987,
+      "share": 1.5658022146580366e-7
+    },
+    {
+      "name": "hashbrown::rustc_entry::\u003cimpl hashbrown::map::HashMap\u003cK,V,S,A\u003e\u003e::rustc_entry",
+      "self": 1042,
+      "total": 3660,
+      "share": 1.5538722930225468e-7
+    },
+    {
+      "name": "clap_builder::parser::parser::Parser::react",
+      "self": 1035,
+      "total": 35246,
+      "share": 1.5434336115914932e-7
+    },
+    {
+      "name": "clap_builder::parser::validator::Validator::validate",
+      "self": 1029,
+      "total": 2786,
+      "share": 1.5344861703648759e-7
+    },
+    {
+      "name": "\u003ccandle_transformers::models::bert::_::\u003cimpl serde_core::de::Deserialize for candle_transformers::models::bert::Config\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 1022,
+      "total": 2685,
+      "share": 1.5240474889338223e-7
+    },
+    {
+      "name": "clap_builder::parser::arg_matcher::ArgMatcher::add_index_to",
+      "self": 1004,
+      "total": 4434,
+      "share": 1.4972051652539703e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::added_vocabulary::AddedVocabulary::token_to_id",
+      "self": 1002,
+      "total": 1728,
+      "share": 1.4942226848450977e-7
+    },
+    {
+      "name": "clap_builder::parser::arg_matcher::ArgMatcher::add_val_to",
+      "self": 999,
+      "total": 8111,
+      "share": 1.489748964231789e-7
+    },
+    {
+      "name": "\u003ctokenizers::models::wordpiece::serialization::WordPieceVisitor as serde_core::de::Visitor\u003e::visit_map",
+      "self": 984,
+      "total": 38715929,
+      "share": 1.4673803611652457e-7
+    },
+    {
+      "name": "tokenizers::tokenizer::normalizer::NormalizedString::split",
+      "self": 970,
+      "total": 55463,
+      "share": 1.4465029983031385e-7
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_identifier",
+      "self": 960,
+      "total": 4745,
+      "share": 1.4315905962587762e-7
+    },
+    {
+      "name": "hashbrown::raw::RawTable\u003cT,A\u003e::remove_entry",
+      "self": 952,
+      "total": 1230,
+      "share": 1.4196606746232866e-7
+    },
+    {
+      "name": "\u003ccandle_transformers::models::bert::BertIntermediate as candle_core::Module\u003e::forward",
+      "self": 900,
+      "total": 1974291713,
+      "share": 1.3421161839926028e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cclap_builder::builder::arg::Arg\u003e",
+      "self": 889,
+      "total": 4504,
+      "share": 1.3257125417438042e-7
+    },
+    {
+      "name": "\u003ctokenizers::tokenizer::added_vocabulary::_::\u003cimpl serde_core::de::Deserialize for tokenizers::tokenizer::added_vocabulary::AddedToken\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 880,
+      "total": 2945,
+      "share": 1.3122913799038783e-7
+    },
+    {
+      "name": "clap_builder::parser::matches::matched_arg::MatchedArg::append_val",
+      "self": 860,
+      "total": 6476,
+      "share": 1.2824665758151538e-7
+    },
+    {
+      "name": "clap_builder::parser::matches::matched_arg::MatchedArg::into_vals_flatten",
+      "self": 850,
+      "total": 5160,
+      "share": 1.2675541737707914e-7
+    },
+    {
+      "name": "clap_builder::parser::parser::Parser::add_defaults",
+      "self": 844,
+      "total": 41621,
+      "share": 1.258606732544174e-7
+    },
+    {
+      "name": "core::fmt::Formatter::pad_integral::write_prefix",
+      "self": 840,
+      "total": 840,
+      "share": 1.2526417717264293e-7
+    },
+    {
+      "name": "once_cell::race::once_box::OnceBox\u003cT\u003e::get_or_try_init",
+      "self": 825,
+      "total": 1123,
+      "share": 1.2302731686598858e-7
+    },
+    {
+      "name": "candle_core::display::\u003cimpl core::fmt::Debug for candle_core::tensor::Tensor\u003e::fmt",
+      "self": 821,
+      "total": 13742,
+      "share": 1.224308207842141e-7
+    },
+    {
+      "name": "clap_builder::builder::arg::Arg::_build",
+      "self": 817,
+      "total": 2369,
+      "share": 1.218343247024396e-7
+    },
+    {
+      "name": "core::fmt::num::imp::\u003cimpl u32\u003e::_fmt",
+      "self": 806,
+      "total": 4882,
+      "share": 1.2019396047755975e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::with_tracing::LayerNorm\u003e",
+      "self": 800,
+      "total": 41061,
+      "share": 1.1929921635489802e-7
+    },
+    {
+      "name": "core::fmt::num::imp::\u003cimpl usize\u003e::_fmt",
+      "self": 790,
+      "total": 5220,
+      "share": 1.178079761504618e-7
+    },
+    {
+      "name": "\u003c\u0026std::io::stdio::Stdout as std::io::Write\u003e::write_fmt",
+      "self": 767,
+      "total": 34820,
+      "share": 1.1437812368025848e-7
+    },
+    {
+      "name": "\u003cF as tokenizers::tokenizer::pattern::Pattern\u003e::find_matches",
+      "self": 758,
+      "total": 36871,
+      "share": 1.1303600749626588e-7
+    },
+    {
+      "name": "clap_builder::util::flat_map::FlatMap\u003cK,V\u003e::remove",
+      "self": 740,
+      "total": 800,
+      "share": 1.1035177512828066e-7
+    },
+    {
+      "name": "core::slice::sort::shared::pivot::median3_rec",
+      "self": 690,
+      "total": 690,
+      "share": 1.0289557410609955e-7
+    },
+    {
+      "name": "core::slice::sort::stable::drift::sort",
+      "self": 652,
+      "total": 214170,
+      "share": 9.722886132924188e-8
+    },
+    {
+      "name": "\u003calloc::string::String as core::iter::traits::collect::FromIterator\u003cchar\u003e\u003e::from_iter",
+      "self": 626,
+      "total": 43019,
+      "share": 9.33516367977077e-8
+    },
+    {
+      "name": "clap_builder::util::any_value::AnyValue::downcast_into",
+      "self": 622,
+      "total": 1812,
+      "share": 9.275514071593322e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ctokenizers::tokenizer::encoding::Encoding\u003e",
+      "self": 620,
+      "total": 6295,
+      "share": 9.245689267504596e-8
+    },
+    {
+      "name": "clap_builder::parser::matches::matched_arg::MatchedArg::new_val_group",
+      "self": 610,
+      "total": 6515,
+      "share": 9.096565247060974e-8
+    },
+    {
+      "name": "ptmalloc_init",
+      "self": 610,
+      "total": 864,
+      "share": 9.096565247060974e-8
+    },
+    {
+      "name": "mmap64",
+      "self": 609,
+      "total": 609,
+      "share": 9.081652845016612e-8
+    },
+    {
+      "name": "core::num::flt2dec::strategy::grisu::format_exact_opt",
+      "self": 606,
+      "total": 714,
+      "share": 9.036915638883526e-8
+    },
+    {
+      "name": "clap_builder::builder::command::Command::arg_internal",
+      "self": 603,
+      "total": 9950,
+      "share": 8.992178432750439e-8
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter_nested::SpecFromIterNested\u003cT,I\u003e\u003e::from_iter",
+      "self": 600,
+      "total": 3003,
+      "share": 8.947441226617351e-8
+    },
+    {
+      "name": "std::io::buffered::bufwriter::BufWriter\u003cW\u003e::flush_buf",
+      "self": 594,
+      "total": 774,
+      "share": 8.857966814351178e-8
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Add\u003cf64\u003e\u003e::add",
+      "self": 575,
+      "total": 50400,
+      "share": 8.574631175508295e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sum_all",
+      "self": 570,
+      "total": 24078,
+      "share": 8.500069165286484e-8
+    },
+    {
+      "name": "std::sys::os_str::bytes::Slice::to_owned",
+      "self": 546,
+      "total": 4417,
+      "share": 8.14217151622179e-8
+    },
+    {
+      "name": "core::unicode::unicode_data::conversions::to_lower",
+      "self": 517,
+      "total": 517,
+      "share": 7.709711856935285e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::index_select",
+      "self": 513,
+      "total": 104687,
+      "share": 7.650062248757835e-8
+    },
+    {
+      "name": "clap_builder::util::flat_map::Entry\u003cK,V\u003e::or_insert",
+      "self": 510,
+      "total": 4566,
+      "share": 7.605325042624749e-8
+    },
+    {
+      "name": "core::fmt::builders::DebugSet::entry",
+      "self": 508,
+      "total": 16778,
+      "share": 7.575500238536025e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::bert::BertLayer\u003e",
+      "self": 504,
+      "total": 195767,
+      "share": 7.515850630358575e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::narrow",
+      "self": 499,
+      "total": 2380,
+      "share": 7.441288620136765e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::bert::BertOutput\u003e",
+      "self": 480,
+      "total": 80190,
+      "share": 7.157952981293881e-8
+    },
+    {
+      "name": "serde_core::de::impls::\u003cimpl serde_core::de::Deserialize for core::option::Option\u003cT\u003e\u003e::deserialize",
+      "self": 470,
+      "total": 111413,
+      "share": 7.008828960850258e-8
+    },
+    {
+      "name": "\u003cclap_builder::builder::styled_str::StyledStr as core::convert::From\u003c\u0026str\u003e\u003e::from",
+      "self": 462,
+      "total": 5033,
+      "share": 6.889529744495361e-8
+    },
+    {
+      "name": "\u003cP as clap_builder::builder::value_parser::AnyValueParser\u003e::parse_ref_",
+      "self": 452,
+      "total": 5196,
+      "share": 6.740405724051738e-8
+    },
+    {
+      "name": "\u003calloc::boxed::Box\u003cdyn candle_nn::var_builder::SimpleBackend\u003e as candle_nn::var_builder::Backend\u003e::get",
+      "self": 450,
+      "total": 49860,
+      "share": 6.710580919963014e-8
+    },
+    {
+      "name": "clap_builder::mkeymap::MKeyMap::_build",
+      "self": 436,
+      "total": 1607,
+      "share": 6.501807291341942e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::cat0",
+      "self": 434,
+      "total": 2910,
+      "share": 6.471982487253218e-8
+    },
+    {
+      "name": "std::io::stdio::_print",
+      "self": 434,
+      "total": 41859,
+      "share": 6.471982487253218e-8
+    },
+    {
+      "name": "clap_builder::builder::arg::Arg::value_parser",
+      "self": 432,
+      "total": 4068,
+      "share": 6.442157683164493e-8
+    },
+    {
+      "name": "clap_builder::parser::parser::Parser::start_custom_arg",
+      "self": 420,
+      "total": 12749,
+      "share": 6.263208858632146e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::unsqueeze",
+      "self": 418,
+      "total": 2717,
+      "share": 6.233384054543421e-8
+    },
+    {
+      "name": "\u003cserde_core::de::OneOf as core::fmt::Display\u003e::fmt",
+      "self": 417,
+      "total": 6733,
+      "share": 6.21847165249906e-8
+    },
+    {
+      "name": "munmap",
+      "self": 400,
+      "total": 400,
+      "share": 5.964960817744901e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003calloc::vec::splice::Splice\u003calloc::vec::into_iter::IntoIter\u003c(usize,usize)\u003e\u003e\u003e",
+      "self": 384,
+      "total": 3348,
+      "share": 5.726362385035105e-8
+    },
+    {
+      "name": "__tunable_get_val",
+      "self": 383,
+      "total": 383,
+      "share": 5.7114499829907425e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::added_vocabulary::AddedVocabulary::refresh_added_tokens",
+      "self": 380,
+      "total": 53114,
+      "share": 5.666712776857656e-8
+    },
+    {
+      "name": "\u003ccandle_nn::embedding::Embedding as candle_core::Module\u003e::forward",
+      "self": 379,
+      "total": 111783,
+      "share": 5.651800374813294e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::encoding::Encoding::merge",
+      "self": 378,
+      "total": 22759,
+      "share": 5.636887972768931e-8
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_u64",
+      "self": 376,
+      "total": 876,
+      "share": 5.607063168680207e-8
+    },
+    {
+      "name": "sysmalloc_mmap_fallback",
+      "self": 359,
+      "total": 408,
+      "share": 5.3535523339260486e-8
+    },
+    {
+      "name": "std::io::stdio::print_to_buffer_if_capture_used",
+      "self": 338,
+      "total": 338,
+      "share": 5.040391890994441e-8
+    },
+    {
+      "name": "std::sys::pal::unix::fs::try_statx",
+      "self": 333,
+      "total": 582,
+      "share": 4.96582988077263e-8
+    },
+    {
+      "name": "clap_builder::parser::parser::Parser::resolve_pending",
+      "self": 330,
+      "total": 330,
+      "share": 4.9210926746395433e-8
+    },
+    {
+      "name": "candle_core::layout::Layout::narrow",
+      "self": 327,
+      "total": 1035,
+      "share": 4.876355468506457e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::new",
+      "self": 324,
+      "total": 3917,
+      "share": 4.83161826237337e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::encoding::Encoding::with_capacity",
+      "self": 320,
+      "total": 1728,
+      "share": 4.771968654195921e-8
+    },
+    {
+      "name": "clap_builder::parser::parser::Parser::get_matches_with",
+      "self": 313,
+      "total": 45222,
+      "share": 4.667581839885385e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::squeeze",
+      "self": 304,
+      "total": 2445,
+      "share": 4.533370221486125e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::TokenizerImpl\u003cM,N,PT,PP,D\u003e::encode",
+      "self": 300,
+      "total": 287548,
+      "share": 4.4737206133086755e-8
+    },
+    {
+      "name": "daachorse::bytewise::builder::DoubleArrayAhoCorasickBuilder::init_array",
+      "self": 295,
+      "total": 26159,
+      "share": 4.399158603086865e-8
+    },
+    {
+      "name": "hashbrown::raw::RawTable\u003cT,A\u003e::with_capacity_in",
+      "self": 291,
+      "total": 12054,
+      "share": 4.3395089949094155e-8
+    },
+    {
+      "name": "candle_transformers::models::bert::BertModel::forward",
+      "self": 287,
+      "total": 5715769216,
+      "share": 4.279859386731966e-8
+    },
+    {
+      "name": "\u003ccandle_transformers::models::bert::BertEncoder as candle_core::Module\u003e::forward",
+      "self": 286,
+      "total": 5713827387,
+      "share": 4.264946984687604e-8
+    },
+    {
+      "name": "core::str::count::char_count_general_case",
+      "self": 284,
+      "total": 284,
+      "share": 4.2351221805988795e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::pre_tokenizer::PreTokenizedString::tokenize",
+      "self": 276,
+      "total": 12304,
+      "share": 4.1158229642439816e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_vec1",
+      "self": 270,
+      "total": 566,
+      "share": 4.026348551977808e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::normalizer::NormalizedString::convert_offsets",
+      "self": 270,
+      "total": 270,
+      "share": 4.026348551977808e-8
+    },
+    {
+      "name": "core::slice::memchr::memchr_aligned",
+      "self": 268,
+      "total": 268,
+      "share": 3.9965237478890836e-8
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_string",
+      "self": 265,
+      "total": 1082,
+      "share": 3.951786541755997e-8
+    },
+    {
+      "name": "\u003c\u0026T as core::fmt::Debug\u003e::fmt",
+      "self": 259,
+      "total": 4190,
+      "share": 3.8623121294898236e-8
+    },
+    {
+      "name": "\u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize",
+      "self": 259,
+      "total": 9982,
+      "share": 3.8623121294898236e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::stack",
+      "self": 259,
+      "total": 7082,
+      "share": 3.8623121294898236e-8
+    },
+    {
+      "name": "core::num::flt2dec::to_exact_fixed_str",
+      "self": 252,
+      "total": 1022,
+      "share": 3.7579253151792877e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::bert::BertIntermediate\u003e",
+      "self": 252,
+      "total": 20280,
+      "share": 3.7579253151792877e-8
+    },
+    {
+      "name": "\u003c\u0026mut A as serde_core::de::MapAccess\u003e::next_entry",
+      "self": 250,
+      "total": 496,
+      "share": 3.728100511090563e-8
+    },
+    {
+      "name": "\u003c\u0026T as core::fmt::Display\u003e::fmt",
+      "self": 246,
+      "total": 246,
+      "share": 3.6684509029131143e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::PostProcessor::process",
+      "self": 244,
+      "total": 47129,
+      "share": 3.63862609882439e-8
+    },
+    {
+      "name": "std::sys::pal::unix::fs::File::open_c",
+      "self": 239,
+      "total": 377,
+      "share": 3.5640640886025784e-8
+    },
+    {
+      "name": "\u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize",
+      "self": 237,
+      "total": 3915,
+      "share": 3.534239284513854e-8
+    },
+    {
+      "name": "candle_nn::embedding::embedding",
+      "self": 237,
+      "total": 6954,
+      "share": 3.534239284513854e-8
+    },
+    {
+      "name": "\u003cstr as core::fmt::Display\u003e::fmt",
+      "self": 234,
+      "total": 234,
+      "share": 3.489502078380767e-8
+    },
+    {
+      "name": "\u003calloc::vec::drain::Drain\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 232,
+      "total": 232,
+      "share": 3.4596772742920424e-8
+    },
+    {
+      "name": "std::fs::read_to_string::inner",
+      "self": 232,
+      "total": 1995044,
+      "share": 3.4596772742920424e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::option::Option\u003cclap_builder::parser::matches::matched_arg::MatchedArg\u003e\u003e",
+      "self": 230,
+      "total": 230,
+      "share": 3.4298524702033184e-8
+    },
+    {
+      "name": "serde_json::de::from_trait",
+      "self": 224,
+      "total": 126890054,
+      "share": 3.3403780579371444e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::iter::adapters::flatten::Flatten\u003calloc::vec::into_iter::IntoIter\u003calloc::vec::Vec\u003cclap_builder::util::any_value::AnyValue\u003e\u003e\u003e\u003e",
+      "self": 220,
+      "total": 3007,
+      "share": 3.280728449759696e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cclap_builder::builder::command::Command\u003e",
+      "self": 219,
+      "total": 5660,
+      "share": 3.265816047715333e-8
+    },
+    {
+      "name": "_dlfo_process_initial",
+      "self": 218,
+      "total": 308,
+      "share": 3.250903645670971e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::added_vocabulary::AddedVocabulary::new",
+      "self": 218,
+      "total": 3511,
+      "share": 3.250903645670971e-8
+    },
+    {
+      "name": "core::iter::adapters::try_process",
+      "self": 216,
+      "total": 200386301,
+      "share": 3.2210788415822465e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::pre_tokenizer::PreTokenizedString::into_encoding",
+      "self": 216,
+      "total": 20773,
+      "share": 3.2210788415822465e-8
+    },
+    {
+      "name": "\u003ccore::iter::adapters::map::Map\u003cI,F\u003e as core::iter::traits::iterator::Iterator\u003e::next",
+      "self": 215,
+      "total": 215,
+      "share": 3.2061664395378845e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::TokenizerImpl\u003cM,N,PT,PP,D\u003e::encode_single_sequence",
+      "self": 214,
+      "total": 236909,
+      "share": 3.191254037493522e-8
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_string",
+      "self": 210,
+      "total": 723,
+      "share": 3.131604429316073e-8
+    },
+    {
+      "name": "\u003ccore::option::Option\u003c\u0026str\u003e as clap_builder::builder::resettable::IntoResettable\u003cclap_builder::builder::styled_str::StyledStr\u003e\u003e::into_resettable",
+      "self": 209,
+      "total": 209,
+      "share": 3.1166920272717105e-8
+    },
+    {
+      "name": "__sbrk",
+      "self": 209,
+      "total": 308,
+      "share": 3.1166920272717105e-8
+    },
+    {
+      "name": "candle_transformers::models::bert::BertModel::load",
+      "self": 209,
+      "total": 947534,
+      "share": 3.1166920272717105e-8
+    },
+    {
+      "name": "\u003cclap_builder::builder::value_parser::BoolValueParser as clap_builder::builder::value_parser::TypedValueParser\u003e::parse_ref",
+      "self": 205,
+      "total": 381,
+      "share": 3.057042419094262e-8
+    },
+    {
+      "name": "clap_builder::builder::command::Command::_do_parse",
+      "self": 205,
+      "total": 55735,
+      "share": 3.057042419094262e-8
+    },
+    {
+      "name": "candle_transformers::models::bert::BertEmbeddings::load",
+      "self": 203,
+      "total": 15964,
+      "share": 3.027217615005537e-8
+    },
+    {
+      "name": "\u003c\u0026[u8] as alloc::ffi::c_str::CString::new::SpecNewImpl\u003e::spec_new_impl",
+      "self": 202,
+      "total": 960,
+      "share": 3.012305212961175e-8
+    },
+    {
+      "name": "__libc_write",
+      "self": 195,
+      "total": 195,
+      "share": 2.9079183986506392e-8
+    },
+    {
+      "name": "\u003chashbrown::raw::RawTable\u003cT,A\u003e as core::clone::Clone\u003e::clone",
+      "self": 192,
+      "total": 544,
+      "share": 2.8631811925175526e-8
+    },
+    {
+      "name": "__libc_sigaction",
+      "self": 192,
+      "total": 852,
+      "share": 2.8631811925175526e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_scalar",
+      "self": 189,
+      "total": 297,
+      "share": 2.8184439863844656e-8
+    },
+    {
+      "name": "serde_json::read::parse_escape",
+      "self": 189,
+      "total": 384,
+      "share": 2.8184439863844656e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ctokenizers::tokenizer::added_vocabulary::AddedVocabulary\u003e",
+      "self": 186,
+      "total": 2765,
+      "share": 2.773706780251379e-8
+    },
+    {
+      "name": "\u003ctokenizers::models::ModelWrapper as tokenizers::tokenizer::Model\u003e::token_to_id",
+      "self": 180,
+      "total": 4504,
+      "share": 2.6842323679852056e-8
+    },
+    {
+      "name": "\u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize",
+      "self": 179,
+      "total": 23245,
+      "share": 2.6693199659408433e-8
+    },
+    {
+      "name": "\u003cserde_json::value::de::MapDeserializer as serde_core::de::MapAccess\u003e::next_value_seed",
+      "self": 178,
+      "total": 849,
+      "share": 2.654407563896481e-8
+    },
+    {
+      "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_str",
+      "self": 176,
+      "total": 1680,
+      "share": 2.6245827598077563e-8
+    },
+    {
+      "name": "std::sys::sync::once::futex::Once::call",
+      "self": 175,
+      "total": 7006,
+      "share": 2.6096703577633943e-8
+    },
+    {
+      "name": "\u003ccore::str::iter::Split\u003cP\u003e as core::iter::traits::iterator::Iterator\u003e::next",
+      "self": 173,
+      "total": 353,
+      "share": 2.5798455536746696e-8
+    },
+    {
+      "name": "__open",
+      "self": 172,
+      "total": 172,
+      "share": 2.5649331516303073e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::flatten_all",
+      "self": 171,
+      "total": 1337,
+      "share": 2.5500207495859453e-8
+    },
+    {
+      "name": "getrandom",
+      "self": 170,
+      "total": 170,
+      "share": 2.535108347541583e-8
+    },
+    {
+      "name": "_IO_flush_all",
+      "self": 168,
+      "total": 186,
+      "share": 2.5052835434528583e-8
+    },
+    {
+      "name": "_IO_cleanup",
+      "self": 167,
+      "total": 371,
+      "share": 2.4903711414084963e-8
+    },
+    {
+      "name": "_dl_non_dynamic_init",
+      "self": 166,
+      "total": 3231,
+      "share": 2.475458739364134e-8
+    },
+    {
+      "name": "core::fmt::Formatter::write_formatted_parts",
+      "self": 166,
+      "total": 1184,
+      "share": 2.475458739364134e-8
+    },
+    {
+      "name": "clap_builder::builder::command::Command::required_graph",
+      "self": 165,
+      "total": 372,
+      "share": 2.4605463373197717e-8
+    },
+    {
+      "name": "std::io::default_read_to_end::small_probe_read",
+      "self": 162,
+      "total": 825,
+      "share": 2.415809131186685e-8
+    },
+    {
+      "name": "\u003ctokenizers::processors::template::TemplateProcessing as tokenizers::tokenizer::PostProcessor\u003e::process_encodings",
+      "self": 158,
+      "total": 22096,
+      "share": 2.356159523009236e-8
+    },
+    {
+      "name": "__libc_start_main",
+      "self": 155,
+      "total": 6705827772,
+      "share": 2.311422316876149e-8
+    },
+    {
+      "name": "\u003ctokenizers::processors::template::TemplateProcessing as core::convert::From\u003ctokenizers::processors::template::TemplateProcessingDeserializer\u003e\u003e::from",
+      "self": 154,
+      "total": 2314,
+      "share": 2.296509914831787e-8
+    },
+    {
+      "name": "serde_json::de::Deserializer\u003cR\u003e::end_seq",
+      "self": 154,
+      "total": 154,
+      "share": 2.296509914831787e-8
+    },
+    {
+      "name": "\u003ctokenizers::models::ModelWrapper as tokenizers::tokenizer::Model\u003e::tokenize",
+      "self": 150,
+      "total": 12028,
+      "share": 2.2368603066543377e-8
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_common::Command::new",
+      "self": 150,
+      "total": 593,
+      "share": 2.2368603066543377e-8
+    },
+    {
+      "name": "\u003ctokenizers::tokenizer::normalizer::NormalizedString as core::convert::From\u003c\u0026str\u003e\u003e::from",
+      "self": 148,
+      "total": 7417,
+      "share": 2.2070355025656134e-8
+    },
+    {
+      "name": "std::sys::os_str::bytes::Buf::into_string",
+      "self": 148,
+      "total": 617,
+      "share": 2.2070355025656134e-8
+    },
+    {
+      "name": "__libc_setup_tls",
+      "self": 143,
+      "total": 422,
+      "share": 2.132473492343802e-8
+    },
+    {
+      "name": "candle_core::storage::Storage::index_select",
+      "self": 141,
+      "total": 101123,
+      "share": 2.1026486882550778e-8
+    },
+    {
+      "name": "core::fmt::Write::write_char",
+      "self": 140,
+      "total": 1630,
+      "share": 2.0877362862107154e-8
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_f64",
+      "self": 138,
+      "total": 482,
+      "share": 2.0579114821219908e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::get",
+      "self": 138,
+      "total": 5266,
+      "share": 2.0579114821219908e-8
+    },
+    {
+      "name": "tokenizers::processors::_::\u003cimpl serde_core::de::Deserialize for tokenizers::processors::PostProcessorWrapper\u003e::deserialize",
+      "self": 137,
+      "total": 71573,
+      "share": 2.0429990800776285e-8
+    },
+    {
+      "name": "serde_json::de::Deserializer\u003cR\u003e::parse_decimal",
+      "self": 134,
+      "total": 134,
+      "share": 1.9982618739445418e-8
+    },
+    {
+      "name": "\u003calloc::collections::btree::map::IntoIter\u003cK,V,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 133,
+      "total": 315,
+      "share": 1.9833494719001795e-8
+    },
+    {
+      "name": "\u003cclap_builder::builder::value_parser::StringValueParser as clap_builder::builder::value_parser::TypedValueParser\u003e::parse",
+      "self": 132,
+      "total": 749,
+      "share": 1.9684370698558175e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::option::Option\u003ctokenizers::processors::PostProcessorWrapper\u003e\u003e",
+      "self": 132,
+      "total": 905,
+      "share": 1.9684370698558175e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::TokenizerImpl\u003cM,N,PT,PP,D\u003e::do_tokenize",
+      "self": 126,
+      "total": 33203,
+      "share": 1.8789626575896438e-8
+    },
+    {
+      "name": "\u003ctokenizers::models::ModelWrapper as serde_core::de::Deserialize\u003e::deserialize",
+      "self": 124,
+      "total": 124330755,
+      "share": 1.8491378535009192e-8
+    },
+    {
+      "name": "\u003ctokenizers::tokenizer::pre_tokenizer::PreTokenizedString as core::convert::From\u003ctokenizers::tokenizer::normalizer::NormalizedString\u003e\u003e::from",
+      "self": 124,
+      "total": 691,
+      "share": 1.8491378535009192e-8
+    },
+    {
+      "name": "__mremap",
+      "self": 120,
+      "total": 120,
+      "share": 1.7894882453234702e-8
+    },
+    {
+      "name": "core::fmt::num::imp::\u003cimpl core::fmt::Display for usize\u003e::fmt",
+      "self": 120,
+      "total": 120,
+      "share": 1.7894882453234702e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::result::Result\u003ctokenizers::processors::PostProcessorWrapper,serde_json::error::Error\u003e\u003e",
+      "self": 117,
+      "total": 384,
+      "share": 1.7447510391903835e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::zeros_like",
+      "self": 116,
+      "total": 1257,
+      "share": 1.7298386371460212e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::bert::BertEncoder\u003e",
+      "self": 116,
+      "total": 196081,
+      "share": 1.7298386371460212e-8
+    },
+    {
+      "name": "\u003cP as clap_builder::builder::value_parser::AnyValueParser\u003e::possible_values",
+      "self": 114,
+      "total": 530,
+      "share": 1.700013833057297e-8
+    },
+    {
+      "name": "core::fmt::Formatter::debug_list",
+      "self": 110,
+      "total": 855,
+      "share": 1.640364224879848e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::normalizer::NormalizedString::nfd",
+      "self": 110,
+      "total": 23561,
+      "share": 1.640364224879848e-8
+    },
+    {
+      "name": "safetensors::tensor::Metadata::new",
+      "self": 109,
+      "total": 137864,
+      "share": 1.6254518228354856e-8
+    },
+    {
+      "name": "core::num::flt2dec::strategy::grisu::format_exact_opt::possibly_round",
+      "self": 108,
+      "total": 108,
+      "share": 1.6105394207911232e-8
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_common::Command::arg",
+      "self": 107,
+      "total": 1825,
+      "share": 1.595627018746761e-8
+    },
+    {
+      "name": "tokenizers::models::wordpiece::WordPieceBuilder::build",
+      "self": 107,
+      "total": 17938116,
+      "share": 1.595627018746761e-8
+    },
+    {
+      "name": "\u003csafetensors::tensor::Metadata as serde_core::de::Deserialize\u003e::deserialize",
+      "self": 104,
+      "total": 2287618,
+      "share": 1.5508898126136743e-8
+    },
+    {
+      "name": "\u003cserde_json::error::Error as serde_core::de::Error\u003e::custom",
+      "self": 104,
+      "total": 12889,
+      "share": 1.5508898126136743e-8
+    },
+    {
+      "name": "candle_transformers::models::bert::BertEncoder::load",
+      "self": 102,
+      "total": 899634,
+      "share": 1.52106500852495e-8
+    },
+    {
+      "name": "core::fmt::builders::DebugList::finish",
+      "self": 100,
+      "total": 845,
+      "share": 1.4912402044362253e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ctokenizers::processors::template::SpecialToken\u003e",
+      "self": 100,
+      "total": 784,
+      "share": 1.4912402044362253e-8
+    },
+    {
+      "name": "\u003ctokenizers::models::wordpiece::WordPieceBuilder as core::default::Default\u003e::default",
+      "self": 99,
+      "total": 907,
+      "share": 1.476327802391863e-8
+    },
+    {
+      "name": "\u003cusize as candle_core::shape::Dim\u003e::to_index_plus_one",
+      "self": 99,
+      "total": 99,
+      "share": 1.476327802391863e-8
+    },
+    {
+      "name": "brk",
+      "self": 99,
+      "total": 99,
+      "share": 1.476327802391863e-8
+    },
+    {
+      "name": "candle_core::tensor::Tensor::squeeze_dims",
+      "self": 96,
+      "total": 3849,
+      "share": 1.4315905962587763e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cstd::process::Command\u003e",
+      "self": 94,
+      "total": 767,
+      "share": 1.4017657921700518e-8
+    },
+    {
+      "name": "std::rt::lang_start_internal",
+      "self": 94,
+      "total": 6703706565,
+      "share": 1.4017657921700518e-8
+    },
+    {
+      "name": "std::sys::pal::unix::stack_overflow::imp::init",
+      "self": 92,
+      "total": 1718,
+      "share": 1.3719409880813273e-8
+    },
+    {
+      "name": "systrim",
+      "self": 92,
+      "total": 128,
+      "share": 1.3719409880813273e-8
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT,A\u003e as core::fmt::Debug\u003e::fmt",
+      "self": 90,
+      "total": 14581,
+      "share": 1.3421161839926028e-8
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::fmt::Debug\u003e::fmt",
+      "self": 90,
+      "total": 4396,
+      "share": 1.3421161839926028e-8
+    },
+    {
+      "name": "\u003cclap_builder::util::any_value::AnyValueId as core::cmp::PartialEq\u003ccore::any::TypeId\u003e\u003e::eq",
+      "self": 90,
+      "total": 90,
+      "share": 1.3421161839926028e-8
+    },
+    {
+      "name": "_dl_find_object_from_map",
+      "self": 90,
+      "total": 90,
+      "share": 1.3421161839926028e-8
+    },
+    {
+      "name": "serde_json::de::Deserializer\u003cR\u003e::ignore_integer",
+      "self": 90,
+      "total": 90,
+      "share": 1.3421161839926028e-8
+    },
+    {
+      "name": "__run_exit_handlers",
+      "self": 89,
+      "total": 1058533,
+      "share": 1.3272037819482405e-8
+    },
+    {
+      "name": "gemm_common::cache::cache_info",
+      "self": 89,
+      "total": 3854,
+      "share": 1.3272037819482405e-8
+    },
+    {
+      "name": "alloc::ffi::c_str::CString::_from_vec_unchecked",
+      "self": 87,
+      "total": 87,
+      "share": 1.297378977859516e-8
+    },
+    {
+      "name": "std::fs::read::inner",
+      "self": 87,
+      "total": 645042713,
+      "share": 1.297378977859516e-8
+    },
+    {
+      "name": "_dl_aux_init",
+      "self": 85,
+      "total": 187,
+      "share": 1.2675541737707915e-8
+    },
+    {
+      "name": "_IO_new_file_fopen",
+      "self": 84,
+      "total": 139,
+      "share": 1.2526417717264292e-8
+    },
+    {
+      "name": "myriscvcandleapp::normalize_l2",
+      "self": 84,
+      "total": 62855,
+      "share": 1.2526417717264292e-8
+    },
+    {
+      "name": "_dl_init_paths",
+      "self": 81,
+      "total": 1906,
+      "share": 1.2079045655933425e-8
+    },
+    {
+      "name": "clap_builder::builder::command::Command::get_matches_from",
+      "self": 81,
+      "total": 61913,
+      "share": 1.2079045655933425e-8
+    },
+    {
+      "name": "serde_json::de::Deserializer\u003cR\u003e::parse_exponent",
+      "self": 81,
+      "total": 81,
+      "share": 1.2079045655933425e-8
+    },
+    {
+      "name": "\u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize::NormalizerUntagged\u003e::deserialize",
+      "self": 80,
+      "total": 4088,
+      "share": 1.1929921635489802e-8
+    },
+    {
+      "name": "\u003ctokenizers::processors::PostProcessorWrapper as tokenizers::tokenizer::PostProcessor\u003e::process_encodings",
+      "self": 80,
+      "total": 22176,
+      "share": 1.1929921635489802e-8
+    },
+    {
+      "name": "clap_builder::parser::matches::matched_arg::MatchedArg::infer_type_id",
+      "self": 80,
+      "total": 80,
+      "share": 1.1929921635489802e-8
+    },
+    {
+      "name": "core::fmt::num::imp::\u003cimpl core::fmt::Display for u32\u003e::fmt",
+      "self": 80,
+      "total": 80,
+      "share": 1.1929921635489802e-8
+    },
+    {
+      "name": "_IO_un_link",
+      "self": 79,
+      "total": 97,
+      "share": 1.178079761504618e-8
+    },
+    {
+      "name": "alloc::vec::in_place_collect::from_iter_in_place",
+      "self": 78,
+      "total": 136996,
+      "share": 1.1631673594602557e-8
+    },
+    {
+      "name": "serde_json::value::de::\u003cimpl serde_core::de::Deserializer for serde_json::value::Value\u003e::deserialize_struct",
+      "self": 78,
+      "total": 38718622,
+      "share": 1.1631673594602557e-8
+    },
+    {
+      "name": "pthread_getattr_np",
+      "self": 76,
+      "total": 864,
+      "share": 1.1333425553715312e-8
+    },
+    {
+      "name": "serde_json::read::next_or_eof",
+      "self": 76,
+      "total": 76,
+      "share": 1.1333425553715312e-8
+    },
+    {
+      "name": "tokenizers::tokenizer::added_vocabulary::AddedVocabulary::extract_and_normalize",
+      "self": 76,
+      "total": 133253,
+      "share": 1.1333425553715312e-8
+    },
+    {
+      "name": "serde_json::value::de::\u003cimpl serde_core::de::Deserializer for serde_json::value::Value\u003e::deserialize_map",
+      "self": 75,
+      "total": 20768985,
+      "share": 1.1184301533271689e-8
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_common::os2c",
+      "self": 75,
+      "total": 1035,
+      "share": 1.1184301533271689e-8
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_seq",
+      "self": 73,
+      "total": 38486,
+      "share": 1.0886053492384444e-8
+    },
+    {
+      "name": "std::sync::once::Once::call_once::{{closure}}",
+      "self": 73,
+      "total": 645,
+      "share": 1.0886053492384444e-8
+    },
+    {
+      "name": "std::io::stdio::cleanup",
+      "self": 72,
+      "total": 272,
+      "share": 1.0736929471940822e-8
+    },
+    {
+      "name": "xflow",
+      "self": 72,
+      "total": 72,
+      "share": 1.0736929471940822e-8
+    },
+    {
+      "name": "with_errno",
+      "self": 70,
+      "total": 70,
+      "share": 1.0438681431053577e-8
+    },
+    {
+      "name": "_IO_link_in",
+      "self": 69,
+      "total": 87,
+      "share": 1.0289557410609954e-8
+    },
+    {
+      "name": "core::slice::sort::stable::driftsort_main",
+      "self": 69,
+      "total": 214632,
+      "share": 1.0289557410609954e-8
+    },
+    {
+      "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_bool",
+      "self": 68,
+      "total": 68,
+      "share": 1.0140433390166332e-8
+    },
+    {
+      "name": "candle_core::safetensors::load_buffer",
+      "self": 68,
+      "total": 201721451,
+      "share": 1.0140433390166332e-8
+    },
+    {
+      "name": "__pthread_setspecific",
+      "self": 66,
+      "total": 66,
+      "share": 9.842185349279087e-9
+    },
+    {
+      "name": "std::sys::random::linux::getrandom",
+      "self": 66,
+      "total": 100,
+      "share": 9.842185349279087e-9
+    },
+    {
+      "name": "tokenizers::tokenizer::TokenizerBuilder\u003cM,N,PT,PP,D\u003e::build",
+      "self": 66,
+      "total": 1094,
+      "share": 9.842185349279087e-9
+    },
+    {
+      "name": "clap_builder::builder::command::Command::new",
+      "self": 65,
+      "total": 65,
+      "share": 9.693061328835464e-9
+    },
+    {
+      "name": "\u003cstd::collections::hash::map::HashMap\u003cK,V,S\u003e as core::iter::traits::collect::FromIterator\u003c(K,V)\u003e\u003e::from_iter",
+      "self": 64,
+      "total": 199191714,
+      "share": 9.543937308391842e-9
+    },
+    {
+      "name": "candle_core::tensor::Tensor::check_dim",
+      "self": 64,
+      "total": 64,
+      "share": 9.543937308391842e-9
+    },
+    {
+      "name": "core::fmt::Formatter::pad_formatted_parts",
+      "self": 64,
+      "total": 64,
+      "share": 9.543937308391842e-9
+    },
+    {
+      "name": "serde_core::de::Error::unknown_variant",
+      "self": 64,
+      "total": 10397,
+      "share": 9.543937308391842e-9
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003calloc::boxed::Box\u003cdyn candle_nn::var_builder::SimpleBackend\u003e\u003e::from_tensors",
+      "self": 63,
+      "total": 173,
+      "share": 9.394813287948219e-9
+    },
+    {
+      "name": "safetensors::tensor::SafeTensors::deserialize",
+      "self": 63,
+      "total": 2321458,
+      "share": 9.394813287948219e-9
+    },
+    {
+      "name": "std::sys::thread_local::destructors::list::register",
+      "self": 63,
+      "total": 265,
+      "share": 9.394813287948219e-9
+    },
+    {
+      "name": "btree_insert",
+      "self": 62,
+      "total": 317,
+      "share": 9.245689267504596e-9
+    },
+    {
+      "name": "once_cell::imp::initialize_or_wait",
+      "self": 61,
+      "total": 4143,
+      "share": 9.096565247060974e-9
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::index_select",
+      "self": 60,
+      "total": 100982,
+      "share": 8.947441226617351e-9
+    },
+    {
+      "name": "__open64_nocancel",
+      "self": 60,
+      "total": 60,
+      "share": 8.947441226617351e-9
+    },
+    {
+      "name": "version_lock_lock_exclusive",
+      "self": 60,
+      "total": 60,
+      "share": 8.947441226617351e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003calloc::vec::Vec\u003ccandle_core::tensor::Tensor\u003e\u003e",
+      "self": 59,
+      "total": 1474,
+      "share": 8.79831720617373e-9
+    },
+    {
+      "name": "\u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as tokenizers::tokenizer::PreTokenizer\u003e::pre_tokenize",
+      "self": 58,
+      "total": 23597,
+      "share": 8.649193185730106e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003calloc::vec::into_iter::IntoIter\u003ctokenizers::tokenizer::encoding::Encoding\u003e\u003e",
+      "self": 58,
+      "total": 58,
+      "share": 8.649193185730106e-9
+    },
+    {
+      "name": "\u003cserde_json::de::UnitVariantAccess\u003cR\u003e as serde_core::de::EnumAccess\u003e::variant_seed",
+      "self": 57,
+      "total": 256,
+      "share": 8.500069165286484e-9
+    },
+    {
+      "name": "std::sys::pal::unix::args::args",
+      "self": 57,
+      "total": 57,
+      "share": 8.500069165286484e-9
+    },
+    {
+      "name": "\u003ccore::fmt::Formatter as core::fmt::Write\u003e::write_str",
+      "self": 56,
+      "total": 56,
+      "share": 8.350945144842861e-9
+    },
+    {
+      "name": "\u003ctokenizers::normalizers::NormalizerWrapper as tokenizers::tokenizer::Normalizer\u003e::normalize",
+      "self": 56,
+      "total": 112427,
+      "share": 8.350945144842861e-9
+    },
+    {
+      "name": "core::num::flt2dec::digits_to_dec_str",
+      "self": 56,
+      "total": 56,
+      "share": 8.350945144842861e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::iter::adapters::flatten::FlatMap\u003ccore::iter::adapters::enumerate::Enumerate\u003calloc::vec::into_iter::IntoIter\u003ctokenizers::tokenizer::pre_tokenizer::Split\u003e\u003e,core::iter::adapters::map::Map\u003calloc::vec::into_iter::IntoIter\u003ctokenizers::tokenizer::Token\u003e,tokenizers::tokenizer::pre_tokenizer::PreTokenizedString::into_encoding::{{closure}}::{{closure}}\u003e,tokenizers::tokenizer::pre_tokenizer::PreTokenizedString::into_encoding::{{closure}}\u003e\u003e",
+      "self": 54,
+      "total": 300,
+      "share": 8.052697103955616e-9
+    },
+    {
+      "name": "std::sys::pal::unix::init",
+      "self": 54,
+      "total": 2106,
+      "share": 8.052697103955616e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::bert::BertModel\u003e",
+      "self": 53,
+      "total": 4309855,
+      "share": 7.903573083511995e-9
+    },
+    {
+      "name": "std::sys::pal::unix::fs::readdir",
+      "self": 53,
+      "total": 281,
+      "share": 7.903573083511995e-9
+    },
+    {
+      "name": "__tls_init_tp",
+      "self": 52,
+      "total": 74,
+      "share": 7.754449063068371e-9
+    },
+    {
+      "name": "__libc_early_init",
+      "self": 51,
+      "total": 169,
+      "share": 7.60532504262475e-9
+    },
+    {
+      "name": "__tunables_init",
+      "self": 51,
+      "total": 51,
+      "share": 7.60532504262475e-9
+    },
+    {
+      "name": "std::sys::thread_local::native::lazy::Storage\u003cT,D\u003e::initialize",
+      "self": 51,
+      "total": 990,
+      "share": 7.60532504262475e-9
+    },
+    {
+      "name": "\u003cP as clap_builder::builder::value_parser::AnyValueParser\u003e::type_id",
+      "self": 50,
+      "total": 50,
+      "share": 7.456201022181126e-9
+    },
+    {
+      "name": "\u003cT as core::any::Any\u003e::type_id",
+      "self": 50,
+      "total": 50,
+      "share": 7.456201022181126e-9
+    },
+    {
+      "name": "__pthread_key_create",
+      "self": 50,
+      "total": 50,
+      "share": 7.456201022181126e-9
+    },
+    {
+      "name": "serde_core::de::Error::missing_field",
+      "self": 50,
+      "total": 2606,
+      "share": 7.456201022181126e-9
+    },
+    {
+      "name": "candle_transformers::models::bert::_::\u003cimpl serde_core::de::Deserialize for candle_transformers::models::bert::HiddenAct\u003e::deserialize",
+      "self": 49,
+      "total": 218,
+      "share": 7.307077001737504e-9
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_common::Command::setup_io",
+      "self": 49,
+      "total": 138,
+      "share": 7.307077001737504e-9
+    },
+    {
+      "name": "tokenizers::tokenizer::Tokenizer::from_file",
+      "self": 49,
+      "total": 126576469,
+      "share": 7.307077001737504e-9
+    },
+    {
+      "name": "\u003cserde_json::value::de::EnumDeserializer as serde_core::de::EnumAccess\u003e::variant_seed",
+      "self": 48,
+      "total": 236,
+      "share": 7.157952981293881e-9
+    },
+    {
+      "name": "__fopen_internal",
+      "self": 48,
+      "total": 716,
+      "share": 7.157952981293881e-9
+    },
+    {
+      "name": "__libc_cleanup_push_defer",
+      "self": 48,
+      "total": 48,
+      "share": 7.157952981293881e-9
+    },
+    {
+      "name": "tokenizers::pre_tokenizers::bert::_::\u003cimpl serde_core::de::Deserialize for tokenizers::pre_tokenizers::bert::BertPreTokenizerType\u003e::deserialize",
+      "self": 48,
+      "total": 411,
+      "share": 7.157952981293881e-9
+    },
+    {
+      "name": "tokenizers::tokenizer::encoding::Encoding::set_type_ids",
+      "self": 48,
+      "total": 276,
+      "share": 7.157952981293881e-9
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_common::Stdio::to_child_stdio",
+      "self": 47,
+      "total": 89,
+      "share": 7.008828960850259e-9
+    },
+    {
+      "name": "__math_check_uflow",
+      "self": 46,
+      "total": 46,
+      "share": 6.8597049404066365e-9
+    },
+    {
+      "name": "_dl_find_object_init",
+      "self": 46,
+      "total": 595,
+      "share": 6.8597049404066365e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ctokenizers::tokenizer::Tokenizer\u003e",
+      "self": 46,
+      "total": 8344686,
+      "share": 6.8597049404066365e-9
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_inner::\u003cimpl std::sys::pal::unix::process::process_common::Command\u003e::spawn",
+      "self": 46,
+      "total": 257,
+      "share": 6.8597049404066365e-9
+    },
+    {
+      "name": "\u003ccore::iter::adapters::map::Map\u003cI,F\u003e as core::iter::traits::iterator::Iterator\u003e::size_hint",
+      "self": 45,
+      "total": 45,
+      "share": 6.710580919963014e-9
+    },
+    {
+      "name": "__libc_close",
+      "self": 45,
+      "total": 45,
+      "share": 6.710580919963014e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003calloc::vec::Vec\u003ctokenizers::tokenizer::encoding::Encoding\u003e\u003e",
+      "self": 44,
+      "total": 3868,
+      "share": 6.561456899519391e-9
+    },
+    {
+      "name": "std::fs::OpenOptions::_open",
+      "self": 44,
+      "total": 281,
+      "share": 6.561456899519391e-9
+    },
+    {
+      "name": "\u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::ser::Serialize for \u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::serialize",
+      "self": 43,
+      "total": 333,
+      "share": 6.412332879075768e-9
+    },
+    {
+      "name": "_IO_no_init",
+      "self": 43,
+      "total": 43,
+      "share": 6.412332879075768e-9
+    },
+    {
+      "name": "__internal_atexit",
+      "self": 43,
+      "total": 79,
+      "share": 6.412332879075768e-9
+    },
+    {
+      "name": "\u003chashbrown::map::HashMap\u003cK,V,S,A\u003e as core::iter::traits::collect::Extend\u003c(K,V)\u003e\u003e::extend",
+      "self": 42,
+      "total": 199191626,
+      "share": 6.263208858632146e-9
+    },
+    {
+      "name": "\u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::ser::Serialize for \u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::serialize",
+      "self": 42,
+      "total": 169,
+      "share": 6.263208858632146e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 41,
+      "total": 128,
+      "share": 6.114084838188523e-9
+    },
+    {
+      "name": "\u003cF as clap_builder::builder::value_parser::TypedValueParser\u003e::parse_ref",
+      "self": 41,
+      "total": 150,
+      "share": 6.114084838188523e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cclap_builder::parser::matches::arg_matches::ArgMatches\u003e",
+      "self": 41,
+      "total": 263,
+      "share": 6.114084838188523e-9
+    },
+    {
+      "name": "std::sys::exit_guard::unique_thread_exit",
+      "self": 41,
+      "total": 43,
+      "share": 6.114084838188523e-9
+    },
+    {
+      "name": "std::sys::pal::unix::process::process_common::Command::capture_env",
+      "self": 41,
+      "total": 73,
+      "share": 6.114084838188523e-9
+    },
+    {
+      "name": "get_pc_range",
+      "self": 40,
+      "total": 40,
+      "share": 5.964960817744901e-9
+    },
+    {
+      "name": "version_lock_unlock_exclusive",
+      "self": 40,
+      "total": 40,
+      "share": 5.964960817744901e-9
+    },
+    {
+      "name": "__sysconf",
+      "self": 39,
+      "total": 45,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "_dl_tls_static_surplus_init",
+      "self": 39,
+      "total": 81,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "candle_transformers::models::bert::_::\u003cimpl serde_core::de::Deserialize for candle_transformers::models::bert::PositionEmbeddingType\u003e::deserialize",
+      "self": 39,
+      "total": 295,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::option::Option\u003ctokenizers::decoders::DecoderWrapper\u003e\u003e",
+      "self": 39,
+      "total": 39,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cmyriscvcandleapp::Args\u003e",
+      "self": 39,
+      "total": 381,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "memrchr",
+      "self": 39,
+      "total": 39,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "std::sys::thread_local::key::racy::LazyKey::lazy_init",
+      "self": 39,
+      "total": 112,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "syscall",
+      "self": 39,
+      "total": 39,
+      "share": 5.8158367973012784e-9
+    },
+    {
+      "name": "__deregister_frame_info_bases",
+      "self": 38,
+      "total": 1057788,
+      "share": 5.666712776857656e-9
+    },
+    {
+      "name": "candle_core::device::Device::zeros",
+      "self": 38,
+      "total": 333,
+      "share": 5.666712776857656e-9
+    },
+    {
+      "name": "clap_builder::parser::arg_matcher::ArgMatcher::fill_in_global_values",
+      "self": 38,
+      "total": 38,
+      "share": 5.666712776857656e-9
+    },
+    {
+      "name": "core::fmt::float::float_to_decimal_common_exact",
+      "self": 38,
+      "total": 2308,
+      "share": 5.666712776857656e-9
+    },
+    {
+      "name": "_dlfo_sort_mappings",
+      "self": 37,
+      "total": 37,
+      "share": 5.5175887564140335e-9
+    },
+    {
+      "name": "tcache_init",
+      "self": 37,
+      "total": 423,
+      "share": 5.5175887564140335e-9
+    },
+    {
+      "name": "\u003cf32 as candle_core::dtype::WithDType\u003e::cpu_storage_as_slice",
+      "self": 36,
+      "total": 36,
+      "share": 5.368464735970411e-9
+    },
+    {
+      "name": "__new_exitfn",
+      "self": 36,
+      "total": 36,
+      "share": 5.368464735970411e-9
+    },
+    {
+      "name": "std::sys::pal::unix::fs::File::open::{{closure}}",
+      "self": 36,
+      "total": 413,
+      "share": 5.368464735970411e-9
+    },
+    {
+      "name": "__sigaction",
+      "self": 35,
+      "total": 35,
+      "share": 5.219340715526789e-9
+    },
+    {
+      "name": "_dl_debug_initialize",
+      "self": 35,
+      "total": 35,
+      "share": 5.219340715526789e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 34,
+      "total": 133,
+      "share": 5.070216695083166e-9
+    },
+    {
+      "name": "\u003cahash::random_state::DefaultRandomSource as ahash::random_state::RandomSource\u003e::gen_hasher_seed",
+      "self": 34,
+      "total": 34,
+      "share": 5.070216695083166e-9
+    },
+    {
+      "name": "\u003chashbrown::raw::RawIntoIter\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 34,
+      "total": 34,
+      "share": 5.070216695083166e-9
+    },
+    {
+      "name": "_dl_get_origin",
+      "self": 34,
+      "total": 34,
+      "share": 5.070216695083166e-9
+    },
+    {
+      "name": "alloc::vec::Vec\u003cT,A\u003e::push",
+      "self": 34,
+      "total": 165,
+      "share": 5.070216695083166e-9
+    },
+    {
+      "name": "candle_core::shape::\u003cimpl candle_core::tensor::Tensor\u003e::dims3",
+      "self": 34,
+      "total": 34,
+      "share": 5.070216695083166e-9
+    },
+    {
+      "name": "btree_release_tree_recursively",
+      "self": 33,
+      "total": 53,
+      "share": 4.921092674639544e-9
+    },
+    {
+      "name": "tokenizers::models::wordpiece::WordPieceBuilder::continuing_subword_prefix",
+      "self": 33,
+      "total": 243,
+      "share": 4.921092674639544e-9
+    },
+    {
+      "name": "tokenizers::models::wordpiece::WordPieceBuilder::unk_token",
+      "self": 33,
+      "total": 268,
+      "share": 4.921092674639544e-9
+    },
+    {
+      "name": "candle_core::device::Device::location",
+      "self": 32,
+      "total": 32,
+      "share": 4.771968654195921e-9
+    },
+    {
+      "name": "candle_core::shape::\u003cimpl candle_core::tensor::Tensor\u003e::dims2",
+      "self": 32,
+      "total": 32,
+      "share": 4.771968654195921e-9
+    },
+    {
+      "name": "once_cell::imp::OnceCell\u003cT\u003e::initialize::{{closure}}",
+      "self": 32,
+      "total": 4056,
+      "share": 4.771968654195921e-9
+    },
+    {
+      "name": "std::sys_common::process::CommandEnv::capture_if_changed",
+      "self": 32,
+      "total": 32,
+      "share": 4.771968654195921e-9
+    },
+    {
+      "name": "tokenizers::tokenizer::TokenizerBuilder\u003cM,N,PT,PP,D\u003e::with_post_processor",
+      "self": 32,
+      "total": 880,
+      "share": 4.771968654195921e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cserde_json::error::Error\u003e",
+      "self": 31,
+      "total": 120,
+      "share": 4.622844633752298e-9
+    },
+    {
+      "name": "poll",
+      "self": 31,
+      "total": 31,
+      "share": 4.622844633752298e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 30,
+      "total": 8711,
+      "share": 4.4737206133086755e-9
+    },
+    {
+      "name": "\u003ctokenizers::tokenizer::pre_tokenizer::PreTokenizedString as core::convert::From\u003c\u0026str\u003e\u003e::from",
+      "self": 30,
+      "total": 8138,
+      "share": 4.4737206133086755e-9
+    },
+    {
+      "name": "_dl_early_allocate",
+      "self": 30,
+      "total": 30,
+      "share": 4.4737206133086755e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::option::Option\u003ctokenizers::pre_tokenizers::PreTokenizerWrapper\u003e\u003e",
+      "self": 30,
+      "total": 30,
+      "share": 4.4737206133086755e-9
+    },
+    {
+      "name": "ssignal",
+      "self": 30,
+      "total": 303,
+      "share": 4.4737206133086755e-9
+    },
+    {
+      "name": "\u003cserde_json::de::MapAccess\u003cR\u003e as serde_core::de::MapAccess\u003e::next_value_seed",
+      "self": 29,
+      "total": 71763,
+      "share": 4.324596592865053e-9
+    },
+    {
+      "name": "std::sync::once::Once::call_once_force::{{closure}}",
+      "self": 29,
+      "total": 6186,
+      "share": 4.324596592865053e-9
+    },
+    {
+      "name": "std::sys::pal::unix::stack_overflow::imp::make_handler",
+      "self": 29,
+      "total": 34,
+      "share": 4.324596592865053e-9
+    },
+    {
+      "name": "call_fini",
+      "self": 28,
+      "total": 1058071,
+      "share": 4.1754725724214305e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cclap_builder::util::flat_map::FlatMap\u003cclap_builder::util::id::Id,clap_builder::parser::matches::matched_arg::MatchedArg\u003e\u003e",
+      "self": 28,
+      "total": 28,
+      "share": 4.1754725724214305e-9
+    },
+    {
+      "name": "release_registered_frames",
+      "self": 28,
+      "total": 225,
+      "share": 4.1754725724214305e-9
+    },
+    {
+      "name": "__sigsetjmp",
+      "self": 27,
+      "total": 27,
+      "share": 4.026348551977808e-9
+    },
+    {
+      "name": "btree_allocate_node",
+      "self": 27,
+      "total": 225,
+      "share": 4.026348551977808e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::option::Option\u003ctokenizers::models::ModelWrapper\u003e\u003e",
+      "self": 27,
+      "total": 27,
+      "share": 4.026348551977808e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::models::ModelWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::models::ModelWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__FieldVisitor as serde_core::de::Visitor\u003e::visit_str",
+      "self": 26,
+      "total": 98,
+      "share": 3.877224531534186e-9
+    },
+    {
+      "name": "\u003conce_cell::imp::Guard as core::ops::drop::Drop\u003e::drop",
+      "self": 26,
+      "total": 26,
+      "share": 3.877224531534186e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::decoders::DecoderWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__Visitor as serde_core::de::Visitor\u003e::visit_enum",
+      "self": 25,
+      "total": 190,
+      "share": 3.728100511090563e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::models::ModelWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::models::ModelWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__Visitor as serde_core::de::Visitor\u003e::visit_enum",
+      "self": 25,
+      "total": 160,
+      "share": 3.728100511090563e-9
+    },
+    {
+      "name": "_IO_file_open",
+      "self": 25,
+      "total": 55,
+      "share": 3.728100511090563e-9
+    },
+    {
+      "name": "__libc_init_first",
+      "self": 25,
+      "total": 3285,
+      "share": 3.728100511090563e-9
+    },
+    {
+      "name": "__register_frame_info",
+      "self": 25,
+      "total": 1057745,
+      "share": 3.728100511090563e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::pre_tokenizers::PreTokenizerWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__Visitor as serde_core::de::Visitor\u003e::visit_enum",
+      "self": 24,
+      "total": 194,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "\u003calloc::string::String as core::fmt::Display\u003e::fmt",
+      "self": 24,
+      "total": 24,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "__libc_cleanup_pop_restore",
+      "self": 24,
+      "total": 24,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "__math_uflow",
+      "self": 24,
+      "total": 24,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "_dl_protect_relro",
+      "self": 24,
+      "total": 29,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "std::sync::once_lock::OnceLock\u003cT\u003e::initialize",
+      "self": 24,
+      "total": 6267,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "tokenizers::tokenizer::encoding::Encoding::set_sequence_id",
+      "self": 24,
+      "total": 910,
+      "share": 3.5789764906469407e-9
+    },
+    {
+      "name": "\u003c\u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize::_::\u003cimpl serde_core::de::Deserialize for \u003ctokenizers::normalizers::NormalizerWrapper as serde_core::de::Deserialize\u003e::deserialize::EnumType\u003e::deserialize::__Visitor as serde_core::de::Visitor\u003e::visit_enum",
+      "self": 23,
+      "total": 8771,
+      "share": 3.4298524702033182e-9
+    },
+    {
+      "name": "__pthread_key_delete",
+      "self": 23,
+      "total": 23,
+      "share": 3.4298524702033182e-9
+    },
+    {
+      "name": "__pthread_tunables_init",
+      "self": 23,
+      "total": 88,
+      "share": 3.4298524702033182e-9
+    },
+    {
+      "name": "core::num::\u003cimpl core::str::traits::FromStr for usize\u003e::from_str",
+      "self": 23,
+      "total": 23,
+      "share": 3.4298524702033182e-9
+    },
+    {
+      "name": "serde_json::value::de::\u003cimpl serde_core::de::Deserializer for serde_json::value::Value\u003e::deserialize_u64",
+      "self": 23,
+      "total": 35,
+      "share": 3.4298524702033182e-9
+    },
+    {
+      "name": "__init_misc",
+      "self": 22,
+      "total": 98,
+      "share": 3.2807284497596954e-9
+    },
+    {
+      "name": "__libc_start_call_main",
+      "self": 22,
+      "total": 6704765183,
+      "share": 3.2807284497596954e-9
+    },
+    {
+      "name": "\u003calloc::collections::btree::map::BTreeMap\u003cK,V,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 21,
+      "total": 47,
+      "share": 3.131604429316073e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::result::Result\u003cstd::process::Output,std::io::error::Error\u003e\u003e",
+      "self": 21,
+      "total": 21,
+      "share": 3.131604429316073e-9
+    },
+    {
+      "name": "std::process::Command::output",
+      "self": 21,
+      "total": 278,
+      "share": 3.131604429316073e-9
+    },
+    {
+      "name": "\u003cstd::io::buffered::bufwriter::BufWriter\u003cW\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 20,
+      "total": 50,
+      "share": 2.9824804088724505e-9
+    },
+    {
+      "name": "__do_global_dtors_aux",
+      "self": 20,
+      "total": 1057818,
+      "share": 2.9824804088724505e-9
+    },
+    {
+      "name": "core::fmt::float::\u003cimpl core::fmt::Display for f32\u003e::fmt",
+      "self": 20,
+      "total": 20,
+      "share": 2.9824804088724505e-9
+    },
+    {
+      "name": "once_cell::imp::OnceCell\u003cT\u003e::initialize",
+      "self": 20,
+      "total": 4163,
+      "share": 2.9824804088724505e-9
+    },
+    {
+      "name": "_IO_new_file_init_internal",
+      "self": 19,
+      "total": 106,
+      "share": 2.833356388428828e-9
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::result::Result\u003cstd::fs::File,std::io::error::Error\u003e\u003e",
+      "self": 19,
+      "total": 19,
+      "share": 2.833356388428828e-9
+    },
+    {
+      "name": "__ctype_init",
+      "self": 18,
+      "total": 18,
+      "share": 2.6842323679852055e-9
+    },
+    {
+      "name": "alloc::string::String::try_reserve_exact",
+      "self": 16,
+      "total": 16,
+      "share": 2.3859843270979606e-9
+    },
+    {
+      "name": "main",
+      "self": 16,
+      "total": 6703706581,
+      "share": 2.3859843270979606e-9
+    },
+    {
+      "name": "strrchr",
+      "self": 15,
+      "total": 37,
+      "share": 2.2368603066543377e-9
+    },
+    {
+      "name": "\u003cserde_json::read::StrRead as serde_json::read::Read\u003e::ignore_str",
+      "self": 14,
+      "total": 14,
+      "share": 2.0877362862107153e-9
+    },
+    {
+      "name": "__pthread_attr_init",
+      "self": 14,
+      "total": 66,
+      "share": 2.0877362862107153e-9
+    },
+    {
+      "name": "frame_dummy",
+      "self": 14,
+      "total": 1058086,
+      "share": 2.0877362862107153e-9
+    },
+    {
+      "name": "std::sys::random::linux::hashmap_random_keys",
+      "self": 14,
+      "total": 114,
+      "share": 2.0877362862107153e-9
+    },
+    {
+      "name": "\u003cserde_json::value::de::VariantDeserializer as serde_core::de::VariantAccess\u003e::unit_variant",
+      "self": 13,
+      "total": 13,
+      "share": 1.938612265767093e-9
+    },
+    {
+      "name": "__tls_pre_init_tp",
+      "self": 13,
+      "total": 13,
+      "share": 1.938612265767093e-9
+    },
+    {
+      "name": "std::rt::lang_start::{{closure}}",
+      "self": 13,
+      "total": 6703703794,
+      "share": 1.938612265767093e-9
+    },
+    {
+      "name": "\u003ctokenizers::models::ModelWrapper as tokenizers::tokenizer::Model\u003e::get_vocab_size",
+      "self": 12,
+      "total": 12,
+      "share": 1.7894882453234704e-9
+    },
+    {
+      "name": "__errno_location",
+      "self": 12,
+      "total": 12,
+      "share": 1.7894882453234704e-9
+    },
+    {
+      "name": "__getpagesize",
+      "self": 12,
+      "total": 12,
+      "share": 1.7894882453234704e-9
+    },
+    {
+      "name": "_start",
+      "self": 12,
+      "total": 6705827787,
+      "share": 1.7894882453234704e-9
+    },
+    {
+      "name": "getrlimit",
+      "self": 12,
+      "total": 12,
+      "share": 1.7894882453234704e-9
+    },
+    {
+      "name": "__sigjmp_save",
+      "self": 11,
+      "total": 11,
+      "share": 1.6403642248798477e-9
+    },
+    {
+      "name": "clap_lex::RawArgs::next",
+      "self": 11,
+      "total": 11,
+      "share": 1.6403642248798477e-9
+    },
+    {
+      "name": "clap_lex::RawArgs::next_os",
+      "self": 11,
+      "total": 11,
+      "share": 1.6403642248798477e-9
+    },
+    {
+      "name": "register_tm_clones",
+      "self": 11,
+      "total": 11,
+      "share": 1.6403642248798477e-9
+    },
+    {
+      "name": "__opendir",
+      "self": 10,
+      "total": 40,
+      "share": 1.4912402044362252e-9
+    },
+    {
+      "name": "alloc::slice::\u003cimpl [T]\u003e::sort_by",
+      "self": 9,
+      "total": 9,
+      "share": 1.3421161839926028e-9
+    },
+    {
+      "name": "\u003cstd::env::ArgsOs as core::iter::traits::iterator::Iterator\u003e::next",
+      "self": 7,
+      "total": 7,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "core::fmt::num::\u003cimpl core::fmt::Debug for usize\u003e::fmt",
+      "self": 7,
+      "total": 7,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "exit",
+      "self": 7,
+      "total": 1058540,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "std::env::args_os",
+      "self": 7,
+      "total": 64,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "std::sys::os_str::bytes::Slice::to_str",
+      "self": 7,
+      "total": 86,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "std::sys::thread_local::destructors::linux_like::register",
+      "self": 7,
+      "total": 7,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "tokenizers::models::wordpiece::WordPiece::builder",
+      "self": 7,
+      "total": 914,
+      "share": 1.0438681431053576e-9
+    },
+    {
+      "name": "[unknown]",
+      "self": 6,
+      "total": 6,
+      "share": 8.947441226617352e-10
+    },
+    {
+      "name": "deregister_tm_clones",
+      "self": 6,
+      "total": 6,
+      "share": 8.947441226617352e-10
+    },
+    {
+      "name": "gemm_f32::gemm::f32::init_gemm_ptr",
+      "self": 6,
+      "total": 6,
+      "share": 8.947441226617352e-10
+    },
+    {
+      "name": "std::sys::backtrace::__rust_begin_short_backtrace",
+      "self": 6,
+      "total": 6703703781,
+      "share": 8.947441226617352e-10
+    },
+    {
+      "name": "__sigaltstack",
+      "self": 5,
+      "total": 5,
+      "share": 7.456201022181126e-10
+    },
+    {
+      "name": "mprotect",
+      "self": 5,
+      "total": 5,
+      "share": 7.456201022181126e-10
+    },
+    {
+      "name": "std::sys::pal::unix::args::imp::ARGV_INIT_ARRAY::init_wrapper",
+      "self": 5,
+      "total": 5,
+      "share": 7.456201022181126e-10
+    },
+    {
+      "name": "__deregister_frame_info",
+      "self": 4,
+      "total": 4,
+      "share": 5.964960817744902e-10
+    },
+    {
+      "name": "__pthread_attr_destroy",
+      "self": 4,
+      "total": 4,
+      "share": 5.964960817744902e-10
+    },
+    {
+      "name": "pthread_self",
+      "self": 4,
+      "total": 4,
+      "share": 5.964960817744902e-10
+    },
+    {
+      "name": "__cxa_atexit",
+      "self": 3,
+      "total": 3,
+      "share": 4.473720613308676e-10
+    },
+    {
+      "name": "opendir_tail",
+      "self": 3,
+      "total": 3,
+      "share": 4.473720613308676e-10
+    },
+    {
+      "name": "_Exit",
+      "self": 2,
+      "total": 2,
+      "share": 2.982480408872451e-10
+    },
+    {
+      "name": "__GI__setjmp",
+      "self": 2,
+      "total": 2,
+      "share": 2.982480408872451e-10
+    },
+    {
+      "name": "__new_fopen",
+      "self": 2,
+      "total": 2,
+      "share": 2.982480408872451e-10
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cstd::collections::hash::map::HashMap\u003calloc::string::String,candle_core::tensor::Tensor\u003e\u003e",
+      "self": 2,
+      "total": 2,
+      "share": 2.982480408872451e-10
+    }
+  ],
+  "tree": {
+    "name": "all",
+    "value": 6705827787,
+    "self": 0,
+    "float": 0,
+    "children": [
+      {
+        "name": "_start",
+        "value": 6705827787,
+        "self": 15,
+        "float": 0,
+        "children": [
+          {
+            "name": "__libc_start_main",
+            "value": 6705827772,
+            "self": 1062589,
+            "float": 0,
+            "children": [
+              {
+                "name": "__libc_start_call_main",
+                "value": 6704765183,
+                "self": 1058602,
+                "float": 12,
+                "children": [
+                  {
+                    "name": "main",
+                    "value": 6703706581,
+                    "self": 16,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "std::rt::lang_start_internal",
+                        "value": 6703706565,
+                        "self": 2771,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "std::rt::lang_start::{{closure}}",
+                            "value": 6703703794,
+                            "self": 13,
+                            "float": 0,
+                            "children": [
+                              {
+                                "name": "std::sys::backtrace::__rust_begin_short_backtrace",
+                                "value": 6703703781,
+                                "self": 6,
+                                "float": 0,
+                                "children": [
+                                  {
+                                    "name": "myriscvcandleapp::main",
+                                    "value": 6703703775,
+                                    "self": 14593926,
+                                    "float": 87626,
+                                    "children": [
+                                      {
+                                        "name": "candle_transformers::models::bert::BertModel::forward",
+                                        "value": 5715769216,
+                                        "self": 1941829,
+                                        "float": 405853,
+                                        "children": [
+                                          {
+                                            "name": "\u003ccandle_transformers::models::bert::BertEncoder as candle_core::Module\u003e::forward",
+                                            "value": 5713827387,
+                                            "self": 10894,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "\u003ccandle_transformers::models::bert::BertLayer as candle_core::Module\u003e::forward",
+                                                "value": 5713816493,
+                                                "self": 1395457,
+                                                "float": 589824,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003ccandle_transformers::models::bert::BertIntermediate as candle_core::Module\u003e::forward",
+                                                    "value": 1974291713,
+                                                    "self": 8568,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+                                                        "value": 1847309342,
+                                                        "self": 53870,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::tensor::Tensor::matmul",
+                                                            "value": 1832458755,
+                                                            "self": 18972,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::storage::Storage::matmul",
+                                                                "value": 1832439783,
+                                                                "self": 1296,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::cpu_backend::Map2::map",
+                                                                    "value": 1832438487,
+                                                                    "self": 515147,
+                                                                    "float": 120,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                                        "value": 1831923340,
+                                                                        "self": 608260,
+                                                                        "float": 295416,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "gemm_common::gemm::gemm_basic_generic::{{closure}}",
+                                                                            "value": 1831315080,
+                                                                            "self": 5551752,
+                                                                            "float": 147600,
+                                                                            "children": [
+                                                                              {
+                                                                                "name": "gemm_f32::microkernel::scalar::f32::x2x4",
+                                                                                "value": 1597022208,
+                                                                                "self": 1597022208,
+                                                                                "float": 1247477760
+                                                                              },
+                                                                              {
+                                                                                "name": "gemm_common::pack_operands::pack_lhs",
+                                                                                "value": 228741120,
+                                                                                "self": 228741120,
+                                                                                "float": 113246208
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "name": "candle_core::tensor::Tensor::broadcast_add",
+                                                            "value": 14796717,
+                                                            "self": 22896,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::tensor::Tensor::add",
+                                                                "value": 14773821,
+                                                                "self": 14160,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::storage::Storage::binary_impl",
+                                                                    "value": 14759661,
+                                                                    "self": 1248,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::binary_impl",
+                                                                        "value": 14758413,
+                                                                        "self": 3096,
+                                                                        "float": 0,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                                            "value": 14755317,
+                                                                            "self": 14755317,
+                                                                            "float": 2359296
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::gelu_erf",
+                                                        "value": 126973803,
+                                                        "self": 12504,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::unary_impl",
+                                                            "value": 126961299,
+                                                            "self": 2040,
+                                                            "float": 192,
+                                                            "children": [
+                                                              {
+                                                                "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                                "value": 126959259,
+                                                                "self": 17110931,
+                                                                "float": 9437424,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::cpu::erf::erf_impl",
+                                                                    "value": 109848328,
+                                                                    "self": 16503764,
+                                                                    "float": 8883671,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "candle_core::cpu::erf::erf_impl",
+                                                                        "value": 93344564,
+                                                                        "self": 67484112,
+                                                                        "float": 43913327,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "__ieee754_exp",
+                                                                            "value": 25860452,
+                                                                            "self": 25860452,
+                                                                            "float": 14546416
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "\u003ccandle_transformers::models::bert::BertAttention as candle_core::Module\u003e::forward",
+                                                    "value": 1888094573,
+                                                    "self": 1382384,
+                                                    "float": 589824,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_transformers::models::bert::BertSelfAttention as candle_core::Module\u003e::forward",
+                                                        "value": 1407459614,
+                                                        "self": 4929630,
+                                                        "float": 758834,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+                                                            "value": 1387366104,
+                                                            "self": 11354877,
+                                                            "float": 1769472,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::tensor::Tensor::matmul",
+                                                                "value": 1376011227,
+                                                                "self": 56916,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::storage::Storage::matmul",
+                                                                    "value": 1375954311,
+                                                                    "self": 3888,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "candle_core::cpu_backend::Map2::map",
+                                                                        "value": 1375950423,
+                                                                        "self": 719177,
+                                                                        "float": 360,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                                            "value": 1375231246,
+                                                                            "self": 1736566,
+                                                                            "float": 886248,
+                                                                            "children": [
+                                                                              {
+                                                                                "name": "gemm_common::gemm::gemm_basic_generic::{{closure}}",
+                                                                                "value": 1373494680,
+                                                                                "self": 4172184,
+                                                                                "float": 111024,
+                                                                                "children": [
+                                                                                  {
+                                                                                    "name": "gemm_f32::microkernel::scalar::f32::x2x4",
+                                                                                    "value": 1197766656,
+                                                                                    "self": 1197766656,
+                                                                                    "float": 935608320
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "gemm_common::pack_operands::pack_lhs",
+                                                                                    "value": 171555840,
+                                                                                    "self": 171555840,
+                                                                                    "float": 84934656
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "name": "candle_core::tensor::Tensor::matmul",
+                                                            "value": 15163880,
+                                                            "self": 42098,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::storage::Storage::matmul",
+                                                                "value": 15121782,
+                                                                "self": 2592,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::cpu_backend::Map2::map",
+                                                                    "value": 15119190,
+                                                                    "self": 444898,
+                                                                    "float": 1296,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                                        "value": 14674292,
+                                                                        "self": 14674292,
+                                                                        "float": 7337664
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+                                                        "value": 462468769,
+                                                        "self": 3791655,
+                                                        "float": 589824,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::tensor::Tensor::matmul",
+                                                            "value": 458677114,
+                                                            "self": 18972,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::storage::Storage::matmul",
+                                                                "value": 458658142,
+                                                                "self": 1296,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::cpu_backend::Map2::map",
+                                                                    "value": 458656846,
+                                                                    "self": 238789,
+                                                                    "float": 120,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                                        "value": 458418057,
+                                                                        "self": 586497,
+                                                                        "float": 295416,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "gemm_common::gemm::gemm_basic_generic::{{closure}}",
+                                                                            "value": 457831560,
+                                                                            "self": 1390728,
+                                                                            "float": 37008,
+                                                                            "children": [
+                                                                              {
+                                                                                "name": "gemm_f32::microkernel::scalar::f32::x2x4",
+                                                                                "value": 399255552,
+                                                                                "self": 399255552,
+                                                                                "float": 311869440
+                                                                              },
+                                                                              {
+                                                                                "name": "gemm_common::pack_operands::pack_lhs",
+                                                                                "value": 57185280,
+                                                                                "self": 57185280,
+                                                                                "float": 28311552
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "name": "\u003ccandle_nn::layer_norm::LayerNorm as candle_core::Module\u003e::forward",
+                                                        "value": 16783806,
+                                                        "self": 16783806,
+                                                        "float": 3690588
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+                                                    "value": 1833227632,
+                                                    "self": 3782167,
+                                                    "float": 589824,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::matmul",
+                                                        "value": 1829445465,
+                                                        "self": 18972,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::storage::Storage::matmul",
+                                                            "value": 1829426493,
+                                                            "self": 1296,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::cpu_backend::Map2::map",
+                                                                "value": 1829425197,
+                                                                "self": 235836,
+                                                                "float": 120,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                                    "value": 1829189361,
+                                                                    "self": 2156889,
+                                                                    "float": 1180392,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "gemm_common::gemm::gemm_basic_generic::{{closure}}",
+                                                                        "value": 1827032472,
+                                                                        "self": 4172184,
+                                                                        "float": 111024,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "gemm_f32::microkernel::scalar::f32::x2x4",
+                                                                            "value": 1594681344,
+                                                                            "self": 1594681344,
+                                                                            "float": 1247625216
+                                                                          },
+                                                                          {
+                                                                            "name": "gemm_common::pack_operands::pack_lhs",
+                                                                            "value": 228178944,
+                                                                            "self": 228178944,
+                                                                            "float": 113246208
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "\u003ccandle_nn::layer_norm::LayerNorm as candle_core::Module\u003e::forward",
+                                                    "value": 16807118,
+                                                    "self": 16807118,
+                                                    "float": 3690588
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "std::fs::read::inner",
+                                        "value": 645042713,
+                                        "self": 507,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "std::io::default_read_to_end",
+                                            "value": 645042206,
+                                            "self": 439750556,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "read",
+                                                "value": 205291650,
+                                                "self": 205291650,
+                                                "float": 0
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "candle_core::safetensors::load_buffer",
+                                        "value": 201721451,
+                                        "self": 2529691,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "core::iter::adapters::try_process",
+                                            "value": 199191760,
+                                            "self": 46,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "\u003cstd::collections::hash::map::HashMap\u003cK,V,S\u003e as core::iter::traits::collect::FromIterator\u003c(K,V)\u003e\u003e::from_iter",
+                                                "value": 199191714,
+                                                "self": 88,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003chashbrown::map::HashMap\u003cK,V,S,A\u003e as core::iter::traits::collect::Extend\u003c(K,V)\u003e\u003e::extend",
+                                                    "value": 199191626,
+                                                    "self": 175,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003calloc::vec::into_iter::IntoIter\u003cT,A\u003e as core::iter::traits::iterator::Iterator\u003e::try_fold",
+                                                        "value": 199191451,
+                                                        "self": 301511,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::safetensors::convert",
+                                                            "value": 198889940,
+                                                            "self": 13396,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::safetensors::convert_slice",
+                                                                "value": 198876544,
+                                                                "self": 37368,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "candle_core::tensor::Tensor::new_impl",
+                                                                    "value": 198839176,
+                                                                    "self": 300140,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "candle_core::device::Device::storage",
+                                                                        "value": 198539036,
+                                                                        "self": 92128,
+                                                                        "float": 0,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "memcpy",
+                                                                            "value": 198446908,
+                                                                            "self": 7960,
+                                                                            "float": 0,
+                                                                            "children": [
+                                                                              {
+                                                                                "name": "_wordcopy_fwd_aligned",
+                                                                                "value": 198438948,
+                                                                                "self": 198438948,
+                                                                                "float": 0
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "tokenizers::tokenizer::Tokenizer::from_file",
+                                        "value": 126576469,
+                                        "self": 1990049,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "serde_json::de::from_trait",
+                                            "value": 124586420,
+                                            "self": 2355,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "\u003c\u0026mut serde_json::de::Deserializer\u003cR\u003e as serde_core::de::Deserializer\u003e::deserialize_struct",
+                                                "value": 124584065,
+                                                "self": 2309,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003ctokenizers::tokenizer::serialization::TokenizerVisitor\u003cM,N,PT,PP,D\u003e as serde_core::de::Visitor\u003e::visit_map",
+                                                    "value": 124581756,
+                                                    "self": 251001,
+                                                    "float": 16,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ctokenizers::models::ModelWrapper as serde_core::de::Deserialize\u003e::deserialize",
+                                                        "value": 124330755,
+                                                        "self": 2076926,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_map",
+                                                            "value": 63666969,
+                                                            "self": 5405959,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "\u003cserde_json::value::de::\u003cimpl serde_core::de::Deserialize for serde_json::value::Value\u003e::deserialize::ValueVisitor as serde_core::de::Visitor\u003e::visit_map",
+                                                                "value": 58261010,
+                                                                "self": 3010,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "\u003cserde::private::de::content::ContentRefDeserializer\u003cE\u003e as serde_core::de::Deserializer\u003e::deserialize_any",
+                                                                    "value": 58258000,
+                                                                    "self": 681,
+                                                                    "float": 8,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "\u003cserde_json::value::de::\u003cimpl serde_core::de::Deserialize for serde_json::value::Value\u003e::deserialize::ValueVisitor as serde_core::de::Visitor\u003e::visit_map",
+                                                                        "value": 58257319,
+                                                                        "self": 13163936,
+                                                                        "float": 61044,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "alloc::collections::btree::map::BTreeMap\u003cK,V,A\u003e::insert",
+                                                                            "value": 45093383,
+                                                                            "self": 28060497,
+                                                                            "float": 0,
+                                                                            "children": [
+                                                                              {
+                                                                                "name": "bcmp",
+                                                                                "value": 17032886,
+                                                                                "self": 17032886,
+                                                                                "float": 0
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "name": "serde_json::value::de::\u003cimpl serde_core::de::Deserializer for serde_json::value::Value\u003e::deserialize_struct",
+                                                            "value": 38716186,
+                                                            "self": 27,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "serde_json::value::de::visit_object",
+                                                                "value": 38716159,
+                                                                "self": 230,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "\u003ctokenizers::models::wordpiece::serialization::WordPieceVisitor as serde_core::de::Visitor\u003e::visit_map",
+                                                                    "value": 38715929,
+                                                                    "self": 10281,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "serde_json::value::de::\u003cimpl serde_core::de::Deserializer for serde_json::value::Value\u003e::deserialize_map",
+                                                                        "value": 20767532,
+                                                                        "self": 25,
+                                                                        "float": 0,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "serde_json::value::de::visit_object",
+                                                                            "value": 20767507,
+                                                                            "self": 20767507,
+                                                                            "float": 0
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "name": "tokenizers::models::wordpiece::WordPieceBuilder::build",
+                                                                        "value": 17938116,
+                                                                        "self": 240,
+                                                                        "float": 0,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "\u003cahash::hash_map::AHashMap\u003cK,V\u003e as core::iter::traits::collect::FromIterator\u003c(K,V)\u003e\u003e::from_iter",
+                                                                            "value": 17937876,
+                                                                            "self": 17937876,
+                                                                            "float": 0
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "name": "serde_core::de::Deserializer::__deserialize_content_v1",
+                                                            "value": 19870674,
+                                                            "self": 131,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "\u003cserde::private::de::content::ContentVisitor as serde_core::de::Visitor\u003e::visit_map",
+                                                                "value": 19870543,
+                                                                "self": 3907,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "serde_core::de::Deserializer::__deserialize_content_v1",
+                                                                    "value": 19866636,
+                                                                    "self": 788,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "\u003cserde::private::de::content::ContentVisitor as serde_core::de::Visitor\u003e::visit_map",
+                                                                        "value": 19865848,
+                                                                        "self": 19865848,
+                                                                        "float": 0
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "uniquePCs": 89222,
+  "frames": 8095,
+  "description": "Candle BERT (Rust), bge-base-en-v1.5"
+}

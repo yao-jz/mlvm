@@ -1,0 +1,4532 @@
+{
+  "steps": 122197182,
+  "floatShare": 0.24126745410544737,
+  "floatArith": 11215019,
+  "floatArithByPrecision": {
+    "d": 273379,
+    "s": 10941640
+  },
+  "classes": [
+    {
+      "name": "int-alu",
+      "count": 53277828,
+      "share": 0.4359988268796575
+    },
+    {
+      "name": "float-loadstore",
+      "count": 17826580,
+      "share": 0.14588372422532625
+    },
+    {
+      "name": "branch",
+      "count": 14985339,
+      "share": 0.12263244335699984
+    },
+    {
+      "name": "load",
+      "count": 13365344,
+      "share": 0.10937522274449832
+    },
+    {
+      "name": "float-arith",
+      "count": 11215019,
+      "share": 0.09177804934977961
+    },
+    {
+      "name": "store",
+      "count": 7941241,
+      "share": 0.06498710420343408
+    },
+    {
+      "name": "jump",
+      "count": 2578537,
+      "share": 0.021101444057850697
+    },
+    {
+      "name": "float-move",
+      "count": 440604,
+      "share": 0.0036056805303415263
+    },
+    {
+      "name": "int-muldiv",
+      "count": 344339,
+      "share": 0.00281789640615444
+    },
+    {
+      "name": "atomic",
+      "count": 144679,
+      "share": 0.0011839798400588321
+    },
+    {
+      "name": "system",
+      "count": 77672,
+      "share": 0.0006356284058989184
+    }
+  ],
+  "mnemonics": [
+    {
+      "name": "addi",
+      "count": 33829022,
+      "share": 0.27683962466499434
+    },
+    {
+      "name": "flw",
+      "count": 11561624,
+      "share": 0.09461448955508647
+    },
+    {
+      "name": "ld",
+      "count": 11149121,
+      "share": 0.09123877341132139
+    },
+    {
+      "name": "bne",
+      "count": 8526167,
+      "share": 0.06977384306620099
+    },
+    {
+      "name": "sd",
+      "count": 7298980,
+      "share": 0.05973116466793809
+    },
+    {
+      "name": "fsw",
+      "count": 6047552,
+      "share": 0.04949011017291708
+    },
+    {
+      "name": "fmul.s",
+      "count": 5487800,
+      "share": 0.044909382607530184
+    },
+    {
+      "name": "add",
+      "count": 5456286,
+      "share": 0.0446514879532983
+    },
+    {
+      "name": "fadd.s",
+      "count": 5369240,
+      "share": 0.043939147467410504
+    },
+    {
+      "name": "andi",
+      "count": 3647471,
+      "share": 0.029849059858025204
+    },
+    {
+      "name": "beq",
+      "count": 3018638,
+      "share": 0.024703008290322112
+    },
+    {
+      "name": "slli",
+      "count": 2786320,
+      "share": 0.022801835151975928
+    },
+    {
+      "name": "bltu",
+      "count": 1926971,
+      "share": 0.015769357103505053
+    },
+    {
+      "name": "srli",
+      "count": 1810002,
+      "share": 0.014812141903566974
+    },
+    {
+      "name": "jalr",
+      "count": 1674316,
+      "share": 0.013701756231989048
+    },
+    {
+      "name": "auipc",
+      "count": 1638516,
+      "share": 0.013408787119166135
+    },
+    {
+      "name": "lbu",
+      "count": 1572460,
+      "share": 0.012868218188534003
+    },
+    {
+      "name": "bgeu",
+      "count": 1364899,
+      "share": 0.011169643830248066
+    },
+    {
+      "name": "or",
+      "count": 1007059,
+      "share": 0.008241262061182393
+    },
+    {
+      "name": "srl",
+      "count": 987760,
+      "share": 0.008083328795585482
+    },
+    {
+      "name": "jal",
+      "count": 904221,
+      "share": 0.007399687825861647
+    },
+    {
+      "name": "sub",
+      "count": 665029,
+      "share": 0.005442261344455554
+    },
+    {
+      "name": "lw",
+      "count": 469994,
+      "share": 0.0038461934416785487
+    },
+    {
+      "name": "xor",
+      "count": 372044,
+      "share": 0.0030446201288013334
+    },
+    {
+      "name": "sw",
+      "count": 348838,
+      "share": 0.0028547139491318222
+    },
+    {
+      "name": "mul",
+      "count": 327899,
+      "share": 0.0026833597521095046
+    },
+    {
+      "name": "addiw",
+      "count": 303386,
+      "share": 0.0024827577447735253
+    },
+    {
+      "name": "fld",
+      "count": 196767,
+      "share": 0.0016102417157213985
+    },
+    {
+      "name": "sb",
+      "count": 185565,
+      "share": 0.0015185702072900503
+    },
+    {
+      "name": "srliw",
+      "count": 183586,
+      "share": 0.0015023750711370741
+    },
+    {
+      "name": "fsgnj.s",
+      "count": 157721,
+      "share": 0.0012907089788699055
+    },
+    {
+      "name": "lhu",
+      "count": 157116,
+      "share": 0.0012857579645330938
+    },
+    {
+      "name": "lui",
+      "count": 153826,
+      "share": 0.0012588342667345634
+    },
+    {
+      "name": "blt",
+      "count": 130863,
+      "share": 0.0010709166762945482
+    },
+    {
+      "name": "feq.s",
+      "count": 129761,
+      "share": 0.0010618984650562564
+    },
+    {
+      "name": "fmadd.d",
+      "count": 116735,
+      "share": 0.0009553002621615285
+    },
+    {
+      "name": "and",
+      "count": 115141,
+      "share": 0.0009422557714956144
+    },
+    {
+      "name": "sh",
+      "count": 107858,
+      "share": 0.0008826553790741262
+    },
+    {
+      "name": "slliw",
+      "count": 82415,
+      "share": 0.0006744427216005685
+    },
+    {
+      "name": "fmul.d",
+      "count": 67843,
+      "share": 0.0005551928357889628
+    },
+    {
+      "name": "fmv.d.x",
+      "count": 51532,
+      "share": 0.00042171185256956254
+    },
+    {
+      "name": "amoadd.d.rl",
+      "count": 50609,
+      "share": 0.0004141584868953852
+    },
+    {
+      "name": "sll",
+      "count": 45324,
+      "share": 0.0003709087170275334
+    },
+    {
+      "name": "sltiu",
+      "count": 43745,
+      "share": 0.0003579869787831932
+    },
+    {
+      "name": "fence",
+      "count": 43465,
+      "share": 0.0003556956002471481
+    },
+    {
+      "name": "fdiv.s",
+      "count": 39688,
+      "share": 0.00032478654049485366
+    },
+    {
+      "name": "ori",
+      "count": 34737,
+      "share": 0.00028427005788071285
+    },
+    {
+      "name": "ecall",
+      "count": 34207,
+      "share": 0.0002799328056517703
+    },
+    {
+      "name": "fcvt.s.d",
+      "count": 30975,
+      "share": 0.0002534837505499922
+    },
+    {
+      "name": "fmv.x.w",
+      "count": 29704,
+      "share": 0.00024308252869530166
+    },
+    {
+      "name": "fcvt.d.s",
+      "count": 29702,
+      "share": 0.0002430661617057585
+    },
+    {
+      "name": "amoswap.w",
+      "count": 29292,
+      "share": 0.0002397109288494067
+    },
+    {
+      "name": "sltu",
+      "count": 27353,
+      "share": 0.00022384313248729418
+    },
+    {
+      "name": "fmv.x.d",
+      "count": 25606,
+      "share": 0.0002095465671213269
+    },
+    {
+      "name": "fsub.d",
+      "count": 25606,
+      "share": 0.0002095465671213269
+    },
+    {
+      "name": "fmsub.d",
+      "count": 25600,
+      "share": 0.00020949746615269737
+    },
+    {
+      "name": "amoadd.d",
+      "count": 23205,
+      "share": 0.00018989799617473994
+    },
+    {
+      "name": "fsd",
+      "count": 20637,
+      "share": 0.0001688827816012975
+    },
+    {
+      "name": "xori",
+      "count": 20026,
+      "share": 0.00016388266629585615
+    },
+    {
+      "name": "sllw",
+      "count": 19206,
+      "share": 0.00015717220058315256
+    },
+    {
+      "name": "bge",
+      "count": 17801,
+      "share": 0.00014567439042906897
+    },
+    {
+      "name": "fsgnjn.s",
+      "count": 17200,
+      "share": 0.00014075611007134355
+    },
+    {
+      "name": "flt.s",
+      "count": 16626,
+      "share": 0.00013605878407245103
+    },
+    {
+      "name": "sraiw",
+      "count": 16423,
+      "share": 0.0001343975346338183
+    },
+    {
+      "name": "srai",
+      "count": 15504,
+      "share": 0.00012687690293872734
+    },
+    {
+      "name": "mulhu",
+      "count": 15330,
+      "share": 0.00012545297484847074
+    },
+    {
+      "name": "lb",
+      "count": 14519,
+      "share": 0.00011881616058871145
+    },
+    {
+      "name": "subw",
+      "count": 14220,
+      "share": 0.00011636929565200612
+    },
+    {
+      "name": "fsub.s",
+      "count": 13200,
+      "share": 0.00010802213098498458
+    },
+    {
+      "name": "lr.w.aq",
+      "count": 11251,
+      "share": 0.00009207249967515617
+    },
+    {
+      "name": "sc.w",
+      "count": 11251,
+      "share": 0.00009207249967515617
+    },
+    {
+      "name": "amoadd.w.rl",
+      "count": 11208,
+      "share": 0.00009172060939997781
+    },
+    {
+      "name": "fmv.w.x",
+      "count": 8272,
+      "share": 0.00006769386875059034
+    },
+    {
+      "name": "amoswap.d.aq",
+      "count": 7775,
+      "share": 0.00006362667184911023
+    },
+    {
+      "name": "fsgnj.d",
+      "count": 4182,
+      "share": 0.0000342233751347883
+    },
+    {
+      "name": "addw",
+      "count": 3427,
+      "share": 0.000028044836582238042
+    },
+    {
+      "name": "lwu",
+      "count": 2134,
+      "share": 0.000017463577842572506
+    },
+    {
+      "name": "fcvt.d.w",
+      "count": 2123,
+      "share": 0.00001737355940008502
+    },
+    {
+      "name": "fcvt.w.d",
+      "count": 2120,
+      "share": 0.00001734900891577025
+    },
+    {
+      "name": "fnmsub.d",
+      "count": 2120,
+      "share": 0.00001734900891577025
+    },
+    {
+      "name": "mulw",
+      "count": 785,
+      "share": 0.0000064240433956979465
+    },
+    {
+      "name": "fcvt.d.l",
+      "count": 784,
+      "share": 0.000006415859900926357
+    },
+    {
+      "name": "fcvt.s.wu",
+      "count": 512,
+      "share": 0.000004189949323053947
+    },
+    {
+      "name": "divu",
+      "count": 321,
+      "share": 0.0000026269018216803067
+    },
+    {
+      "name": "fcvt.d.lu",
+      "count": 320,
+      "share": 0.000002618718326908717
+    },
+    {
+      "name": "fdiv.d",
+      "count": 320,
+      "share": 0.000002618718326908717
+    },
+    {
+      "name": "fsqrt.s",
+      "count": 220,
+      "share": 0.000001800368849749743
+    },
+    {
+      "name": "fsqrt.d",
+      "count": 100,
+      "share": 8.183494771589741e-7
+    },
+    {
+      "name": "amoswap.w.rl",
+      "count": 43,
+      "share": 3.518902751783589e-7
+    },
+    {
+      "name": "amoswap.d",
+      "count": 9,
+      "share": 7.365145294430767e-8
+    },
+    {
+      "name": "sc.d.aq",
+      "count": 7,
+      "share": 5.7284463401128186e-8
+    },
+    {
+      "name": "fadd.d",
+      "count": 6,
+      "share": 4.9100968629538445e-8
+    },
+    {
+      "name": "fcvt.s.lu",
+      "count": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "lr.d.aq",
+      "count": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "lr.w",
+      "count": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "sc.w.aq",
+      "count": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "amoadd.w",
+      "count": 4,
+      "share": 3.2733979086358963e-8
+    },
+    {
+      "name": "lr.d",
+      "count": 4,
+      "share": 3.2733979086358963e-8
+    },
+    {
+      "name": "amomaxu.d.aq",
+      "count": 2,
+      "share": 1.6366989543179482e-8
+    },
+    {
+      "name": "amomaxu.w.aq",
+      "count": 2,
+      "share": 1.6366989543179482e-8
+    },
+    {
+      "name": "remu",
+      "count": 2,
+      "share": 1.6366989543179482e-8
+    },
+    {
+      "name": "divw",
+      "count": 1,
+      "share": 8.183494771589741e-9
+    },
+    {
+      "name": "remw",
+      "count": 1,
+      "share": 8.183494771589741e-9
+    },
+    {
+      "name": "sc.d",
+      "count": 1,
+      "share": 8.183494771589741e-9
+    },
+    {
+      "name": "sc.d.rl",
+      "count": 1,
+      "share": 8.183494771589741e-9
+    }
+  ],
+  "functions": [
+    {
+      "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+      "self": 49720809,
+      "total": 49720809,
+      "share": 0.4068899804907121
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+      "self": 9634627,
+      "total": 13889969,
+      "share": 0.07884491968071736
+    },
+    {
+      "name": "num_cpus::linux::get_num_cpus",
+      "self": 9460527,
+      "total": 9574222,
+      "share": 0.07742017324098358
+    },
+    {
+      "name": "candle_core::cpu_backend::copy_strided_src_",
+      "self": 8603656,
+      "total": 11822652,
+      "share": 0.07040797389255671
+    },
+    {
+      "name": "_int_free",
+      "self": 6759964,
+      "total": 6937322,
+      "share": 0.05532013005013487
+    },
+    {
+      "name": "memcpy",
+      "self": 4593527,
+      "total": 8921516,
+      "share": 0.03759110418765631
+    },
+    {
+      "name": "_wordcopy_fwd_aligned",
+      "self": 3797982,
+      "total": 3797982,
+      "share": 0.031080765839591948
+    },
+    {
+      "name": "_int_malloc",
+      "self": 3470440,
+      "total": 3922113,
+      "share": 0.0284003275951159
+    },
+    {
+      "name": "malloc",
+      "self": 2606660,
+      "total": 3387493,
+      "share": 0.021331588481312114
+    },
+    {
+      "name": "__libc_free",
+      "self": 1915692,
+      "total": 8034301,
+      "share": 0.015677055465976295
+    },
+    {
+      "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+      "self": 1053237,
+      "total": 6088704,
+      "share": 0.008619159482744864
+    },
+    {
+      "name": "candle_core::tensor::from_storage",
+      "self": 1028571,
+      "total": 6361928,
+      "share": 0.00841730540070883
+    },
+    {
+      "name": "__ieee754_expf",
+      "self": 896000,
+      "total": 896000,
+      "share": 0.007332411315344408
+    },
+    {
+      "name": "memset",
+      "self": 828273,
+      "total": 828273,
+      "share": 0.0067781677649489495
+    },
+    {
+      "name": "__realloc",
+      "self": 756195,
+      "total": 3903772,
+      "share": 0.006188317828802304
+    },
+    {
+      "name": "_int_realloc",
+      "self": 669151,
+      "total": 3147577,
+      "share": 0.005475993709904046
+    },
+    {
+      "name": "__calloc",
+      "self": 631960,
+      "total": 2785529,
+      "share": 0.005171641355853853
+    },
+    {
+      "name": "_wordcopy_fwd_dest_aligned",
+      "self": 531514,
+      "total": 531514,
+      "share": 0.004349642040026749
+    },
+    {
+      "name": "\u003cstd::fs::File as std::io::Read\u003e::read",
+      "self": 528512,
+      "total": 1023992,
+      "share": 0.004325075188722437
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::unary_impl",
+      "self": 523366,
+      "total": 1686694,
+      "share": 0.0042829629246278365
+    },
+    {
+      "name": "read_encoded_value_with_base",
+      "self": 521898,
+      "total": 521898,
+      "share": 0.004270949554303143
+    },
+    {
+      "name": "candle_core::layout::Layout::broadcast_as",
+      "self": 504245,
+      "total": 2702288,
+      "share": 0.004126486321100269
+    },
+    {
+      "name": "__libc_read",
+      "self": 498420,
+      "total": 498420,
+      "share": 0.0040788174640557584
+    },
+    {
+      "name": "candle_core::cpu_backend::Map2::map",
+      "self": 422700,
+      "total": 60896252,
+      "share": 0.0034591632399509835
+    },
+    {
+      "name": "malloc_consolidate",
+      "self": 421426,
+      "total": 478302,
+      "share": 0.003448737467611978
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::binary_impl",
+      "self": 419340,
+      "total": 6031467,
+      "share": 0.0034316666975184418
+    },
+    {
+      "name": "__rdl_alloc",
+      "self": 398160,
+      "total": 398160,
+      "share": 0.0032583402782561713
+    },
+    {
+      "name": "std::io::default_read_exact",
+      "self": 397350,
+      "total": 1421342,
+      "share": 0.0032517116474911835
+    },
+    {
+      "name": "candle_core::tensor::Tensor::transpose",
+      "self": 367338,
+      "total": 2150517,
+      "share": 0.003006108602406232
+    },
+    {
+      "name": "classify_object_over_fdes",
+      "self": 333354,
+      "total": 888360,
+      "share": 0.0027280007160885265
+    },
+    {
+      "name": "alloc::raw_vec::finish_grow",
+      "self": 330982,
+      "total": 4554364,
+      "share": 0.0027085894664903155
+    },
+    {
+      "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+      "self": 319161,
+      "total": 2939498,
+      "share": 0.002611852374795353
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_as",
+      "self": 304470,
+      "total": 3573739,
+      "share": 0.0024916286531059284
+    },
+    {
+      "name": "candle_core::layout::Layout::transpose",
+      "self": 292978,
+      "total": 906063,
+      "share": 0.002397583931190819
+    },
+    {
+      "name": "core::hash::BuildHasher::hash_one",
+      "self": 283982,
+      "total": 516803,
+      "share": 0.0023239652122255977
+    },
+    {
+      "name": "candle_core::layout::Layout::strided_blocks",
+      "self": 283131,
+      "total": 586591,
+      "share": 0.0023170010581749748
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::affine",
+      "self": 269760,
+      "total": 350567,
+      "share": 0.0022075795495840487
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::reduce_op",
+      "self": 252040,
+      "total": 677656,
+      "share": 0.0020625680222314782
+    },
+    {
+      "name": "alloc::raw_vec::RawVec\u003cT,A\u003e::grow_one",
+      "self": 247622,
+      "total": 2177979,
+      "share": 0.0020264133423305948
+    },
+    {
+      "name": "candle_core::tensor::Tensor::reshape",
+      "self": 247286,
+      "total": 4706931,
+      "share": 0.0020236636880873408
+    },
+    {
+      "name": "candle_core::tensor::Tensor::storage",
+      "self": 246888,
+      "total": 246888,
+      "share": 0.002020406657168248
+    },
+    {
+      "name": "\u003ccore::hash::sip::Hasher\u003cS\u003e as core::hash::Hasher\u003e::write",
+      "self": 232821,
+      "total": 232821,
+      "share": 0.001905289436216295
+    },
+    {
+      "name": "candle_core::shape::Shape::broadcast_shape_binary_op",
+      "self": 226680,
+      "total": 557704,
+      "share": 0.0018550345948239624
+    },
+    {
+      "name": "bcmp",
+      "self": 218050,
+      "total": 218050,
+      "share": 0.001784411034945143
+    },
+    {
+      "name": "unlink_chunk",
+      "self": 206662,
+      "total": 206662,
+      "share": 0.001691217396486279
+    },
+    {
+      "name": "__rdl_realloc",
+      "self": 196900,
+      "total": 196900,
+      "share": 0.00161133012052602
+    },
+    {
+      "name": "candle_core::tensor::Tensor::matmul",
+      "self": 196308,
+      "total": 62493757,
+      "share": 0.0016064854916212389
+    },
+    {
+      "name": "candle_core::tensor::Tensor::cat0",
+      "self": 183370,
+      "total": 2645003,
+      "share": 0.0015006074362664107
+    },
+    {
+      "name": "candle_core::tensor::Tensor::mul",
+      "self": 178080,
+      "total": 6563452,
+      "share": 0.001457316748924701
+    },
+    {
+      "name": "candle_core::storage::Storage::binary_impl",
+      "self": 176960,
+      "total": 6264427,
+      "share": 0.0014481512347805205
+    },
+    {
+      "name": "candle_core::layout::Layout::strided_index",
+      "self": 163800,
+      "total": 538816,
+      "share": 0.0013404564435863997
+    },
+    {
+      "name": "__rdl_alloc_zeroed",
+      "self": 146816,
+      "total": 146816,
+      "share": 0.0012014679683857194
+    },
+    {
+      "name": "candle_core::tensor::Tensor::narrow",
+      "self": 146355,
+      "total": 802484,
+      "share": 0.0011976953772960166
+    },
+    {
+      "name": "__rdl_dealloc",
+      "self": 132112,
+      "total": 132112,
+      "share": 0.001081137861264264
+    },
+    {
+      "name": "__rust_dealloc",
+      "self": 132112,
+      "total": 132112,
+      "share": 0.001081137861264264
+    },
+    {
+      "name": "candle_core::shape::Shape::stride_contiguous",
+      "self": 127871,
+      "total": 805751,
+      "share": 0.0010464316599379517
+    },
+    {
+      "name": "candle_core::tensor::Tensor::same_shape_binary_op",
+      "self": 124440,
+      "total": 221920,
+      "share": 0.0010183540893766274
+    },
+    {
+      "name": "tinystories_candle::argmax",
+      "self": 122506,
+      "total": 122506,
+      "share": 0.0010025272104883728
+    },
+    {
+      "name": "\u003cusize as candle_core::shape::Dim\u003e::to_index",
+      "self": 117678,
+      "total": 117678,
+      "share": 0.0009630172977311375
+    },
+    {
+      "name": "__rust_alloc",
+      "self": 113760,
+      "total": 113760,
+      "share": 0.0009309543652160489
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuDevice as candle_core::backend::BackendDevice\u003e::zeros_impl",
+      "self": 110588,
+      "total": 1664098,
+      "share": 0.0009049963198005663
+    },
+    {
+      "name": "candle_core::tensor::Tensor::cat",
+      "self": 105380,
+      "total": 4483204,
+      "share": 0.0008623766790301269
+    },
+    {
+      "name": "candle_core::cpu_backend::Map1Any::map",
+      "self": 104448,
+      "total": 109948,
+      "share": 0.0008547496619030053
+    },
+    {
+      "name": "candle_core::tensor::Tensor::elem_count",
+      "self": 103679,
+      "total": 103679,
+      "share": 0.0008484565544236527
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_mul",
+      "self": 102720,
+      "total": 8533779,
+      "share": 0.0008406085829376982
+    },
+    {
+      "name": "candle_core::tensor::Tensor::contiguous",
+      "self": 98746,
+      "total": 9877612,
+      "share": 0.0008080873747154005
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_core::cpu_backend::CpuStorage\u003e",
+      "self": 96152,
+      "total": 96152,
+      "share": 0.0007868593892778968
+    },
+    {
+      "name": "candle_core::layout::Layout::narrow",
+      "self": 92105,
+      "total": 300589,
+      "share": 0.0007537407859372731
+    },
+    {
+      "name": "tinystories_candle::Tokenizer::read",
+      "self": 89859,
+      "total": 944723,
+      "share": 0.0007353606566802825
+    },
+    {
+      "name": "cosf",
+      "self": 86928,
+      "total": 86928,
+      "share": 0.000711374833504753
+    },
+    {
+      "name": "__sinf",
+      "self": 83685,
+      "total": 83685,
+      "share": 0.0006848357599604875
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::Llama::forward",
+      "self": 83365,
+      "total": 105964026,
+      "share": 0.0006822170416335788
+    },
+    {
+      "name": "candle_core::storage::Storage::same_dtype",
+      "self": 81525,
+      "total": 81525,
+      "share": 0.0006671594112538536
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::CausalSelfAttention::apply_rotary_emb",
+      "self": 77600,
+      "total": 15726546,
+      "share": 0.0006350391942753639
+    },
+    {
+      "name": "candle_core::storage::Storage::matmul",
+      "self": 76443,
+      "total": 60995720,
+      "share": 0.0006255708908246345
+    },
+    {
+      "name": "hashbrown::raw::RawTable\u003cT,A\u003e::reserve_rehash",
+      "self": 73204,
+      "total": 411838,
+      "share": 0.0005990645512594554
+    },
+    {
+      "name": "candle_core::tensor::Tensor::div",
+      "self": 66780,
+      "total": 1378034,
+      "share": 0.0005464937808467629
+    },
+    {
+      "name": "hashbrown::rustc_entry::\u003cimpl hashbrown::map::HashMap\u003cK,V,S,A\u003e\u003e::rustc_entry",
+      "self": 65444,
+      "total": 585585,
+      "share": 0.000535560631831919
+    },
+    {
+      "name": "candle_core::tensor::Tensor::is_contiguous",
+      "self": 65032,
+      "total": 65032,
+      "share": 0.000532189031986024
+    },
+    {
+      "name": "candle_core::tensor::Tensor::unsqueeze",
+      "self": 64780,
+      "total": 977802,
+      "share": 0.0005301267913035834
+    },
+    {
+      "name": "candle_core::layout::Layout::contiguous_with_offset",
+      "self": 64300,
+      "total": 255580,
+      "share": 0.0005261987138132203
+    },
+    {
+      "name": "candle_core::tensor::Tensor::add",
+      "self": 63200,
+      "total": 930607,
+      "share": 0.0005171968695644716
+    },
+    {
+      "name": "strlen",
+      "self": 61950,
+      "total": 61950,
+      "share": 0.0005069675010999844
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+      "self": 59598,
+      "total": 12188072,
+      "share": 0.0004877199213972054
+    },
+    {
+      "name": "candle_core::tensor::Tensor::affine",
+      "self": 59520,
+      "total": 1071728,
+      "share": 0.00048708160880502136
+    },
+    {
+      "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+      "self": 57600,
+      "total": 60584416,
+      "share": 0.00047136929884356905
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sum_impl",
+      "self": 52160,
+      "total": 1071199,
+      "share": 0.0004268510872861209
+    },
+    {
+      "name": "candle_core::layout::Layout::offsets_b",
+      "self": 49810,
+      "total": 49810,
+      "share": 0.000407619874572885
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sub",
+      "self": 47700,
+      "total": 855870,
+      "share": 0.00039035270060483067
+    },
+    {
+      "name": "std::env::_var",
+      "self": 45129,
+      "total": 281826,
+      "share": 0.0003693129355470734
+    },
+    {
+      "name": "\u003ccandle_nn::layer_norm::LayerNorm as candle_core::Module\u003e::forward",
+      "self": 44880,
+      "total": 5202095,
+      "share": 0.00036727524534894756
+    },
+    {
+      "name": "candle_core::shape::Shape::elem_count",
+      "self": 43750,
+      "total": 43750,
+      "share": 0.0003580278962570512
+    },
+    {
+      "name": "candle_core::indexer::\u003cimpl candle_core::tensor::Tensor\u003e::index",
+      "self": 43402,
+      "total": 501722,
+      "share": 0.0003551800400765379
+    },
+    {
+      "name": "std::sys::pal::unix::os::getenv::{{closure}}",
+      "self": 42366,
+      "total": 125256,
+      "share": 0.00034670193949317096
+    },
+    {
+      "name": "\u003ccandle_core::shape::D as candle_core::shape::Dim\u003e::to_index",
+      "self": 41040,
+      "total": 41040,
+      "share": 0.000335850625426043
+    },
+    {
+      "name": "core::ffi::c_str::CStr::from_bytes_with_nul",
+      "self": 40778,
+      "total": 40778,
+      "share": 0.00033370654979588646
+    },
+    {
+      "name": "candle_core::storage::Storage::copy_strided_src",
+      "self": 37926,
+      "total": 12225998,
+      "share": 0.00031036722270731253
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_left",
+      "self": 36000,
+      "total": 1322332,
+      "share": 0.0002946058117772307
+    },
+    {
+      "name": "candle_core::device::Device::zeros",
+      "self": 33820,
+      "total": 1023328,
+      "share": 0.00027676579317516503
+    },
+    {
+      "name": "getenv",
+      "self": 33372,
+      "total": 83420,
+      "share": 0.00027309958751749284
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_div",
+      "self": 32540,
+      "total": 1675779,
+      "share": 0.00026629091986753016
+    },
+    {
+      "name": "memmove",
+      "self": 32381,
+      "total": 42288,
+      "share": 0.0002649897441988474
+    },
+    {
+      "name": "candle_core::tensor::TensorId::new",
+      "self": 30500,
+      "total": 30500,
+      "share": 0.0002495965905334871
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sqr",
+      "self": 29040,
+      "total": 374440,
+      "share": 0.00023764868816696606
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sqrt",
+      "self": 29040,
+      "total": 276760,
+      "share": 0.00023764868816696606
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c(usize,usize,usize,usize,usize)\u003e\u003e::from",
+      "self": 26400,
+      "total": 70680,
+      "share": 0.00021604426196996916
+    },
+    {
+      "name": "candle_core::tensor::Tensor::exp",
+      "self": 26200,
+      "total": 1363181,
+      "share": 0.0002144075630156512
+    },
+    {
+      "name": "candle_core::tensor::Tensor::check_dim",
+      "self": 24960,
+      "total": 24960,
+      "share": 0.00020426002949887993
+    },
+    {
+      "name": "candle_core::utils::get_num_threads",
+      "self": 24867,
+      "total": 306693,
+      "share": 0.0002034989644851221
+    },
+    {
+      "name": "candle_core::tensor::Tensor::t",
+      "self": 23192,
+      "total": 733515,
+      "share": 0.00018979161074270928
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003calloc::vec::Vec\u003ccandle_core::tensor::Tensor\u003e\u003e",
+      "self": 23010,
+      "total": 335349,
+      "share": 0.00018830221469427993
+    },
+    {
+      "name": "tinystories_candle::Tokenizer::encode",
+      "self": 22627,
+      "total": 102680,
+      "share": 0.00018516793619676106
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::CausalSelfAttention::repeat_kv",
+      "self": 21800,
+      "total": 3443645,
+      "share": 0.00017840018602065634
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c(usize,usize,usize,usize)\u003e\u003e::from",
+      "self": 21700,
+      "total": 60200,
+      "share": 0.00017758183654349738
+    },
+    {
+      "name": "get_cie_encoding",
+      "self": 21228,
+      "total": 40064,
+      "share": 0.00017371922701130702
+    },
+    {
+      "name": "__sched_getaffinity_new",
+      "self": 21183,
+      "total": 67233,
+      "share": 0.00017335096974658548
+    },
+    {
+      "name": "\u003cusize as candle_core::shape::Dim\u003e::to_index_plus_one",
+      "self": 20460,
+      "total": 20460,
+      "share": 0.0001674343030267261
+    },
+    {
+      "name": "candle_core::shape::Dims::to_indexes",
+      "self": 19840,
+      "total": 47838,
+      "share": 0.00016236053626834045
+    },
+    {
+      "name": "__rust_realloc",
+      "self": 19690,
+      "total": 19690,
+      "share": 0.000161133012052602
+    },
+    {
+      "name": "candle_core::storage::Storage::device",
+      "self": 19058,
+      "total": 19058,
+      "share": 0.00015596104335695727
+    },
+    {
+      "name": "candle_core::storage::Storage::dtype",
+      "self": 19058,
+      "total": 19058,
+      "share": 0.00015596104335695727
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c(usize,)\u003e\u003e::from",
+      "self": 18600,
+      "total": 58900,
+      "share": 0.00015221300275156918
+    },
+    {
+      "name": "__rust_alloc_zeroed",
+      "self": 18352,
+      "total": 18352,
+      "share": 0.00015018349604821492
+    },
+    {
+      "name": "candle_core::storage::Storage::reduce_op",
+      "self": 17640,
+      "total": 695296,
+      "share": 0.00014435684777084303
+    },
+    {
+      "name": "candle_core::tensor::Tensor::reduce_impl",
+      "self": 17400,
+      "total": 246951,
+      "share": 0.0001423928090256615
+    },
+    {
+      "name": "core::iter::adapters::try_process",
+      "self": 17160,
+      "total": 782010,
+      "share": 0.00014042877028047995
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ctinystories_candle::Tokenizer\u003e",
+      "self": 16702,
+      "total": 134394,
+      "share": 0.00013668072967509186
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_dtype",
+      "self": 15435,
+      "total": 20721,
+      "share": 0.00012631224179948764
+    },
+    {
+      "name": "candle_core::tensor::Tensor::where_cond",
+      "self": 14700,
+      "total": 1375332,
+      "share": 0.0001202973731423692
+    },
+    {
+      "name": "candle_core::shape::\u003cimpl candle_core::tensor::Tensor\u003e::dims4",
+      "self": 14400,
+      "total": 14400,
+      "share": 0.00011784232471089226
+    },
+    {
+      "name": "candle_core::op::BackpropOp::new1",
+      "self": 14060,
+      "total": 14060,
+      "share": 0.00011505993648855176
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::where_cond",
+      "self": 14000,
+      "total": 1220922,
+      "share": 0.00011456892680225638
+    },
+    {
+      "name": "alloc::str::join_generic_copy",
+      "self": 13404,
+      "total": 37452,
+      "share": 0.00010969156391838889
+    },
+    {
+      "name": "candle_core::tensor::Tensor::neg",
+      "self": 13200,
+      "total": 245735,
+      "share": 0.00010802213098498458
+    },
+    {
+      "name": "candle_core::device::Device::location",
+      "self": 12480,
+      "total": 12480,
+      "share": 0.00010213001474943996
+    },
+    {
+      "name": "candle_nn::ops::softmax",
+      "self": 11400,
+      "total": 2560262,
+      "share": 0.00009329184039612305
+    },
+    {
+      "name": "candle_core::layout::Layout::contiguous_offsets",
+      "self": 11240,
+      "total": 11240,
+      "share": 0.00009198248123266869
+    },
+    {
+      "name": "candle_core::storage::Storage::where_cond",
+      "self": 10100,
+      "total": 1233522,
+      "share": 0.00008265329719305639
+    },
+    {
+      "name": "candle_core::tensor::Tensor::broadcast_sub",
+      "self": 10100,
+      "total": 548416,
+      "share": 0.00008265329719305639
+    },
+    {
+      "name": "candle_core::tensor::Tensor::new",
+      "self": 9800,
+      "total": 114514,
+      "share": 0.00008019824876157946
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::Cache::mask",
+      "self": 9777,
+      "total": 34686,
+      "share": 0.0000800100283818329
+    },
+    {
+      "name": "\u003cstd::collections::hash::map::HashMap\u003calloc::string::String,candle_core::tensor::Tensor\u003e as candle_nn::var_builder::SimpleBackend\u003e::get",
+      "self": 8876,
+      "total": 44755,
+      "share": 0.00007263669959263054
+    },
+    {
+      "name": "_wordcopy_bwd_aligned",
+      "self": 8400,
+      "total": 8400,
+      "share": 0.00006874135608135383
+    },
+    {
+      "name": "hashbrown::map::HashMap\u003cK,V,S,A\u003e::insert",
+      "self": 7989,
+      "total": 61773,
+      "share": 0.00006537793973023043
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Div\u003cf64\u003e\u003e::div",
+      "self": 7680,
+      "total": 730910,
+      "share": 0.00006284923984580921
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Add\u003cf64\u003e\u003e::add",
+      "self": 7360,
+      "total": 779763,
+      "share": 0.00006023052151890049
+    },
+    {
+      "name": "alloc_perturb",
+      "self": 7260,
+      "total": 7260,
+      "share": 0.000059412172041741516
+    },
+    {
+      "name": "tinystories_candle::main",
+      "self": 6386,
+      "total": 121300162,
+      "share": 0.00005225979761137209
+    },
+    {
+      "name": "std::io::default_read_to_end",
+      "self": 6323,
+      "total": 13193,
+      "share": 0.00005174423744076193
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Add\u003cB\u003e\u003e::add",
+      "self": 6200,
+      "total": 788839,
+      "share": 0.00005073766758385639
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Sub\u003cB\u003e\u003e::sub",
+      "self": 6200,
+      "total": 779709,
+      "share": 0.00005073766758385639
+    },
+    {
+      "name": "candle_core::tensor::Tensor::squeeze",
+      "self": 5852,
+      "total": 59554,
+      "share": 0.000047889811403343164
+    },
+    {
+      "name": "candle_core::cpu_backend::Map1::map",
+      "self": 5840,
+      "total": 18110,
+      "share": 0.00004779160946608409
+    },
+    {
+      "name": "candle_core::tensor::Tensor::arange_step",
+      "self": 5238,
+      "total": 10015,
+      "share": 0.00004286514561358706
+    },
+    {
+      "name": "candle_core::shape::Shape::from_dims",
+      "self": 5198,
+      "total": 23094,
+      "share": 0.00004253780582272347
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c\u0026candle_core::shape::Shape\u003e\u003e::from",
+      "self": 4800,
+      "total": 17200,
+      "share": 0.000039280774903630754
+    },
+    {
+      "name": "core::fmt::write",
+      "self": 4800,
+      "total": 26484,
+      "share": 0.000039280774903630754
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::push_prefix",
+      "self": 4697,
+      "total": 72703,
+      "share": 0.00003843787494215701
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT,A\u003e as core::clone::Clone\u003e::clone",
+      "self": 4625,
+      "total": 33997,
+      "share": 0.000037848663318602554
+    },
+    {
+      "name": "candle_core::device::Device::storage",
+      "self": 4187,
+      "total": 10622,
+      "share": 0.000034264292608646246
+    },
+    {
+      "name": "alloc::fmt::format::format_inner",
+      "self": 4075,
+      "total": 33435,
+      "share": 0.0000333477411942282
+    },
+    {
+      "name": "\u003calloc::string::String as core::fmt::Write\u003e::write_str",
+      "self": 3768,
+      "total": 18220,
+      "share": 0.000030835408299350146
+    },
+    {
+      "name": "tinystories_candle::read_llama2c_weights::{{closure}}",
+      "self": 3743,
+      "total": 12994954,
+      "share": 0.0000306308209300604
+    },
+    {
+      "name": "\u003calloc::string::String as core::clone::Clone\u003e::clone",
+      "self": 3510,
+      "total": 15190,
+      "share": 0.000028724066648279992
+    },
+    {
+      "name": "candle_core::tensor::Tensor::index_select",
+      "self": 3420,
+      "total": 43210,
+      "share": 0.000027987552118836915
+    },
+    {
+      "name": "candle_core::shape::\u003cimpl candle_core::tensor::Tensor\u003e::dims3",
+      "self": 3400,
+      "total": 3400,
+      "share": 0.00002782388222340512
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Mul\u003cB\u003e\u003e::mul",
+      "self": 3100,
+      "total": 441900,
+      "share": 0.000025368833791928196
+    },
+    {
+      "name": "candle_nn::linear::linear_no_bias",
+      "self": 3004,
+      "total": 88656,
+      "share": 0.000024583218293855582
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::get_with_hints",
+      "self": 2814,
+      "total": 96684,
+      "share": 0.00002302835428725353
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::path",
+      "self": 2586,
+      "total": 43553,
+      "share": 0.00002116251747933107
+    },
+    {
+      "name": "\u003ccandle_nn::embedding::Embedding as candle_core::Module\u003e::forward",
+      "self": 2560,
+      "total": 97619,
+      "share": 0.000020949746615269737
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_device",
+      "self": 2250,
+      "total": 2250,
+      "share": 0.00001841286323607692
+    },
+    {
+      "name": "core::fmt::Formatter::pad",
+      "self": 2108,
+      "total": 2108,
+      "share": 0.000017250806978511174
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::Block::load",
+      "self": 2055,
+      "total": 188279,
+      "share": 0.000016817081755616916
+    },
+    {
+      "name": "\u003c\u0026candle_core::tensor::Tensor as core::ops::arith::Div\u003cB\u003e\u003e::div",
+      "self": 2000,
+      "total": 376600,
+      "share": 0.000016366989543179482
+    },
+    {
+      "name": "candle_core::tensor::Tensor::to_vec1",
+      "self": 1728,
+      "total": 32689,
+      "share": 0.000014141078965307072
+    },
+    {
+      "name": "core::fmt::Formatter::pad_integral",
+      "self": 1586,
+      "total": 2132,
+      "share": 0.00001297902270774133
+    },
+    {
+      "name": "\u003ccandle_nn::layer_norm::RmsNorm as candle_core::Module\u003e::forward",
+      "self": 1540,
+      "total": 5203635,
+      "share": 0.0000126025819482482
+    },
+    {
+      "name": "\u003chashbrown::raw::RawTable\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 1499,
+      "total": 138835,
+      "share": 0.000012267058662613022
+    },
+    {
+      "name": "\u003ccore::str::lossy::Utf8Chunks as core::iter::traits::iterator::Iterator\u003e::next",
+      "self": 1446,
+      "total": 1446,
+      "share": 0.000011833333439718765
+    },
+    {
+      "name": "core::slice::memchr::memrchr",
+      "self": 1432,
+      "total": 1432,
+      "share": 0.000011718764512916509
+    },
+    {
+      "name": "candle_core::tensor::Tensor::flatten_all",
+      "self": 1340,
+      "total": 13000,
+      "share": 0.000010965882993930253
+    },
+    {
+      "name": "\u003cstd::io::buffered::linewritershim::LineWriterShim\u003cW\u003e as std::io::Write\u003e::write_all",
+      "self": 1244,
+      "total": 3924,
+      "share": 0.000010180267495857637
+    },
+    {
+      "name": "\u003c\u0026std::io::stdio::Stdout as std::io::Write\u003e::write_fmt",
+      "self": 1239,
+      "total": 8216,
+      "share": 0.000010139350021999688
+    },
+    {
+      "name": "systrim",
+      "self": 1196,
+      "total": 1664,
+      "share": 0.00000978745974682133
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c(usize,usize)\u003e\u003e::from",
+      "self": 1176,
+      "total": 3649,
+      "share": 0.000009623789851389535
+    },
+    {
+      "name": "core::fmt::num::imp::\u003cimpl u64\u003e::_fmt",
+      "self": 1126,
+      "total": 7803,
+      "share": 0.000009214615112810048
+    },
+    {
+      "name": "candle_nn::layer_norm::rms_norm",
+      "self": 1002,
+      "total": 28042,
+      "share": 0.000008199861761132921
+    },
+    {
+      "name": "candle_core::storage::Storage::index_select",
+      "self": 940,
+      "total": 19450,
+      "share": 0.000007692485085294356
+    },
+    {
+      "name": "std::io::buffered::bufwriter::BufWriter\u003cW\u003e::flush_buf",
+      "self": 923,
+      "total": 1208,
+      "share": 0.000007553365674177331
+    },
+    {
+      "name": "\u003cstd::io::Write::write_fmt::Adapter\u003cT\u003e as core::fmt::Write\u003e::write_str",
+      "self": 875,
+      "total": 4799,
+      "share": 0.000007160557925141024
+    },
+    {
+      "name": "candle_core::tensor::Tensor::from_vec_impl",
+      "self": 819,
+      "total": 23747,
+      "share": 0.0000067022822179319975
+    },
+    {
+      "name": "\u003c\u0026std::io::stdio::Stdout as std::io::Write\u003e::flush",
+      "self": 816,
+      "total": 2006,
+      "share": 0.000006677731733617229
+    },
+    {
+      "name": "\u003ccore::iter::adapters::map::Map\u003cI,F\u003e as core::iter::traits::iterator::Iterator\u003e::fold",
+      "self": 768,
+      "total": 202250,
+      "share": 0.000006284923984580921
+    },
+    {
+      "name": "tinystories_candle::Tokenizer::decode",
+      "self": 762,
+      "total": 2219,
+      "share": 0.000006235823015951383
+    },
+    {
+      "name": "alloc::string::String::from_utf8_lossy",
+      "self": 748,
+      "total": 2194,
+      "share": 0.000006121254089149126
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as candle_core::indexer::IndexOp\u003cT\u003e\u003e::i",
+      "self": 720,
+      "total": 92298,
+      "share": 0.000005892116235544614
+    },
+    {
+      "name": "std::io::stdio::_print",
+      "self": 698,
+      "total": 9625,
+      "share": 0.0000057120793505696396
+    },
+    {
+      "name": "candle_core::shape::\u003cimpl candle_core::tensor::Tensor\u003e::dims2",
+      "self": 640,
+      "total": 640,
+      "share": 0.000005237436653817434
+    },
+    {
+      "name": "ptmalloc_init",
+      "self": 610,
+      "total": 864,
+      "share": 0.000004991931810669742
+    },
+    {
+      "name": "candle_core::tensor::Tensor::dim",
+      "self": 608,
+      "total": 1136,
+      "share": 0.000004975564821126562
+    },
+    {
+      "name": "core::fmt::Formatter::pad_integral::write_prefix",
+      "self": 546,
+      "total": 546,
+      "share": 0.000004468188145287998
+    },
+    {
+      "name": "std::io::stdio::print_to_buffer_if_capture_used",
+      "self": 546,
+      "total": 546,
+      "share": 0.000004468188145287998
+    },
+    {
+      "name": "sbrk",
+      "self": 521,
+      "total": 555,
+      "share": 0.000004263600775998255
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::Cache::new",
+      "self": 458,
+      "total": 271717,
+      "share": 0.0000037480406053881014
+    },
+    {
+      "name": "\u003cstr as core::fmt::Display\u003e::fmt",
+      "self": 408,
+      "total": 408,
+      "share": 0.0000033388658668086145
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::index_select",
+      "self": 400,
+      "total": 18510,
+      "share": 0.0000032733979086358963
+    },
+    {
+      "name": "alloc::vec::Vec\u003cT,A\u003e::append_elements",
+      "self": 396,
+      "total": 396,
+      "share": 0.0000032406639295495373
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003c[candle_core::indexer::TensorIndexer; 2]\u003e",
+      "self": 384,
+      "total": 384,
+      "share": 0.0000031424619922904605
+    },
+    {
+      "name": "__tunable_get_val",
+      "self": 383,
+      "total": 383,
+      "share": 0.000003134278497518871
+    },
+    {
+      "name": "sysmalloc",
+      "self": 377,
+      "total": 802,
+      "share": 0.0000030851775288893324
+    },
+    {
+      "name": "__tls_get_addr",
+      "self": 376,
+      "total": 376,
+      "share": 0.0000030769940341177428
+    },
+    {
+      "name": "\u003calloc::string::String as core::fmt::Display\u003e::fmt",
+      "self": 368,
+      "total": 368,
+      "share": 0.0000030115260759450246
+    },
+    {
+      "name": "\u003ccandle_core::tensor::Tensor as candle_core::indexer::IndexOp\u003c(A,B)\u003e\u003e::i",
+      "self": 336,
+      "total": 34336,
+      "share": 0.000002749654243254153
+    },
+    {
+      "name": "__libc_write",
+      "self": 315,
+      "total": 315,
+      "share": 0.0000025778008530507683
+    },
+    {
+      "name": "__powf",
+      "self": 295,
+      "total": 295,
+      "share": 0.0000024141309576189734
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_nn::var_builder::VarBuilderArgs\u003calloc::boxed::Box\u003cdyn candle_nn::var_builder::SimpleBackend\u003e\u003e\u003e",
+      "self": 275,
+      "total": 141215,
+      "share": 0.000002250461062187179
+    },
+    {
+      "name": "std::sys::pal::unix::fs::File::open_c",
+      "self": 239,
+      "total": 377,
+      "share": 0.000001955855250409948
+    },
+    {
+      "name": "_dlfo_process_initial",
+      "self": 218,
+      "total": 308,
+      "share": 0.0000017840018602065636
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::llama2_c::CausalSelfAttention\u003e",
+      "self": 205,
+      "total": 205,
+      "share": 0.000001677616428175897
+    },
+    {
+      "name": "candle_core::tensor::Tensor::new_impl",
+      "self": 200,
+      "total": 2568,
+      "share": 0.0000016366989543179482
+    },
+    {
+      "name": "\u003cT as alloc::slice::hack::ConvertVec\u003e::to_vec",
+      "self": 195,
+      "total": 1534,
+      "share": 0.0000015957814804599994
+    },
+    {
+      "name": "\u003cf32 as candle_core::dtype::WithDType\u003e::cpu_storage_as_slice",
+      "self": 192,
+      "total": 192,
+      "share": 0.0000015712309961452302
+    },
+    {
+      "name": "__libc_sigaction",
+      "self": 192,
+      "total": 852,
+      "share": 0.0000015712309961452302
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003calloc::vec::Vec\u003calloc::string::String\u003e\u003e",
+      "self": 187,
+      "total": 2524,
+      "share": 0.0000015303135222872815
+    },
+    {
+      "name": "std::sys::sync::once::futex::Once::call",
+      "self": 175,
+      "total": 957,
+      "share": 0.0000014321115850282047
+    },
+    {
+      "name": "candle_transformers::models::llama2_c::Llama::load",
+      "self": 172,
+      "total": 204000,
+      "share": 0.0000014075611007134355
+    },
+    {
+      "name": "_IO_flush_all",
+      "self": 168,
+      "total": 186,
+      "share": 0.0000013748271216270765
+    },
+    {
+      "name": "_IO_cleanup",
+      "self": 167,
+      "total": 371,
+      "share": 0.0000013666436268554868
+    },
+    {
+      "name": "_dl_non_dynamic_init",
+      "self": 166,
+      "total": 3231,
+      "share": 0.000001358460132083897
+    },
+    {
+      "name": "__libc_start_main_impl",
+      "self": 155,
+      "total": 122197167,
+      "share": 0.0000012684416895964098
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::llama2_c::Mlp\u003e",
+      "self": 155,
+      "total": 155,
+      "share": 0.0000012684416895964098
+    },
+    {
+      "name": "\u003cstd::io::stdio::Stdout as std::io::Write\u003e::flush",
+      "self": 153,
+      "total": 2159,
+      "share": 0.0000012520747000532303
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::llama2_c::Block\u003e",
+      "self": 145,
+      "total": 350,
+      "share": 0.0000011866067418805123
+    },
+    {
+      "name": "__libc_setup_tls",
+      "self": 139,
+      "total": 418,
+      "share": 0.000001137505773250974
+    },
+    {
+      "name": "\u003canyhow::wrapper::MessageError\u003cM\u003e as core::fmt::Display\u003e::fmt",
+      "self": 136,
+      "total": 136,
+      "share": 0.0000011129552889362048
+    },
+    {
+      "name": "std::io::stdio::stdout",
+      "self": 136,
+      "total": 136,
+      "share": 0.0000011129552889362048
+    },
+    {
+      "name": "open",
+      "self": 134,
+      "total": 134,
+      "share": 0.0000010965882993930252
+    },
+    {
+      "name": "candle_core::tensor::Tensor::cos",
+      "self": 132,
+      "total": 104948,
+      "share": 0.000001080221309849846
+    },
+    {
+      "name": "candle_core::tensor::Tensor::sin",
+      "self": 132,
+      "total": 101625,
+      "share": 0.000001080221309849846
+    },
+    {
+      "name": "core::fmt::num::imp::\u003cimpl core::fmt::Display for usize\u003e::fmt",
+      "self": 130,
+      "total": 130,
+      "share": 0.0000010638543203066664
+    },
+    {
+      "name": "std::fs::OpenOptions::_open",
+      "self": 128,
+      "total": 833,
+      "share": 0.0000010474873307634868
+    },
+    {
+      "name": "\u003calloc::vec::Vec\u003cT,A\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 115,
+      "total": 9096,
+      "share": 9.411018987328202e-7
+    },
+    {
+      "name": "std::sys::pal::unix::fs::try_statx",
+      "self": 111,
+      "total": 194,
+      "share": 9.083679196464612e-7
+    },
+    {
+      "name": "sysmalloc_mmap_fallback",
+      "self": 108,
+      "total": 122,
+      "share": 8.83817435331692e-7
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003cB\u003e::get",
+      "self": 106,
+      "total": 3085,
+      "share": 8.674504457885126e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::llama2_c::Cache\u003e",
+      "self": 103,
+      "total": 10852,
+      "share": 8.428999614737433e-7
+    },
+    {
+      "name": "sysmalloc_mmap",
+      "self": 102,
+      "total": 116,
+      "share": 8.347164667021536e-7
+    },
+    {
+      "name": "candle_transformers::models::llama2_c_weights::\u003cimpl candle_transformers::models::llama2_c::Config\u003e::from_reader",
+      "self": 97,
+      "total": 720,
+      "share": 7.937989928442049e-7
+    },
+    {
+      "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::to_dtype",
+      "self": 96,
+      "total": 4421,
+      "share": 7.856154980726151e-7
+    },
+    {
+      "name": "std::rt::lang_start_internal",
+      "self": 94,
+      "total": 121303009,
+      "share": 7.692485085294357e-7
+    },
+    {
+      "name": "std::sys::pal::unix::stack_overflow::imp::init",
+      "self": 92,
+      "total": 1723,
+      "share": 7.528815189862562e-7
+    },
+    {
+      "name": "_dl_find_object_from_map",
+      "self": 90,
+      "total": 90,
+      "share": 7.365145294430767e-7
+    },
+    {
+      "name": "__run_exit_handlers",
+      "self": 88,
+      "total": 445011,
+      "share": 7.201475398998972e-7
+    },
+    {
+      "name": "std::fs::read::inner",
+      "self": 87,
+      "total": 13753,
+      "share": 7.119640451283074e-7
+    },
+    {
+      "name": "_dl_aux_init",
+      "self": 85,
+      "total": 187,
+      "share": 6.95597055585128e-7
+    },
+    {
+      "name": "_IO_file_fopen",
+      "self": 84,
+      "total": 139,
+      "share": 6.874135608135382e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccandle_transformers::models::llama2_c::Llama\u003e",
+      "self": 83,
+      "total": 682,
+      "share": 6.792300660419485e-7
+    },
+    {
+      "name": "_dl_init_paths",
+      "self": 81,
+      "total": 1906,
+      "share": 6.62863076498769e-7
+    },
+    {
+      "name": "_IO_un_link",
+      "self": 79,
+      "total": 97,
+      "share": 6.464960869555895e-7
+    },
+    {
+      "name": "__pthread_getattr_np",
+      "self": 76,
+      "total": 869,
+      "share": 6.219456026408203e-7
+    },
+    {
+      "name": "std::sync::once::Once::call_once::{{closure}}",
+      "self": 73,
+      "total": 698,
+      "share": 5.973951183260511e-7
+    },
+    {
+      "name": "std::io::stdio::cleanup",
+      "self": 72,
+      "total": 325,
+      "share": 5.892116235544613e-7
+    },
+    {
+      "name": "_IO_link_in",
+      "self": 69,
+      "total": 87,
+      "share": 5.646611392396921e-7
+    },
+    {
+      "name": "candle_nn::embedding::embedding",
+      "self": 69,
+      "total": 1945,
+      "share": 5.646611392396921e-7
+    },
+    {
+      "name": "std::sys::random::linux::getrandom",
+      "self": 68,
+      "total": 94,
+      "share": 5.564776444681024e-7
+    },
+    {
+      "name": "alloc::vec::Vec\u003cT,A\u003e::extend_with",
+      "self": 66,
+      "total": 66,
+      "share": 5.40110654924923e-7
+    },
+    {
+      "name": "core::result::Result\u003cT,E\u003e::unwrap_or",
+      "self": 64,
+      "total": 1487,
+      "share": 5.237436653817434e-7
+    },
+    {
+      "name": "munmap_chunk",
+      "self": 64,
+      "total": 64,
+      "share": 5.237436653817434e-7
+    },
+    {
+      "name": "candle_nn::var_builder::VarBuilderArgs\u003calloc::boxed::Box\u003cdyn candle_nn::var_builder::SimpleBackend\u003e\u003e::from_tensors",
+      "self": 63,
+      "total": 314,
+      "share": 5.155601706101536e-7
+    },
+    {
+      "name": "btree_insert",
+      "self": 62,
+      "total": 317,
+      "share": 5.07376675838564e-7
+    },
+    {
+      "name": "\u003cT as alloc::vec::spec_from_elem::SpecFromElem\u003e::from_elem",
+      "self": 61,
+      "total": 419,
+      "share": 4.991931810669742e-7
+    },
+    {
+      "name": "version_lock_lock_exclusive",
+      "self": 60,
+      "total": 60,
+      "share": 4.910096862953844e-7
+    },
+    {
+      "name": "\u003ccandle_core::shape::Shape as core::convert::From\u003c(usize,usize,usize)\u003e\u003e::from",
+      "self": 58,
+      "total": 168,
+      "share": 4.7464269675220497e-7
+    },
+    {
+      "name": "std::io::default_read_to_end::small_probe_read",
+      "self": 54,
+      "total": 275,
+      "share": 4.41908717665846e-7
+    },
+    {
+      "name": "std::sys::pal::unix::init",
+      "self": 54,
+      "total": 2110,
+      "share": 4.41908717665846e-7
+    },
+    {
+      "name": "__tls_init_tp",
+      "self": 52,
+      "total": 74,
+      "share": 4.255417281226665e-7
+    },
+    {
+      "name": "__libc_early_init",
+      "self": 51,
+      "total": 169,
+      "share": 4.173582333510768e-7
+    },
+    {
+      "name": "__tunables_init",
+      "self": 51,
+      "total": 51,
+      "share": 4.173582333510768e-7
+    },
+    {
+      "name": "__pthread_key_create",
+      "self": 50,
+      "total": 50,
+      "share": 4.0917473857948704e-7
+    },
+    {
+      "name": "__fopen_internal",
+      "self": 48,
+      "total": 721,
+      "share": 3.9280774903630756e-7
+    },
+    {
+      "name": "__libc_cleanup_push_defer",
+      "self": 48,
+      "total": 48,
+      "share": 3.9280774903630756e-7
+    },
+    {
+      "name": "_dl_find_object_init",
+      "self": 46,
+      "total": 595,
+      "share": 3.764407594931281e-7
+    },
+    {
+      "name": "close",
+      "self": 45,
+      "total": 45,
+      "share": 3.6825726472153836e-7
+    },
+    {
+      "name": "_IO_no_init",
+      "self": 43,
+      "total": 43,
+      "share": 3.518902751783589e-7
+    },
+    {
+      "name": "__internal_atexit",
+      "self": 42,
+      "total": 77,
+      "share": 3.437067804067691e-7
+    },
+    {
+      "name": "std::sys::exit_guard::unique_thread_exit",
+      "self": 41,
+      "total": 43,
+      "share": 3.355232856351794e-7
+    },
+    {
+      "name": "get_pc_range",
+      "self": 40,
+      "total": 40,
+      "share": 3.2733979086358963e-7
+    },
+    {
+      "name": "version_lock_unlock_exclusive",
+      "self": 40,
+      "total": 40,
+      "share": 3.2733979086358963e-7
+    },
+    {
+      "name": "__memrchr",
+      "self": 39,
+      "total": 39,
+      "share": 3.191562960919999e-7
+    },
+    {
+      "name": "_dl_tls_static_surplus_init",
+      "self": 39,
+      "total": 81,
+      "share": 3.191562960919999e-7
+    },
+    {
+      "name": "std::sys::thread_local::key::racy::LazyKey::lazy_init",
+      "self": 39,
+      "total": 112,
+      "share": 3.191562960919999e-7
+    },
+    {
+      "name": "syscall",
+      "self": 39,
+      "total": 39,
+      "share": 3.191562960919999e-7
+    },
+    {
+      "name": "sysconf",
+      "self": 39,
+      "total": 45,
+      "share": 3.191562960919999e-7
+    },
+    {
+      "name": "__deregister_frame_info_bases",
+      "self": 38,
+      "total": 444268,
+      "share": 3.1097280132041015e-7
+    },
+    {
+      "name": "_dlfo_sort_mappings",
+      "self": 37,
+      "total": 37,
+      "share": 3.0278930654882044e-7
+    },
+    {
+      "name": "tcache_init",
+      "self": 37,
+      "total": 423,
+      "share": 3.0278930654882044e-7
+    },
+    {
+      "name": "std::sys::pal::unix::fs::File::open::{{closure}}",
+      "self": 36,
+      "total": 413,
+      "share": 2.9460581177723067e-7
+    },
+    {
+      "name": "__new_exitfn",
+      "self": 35,
+      "total": 35,
+      "share": 2.8642231700564096e-7
+    },
+    {
+      "name": "_dl_debug_initialize",
+      "self": 35,
+      "total": 35,
+      "share": 2.8642231700564096e-7
+    },
+    {
+      "name": "sigaction",
+      "self": 35,
+      "total": 35,
+      "share": 2.8642231700564096e-7
+    },
+    {
+      "name": "__brk",
+      "self": 34,
+      "total": 34,
+      "share": 2.782388222340512e-7
+    },
+    {
+      "name": "_dl_get_origin",
+      "self": 34,
+      "total": 34,
+      "share": 2.782388222340512e-7
+    },
+    {
+      "name": "anyhow::context::\u003cimpl anyhow::Context\u003cT,E\u003e for core::result::Result\u003cT,E\u003e\u003e::with_context",
+      "self": 34,
+      "total": 34,
+      "share": 2.782388222340512e-7
+    },
+    {
+      "name": "__pthread_setspecific",
+      "self": 33,
+      "total": 33,
+      "share": 2.700553274624615e-7
+    },
+    {
+      "name": "btree_release_tree_recursively",
+      "self": 33,
+      "total": 53,
+      "share": 2.700553274624615e-7
+    },
+    {
+      "name": "poll",
+      "self": 31,
+      "total": 31,
+      "share": 2.53688337919282e-7
+    },
+    {
+      "name": "__open64_nocancel",
+      "self": 30,
+      "total": 30,
+      "share": 2.455048431476922e-7
+    },
+    {
+      "name": "_dl_early_allocate",
+      "self": 30,
+      "total": 30,
+      "share": 2.455048431476922e-7
+    },
+    {
+      "name": "bsd_signal",
+      "self": 29,
+      "total": 302,
+      "share": 2.3732134837610248e-7
+    },
+    {
+      "name": "std::sync::once::Once::call_once_force::{{closure}}",
+      "self": 29,
+      "total": 84,
+      "share": 2.3732134837610248e-7
+    },
+    {
+      "name": "std::sys::pal::unix::stack_overflow::imp::make_handler",
+      "self": 29,
+      "total": 34,
+      "share": 2.3732134837610248e-7
+    },
+    {
+      "name": "__mmap64",
+      "self": 28,
+      "total": 28,
+      "share": 2.2913785360451274e-7
+    },
+    {
+      "name": "call_fini",
+      "self": 28,
+      "total": 444550,
+      "share": 2.2913785360451274e-7
+    },
+    {
+      "name": "release_registered_frames",
+      "self": 28,
+      "total": 225,
+      "share": 2.2913785360451274e-7
+    },
+    {
+      "name": "\u003ccandle_nn::var_builder::VarBuilderArgs\u003cB\u003e as core::clone::Clone\u003e::clone",
+      "self": 27,
+      "total": 65,
+      "share": 2.20954358832923e-7
+    },
+    {
+      "name": "__sigsetjmp",
+      "self": 27,
+      "total": 27,
+      "share": 2.20954358832923e-7
+    },
+    {
+      "name": "btree_allocate_node",
+      "self": 27,
+      "total": 225,
+      "share": 2.20954358832923e-7
+    },
+    {
+      "name": "_IO_file_open",
+      "self": 25,
+      "total": 55,
+      "share": 2.0458736928974352e-7
+    },
+    {
+      "name": "__libc_init_first",
+      "self": 25,
+      "total": 3285,
+      "share": 2.0458736928974352e-7
+    },
+    {
+      "name": "__register_frame_info",
+      "self": 25,
+      "total": 444225,
+      "share": 2.0458736928974352e-7
+    },
+    {
+      "name": "__libc_cleanup_pop_restore",
+      "self": 24,
+      "total": 24,
+      "share": 1.9640387451815378e-7
+    },
+    {
+      "name": "_dl_protect_relro",
+      "self": 24,
+      "total": 29,
+      "share": 1.9640387451815378e-7
+    },
+    {
+      "name": "std::sync::once_lock::OnceLock\u003cT\u003e::initialize",
+      "self": 24,
+      "total": 165,
+      "share": 1.9640387451815378e-7
+    },
+    {
+      "name": "___pthread_key_delete",
+      "self": 23,
+      "total": 23,
+      "share": 1.8822037974656404e-7
+    },
+    {
+      "name": "__pthread_tunables_init",
+      "self": 23,
+      "total": 88,
+      "share": 1.8822037974656404e-7
+    },
+    {
+      "name": "__init_misc",
+      "self": 22,
+      "total": 98,
+      "share": 1.800368849749743e-7
+    },
+    {
+      "name": "__libc_start_call_main",
+      "self": 22,
+      "total": 121748105,
+      "share": 1.800368849749743e-7
+    },
+    {
+      "name": "\u003cstd::io::buffered::bufwriter::BufWriter\u003cW\u003e as core::ops::drop::Drop\u003e::drop",
+      "self": 20,
+      "total": 50,
+      "share": 1.6366989543179482e-7
+    },
+    {
+      "name": "_IO_new_file_init_internal",
+      "self": 19,
+      "total": 106,
+      "share": 1.5548640066020508e-7
+    },
+    {
+      "name": "__do_global_dtors_aux",
+      "self": 19,
+      "total": 444297,
+      "share": 1.5548640066020508e-7
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003ccore::result::Result\u003cstd::fs::File,std::io::error::Error\u003e\u003e",
+      "self": 19,
+      "total": 19,
+      "share": 1.5548640066020508e-7
+    },
+    {
+      "name": "\u003calloc::boxed::Box\u003cdyn candle_nn::var_builder::SimpleBackend\u003e as candle_nn::var_builder::Backend\u003e::get",
+      "self": 18,
+      "total": 1496,
+      "share": 1.4730290588861533e-7
+    },
+    {
+      "name": "__ctype_init",
+      "self": 18,
+      "total": 18,
+      "share": 1.4730290588861533e-7
+    },
+    {
+      "name": "main",
+      "self": 16,
+      "total": 121303025,
+      "share": 1.3093591634543585e-7
+    },
+    {
+      "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::with_capacity_in",
+      "self": 15,
+      "total": 70,
+      "share": 1.227524215738461e-7
+    },
+    {
+      "name": "rindex",
+      "self": 15,
+      "total": 37,
+      "share": 1.227524215738461e-7
+    },
+    {
+      "name": "pthread_attr_init",
+      "self": 14,
+      "total": 66,
+      "share": 1.1456892680225637e-7
+    },
+    {
+      "name": "std::sys::random::linux::hashmap_random_keys",
+      "self": 14,
+      "total": 108,
+      "share": 1.1456892680225637e-7
+    },
+    {
+      "name": "__tls_pre_init_tp",
+      "self": 13,
+      "total": 13,
+      "share": 1.0638543203066663e-7
+    },
+    {
+      "name": "frame_dummy",
+      "self": 13,
+      "total": 444565,
+      "share": 1.0638543203066663e-7
+    },
+    {
+      "name": "std::rt::lang_start::{{closure}}",
+      "self": 13,
+      "total": 121300181,
+      "share": 1.0638543203066663e-7
+    },
+    {
+      "name": "__GI___getrlimit",
+      "self": 12,
+      "total": 12,
+      "share": 9.820193725907689e-8
+    },
+    {
+      "name": "__getpagesize",
+      "self": 12,
+      "total": 12,
+      "share": 9.820193725907689e-8
+    },
+    {
+      "name": "_start",
+      "self": 12,
+      "total": 122197182,
+      "share": 9.820193725907689e-8
+    },
+    {
+      "name": "__sigjmp_save",
+      "self": 11,
+      "total": 11,
+      "share": 9.001844248748715e-8
+    },
+    {
+      "name": "register_tm_clones",
+      "self": 11,
+      "total": 11,
+      "share": 9.001844248748715e-8
+    },
+    {
+      "name": "munmap",
+      "self": 10,
+      "total": 10,
+      "share": 8.183494771589741e-8
+    },
+    {
+      "name": "exit",
+      "self": 7,
+      "total": 445018,
+      "share": 5.7284463401128186e-8
+    },
+    {
+      "name": "[unknown]",
+      "self": 6,
+      "total": 6,
+      "share": 4.9100968629538445e-8
+    },
+    {
+      "name": "deregister_tm_clones",
+      "self": 6,
+      "total": 6,
+      "share": 4.9100968629538445e-8
+    },
+    {
+      "name": "gemm_f32::gemm::f32::init_gemm_ptr",
+      "self": 6,
+      "total": 6,
+      "share": 4.9100968629538445e-8
+    },
+    {
+      "name": "std::sys::backtrace::__rust_begin_short_backtrace",
+      "self": 6,
+      "total": 121300168,
+      "share": 4.9100968629538445e-8
+    },
+    {
+      "name": "__sigaltstack",
+      "self": 5,
+      "total": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "candle_transformers::models::llama2_c_weights::\u003cimpl candle_transformers::models::llama2_c::Config\u003e::head_size",
+      "self": 5,
+      "total": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "mprotect",
+      "self": 5,
+      "total": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "std::sys::pal::unix::args::imp::ARGV_INIT_ARRAY::init_wrapper",
+      "self": 5,
+      "total": 5,
+      "share": 4.0917473857948704e-8
+    },
+    {
+      "name": "__deregister_frame_info",
+      "self": 4,
+      "total": 4,
+      "share": 3.2733979086358963e-8
+    },
+    {
+      "name": "__errno_location",
+      "self": 4,
+      "total": 4,
+      "share": 3.2733979086358963e-8
+    },
+    {
+      "name": "pthread_attr_destroy",
+      "self": 4,
+      "total": 4,
+      "share": 3.2733979086358963e-8
+    },
+    {
+      "name": "pthread_self",
+      "self": 4,
+      "total": 4,
+      "share": 3.2733979086358963e-8
+    },
+    {
+      "name": "__cxa_atexit",
+      "self": 3,
+      "total": 3,
+      "share": 2.4550484314769222e-8
+    },
+    {
+      "name": "_Exit",
+      "self": 2,
+      "total": 2,
+      "share": 1.6366989543179482e-8
+    },
+    {
+      "name": "_IO_new_fopen",
+      "self": 2,
+      "total": 2,
+      "share": 1.6366989543179482e-8
+    },
+    {
+      "name": "__GI__setjmp",
+      "self": 2,
+      "total": 2,
+      "share": 1.6366989543179482e-8
+    },
+    {
+      "name": "core::ptr::drop_in_place\u003cstd::collections::hash::map::HashMap\u003calloc::string::String,candle_core::tensor::Tensor\u003e\u003e",
+      "self": 2,
+      "total": 2,
+      "share": 1.6366989543179482e-8
+    }
+  ],
+  "tree": {
+    "name": "all",
+    "value": 122197182,
+    "self": 0,
+    "float": 0,
+    "children": [
+      {
+        "name": "_start",
+        "value": 122197182,
+        "self": 15,
+        "float": 0,
+        "children": [
+          {
+            "name": "__libc_start_main_impl",
+            "value": 122197167,
+            "self": 4497,
+            "float": 0,
+            "children": [
+              {
+                "name": "__libc_start_call_main",
+                "value": 121748105,
+                "self": 62,
+                "float": 12,
+                "children": [
+                  {
+                    "name": "main",
+                    "value": 121303025,
+                    "self": 16,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "std::rt::lang_start_internal",
+                        "value": 121303009,
+                        "self": 2828,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "std::rt::lang_start::{{closure}}",
+                            "value": 121300181,
+                            "self": 13,
+                            "float": 0,
+                            "children": [
+                              {
+                                "name": "std::sys::backtrace::__rust_begin_short_backtrace",
+                                "value": 121300168,
+                                "self": 6,
+                                "float": 0,
+                                "children": [
+                                  {
+                                    "name": "tinystories_candle::main",
+                                    "value": 121300162,
+                                    "self": 1124742,
+                                    "float": 24795,
+                                    "children": [
+                                      {
+                                        "name": "candle_transformers::models::llama2_c::Llama::forward",
+                                        "value": 105964026,
+                                        "self": 836827,
+                                        "float": 1260,
+                                        "children": [
+                                          {
+                                            "name": "\u003ccandle_nn::linear::Linear as candle_core::Module\u003e::forward",
+                                            "value": 60584416,
+                                            "self": 228091,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::matmul",
+                                                "value": 58073466,
+                                                "self": 267120,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::storage::Storage::matmul",
+                                                    "value": 56904302,
+                                                    "self": 77760,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::cpu_backend::Map2::map",
+                                                        "value": 56826542,
+                                                        "self": 820062,
+                                                        "float": 5760,
+                                                        "children": [
+                                                          {
+                                                            "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                            "value": 48133360,
+                                                            "self": 48133360,
+                                                            "float": 26086800
+                                                          },
+                                                          {
+                                                            "name": "num_cpus::linux::get_num_cpus",
+                                                            "value": 7484400,
+                                                            "self": 7484400,
+                                                            "float": 0
+                                                          },
+                                                          {
+                                                            "name": "__calloc",
+                                                            "value": 388720,
+                                                            "self": 46080,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "_int_malloc",
+                                                                "value": 342640,
+                                                                "self": 342640,
+                                                                "float": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::tensor::from_storage",
+                                                    "value": 551520,
+                                                    "self": 287280,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "memcpy",
+                                                        "value": 264240,
+                                                        "self": 264240,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+                                                    "value": 350524,
+                                                    "self": 38880,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "alloc::raw_vec::finish_grow",
+                                                        "value": 311644,
+                                                        "self": 36720,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "__realloc",
+                                                            "value": 274924,
+                                                            "self": 274924,
+                                                            "float": 0
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::broadcast_left",
+                                                "value": 1322332,
+                                                "self": 136080,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::broadcast_as",
+                                                    "value": 808288,
+                                                    "self": 209520,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::layout::Layout::broadcast_as",
+                                                        "value": 598768,
+                                                        "self": 219176,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "alloc::raw_vec::RawVec\u003cT,A\u003e::grow_one",
+                                                            "value": 379592,
+                                                            "self": 34560,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "alloc::raw_vec::finish_grow",
+                                                                "value": 345032,
+                                                                "self": 36720,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "__realloc",
+                                                                    "value": 308312,
+                                                                    "self": 54964,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "_int_realloc",
+                                                                        "value": 253348,
+                                                                        "self": 253348,
+                                                                        "float": 0
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+                                                    "value": 377964,
+                                                    "self": 38880,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "alloc::raw_vec::finish_grow",
+                                                        "value": 339084,
+                                                        "self": 36720,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "__realloc",
+                                                            "value": 302364,
+                                                            "self": 55440,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "_int_realloc",
+                                                                "value": 246924,
+                                                                "self": 246924,
+                                                                "float": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::t",
+                                                "value": 582932,
+                                                "self": 18720,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::transpose",
+                                                    "value": 564212,
+                                                    "self": 305732,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::layout::Layout::transpose",
+                                                        "value": 258480,
+                                                        "self": 258480,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+                                                "value": 377595,
+                                                "self": 97920,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "__libc_free",
+                                                    "value": 279675,
+                                                    "self": 279675,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_transformers::models::llama2_c::CausalSelfAttention::apply_rotary_emb",
+                                            "value": 15726546,
+                                            "self": 94400,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::broadcast_mul",
+                                                "value": 7323529,
+                                                "self": 526217,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::mul",
+                                                    "value": 5532652,
+                                                    "self": 341224,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::storage::Storage::binary_impl",
+                                                        "value": 4083465,
+                                                        "self": 83200,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::binary_impl",
+                                                            "value": 4000265,
+                                                            "self": 359200,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                                "value": 3195986,
+                                                                "self": 1943600,
+                                                                "float": 80000,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+                                                                    "value": 970848,
+                                                                    "self": 108000,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "alloc::raw_vec::finish_grow",
+                                                                        "value": 862848,
+                                                                        "self": 102000,
+                                                                        "float": 0,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "__realloc",
+                                                                            "value": 760848,
+                                                                            "self": 154000,
+                                                                            "float": 0,
+                                                                            "children": [
+                                                                              {
+                                                                                "name": "_int_realloc",
+                                                                                "value": 606848,
+                                                                                "self": 606848,
+                                                                                "float": 0
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "name": "__libc_free",
+                                                                    "value": 281538,
+                                                                    "self": 281538,
+                                                                    "float": 0
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "name": "candle_core::layout::Layout::strided_index",
+                                                                "value": 445079,
+                                                                "self": 168000,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "__calloc",
+                                                                    "value": 277079,
+                                                                    "self": 277079,
+                                                                    "float": 0
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "name": "candle_core::tensor::from_storage",
+                                                        "value": 1107963,
+                                                        "self": 290411,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                            "value": 523952,
+                                                            "self": 130245,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+                                                                "value": 393707,
+                                                                "self": 43200,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "alloc::raw_vec::finish_grow",
+                                                                    "value": 350507,
+                                                                    "self": 40800,
+                                                                    "float": 0,
+                                                                    "children": [
+                                                                      {
+                                                                        "name": "__realloc",
+                                                                        "value": 309707,
+                                                                        "self": 61600,
+                                                                        "float": 0,
+                                                                        "children": [
+                                                                          {
+                                                                            "name": "_int_realloc",
+                                                                            "value": 248107,
+                                                                            "self": 248107,
+                                                                            "float": 0
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "name": "memcpy",
+                                                            "value": 293600,
+                                                            "self": 293600,
+                                                            "float": 0
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::broadcast_as",
+                                                    "value": 966453,
+                                                    "self": 238718,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::layout::Layout::broadcast_as",
+                                                        "value": 727735,
+                                                        "self": 265900,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "alloc::raw_vec::RawVec\u003cT,A\u003e::grow_one",
+                                                            "value": 461835,
+                                                            "self": 71200,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "alloc::raw_vec::finish_grow",
+                                                                "value": 390635,
+                                                                "self": 110876,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "__realloc",
+                                                                    "value": 279759,
+                                                                    "self": 279759,
+                                                                    "float": 0
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::shape::Shape::broadcast_shape_binary_op",
+                                                    "value": 298207,
+                                                    "self": 298207,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::cat",
+                                                "value": 2306085,
+                                                "self": 567399,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::cat0",
+                                                    "value": 1327556,
+                                                    "self": 388532,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::storage::Storage::copy_strided_src",
+                                                        "value": 641004,
+                                                        "self": 8400,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+                                                            "value": 632604,
+                                                            "self": 81757,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "candle_core::cpu_backend::copy_strided_src_",
+                                                                "value": 550847,
+                                                                "self": 550847,
+                                                                "float": 19200
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "name": "candle_core::tensor::from_storage",
+                                                        "value": 298020,
+                                                        "self": 298020,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "core::iter::adapters::try_process",
+                                                    "value": 411130,
+                                                    "self": 8800,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                        "value": 402330,
+                                                        "self": 31600,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::tensor::Tensor::transpose",
+                                                            "value": 370730,
+                                                            "self": 370730,
+                                                            "float": 0
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+                                                "value": 893318,
+                                                "self": 271522,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "__libc_free",
+                                                    "value": 621796,
+                                                    "self": 156600,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "_int_free",
+                                                        "value": 465196,
+                                                        "self": 465196,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Add\u003cB\u003e\u003e::add",
+                                                "value": 788839,
+                                                "self": 293032,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::add",
+                                                    "value": 495807,
+                                                    "self": 222200,
+                                                    "float": 19200,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::from_storage",
+                                                        "value": 273607,
+                                                        "self": 273607,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Sub\u003cB\u003e\u003e::sub",
+                                                "value": 779709,
+                                                "self": 290941,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::sub",
+                                                    "value": 488768,
+                                                    "self": 222400,
+                                                    "float": 19200,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::from_storage",
+                                                        "value": 266368,
+                                                        "self": 266368,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::reshape",
+                                                "value": 768776,
+                                                "self": 331791,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::storage::Storage::copy_strided_src",
+                                                    "value": 436985,
+                                                    "self": 4200,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+                                                        "value": 432785,
+                                                        "self": 43030,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::cpu_backend::copy_strided_src_",
+                                                            "value": 389755,
+                                                            "self": 389755,
+                                                            "float": 19200
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::broadcast_as",
+                                                "value": 742751,
+                                                "self": 121244,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::layout::Layout::broadcast_as",
+                                                    "value": 621507,
+                                                    "self": 215817,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "alloc::raw_vec::RawVec\u003cT,A\u003e::grow_one",
+                                                        "value": 405690,
+                                                        "self": 37600,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "alloc::raw_vec::finish_grow",
+                                                            "value": 368090,
+                                                            "self": 40800,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "__realloc",
+                                                                "value": 327290,
+                                                                "self": 60648,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "_int_realloc",
+                                                                    "value": 266642,
+                                                                    "self": 266642,
+                                                                    "float": 0
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::unsqueeze",
+                                                "value": 580133,
+                                                "self": 301202,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::reshape",
+                                                    "value": 278931,
+                                                    "self": 278931,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::narrow",
+                                                "value": 425066,
+                                                "self": 425066,
+                                                "float": 0
+                                              },
+                                              {
+                                                "name": "__libc_free",
+                                                "value": 398539,
+                                                "self": 69600,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "_int_free",
+                                                    "value": 328939,
+                                                    "self": 328939,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::indexer::\u003cimpl candle_core::tensor::Tensor\u003e::index",
+                                                "value": 376528,
+                                                "self": 36800,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::narrow",
+                                                    "value": 339728,
+                                                    "self": 339728,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::reshape",
+                                                "value": 248873,
+                                                "self": 248873,
+                                                "float": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "\u003ccandle_nn::layer_norm::RmsNorm as candle_core::Module\u003e::forward",
+                                            "value": 5203635,
+                                            "self": 1540,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "\u003ccandle_nn::layer_norm::LayerNorm as candle_core::Module\u003e::forward",
+                                                "value": 5202095,
+                                                "self": 185744,
+                                                "float": 440,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::broadcast_mul",
+                                                    "value": 1210250,
+                                                    "self": 211390,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::mul",
+                                                        "value": 716100,
+                                                        "self": 259820,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::storage::Storage::binary_impl",
+                                                            "value": 456280,
+                                                            "self": 22880,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::binary_impl",
+                                                                "value": 433400,
+                                                                "self": 56760,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                                    "value": 376640,
+                                                                    "self": 376640,
+                                                                    "float": 56320
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::broadcast_as",
+                                                        "value": 282760,
+                                                        "self": 282760,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::broadcast_div",
+                                                    "value": 1059888,
+                                                    "self": 400768,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::div",
+                                                        "value": 659120,
+                                                        "self": 259820,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::storage::Storage::binary_impl",
+                                                            "value": 399300,
+                                                            "self": 22880,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::binary_impl",
+                                                                "value": 376420,
+                                                                "self": 55220,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                                    "value": 321200,
+                                                                    "self": 321200,
+                                                                    "float": 56320
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::sum_impl",
+                                                    "value": 698152,
+                                                    "self": 321292,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::storage::Storage::reduce_op",
+                                                        "value": 376860,
+                                                        "self": 9240,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::reduce_op",
+                                                            "value": 367620,
+                                                            "self": 367620,
+                                                            "float": 42680
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+                                                    "value": 504564,
+                                                    "self": 215904,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "__libc_free",
+                                                        "value": 288660,
+                                                        "self": 288660,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Add\u003cf64\u003e\u003e::add",
+                                                    "value": 448428,
+                                                    "self": 158248,
+                                                    "float": 440,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::affine",
+                                                        "value": 290180,
+                                                        "self": 290180,
+                                                        "float": 5280
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Div\u003cf64\u003e\u003e::div",
+                                                    "value": 443869,
+                                                    "self": 153689,
+                                                    "float": 660,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::affine",
+                                                        "value": 290180,
+                                                        "self": 290180,
+                                                        "float": 5280
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::sqr",
+                                                    "value": 374440,
+                                                    "self": 374440,
+                                                    "float": 42680
+                                                  },
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::sqrt",
+                                                    "value": 276760,
+                                                    "self": 276760,
+                                                    "float": 1100
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::matmul",
+                                            "value": 4384880,
+                                            "self": 327727,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::storage::Storage::matmul",
+                                                "value": 4057153,
+                                                "self": 21600,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::cpu_backend::Map2::map",
+                                                    "value": 4035553,
+                                                    "self": 389673,
+                                                    "float": 4400,
+                                                    "children": [
+                                                      {
+                                                        "name": "num_cpus::linux::get_num_cpus",
+                                                        "value": 2079000,
+                                                        "self": 2079000,
+                                                        "float": 0
+                                                      },
+                                                      {
+                                                        "name": "gemm_f32::gemm::f32::scalar::gemm_basic",
+                                                        "value": 1566880,
+                                                        "self": 1566880,
+                                                        "float": 799080
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_transformers::models::llama2_c::CausalSelfAttention::repeat_kv",
+                                            "value": 3443645,
+                                            "self": 414645,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::reshape",
+                                                "value": 2657508,
+                                                "self": 243600,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::storage::Storage::copy_strided_src",
+                                                    "value": 2019884,
+                                                    "self": 4200,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+                                                        "value": 2015684,
+                                                        "self": 43200,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::cpu_backend::copy_strided_src_",
+                                                            "value": 1972484,
+                                                            "self": 813284,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "memcpy",
+                                                                "value": 1159200,
+                                                                "self": 672000,
+                                                                "float": 0,
+                                                                "children": [
+                                                                  {
+                                                                    "name": "_wordcopy_fwd_aligned",
+                                                                    "value": 487200,
+                                                                    "self": 487200,
+                                                                    "float": 0
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::device::Device::zeros",
+                                                    "value": 394024,
+                                                    "self": 7600,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_core::cpu_backend::CpuDevice as candle_core::backend::BackendDevice\u003e::zeros_impl",
+                                                        "value": 386424,
+                                                        "self": 109806,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "__calloc",
+                                                            "value": 276618,
+                                                            "self": 12800,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "_int_malloc",
+                                                                "value": 263818,
+                                                                "self": 263818,
+                                                                "float": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::unsqueeze",
+                                                "value": 371492,
+                                                "self": 371492,
+                                                "float": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::contiguous",
+                                            "value": 3367341,
+                                            "self": 165470,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::storage::Storage::copy_strided_src",
+                                                "value": 2295889,
+                                                "self": 10290,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+                                                    "value": 2285599,
+                                                    "self": 105709,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::cpu_backend::copy_strided_src_",
+                                                        "value": 2179890,
+                                                        "self": 834390,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "memcpy",
+                                                            "value": 1345500,
+                                                            "self": 711600,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "_wordcopy_fwd_aligned",
+                                                                "value": 633900,
+                                                                "self": 633900,
+                                                                "float": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "\u003ccandle_core::cpu_backend::CpuDevice as candle_core::backend::BackendDevice\u003e::zeros_impl",
+                                                "value": 496762,
+                                                "self": 193124,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "__calloc",
+                                                    "value": 303638,
+                                                    "self": 31360,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "_int_malloc",
+                                                        "value": 272278,
+                                                        "self": 272278,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::from_storage",
+                                                "value": 409220,
+                                                "self": 409220,
+                                                "float": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_nn::ops::softmax",
+                                            "value": 2560262,
+                                            "self": 277911,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::broadcast_div",
+                                                "value": 615891,
+                                                "self": 211677,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::div",
+                                                    "value": 404214,
+                                                    "self": 404214,
+                                                    "float": 33600
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::broadcast_sub",
+                                                "value": 548416,
+                                                "self": 181314,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::tensor::Tensor::sub",
+                                                    "value": 367102,
+                                                    "self": 367102,
+                                                    "float": 33600
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::exp",
+                                                "value": 498046,
+                                                "self": 111157,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::unary_impl",
+                                                    "value": 386889,
+                                                    "self": 92889,
+                                                    "float": 17000,
+                                                    "children": [
+                                                      {
+                                                        "name": "__ieee754_expf",
+                                                        "value": 294000,
+                                                        "self": 294000,
+                                                        "float": 168000
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::sum_impl",
+                                                "value": 373047,
+                                                "self": 373047,
+                                                "float": 26100
+                                              },
+                                              {
+                                                "name": "candle_core::tensor::Tensor::reduce_impl",
+                                                "value": 246951,
+                                                "self": 246951,
+                                                "float": 32974
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::cat",
+                                            "value": 2177119,
+                                            "self": 488792,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::cat0",
+                                                "value": 1317447,
+                                                "self": 441986,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "candle_core::storage::Storage::copy_strided_src",
+                                                    "value": 466167,
+                                                    "self": 7980,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+                                                        "value": 458187,
+                                                        "self": 67480,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "candle_core::cpu_backend::copy_strided_src_",
+                                                            "value": 390707,
+                                                            "self": 390707,
+                                                            "float": 0
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "candle_core::device::Device::zeros",
+                                                    "value": 409294,
+                                                    "self": 7220,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003ccandle_core::cpu_backend::CpuDevice as candle_core::backend::BackendDevice\u003e::zeros_impl",
+                                                        "value": 402074,
+                                                        "self": 66316,
+                                                        "float": 0,
+                                                        "children": [
+                                                          {
+                                                            "name": "__calloc",
+                                                            "value": 335758,
+                                                            "self": 12160,
+                                                            "float": 0,
+                                                            "children": [
+                                                              {
+                                                                "name": "_int_malloc",
+                                                                "value": 323598,
+                                                                "self": 323598,
+                                                                "float": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "core::iter::adapters::try_process",
+                                                "value": 370880,
+                                                "self": 8360,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                    "value": 362520,
+                                                    "self": 30020,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::tensor::Tensor::transpose",
+                                                        "value": 332500,
+                                                        "self": 332500,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+                                            "value": 2102665,
+                                            "self": 287360,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "__libc_free",
+                                                "value": 1244448,
+                                                "self": 305370,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "_int_free",
+                                                    "value": 939078,
+                                                    "self": 939078,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "alloc::sync::Arc\u003cT,A\u003e::drop_slow",
+                                                "value": 570857,
+                                                "self": 133860,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "__libc_free",
+                                                    "value": 436997,
+                                                    "self": 84390,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "_int_free",
+                                                        "value": 352607,
+                                                        "self": 352607,
+                                                        "float": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::where_cond",
+                                            "value": 1375332,
+                                            "self": 141810,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::storage::Storage::where_cond",
+                                                "value": 1233522,
+                                                "self": 12600,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::where_cond",
+                                                    "value": 1220922,
+                                                    "self": 174017,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                                        "value": 1046905,
+                                                        "self": 781714,
+                                                        "float": 17000,
+                                                        "children": [
+                                                          {
+                                                            "name": "alloc::raw_vec::RawVecInner\u003cA\u003e::reserve::do_reserve_and_handle",
+                                                            "value": 265191,
+                                                            "self": 265191,
+                                                            "float": 0
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::exp",
+                                            "value": 865135,
+                                            "self": 104100,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::unary_impl",
+                                                "value": 761035,
+                                                "self": 159035,
+                                                "float": 34600,
+                                                "children": [
+                                                  {
+                                                    "name": "__ieee754_expf",
+                                                    "value": 602000,
+                                                    "self": 602000,
+                                                    "float": 344000
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "__libc_free",
+                                            "value": 619990,
+                                            "self": 113390,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "_int_free",
+                                                "value": 506600,
+                                                "self": 506600,
+                                                "float": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Mul\u003cB\u003e\u003e::mul",
+                                            "value": 441900,
+                                            "self": 127200,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::mul",
+                                                "value": 314700,
+                                                "self": 314700,
+                                                "float": 68800
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::add",
+                                            "value": 434800,
+                                            "self": 434800,
+                                            "float": 51200
+                                          },
+                                          {
+                                            "name": "\u003c\u0026candle_core::tensor::Tensor as core::ops::arith::Div\u003cB\u003e\u003e::div",
+                                            "value": 376600,
+                                            "self": 61900,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::div",
+                                                "value": 314700,
+                                                "self": 314700,
+                                                "float": 68800
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::transpose",
+                                            "value": 350000,
+                                            "self": 350000,
+                                            "float": 0
+                                          },
+                                          {
+                                            "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Add\u003cf64\u003e\u003e::add",
+                                            "value": 331335,
+                                            "self": 62200,
+                                            "float": 200,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::tensor::Tensor::affine",
+                                                "value": 269135,
+                                                "self": 269135,
+                                                "float": 70800
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "name": "\u003ccandle_core::tensor::Tensor as core::ops::arith::Div\u003cf64\u003e\u003e::div",
+                                            "value": 287041,
+                                            "self": 287041,
+                                            "float": 35900
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::reshape",
+                                            "value": 248822,
+                                            "self": 248822,
+                                            "float": 0
+                                          },
+                                          {
+                                            "name": "candle_core::tensor::Tensor::neg",
+                                            "value": 245735,
+                                            "self": 245735,
+                                            "float": 51800
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "tinystories_candle::read_llama2c_weights::{{closure}}",
+                                        "value": 6618520,
+                                        "self": 108249,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "candle_core::tensor::Tensor::contiguous",
+                                            "value": 6510271,
+                                            "self": 224507,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "candle_core::storage::Storage::copy_strided_src",
+                                                "value": 6285764,
+                                                "self": 756,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "\u003ccandle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage\u003e::copy_strided_src",
+                                                    "value": 6285008,
+                                                    "self": 4872,
+                                                    "float": 0,
+                                                    "children": [
+                                                      {
+                                                        "name": "candle_core::cpu_backend::copy_strided_src_",
+                                                        "value": 6280136,
+                                                        "self": 6280136,
+                                                        "float": 518656
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "tinystories_candle::read_llama2c_weights::{{closure}}",
+                                        "value": 6376434,
+                                        "self": 196954,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "\u003calloc::vec::Vec\u003cT\u003e as alloc::vec::spec_from_iter::SpecFromIter\u003cT,I\u003e\u003e::from_iter",
+                                            "value": 4759194,
+                                            "self": 4759194,
+                                            "float": 528256
+                                          },
+                                          {
+                                            "name": "std::io::default_read_exact",
+                                            "value": 1420286,
+                                            "self": 396790,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "\u003cstd::fs::File as std::io::Read\u003e::read",
+                                                "value": 1023496,
+                                                "self": 528256,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "__libc_read",
+                                                    "value": 495240,
+                                                    "self": 495240,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "tinystories_candle::Tokenizer::read",
+                                        "value": 944723,
+                                        "self": 359138,
+                                        "float": 1026,
+                                        "children": [
+                                          {
+                                            "name": "hashbrown::rustc_entry::\u003cimpl hashbrown::map::HashMap\u003cK,V,S,A\u003e\u003e::rustc_entry",
+                                            "value": 585585,
+                                            "self": 205630,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "hashbrown::raw::RawTable\u003cT,A\u003e::reserve_rehash",
+                                                "value": 379955,
+                                                "self": 134412,
+                                                "float": 0,
+                                                "children": [
+                                                  {
+                                                    "name": "core::hash::BuildHasher::hash_one",
+                                                    "value": 245543,
+                                                    "self": 245543,
+                                                    "float": 0
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "candle_transformers::models::llama2_c::Cache::new",
+                                        "value": 271717,
+                                        "self": 271717,
+                                        "float": 89784
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "exit",
+                    "value": 445018,
+                    "self": 7,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "__run_exit_handlers",
+                        "value": 445011,
+                        "self": 461,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "call_fini",
+                            "value": 444550,
+                            "self": 253,
+                            "float": 0,
+                            "children": [
+                              {
+                                "name": "__do_global_dtors_aux",
+                                "value": 444297,
+                                "self": 29,
+                                "float": 0,
+                                "children": [
+                                  {
+                                    "name": "__deregister_frame_info_bases",
+                                    "value": 444268,
+                                    "self": 88,
+                                    "float": 0,
+                                    "children": [
+                                      {
+                                        "name": "classify_object_over_fdes",
+                                        "value": 444180,
+                                        "self": 186709,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "read_encoded_value_with_base",
+                                            "value": 257471,
+                                            "self": 257471,
+                                            "float": 0
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "frame_dummy",
+                "value": 444565,
+                "self": 340,
+                "float": 0,
+                "children": [
+                  {
+                    "name": "__register_frame_info",
+                    "value": 444225,
+                    "self": 45,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "classify_object_over_fdes",
+                        "value": 444180,
+                        "self": 186709,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "read_encoded_value_with_base",
+                            "value": 257471,
+                            "self": 257471,
+                            "float": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "marks": [
+    {
+      "step": 15170293,
+      "label": "first token starts"
+    },
+    {
+      "step": 40158429,
+      "label": ","
+    },
+    {
+      "step": 45329301,
+      "label": " there"
+    },
+    {
+      "step": 50546820,
+      "label": " was"
+    },
+    {
+      "step": 55808145,
+      "label": " a"
+    },
+    {
+      "step": 61103947,
+      "label": " little"
+    },
+    {
+      "step": 66421378,
+      "label": " g"
+    },
+    {
+      "step": 71773212,
+      "label": "ir"
+    },
+    {
+      "step": 77164162,
+      "label": "l"
+    },
+    {
+      "step": 82583559,
+      "label": " named"
+    },
+    {
+      "step": 88031023,
+      "label": " Lily"
+    },
+    {
+      "step": 93505446,
+      "label": "."
+    },
+    {
+      "step": 99014188,
+      "label": " She"
+    },
+    {
+      "step": 104559107,
+      "label": " lo"
+    },
+    {
+      "step": 110150970,
+      "label": "ved"
+    },
+    {
+      "step": 115781513,
+      "label": " to"
+    },
+    {
+      "step": 121449543,
+      "label": " play"
+    }
+  ],
+  "uniquePCs": 38610,
+  "frames": 3951,
+  "description": "TinyStories-260K through Candle (Rust), 16 tokens"
+}

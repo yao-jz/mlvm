@@ -1,0 +1,7 @@
+[target.riscv64imafd-unknown-linux-gnu]
+linker = "riscv64-unknown-linux-gnu-gcc"
+rustflags = ["-C", "link-arg=-nostdlib", "-C", "link-arg=-static"]
+
+[target.riscv64ima-unknown-linux-gnu]
+linker = "riscv64-unknown-linux-gnu-gcc"
+rustflags = ["-C", "link-arg=-nostdlib", "-C", "link-arg=-static"]

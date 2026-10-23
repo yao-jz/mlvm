@@ -1,0 +1,136 @@
+name: Determinism and playground
+
+# Runs the TinyStories demo for the same prompts on six platforms (five native builds and
+# the WebAssembly build) and fails unless every state root is bit-identical. On main, the
+# merged result is published with the browser playground on GitHub Pages, together with
+# the shields.io endpoint behind the README's "bit-identical" badge.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: determinism-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    name: native ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, platform: linux/amd64, exe: mlvm }
+          - { os: ubuntu-24.04-arm, platform: linux/arm64, exe: mlvm }
+          - { os: macos-latest, platform: darwin/arm64, exe: mlvm }
+          - { os: macos-15-intel, platform: darwin/amd64, exe: mlvm }
+          - { os: windows-latest, platform: windows/amd64, exe: mlvm.exe }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build
+        shell: bash
+        run: go build -trimpath -o "${{ matrix.exe }}" ./cmd/mlvm
+
+      - name: Record state roots
+        shell: bash
+        run: |
+          python scripts/determinism-record.py --mlvm "./${{ matrix.exe }}" \
+            --platform "${{ matrix.platform }}" --runner "${{ matrix.os }}" --out record.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: record-${{ strategy.job-index }}
+          path: record.json
+
+  wasm:
+    name: WebAssembly (Node) and the dispute protocol
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build mlvm.wasm
+        run: GOOS=js GOARCH=wasm go build -trimpath -ldflags="-s -w" -o mlvm.wasm ./rvgo/wasm
+
+      - name: Play a full dispute across three WebAssembly instances
+        run: node web/test/protocol.mjs mlvm.wasm "$(go env GOROOT)/lib/wasm/wasm_exec.js"
+
+      - name: Record state roots
+        run: node web/test/record.mjs mlvm.wasm "$(go env GOROOT)/lib/wasm/wasm_exec.js" record.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: record-wasm
+          path: record.json
+
+  site:
+    name: Merge and build the playground
+    needs: [native, wasm]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: record-*
+          path: records
+
+      - name: Require bit-identical state roots
+        run: |
+          python3 scripts/determinism-merge.py --out-dir site --commit "$GITHUB_SHA" --source ci records/*/record.json
+          cat site/badge.json
+
+      - name: Build the playground
+        run: bash scripts/build-web.sh site
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          path: site
+
+  deploy:
+    name: Publish to GitHub Pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: site
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

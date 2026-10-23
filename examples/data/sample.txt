@@ -1,0 +1,6 @@
+MLVM stages this file into emulated memory before the program starts.
+The guest opens it with openat(2) and reads it with read(2), but no host
+syscall is ever issued: the bytes are already inside the merkleized
+address space, at a 64 GiB-aligned slot above 0x2000000000000000.
+That is how a model checkpoint reaches an inference program that is,
+by construction, unable to touch the outside world.

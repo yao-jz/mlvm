@@ -1,0 +1,299 @@
+{
+  "format": "mlvm.dispute-record/1",
+  "guest": "TinyStories-260K through Candle (Rust), 16 tokens",
+  "lie": "1 ULP on a floating-point arithmetic instruction at or after step 61098591",
+  "honestText": ", there was a little girl named Lily. She loved to play",
+  "liarText": ", there was a little girl named Lily. She loved to play",
+  "attempts": [
+    {
+      "step": 61114594,
+      "pc": 508700,
+      "instruction": "fmul.s fa5,fa5,fa5",
+      "erasedAfter": 6576
+    },
+    {
+      "step": 61121773,
+      "pc": 498512,
+      "instruction": "fcvt.s.d fs1,fs1",
+      "kept": true
+    }
+  ],
+  "honestSteps": 122197182,
+  "liarSteps": 122197182,
+  "prestate": "0x032e2cb43d014922853de740ea6c9f6f4d9438c32019d6c7fadb9ddf8402ffd8",
+  "honestPost": "0x004a166492037ed3fd40fd42d4d8f1014ae5d6d71674bf6e6d21ec89c41712f7",
+  "liarPost": "0x00e87bc5e3cafa1c2b6503b65a298679db09facad8e707aeb455e5d3ba9b486f",
+  "deviation": {
+    "kind": "ulp",
+    "step": 61121773,
+    "pc": 498512,
+    "instruction": "fcvt.s.d fs1,fs1",
+    "location": "fs1",
+    "honest": "1 (0x3f800000)",
+    "forged": "1.00000012 (0x3f800001)"
+  },
+  "rounds": [
+    {
+      "n": 1,
+      "lo": 0,
+      "hi": 122197182,
+      "mid": 61098591,
+      "honest": "0x0385ad41ed4649315a07bb96fdd794847fdbd238a7f570fb9a7b2b0b81036087",
+      "liar": "0x0385ad41ed4649315a07bb96fdd794847fdbd238a7f570fb9a7b2b0b81036087",
+      "agree": true
+    },
+    {
+      "n": 2,
+      "lo": 61098591,
+      "hi": 122197182,
+      "mid": 91647886,
+      "honest": "0x037ad591807e40c7fecee5c8a0f6d7e6ff13bb762315bc28e2365f8b6c16c046",
+      "liar": "0x0366b1a8ba9a67ebe50c35320080a39943eac890a33c4c4ec18c9e6a216bddab",
+      "agree": false
+    },
+    {
+      "n": 3,
+      "lo": 61098591,
+      "hi": 91647886,
+      "mid": 76373238,
+      "honest": "0x03fb43ae873d5ed1fb70a92cd6d79131bdddfb93addcd6903832fb490cc1111d",
+      "liar": "0x03e963b6883023b6f722785859a1d99bc5bb1e1d99a384e2dfb8788f06844d3c",
+      "agree": false
+    },
+    {
+      "n": 4,
+      "lo": 61098591,
+      "hi": 76373238,
+      "mid": 68735914,
+      "honest": "0x0361cd1e2fe8ef66b6f8f7ee8324b4448a07ddb8ede7021d482f82bfa2991e6a",
+      "liar": "0x030dfe3086700f1595ebfb706bd3f94606a966c409a031a103271a7a67b80577",
+      "agree": false
+    },
+    {
+      "n": 5,
+      "lo": 61098591,
+      "hi": 68735914,
+      "mid": 64917252,
+      "honest": "0x0388bb099633e9b4cbc0c34dc26a774fa23a8077f7fa7f4e9eb8cc73d07ca7c5",
+      "liar": "0x038e0bb74afbfcc5305a08b2bdf6da70ab6f33b20fd76662b9138f24b9b807f7",
+      "agree": false
+    },
+    {
+      "n": 6,
+      "lo": 61098591,
+      "hi": 64917252,
+      "mid": 63007921,
+      "honest": "0x03ed7ded6c0281ac6ce4c22fd030b49a917acf48e7560cf1a70962a4e66f4ea1",
+      "liar": "0x033b829d451aba8acfd470d075869614999a52373c23e6a701f98372436a2973",
+      "agree": false
+    },
+    {
+      "n": 7,
+      "lo": 61098591,
+      "hi": 63007921,
+      "mid": 62053256,
+      "honest": "0x0336f84cf90bad87141f91c13911810f500765a2f2b2e6bff119fd3b64aabcd9",
+      "liar": "0x034df2f5e383efc81f4d48563854554be0e5a436dfb822b3a72a8f17f381624b",
+      "agree": false
+    },
+    {
+      "n": 8,
+      "lo": 61098591,
+      "hi": 62053256,
+      "mid": 61575923,
+      "honest": "0x0348a6bdf04dcfd04e2d72e04af023b3d324ca5645ab0a6a9b80241326c5c292",
+      "liar": "0x030384fd9c1d10147eb4a99f700f58f4a35dd890a2b44b5bb2c66a2b0d6bfa0d",
+      "agree": false
+    },
+    {
+      "n": 9,
+      "lo": 61098591,
+      "hi": 61575923,
+      "mid": 61337257,
+      "honest": "0x0337d6885ab06ff229f5cae9892b80fe4419c232103bc86a7639505eb91698f6",
+      "liar": "0x03b0e1d65254c0941d1007ab35dc47276a38d93dc6b1feee16ad762da5d4f07e",
+      "agree": false
+    },
+    {
+      "n": 10,
+      "lo": 61098591,
+      "hi": 61337257,
+      "mid": 61217924,
+      "honest": "0x03219daf18cdad6279b495db835eb92b38fc5a1edbbb6ed934b6a979c579dbd5",
+      "liar": "0x03c0739379f2898f94934ab2f56047c26eb4464bfb1848f807f72a4cc12eaca4",
+      "agree": false
+    },
+    {
+      "n": 11,
+      "lo": 61098591,
+      "hi": 61217924,
+      "mid": 61158257,
+      "honest": "0x0326cbff90079dd7129b464d0c58cef054554792e0395e74a6ded54b44ab9d04",
+      "liar": "0x03e1dc485f39ca5a73d420559dcf55b49a42f168eb3319158cc9ff35bd1ed09d",
+      "agree": false
+    },
+    {
+      "n": 12,
+      "lo": 61098591,
+      "hi": 61158257,
+      "mid": 61128424,
+      "honest": "0x034955a2ad67d54829763322fa1f4d696abb8ed78323b66c3ff80f446b38be32",
+      "liar": "0x03d855252dd4d7543641e541cc323f880d5e6a9c9749e5692c7039051ab51e9f",
+      "agree": false
+    },
+    {
+      "n": 13,
+      "lo": 61098591,
+      "hi": 61128424,
+      "mid": 61113507,
+      "honest": "0x0372e52551eec49b2eca5858892baa5de2ddee469ed43ed3d4cf2611559c4641",
+      "liar": "0x0372e52551eec49b2eca5858892baa5de2ddee469ed43ed3d4cf2611559c4641",
+      "agree": true
+    },
+    {
+      "n": 14,
+      "lo": 61113507,
+      "hi": 61128424,
+      "mid": 61120965,
+      "honest": "0x0320bb54f2d53da0cd52c437890edd4ec70c439e321111faba7f61ea89460b05",
+      "liar": "0x0320bb54f2d53da0cd52c437890edd4ec70c439e321111faba7f61ea89460b05",
+      "agree": true
+    },
+    {
+      "n": 15,
+      "lo": 61120965,
+      "hi": 61128424,
+      "mid": 61124694,
+      "honest": "0x03b0bbba4a37255b1271d8f254ac142c6d49ed03deb1c082952f9548d344da0b",
+      "liar": "0x03b7766fdea0310156e5c6fca82d3797889368274c271df8d9eb48f97b4268d6",
+      "agree": false
+    },
+    {
+      "n": 16,
+      "lo": 61120965,
+      "hi": 61124694,
+      "mid": 61122829,
+      "honest": "0x03322f810f41d79548d882ea7be0d8a81a38458066a857197762ec91d4ac5fa7",
+      "liar": "0x0366bd3f9eff339aaf96f8c474c5cbbeb1f4df026d22e5c9954a82b513497499",
+      "agree": false
+    },
+    {
+      "n": 17,
+      "lo": 61120965,
+      "hi": 61122829,
+      "mid": 61121897,
+      "honest": "0x038105d80b5936271607f03093bf29c1da041894c668e9d4eba31007a70a55a3",
+      "liar": "0x036efed7aeea6eaf828ada2274804593340744db1025c14b00f5f2194c1d9e17",
+      "agree": false
+    },
+    {
+      "n": 18,
+      "lo": 61120965,
+      "hi": 61121897,
+      "mid": 61121431,
+      "honest": "0x037ae108b7f7177cee8987f51d3b9c1feb2fd4e5d51435161b767aa0d79c36ff",
+      "liar": "0x037ae108b7f7177cee8987f51d3b9c1feb2fd4e5d51435161b767aa0d79c36ff",
+      "agree": true
+    },
+    {
+      "n": 19,
+      "lo": 61121431,
+      "hi": 61121897,
+      "mid": 61121664,
+      "honest": "0x0361dcc73881f58db9f57ba1f2982c90caf2d354f7738d3b8370ff80ef3fbef4",
+      "liar": "0x0361dcc73881f58db9f57ba1f2982c90caf2d354f7738d3b8370ff80ef3fbef4",
+      "agree": true
+    },
+    {
+      "n": 20,
+      "lo": 61121664,
+      "hi": 61121897,
+      "mid": 61121780,
+      "honest": "0x039bbc17450126b3bb0715b3e06d5f678550ef38fc5b7c81ab2b62ecb501c3af",
+      "liar": "0x03611ec1eb99f00da7fe8a805294d0200957c18bdecd5f231c9133e50139c2fe",
+      "agree": false
+    },
+    {
+      "n": 21,
+      "lo": 61121664,
+      "hi": 61121780,
+      "mid": 61121722,
+      "honest": "0x038231717b7c246a084220c43cb9f320d8e13eaae753778bbb0bc9c75bbc911d",
+      "liar": "0x038231717b7c246a084220c43cb9f320d8e13eaae753778bbb0bc9c75bbc911d",
+      "agree": true
+    },
+    {
+      "n": 22,
+      "lo": 61121722,
+      "hi": 61121780,
+      "mid": 61121751,
+      "honest": "0x03650db16a6c69c1ab46fb10d70f4b0bbe300522bfd43c39ea7214f0727a6954",
+      "liar": "0x03650db16a6c69c1ab46fb10d70f4b0bbe300522bfd43c39ea7214f0727a6954",
+      "agree": true
+    },
+    {
+      "n": 23,
+      "lo": 61121751,
+      "hi": 61121780,
+      "mid": 61121765,
+      "honest": "0x03287668521c2240e78ad0c02b22247aea8fd285ee3b8955f6e6c40a4a104401",
+      "liar": "0x03287668521c2240e78ad0c02b22247aea8fd285ee3b8955f6e6c40a4a104401",
+      "agree": true
+    },
+    {
+      "n": 24,
+      "lo": 61121765,
+      "hi": 61121780,
+      "mid": 61121772,
+      "honest": "0x03bee9445bae7b8b130d3fb98602b84872dfc818d456a5da769a7bf3fbc40a74",
+      "liar": "0x03bee9445bae7b8b130d3fb98602b84872dfc818d456a5da769a7bf3fbc40a74",
+      "agree": true
+    },
+    {
+      "n": 25,
+      "lo": 61121772,
+      "hi": 61121780,
+      "mid": 61121776,
+      "honest": "0x031c1d25b314290c21629dfa5e3ed242194e7acdff5fb4245bda777a23b12352",
+      "liar": "0x0313d59540393f137db7e56adc508b4b29bbe5b84a934942b0f2f9503d2b90e1",
+      "agree": false
+    },
+    {
+      "n": 26,
+      "lo": 61121772,
+      "hi": 61121776,
+      "mid": 61121774,
+      "honest": "0x0360c187dedf1becb6f556486939981c63d5b786dd77a3a936f88e9ae828a2e4",
+      "liar": "0x031bf13df2f02b6ee6536bcb1480bc43cbc1a3bd37fa022296c3f90ce8e83a21",
+      "agree": false
+    },
+    {
+      "n": 27,
+      "lo": 61121772,
+      "hi": 61121774,
+      "mid": 61121773,
+      "honest": "0x039afb3ac7b580a8d66e76088cd4a1faf33edfb5e7c34689acd3a4042bda08bd",
+      "liar": "0x039afb3ac7b580a8d66e76088cd4a1faf33edfb5e7c34689acd3a4042bda08bd",
+      "agree": true
+    }
+  ],
+  "verdict": {
+    "step": 61121773,
+    "pc": 498512,
+    "word": "0x4014f4d3",
+    "instruction": "fcvt.s.d fs1,fs1",
+    "function": "<candle_core::cpu_backend::CpuStorage as candle_core::backend::BackendStorage>::affine",
+    "class": "float-arith",
+    "agreedPrestate": "0x039afb3ac7b580a8d66e76088cd4a1faf33edfb5e7c34689acd3a4042bda08bd",
+    "honestPost": "0x0360c187dedf1becb6f556486939981c63d5b786dd77a3a936f88e9ae828a2e4",
+    "liarPost": "0x031bf13df2f02b6ee6536bcb1480bc43cbc1a3bd37fa022296c3f90ce8e83a21",
+    "refereePost": "0x0360c187dedf1becb6f556486939981c63d5b786dd77a3a936f88e9ae828a2e4",
+    "method": "SoftFloat re-execution of this one instruction from the 674-byte state witness, after checking the instruction word's Merkle proof against the witness memory root",
+    "winner": "honest",
+    "stateWitness": "0x8db1f25319e74fad1c6d75f3fdd26fc48e51a420d0003bfe120d9fa390a83f52000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000079b5000000000000003a4a4ed00007f50000000000000000000000000000000000000000000000000000da40c0fffffffffffeea000000000002ea0e800007f0000000760000000000000000100000007f100004100000000000000300ffffffffffff28800000000000000010ffffffffffff10800007f100001f3e000007f100004d1b00000000000079b5000000000002098b800007f100001f38000007f100007a160000000000000000000007f100004d1b000007f100004d1a00000000000000040000000000000000100007f100000b88000000000000000050ffffffffffff10800000000000000008000000000000028800000000000002800000007f10000410fffffffffffefc000000007f100005400000000000000073f2ebfce50fac4f34338000000000001ffffffffc1529805ffffffffc1529805ffffffff3e454194ffffffffc14764c1ffffffff414328c1ffffffffbf8a1f893ee4f8b588e368f13ff00000000000003ff00000000000003ee4f8b588e368f1ffffffffc12b177effffffff3e8cdaa3ffffffff405d2156ffffffff3d5d215600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000001800000000000000015e0a4961c5d61909b01020a730da362a6934692a5e831bc197311746662a9af4",
+    "memProof": "0x1306460093854500e39206fe6f005038d3f4144053741440130581099305090097000700e7804002033d81098339010a0334810a13052000631aad44b3053401da69613fa70104f99996fa62a438f813b19c7f3d0a214c1256fd7d1baaf27ea87f5e16fecc1a13c7ffc233787b0570616c02fa5fb8991ef6f37debb12639ce10afec31ba8c40ebba3f9bad4b93ea679ff0fef8538ebd04bd3a1526a7a98bb5a7f0539f2a1698d29bc55717d1c602b8eef9e09fd53e61f7a2bf47b4de0bf197360cc7ad592b33eefb81f4551f27b13f73c85577f2618d578e0f9f776ed300c47bb657dde2c83c4142fe7b75300853939d3421d6fd0c1b37bdd9f1767a87d4ed16eca8afd7d8f05a7c1b243d092e607b4167f641b95db3884d5a625e4ec5dd980f11f8404aec2dcd4d79e583be761d34129dfbcf95290c0d99a2660e1f8daf03843ed1a662730e3965c40158a3a13f74193bb916d0d63c2f309d0be5e5cc5b64b7d9e5cc71d3db7d34c986b1da29b0ac0c25a8bd0bd924490c2e4d2d39e5d02042dd42c49f43df9c178f1775b9fc10f9147ad1eb036eca5fac61de1db1c4f2d0c264298439fb44ef84fbb169bcbe02f8df02c08957292e2376b745479de0e65537caae8a98e7219b082665ba1f6262b0876ee1f3d2507b14e461dff2f1d552b23d440e73711b0aba5da0daeaa8bfbcdca8d010c39d9460aa48393d5ec855665e19cb47519edbe9ded8016f6205930619a83ee088f762efa657229bc56b68ca2cfb3d92a80233b96cd0b5d9a3a113c42bc4fa1857d2538ce65f746a0ade719d6d9be1d3b5c807b281e4683cc6d6315cf95b9ade8641defcb32372f1c126e398ef7a5a2dce0a8a7f68bb74560f8f71837c2c2ebbcbf7fffb42ae1896f13f7c7479a0b46a28b6f55540f89444f63de0378e3d121be09e06cc9ded1c20e65876d36aa0c65e9645644786b620e2dd2ad648ddfcbf4a7e5b1a3a4ecfe7f64667a3f0b7e2f4418588ed35a2458cffeb39b93d26f18d2ab13bdce6aee58e7b99359ec2dfd95a9c16dc00d6ef18b7933a6f8dc65ccb55667138776f7dea101070dc8796e3774df84f40ae0c8229d0d6069e5c8f39a7c299677a09d367fc7b05e3bc380ee652cdc72595f74c7b1043d0e1ffbab734648c838dfb0527d971b602bc216c9619ef0abf5ac974a1ed57f4050aa510dd9c74f508277b39d7973bb2dfccc5eeb0618db8cd74046ff337f0a7bf2c8e03e10f642c1886798d71806ab1e888d9e5ee87d0838c5655cb21c6cb83313b5a631175dff4963772cce9108188b34ac87c81c41e662ee4dd2dd7b2bc707961b1e646c4047669dcb6584f0d8d770daf5d7e7deb2e388ab20e2573d171a88108e79d820e98f26c0b84aa8b2f4aa4968dbb818ea32293237c50ba75ee485f4c22adf2f741400bdf8d6a9cc7df7ecae576221665d7358448818bb4ae4562849e949e17ac16e0be16688e156b5cf15e098c627c0056a927ae5ba08d7291c96c8cbddcc148bf48a6d68c7974b94356f53754ef6171d757bf558bebd2ceec7f3c5dce04a4782f88c2c6036ae78ee206d0bc5289d20461a2e21908c2968c0699040a6fd866a577a99a9d2ec88745c815fd4a472c789244daae824d72ddc272aab68a8c3022e36f10454437c1886f3ff9927b64f232df414f27e429a4bef3083bc31a671d046ea5c1f5b8c3094d72868d9dfdc12c7334ac5f743cc5c365a9a6a15c1f240ac25880c7a9d1de290696cb766074a1d83d9278164adcf616c3bfabf63999a01966c998b7bb572774035a63ead49da73b5987f34775786645d0c5dd7c04a2f8a75dcae085213652f5bce3ea8b9b9bedd1cab3c5e9b88b152c9b8a7b79637d35911848b0c41e7cc7cca2ab4fe9a15f9c38bb4bb9392a2729059d67c72c918c3aeb579e85eadc1244448c8197c4aadc5bc7ceb617195bc799d83e3bb31501b3da786680df30fbc18eb41cbce611e8c0e9c72f69571ca10d3ef857d04d9c03ead7c6317d797a090fa1271ad9c7addfbcb412e9643d4fb33b1809c42623f474055fa9400a2027a7a885c8dfa4efe20666b4ee27d7529c134d7f28d53f175f6bf4b62faa2110d5b76f0f770c15e628181c1fcc18f970a9c34d24b2fc8c50ca9c07a7156ef4e5ff4bdf002eda0b11c1d359d0b59a54680704dbb9db631457879b27e0dfdbe50158fd9cf9b4cf77605c4ac4c95bd65fc9f6f9295a686647cb999090819cda700820c282c613cedcd218540bbc6f37b01c6567c4a1ea624f092a3a5cca2d6f0f0db231972fce627f0ecca0dee60f17551c5f8fdaeb5ab560b2ceb781cdb339361a0fbee1b9dffad59115138c8d6a70dda9ccc1bf0bbdd7fee15764845db875f6432559ff8dbc9055324431bc34e5b93d15da307317849eccd90c0c7b98870b9317c15a5959dcfb84c76dcc908c4fe6ba92126339bf06e458f6646df5e83ba7c3d35bc263b3222c8e9040068847749ca8e8f9e7fdda47b9595ff0e2e7edb3e9023031e7da66c702f1a71b559f5515c333e4d6ec7d4dabb75e0d3e144d7cc882372d13746b6dcd481b1b229bcaec9f7422cdfb3159bb3975d4a3c812d2848288794c39cd5a576add6a0ad8f184e54e053b10ab3c5cbbeb3834b7a5c1cba9aa5fee0c95ec3f17a33ec3d8047fff799187f5ae2040bbe913c226c34c9fbe4389dd728984257a816892b3cae3e43191dd291f0eb5",
+    "proofBytes": 1920,
+    "boundary": "Not on-chain settlement: RISCV.sol does not implement floating-point arithmetic, and MLVM's experimental nested float sub-game covers only f64 in round-to-nearest-even mode."
+  },
+  "seconds": 9.4930295
+}

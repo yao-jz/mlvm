@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MLVM · verify a model’s computation, one instruction at a time</title>
+  <meta name="description" content="MLVM makes a model’s computation verifiable. Every instruction is committed, so a disagreement about a run comes down to one instruction that anyone can check. Try it in your browser.">
+  <meta property="og:title" content="MLVM · verify a model’s computation, one instruction at a time">
+  <meta property="og:description" content="Change one instruction in a 14.8-billion-instruction model run, and 34 rounds of search pin it down for a referee to check. Try it in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://yao-jz.github.io/mlvm/social-card.png">
+  <meta property="og:url" content="https://yao-jz.github.io/mlvm/">
+  <meta name="twitter:image" content="https://yao-jz.github.io/mlvm/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M8 23V9l8 8 8-8v14' fill='none' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+  <script type="module" src="reading.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="wordmark" href="./" aria-label="MLVM home">MLVM<span class="wordmark-note"> / verifiable model execution</span></a>
+    <nav aria-label="Sections">
+      <a href="#problem">Why verify</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#gallery">Verified runs</a>
+      <a href="#run">Try it</a>
+      <a class="nav-blog" href="blog.html">Read the blog <span aria-hidden="true">→</span></a>
+      <a href="https://github.com/yao-jz/mlvm" rel="noopener">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="problem" class="hero" aria-labelledby="intro-title">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Verifiable model execution</p>
+          <h1 id="intro-title">Verify a model’s computation,<br><span class="soft">one instruction at a time.</span></h1>
+          <p class="lede">
+            Someone runs a model for you and returns an answer. The answer alone cannot show
+            that they ran the computation you agreed on, and running it again yourself is
+            expensive. MLVM makes every instruction of the run checkable, so any disagreement
+            comes down to a single instruction that anyone can verify.
+          </p>
+          <div class="hero-actions">
+            <a class="button-link primary" href="#how-it-works">How verification works <span aria-hidden="true">↓</span></a>
+            <a class="text-link" href="#run">Try it in your browser</a>
+          </div>
+          <p class="hero-note">MLVM is an open-source research project. <a href="blog.html#limits">Current scope and limitations →</a></p>
+        </div>
+        <aside class="reading-invite" aria-labelledby="read-title">
+          <p class="eyebrow">From the blog · Illustrated walkthrough</p>
+          <h2 id="read-title">Finding one wrong instruction in 14.8 billion</h2>
+          <p>We changed one result in a SmolLM2 run. After 34 rounds of search, the disagreement came down to a single instruction. Here’s how it works.</p>
+          <a class="button-link primary" href="blog.html">Read the blog <span aria-hidden="true">→</span></a>
+        </aside>
+      </div>
+      <ul class="feature-links" aria-label="What MLVM provides">
+        <li><a href="#how-it-works"><strong>Every step has a fingerprint</strong><span>32 bytes cover memory, registers and files.</span></a></li>
+        <li><a href="#gallery"><strong>One instruction to check</strong><span>34 rounds of search narrow 14.8 billion instructions to one.</span></a></li>
+        <li><a href="#referee"><strong>Checked by anyone</strong><span>A few kilobytes of evidence, verified in your browser.</span></a></li>
+      </ul>
+    </section>
+
+    <section id="how-it-works" class="act concept-section">
+      <p class="eyebrow">How verification works</p>
+      <h2>Fingerprint every step.<br>Check only the one that differs.</h2>
+      <p class="lede small">MLVM runs the model’s compiled program in a RISC-V virtual machine where
+        every instruction, floating point included, has exactly one correct result. That makes
+        the whole run checkable, one instruction at a time.</p>
+      <ol class="concept-steps">
+        <li><span class="step-number">1</span><h3>Fingerprint every step</h3><p>The machine’s state after any instruction, memory, registers and files included, hashes to one 32-byte fingerprint. The same program and inputs give the same fingerprints on any computer.</p></li>
+        <li><span class="step-number">2</span><h3>Find the first disagreement</h3><p>If two runs end with different fingerprints, compare them halfway through, keep the half where they first differ, and repeat. About log₂ N rounds leave one instruction: 26 for this page’s 38 million, 34 for 14.8 billion.</p></li>
+        <li><span class="step-number">3</span><h3>Check that one instruction</h3><p>A referee re-executes only that instruction, from a 674-byte record of the machine’s state and proofs of the memory it touches. It never runs the model.</p></li>
+      </ol>
+      <div class="design-notes">
+        <div class="design-copy">
+          <h3 id="why-riscv">Why a RISC-V virtual machine?</h3>
+          <p>A referee needs an exact rule for the step it checks. RISC-V gives us a common
+            instruction set: additions, memory reads and other small operations with defined
+            behavior. C and Rust programs can compile to that target, so the same machine can
+            run different models and their surrounding code.</p>
+          <p>The program runs inside MLVM. <strong>You do not need a RISC-V processor.</strong>
+            <a href="blog.html#why-riscv">More on this choice →</a></p>
+          <h3 id="software-floats">Floating point belongs in the VM, too.</h3>
+          <p>Models do much of their work with floating-point numbers. MLVM uses Berkeley
+            SoftFloat to compute those operations in software, including rounding and exception
+            flags. That gives different hosts the same arithmetic rules, down to the bits, so a
+            referee can tell a wrong result from a different rounding.</p>
+          <p><a href="blog.html#floats">How we make floating point reproducible →</a></p>
+        </div>
+        <aside class="platform-note" aria-labelledby="platforms">
+          <p class="eyebrow">Across platforms</p>
+          <h3 id="platforms">Different computers.<br>The same execution.</h3>
+          <p>The CLI and browser build run the same RISC-V program. MLVM also controls the
+            files, time and random bytes the program sees, so those inputs do not change with
+            the host.</p>
+          <dl class="platform-list">
+            <div><dt>Linux</dt><dd>x86-64 and ARM64</dd></div>
+            <div><dt>macOS</dt><dd>Intel and Apple silicon</dd></div>
+            <div><dt>Windows</dt><dd>x86-64 and ARM64 builds</dd></div>
+            <div><dt>WebAssembly</dt><dd>Browser and Node</dd></div>
+          </dl>
+          <p class="platform-evidence">CI runs five TinyStories prompts on six targets: Linux and
+            macOS on both architectures, Windows x86-64, and WebAssembly in Node. Starting hashes,
+            final hashes and instruction counts must all match.
+            <a href="#run">Run the default prompt</a> to compare your browser with the saved results.</p>
+          <div class="platform-links"><a href="https://github.com/yao-jz/mlvm/actions/workflows/determinism.yml">View the CI runs ↗</a><a href="blog.html#cross-platform">How the comparison works →</a></div>
+        </aside>
+      </div>
+      <details class="technical-details architecture-detail" open>
+        <summary>The implementation map</summary>
+        <figure class="repo-figure">
+          <a class="figure-image" href="figures/architecture.svg" target="_blank" rel="noopener"><img src="figures/architecture.svg" width="960" height="1150" loading="lazy" alt="How MLVM works, in six parts: the inputs of a run (program, input files, fixed random bytes); running one instruction at a time (fetch, decode, execute, write back; integer math, software floating point, system calls); the 32-byte fingerprint of the whole machine (a 674-byte state record with the roots of memory, files and the stored answer); finding the first instruction where two runs differ; checking that one instruction with RISCV.sol, slow.Step or SoftFloat; and where it runs (command line, browser, CI on six platforms)."></a>
+          <figcaption>Read from top to bottom: what a run starts from, how each instruction runs, how the whole machine is fingerprinted, and how a disagreement comes down to one instruction that is checked. Grey lines name the code behind each part. <a href="figures/architecture.svg" target="_blank" rel="noopener">Open the full diagram ↗</a> or <a href="blog.html#overview">read the walkthrough</a>.</figcaption>
+        </figure>
+      </details>
+    </section>
+
+    <section id="gallery" class="act">
+      <p class="eyebrow">Verified runs</p>
+      <h2>One changed instruction,<br>found in up to 14.8 billion.</h2>
+      <p class="lede small">
+        In each recorded run we changed the result of one instruction, then searched for it.
+        Every search ended on the instruction we changed. Open a run to replay its search and
+        check the evidence on your device, without running the model. The live demo comes next.
+      </p>
+      <div id="featured-runs" class="featured-runs"></div>
+      <p id="gallery-status" class="note" role="status">Loading the recorded experiments…</p>
+      <details class="technical-details gallery-card" id="gallery-details">
+        <summary>Browse every recorded run</summary>
+        <div class="table-scroll">
+          <table class="table gallery-table" id="gallery-table">
+            <thead><tr>
+              <th>Program</th><th class="num">Instructions</th><th>Changed result</th>
+              <th class="num">Search rounds</th><th>Instruction found</th><th>Checked by</th><th><span class="visually-hidden">Replay</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="note" id="gallery-note">Loading recorded runs…</p>
+      </details>
+
+      <div id="replay" class="card replay hidden">
+        <div class="card-head">
+          <h3 id="replay-title">Replay</h3>
+          <button id="replay-close" class="ghost" type="button">Close</button>
+        </div>
+        <p id="replay-lede" class="note"></p>
+        <div class="machines">
+          <div class="machine panel">
+            <h3><span class="key key-honest" aria-hidden="true"></span>Original run</h3>
+            <p class="machine-text" id="rp-honest-text"></p>
+            <p class="machine-hash"><span>Final state hash</span> <code id="rp-honest-post"></code></p>
+          </div>
+          <div class="machine panel">
+            <h3><span class="key key-liar" aria-hidden="true"></span>Run with a changed result</h3>
+            <p class="machine-text" id="rp-liar-text"></p>
+            <p class="machine-hash"><span>Final state hash</span> <code id="rp-liar-post"></code></p>
+            <ol id="rp-attempts" class="attempts"></ol>
+          </div>
+        </div>
+        <div class="card-head replay-ladder-head">
+          <h3 id="rp-ladder-title">Search</h3>
+          <p class="legend"><span class="sw kept"></span>still in dispute <span class="sw dropped"></span>ruled out</p>
+        </div>
+        <div id="rp-ladder" class="ladder"></div>
+        <div id="rp-verdict" class="verdict"></div>
+        <div class="record-actions">
+          <button id="rp-check" type="button">Check this record on my device</button>
+          <a id="rp-download" class="button-link" download>Download the record</a>
+        </div>
+        <div id="rp-check-out" class="check-out" aria-live="polite"></div>
+      </div>
+
+      <details id="referee" class="technical-details">
+        <summary>Verify a record yourself</summary>
+        <p class="note">
+          Open a record downloaded from this page or saved with <code>mlvm liar --json</code>.
+          This page checks the search, checks the evidence against the fingerprint both runs
+          agreed on, and re-executes the one instruction. The file stays on your device.
+          <a href="blog.html#referee">How this check works →</a>
+        </p>
+        <label class="file-pick"><span>Open a record</span> <input id="record-file" type="file" accept=".json,application/json"></label>
+        <div id="record-out" class="check-out" aria-live="polite"></div>
+      </details>
+
+      <details class="technical-details">
+      <summary>Explore the recorded function profiles</summary>
+      <p class="note">Wider blocks contain more instructions. Each image opens at full size.</p>
+      <div id="gallery-flames" class="grid-2"></div>
+      </details>
+      <figure class="repo-figure evidence-figure">
+        <div class="figure-heading"><h3>Why floating point matters here</h3><a href="figures/model-instruction-mix.svg" target="_blank" rel="noopener">Open full-size ↗</a></div>
+        <a class="figure-image" href="figures/model-instruction-mix.svg" target="_blank" rel="noopener"><img src="figures/model-instruction-mix.svg" width="900" height="340" loading="lazy" alt="Instruction mix of five BERT-family models: floating-point arithmetic, loads and stores account for 58 to 69 percent of executed instructions."></a>
+        <figcaption>In these five BERT-family runs, floating-point arithmetic and memory operations account for <strong>58–69% of instructions</strong>. This is why MLVM includes floating-point instructions in the VM. <a href="blog.html#floats">Read about the implementation →</a></figcaption>
+      </figure>
+    </section>
+
+    <section id="run" class="act demo-section">
+      <div class="section-heading">
+        <p class="eyebrow">Try it · Step 1 of 3</p>
+        <h2>Run a model. Get its fingerprint.</h2>
+        <p class="lede small">TinyStories continues your prompt inside MLVM, in this tab. The run
+          ends with a fingerprint of the final machine state, the answer included. Then you will
+          change one instruction and watch it get caught. Nothing leaves your device.</p>
+      </div>
+      <ol class="journey" aria-label="Explore the demo">
+        <li><a href="#run"><span class="step-number">01</span><span><strong>Run and commit</strong><span>Get a fingerprint of the whole run.</span></span><span aria-hidden="true">↓</span></a></li>
+        <li><a href="#liar"><span class="step-number">02</span><span><strong>Change one instruction</strong><span>Watch the search find it and the referee check it.</span></span><span aria-hidden="true">↓</span></a></li>
+        <li><a href="#xray"><span class="step-number">03</span><span><strong>Account for every instruction</strong><span>See where the work went, exactly.</span></span><span aria-hidden="true">↓</span></a></li>
+      </ol>
+      <div class="demo-surface">
+      <div class="demo-label"><span>Live demo · TinyStories-260K</span><span>Everything runs in this tab</span></div>
+
+      <div id="shared" class="banner hidden" role="status"></div>
+
+      <form id="run-form" class="run-form" autocomplete="off">
+        <label class="visually-hidden" for="prompt">Start your story</label>
+        <input id="prompt" name="prompt" maxlength="200" value="Once upon a time" spellcheck="false">
+        <label class="visually-hidden" for="tokens">Tokens to generate</label>
+        <select id="tokens" name="tokens" title="Tokens to generate">
+          <option value="16" selected>16 tokens · longer</option>
+          <option value="8">8 tokens</option>
+          <option value="4">4 tokens · quicker</option>
+        </select>
+        <button id="run-button" type="submit" disabled>Loading…</button>
+      </form>
+      <p class="form-note">A token is a small piece of text. The default run usually takes a few seconds on a laptop; slower devices may take longer.</p>
+      <noscript><p class="banner">The live demo needs JavaScript. You can still read the <a href="blog.html">illustrated explanation</a> and the diagrams on this page.</p></noscript>
+
+      <div class="console">
+        <p id="story" class="story"><span class="prompt-text">Once upon a time</span><span class="gen-text"></span><span class="caret" aria-hidden="true"></span></p>
+        <div class="meter" aria-hidden="true"><div id="meter" class="meter-fill"></div></div>
+        <div class="stats">
+          <div class="stat stat-hero"><span id="steps" class="stat-value">0</span><span class="stat-label">instructions executed, each one checkable</span></div>
+          <div class="stat"><span id="mips" class="stat-value">–</span><span class="stat-label">million instructions / s</span></div>
+          <div class="stat"><span id="elapsed" class="stat-value">–</span><span class="stat-label">seconds</span></div>
+          <div class="stat"><span id="float-share" class="stat-value">–</span><span class="stat-label">floating-point instructions</span></div>
+        </div>
+        <p id="status" class="status" role="status">Loading the model and its virtual machine…</p>
+      </div>
+      </div>
+
+      <div id="receipt" class="card receipt hidden">
+        <div class="card-head">
+          <h3>Your run’s fingerprint</h3>
+          <button id="share" class="ghost" type="button">Copy a link to this result</button>
+        </div>
+        <p class="reading-copy">This <strong>state hash</strong> commits the machine’s memory, registers and the
+          answer it stored. Runs that did different work end with different hashes, even when
+          they print the same words.</p>
+        <details class="technical-details">
+          <summary>View this run's full hashes and token IDs</summary>
+          <dl class="kv">
+            <dt>Starting state (prestate)</dt><dd><code id="r-pre"></code></dd>
+            <dt>Final state (poststate)</dt><dd><code id="r-post"></code></dd>
+            <dt>Work performed</dt><dd id="r-steps"></dd>
+            <dt>Stored answer (token IDs)</dt><dd><code id="r-tokens"></code></dd>
+          </dl>
+          <p class="note">The starting hash covers the program, model, tokenizer and prompt. The final hash also covers the generated answer stored in memory.</p>
+        </details>
+        <h3>Compare across platforms</h3>
+        <p class="reading-copy">For a saved prompt and length, the rows below compare your browser’s
+          final state hash with runs of the same program on other platforms.</p>
+        <div id="compare" class="compare"></div>
+        <div class="next-actions"><a class="button-link primary" href="#liar">Next: change one instruction →</a><a href="#xray">See every instruction</a></div>
+      </div>
+    </section>
+
+    <section id="liar" class="act">
+      <p class="eyebrow">Try it · Step 2 of 3</p>
+      <h2>Change one instruction.<br>Watch it get caught.</h2>
+      <div class="two-col">
+        <div>
+          <p>
+            A second machine runs the same program but changes the result of one instruction,
+            as a faulty or dishonest machine might. Its story often looks the same. Its
+            fingerprint does not.
+          </p>
+          <p class="muted">
+            The search asks both machines for their fingerprint halfway through, keeps the half
+            where they first differ, and repeats. About 26 rounds narrow 38 million instructions
+            to one, and a referee checks that instruction on its own.
+          </p>
+          <aside class="explainer-note"><strong>Try the default first.</strong> It makes one number slightly wrong. If later calculations erase the change, the demo tries another location until a difference survives.</aside>
+          <p class="note"><a href="#how-it-works">Revisit how the search works ↑</a></p>
+        </div>
+        <form id="liar-form" class="liar-form" autocomplete="off">
+          <fieldset>
+            <legend>What should the second machine change?</legend>
+            <label class="choice"><input type="radio" name="lie" value="ulp" checked> <span><strong>A rounding result</strong><span class="choice-detail">Make one tiny arithmetic error.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="load"> <span><strong>A value read from memory</strong><span class="choice-detail">Read one bit incorrectly.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="int"> <span><strong>An integer calculation</strong><span class="choice-detail">Change one bit in a counter, index or other result.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="output"> <span><strong>The displayed answer</strong><span class="choice-detail">Print a different word.</span></span></label>
+            <label class="choice"><input type="radio" name="lie" value="token"> <span><strong>The stored answer</strong><span class="choice-detail">Write a different word into the final state.</span></span></label>
+          </fieldset>
+          <p id="lie-about" class="hint"></p>
+          <details id="step-controls" class="technical-details">
+            <summary>Choose where to change it (optional)</summary>
+            <div class="controls">
+            <label for="lie-at">Where in the run? <output id="lie-at-out">50%</output></label>
+            <input id="lie-at" type="range" min="1" max="99" value="50">
+            <div id="lie-timeline" class="timeline"></div>
+            <div class="control-row">
+              <div id="lie-op-wrap" class="controls">
+                <label for="lie-op">Instruction</label>
+                <select id="lie-op">
+                  <option value="">Any float operation</option>
+                  <option value="fadd.s">fadd.s</option>
+                  <option value="fmul.s">fmul.s</option>
+                  <option value="fmadd.s">fmadd.s</option>
+                </select>
+              </div>
+              <div class="controls">
+                <label for="lie-fn">In function</label>
+                <select id="lie-fn"><option value="">Any function</option></select>
+              </div>
+            </div>
+            </div>
+          </details>
+          <div id="word-controls" class="controls hidden">
+            <p class="hint">Click a word of the original answer.</p>
+            <p id="token-picker" class="token-picker"></p>
+            <label for="forge-word">Replace it with</label>
+            <input id="forge-word" value="Tim" maxlength="24" spellcheck="false">
+            <p id="word-note" class="hint"></p>
+          </div>
+          <button id="liar-button" type="submit" disabled>Generate a story first</button>
+        </form>
+      </div>
+
+      <div id="machines" class="machines hidden">
+        <article class="card machine honest">
+          <h3><span class="key key-honest" aria-hidden="true"></span>Original run</h3>
+          <p class="machine-text" id="m-honest-text"></p>
+          <p class="machine-hash"><span>Final state hash</span> <code id="m-honest-post"></code></p>
+        </article>
+        <article class="card machine liar">
+          <h3><span class="key key-liar" aria-hidden="true"></span>Run with a changed result</h3>
+          <p class="machine-text" id="m-liar-text">…</p>
+          <p class="machine-hash"><span>Final state hash</span> <code id="m-liar-post">running…</code></p>
+          <div class="meter small" aria-hidden="true"><div id="liar-meter" class="meter-fill liar-fill"></div></div>
+          <ol id="attempts" class="attempts"></ol>
+        </article>
+      </div>
+      <p id="liar-headline" class="headline hidden"></p>
+
+      <div id="ladder-wrap" class="card hidden">
+        <div class="card-head">
+          <h3 id="ladder-title">Narrowing down the disagreement</h3>
+          <p class="legend"><span class="sw kept"></span>still in dispute <span class="sw dropped"></span>ruled out</p>
+        </div>
+        <div id="ladder" class="ladder"></div>
+      </div>
+
+      <div id="verdict" class="card verdict hidden">
+        <div id="verdict-body"></div>
+        <div class="record-actions">
+          <button id="v-download" class="ghost" type="button">Download the evidence</button>
+          <span class="note">Save the evidence as a small JSON file. Anyone can <a href="#referee">verify it again</a> without running the model.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="xray" class="act">
+      <p class="eyebrow">Try it · Step 3 of 3</p>
+      <h2>Every instruction, accounted for.</h2>
+      <p class="lede small">
+        Verification works one instruction at a time, so MLVM counts every instruction exactly,
+        with the same counts on every computer. This flame graph groups them by function: wider
+        blocks mean more instructions, and stacked blocks show which function called which.
+      </p>
+      <div id="xray-empty" class="profile-preview">
+        <figure class="repo-figure">
+          <div class="figure-heading"><span class="eyebrow">Recorded example</span><a href="figures/xray-flame.svg" target="_blank" rel="noopener">Open full-size ↗</a></div>
+          <a class="figure-image" href="figures/xray-flame.svg" target="_blank" rel="noopener"><img src="figures/xray-flame.svg" width="1200" height="380" loading="lazy" alt="TinyStories flame graph. The matmul block accounts for 83.2% of the run's 38.2 million instructions."></a>
+          <figcaption><strong>Most of the work is matrix multiplication.</strong> In this recorded example,
+            <code>matmul</code> accounts for 83.2% of the instructions. <a href="#run">Run your prompt</a> to replace this example with an interactive profile of your own.</figcaption>
+        </figure>
+      </div>
+      <div id="xray-body" class="hidden">
+        <div class="card">
+          <div class="card-head">
+            <h3>Your run, by function</h3>
+            <div class="legend">
+              <span>width = instructions · color = share of a frame's own instructions that are floating point</span>
+              <span class="ramp" aria-hidden="true"></span><span>0% → 100%</span>
+              <span class="sw caller"></span><span>caller</span>
+              <button id="flame-reset" class="ghost hidden" type="button">Reset zoom</button>
+            </div>
+          </div>
+          <div id="flame" class="flame"></div>
+          <p class="note">Click a block to zoom into that function. Hover or focus a block to see its instruction count.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Types of work</h3>
+            <div id="classes" class="bars"></div>
+          </div>
+          <div class="card">
+            <h3>Functions with the most instructions</h3>
+            <table class="table" id="functions">
+              <thead><tr><th>function</th><th class="num">own instructions</th><th class="num">share</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>The work behind each new token</h3>
+          <p id="timeline-note" class="note"></p>
+          <div id="token-timeline" class="timeline"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="act">
+      <p class="eyebrow">On your own machine</p>
+      <h2>Verify on your own machine.</h2>
+      <p class="lede small">The command-line tool runs the same VM natively on Linux, macOS and
+        Windows. Start with the built-in model, then verify your own compiled RISC-V program.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>1. Install MLVM</h3>
+          <pre class="code"><code>brew install yao-jz/tap/mlvm</code></pre>
+          <details class="technical-details"><summary>Linux, Windows or building from source</summary>
+          <p class="note">For Linux and macOS:</p>
+          <pre class="code"><code>curl -fsSL https://raw.githubusercontent.com/yao-jz/mlvm/main/install.sh | sh</code></pre>
+          <p class="note">or from source, with Go 1.23+</p>
+          <pre class="code"><code>git clone https://github.com/yao-jz/mlvm && cd mlvm && make build</code></pre>
+          <p class="note">On Windows, download the zip from <a href="https://github.com/yao-jz/mlvm/releases">GitHub Releases</a>. See the <a href="https://github.com/yao-jz/mlvm/blob/main/docs/INSTALL.md">installation guide</a> for details.</p>
+          </details>
+        </div>
+        <div class="card">
+          <h3>2. Run, verify and profile</h3>
+          <pre class="code"><code><span class="c"># Run and commit: prints the final fingerprint</span>
+mlvm demo "Once upon a time"
+
+<span class="c"># Change one instruction and catch it</span>
+mlvm liar
+
+<span class="c"># Count every instruction, by function</span>
+mlvm xray --svg flame.svg</code></pre>
+          <details class="technical-details"><summary>Save the evidence, or use your own program</summary>
+          <pre class="code"><code><span class="c"># Save the evidence, then verify it independently</span>
+mlvm liar --lie token --word Tim --json > dispute.json
+mlvm referee dispute.json
+
+<span class="c"># Use a statically linked RV64IMAFD executable</span>
+mlvm xray --elf ./your-program
+mlvm liar --elf ./your-program</code></pre>
+          <p class="note">The native CLI also runs the integer verdict through RISCV.sol's compiled bytecode in an in-process EVM.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>MLVM is MIT licensed and derived from <a href="https://github.com/ethereum-optimism/asterisc">Asterisc</a>; floating point is a Go port of Berkeley SoftFloat 3e; the model is <a href="https://github.com/karpathy/llama2.c">karpathy/llama2.c</a>'s TinyStories-260K (MIT).</p>
+    <p><a href="https://github.com/yao-jz/mlvm">github.com/yao-jz/mlvm</a> · <span id="build-info"></span></p>
+  </footer>
+</body>
+</html>

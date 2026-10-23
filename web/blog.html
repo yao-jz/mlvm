@@ -1,0 +1,1448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How MLVM works · finding one wrong instruction in 14.8 billion</title>
+  <meta name="description" content="How do you find one wrong instruction in a language model run? MLVM uses reproducible execution and binary search to narrow 14.8 billion instructions to one step that a referee can check.">
+  <meta property="og:title" content="How MLVM works: finding one wrong instruction in 14.8 billion">
+  <meta property="og:description" content="MLVM found a deliberately wrong step in a 14.8-billion-instruction language model run with 34 rounds of binary search. Here is how it works, and what it cannot verify yet.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://yao-jz.github.io/mlvm/social-card.png">
+  <meta property="og:url" content="https://yao-jz.github.io/mlvm/blog.html">
+  <meta name="twitter:image" content="https://yao-jz.github.io/mlvm/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M8 23V9l8 8 8-8v14' fill='none' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="blog.css">
+  <script type="module" src="reading.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <header class="topbar">
+    <a class="wordmark" href="./">MLVM</a>
+    <nav aria-label="Site">
+      <a href="./#run">Try it</a>
+      <a href="./#how-it-works">The idea</a>
+      <a href="./#gallery">Model runs</a>
+      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="https://github.com/yao-jz/mlvm" rel="noopener">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <div class="post-wrap">
+    <nav class="toc" aria-label="Contents">
+      <details class="toc-menu" open>
+      <summary>On this page</summary>
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#overview">From a model run to a disputed step</a></li>
+        <li><a href="#floats">Floating point without the host FPU</a></li>
+        <li><a href="#doors">Making the rest of the run reproducible</a></li>
+        <li><a href="#state">One root for the whole machine</a></li>
+        <li><a href="#answers">Keeping the answer in the state</a></li>
+        <li><a href="#bisection">Bisection at 14.8 billion instructions</a></li>
+        <li><a href="#referee">Checking the disputed instruction</a></li>
+        <li><a href="#lies">What happened when we changed one result</a></li>
+        <li><a href="#xray">Where the instructions go</a></li>
+        <li><a href="#browser">The same machine in a browser tab</a></li>
+        <li><a href="#limits">Limits</a></li>
+        <li><a href="#next">What comes next</a></li>
+        <li class="unnumbered"><a href="#reproduce">Reproduce and cite</a></li>
+      </ol>
+      </details>
+      <a class="toc-demo" href="./#run">Try the live demo ↗</a>
+    </nav>
+
+    <article class="post" id="article">
+      <p class="eyebrow">Inside MLVM / An illustrated walkthrough</p>
+      <h1>Finding one wrong instruction in 14.8 billion</h1>
+      <p class="dek">
+        A run of SmolLM2-135M took 14.8 billion instructions inside MLVM. We deliberately changed
+        one result. It took 34 rounds of binary search to find the step responsible, then a check
+        of that one instruction to decide which machine was right.
+      </p>
+      <p class="byline">Jianzhu Yao · Princeton University · 22 October 2026</p>
+
+      <nav class="reading-path" aria-label="Suggested reading routes">
+        <p class="eyebrow">Choose a way in</p>
+        <a href="#overview"><strong>Understand the idea</strong><span>The machine, the state and the search.</span><span aria-hidden="true">↓</span></a>
+        <a href="#lies"><strong>See what we found</strong><span>What changes when one calculation is wrong.</span><span aria-hidden="true">↓</span></a>
+        <a href="#floats"><strong>Follow the implementation</strong><span>Floating point, memory and the verifier.</span><span aria-hidden="true">↓</span></a>
+      </nav>
+
+      <aside class="tldr" aria-labelledby="tldr-h">
+        <h2 id="tldr-h">What MLVM does</h2>
+        <ul>
+          <li>It runs a compiled program in a RISC-V virtual machine, including floating-point
+            arithmetic in software. With the same program and inputs, machines should agree on
+            every bit of the result. CI checks the decoder demo across six platforms.</li>
+          <li>It represents the machine's state with a 32-byte hash. If two runs end with different
+            hashes, a referee can narrow the disagreement to one instruction and check that step.</li>
+          <li>The current implementation is a local research prototype. There is no deployed
+            dispute game, <code>f32</code> arithmetic cannot yet be settled on chain, and the BERT
+            runs measured here are about a thousand times slower than native code.</li>
+        </ul>
+      </aside>
+
+      <details class="technical-details glossary">
+        <summary>Four terms used throughout this article</summary>
+        <dl>
+          <div><dt>Instruction</dt><dd>One operation the virtual machine executes, such as adding numbers or reading memory.</dd></div>
+          <div><dt>State root</dt><dd>A short hash of the machine's state. It acts as a fingerprint of its memory, registers and other tracked values.</dd></div>
+          <div><dt>Bisection</dt><dd>Binary search over two runs. Compare the midpoint, keep the half containing the disagreement, then repeat.</dd></div>
+          <div><dt>Witness</dt><dd>The state information supplied to the referee, together with memory proofs, so it can check one instruction.</dd></div>
+        </dl>
+      </details>
+
+      <!-- 1 ------------------------------------------------------------------------------ -->
+      <section id="problem">
+        <h2><span class="num">1</span>The problem</h2>
+        <p>
+          Suppose someone runs a language model for you and sends back an answer. You know which
+          model, weights and prompt they were supposed to use. How do you check that they actually
+          ran that computation? The same question comes up when auditing a benchmark or paying
+          for an inference: the output alone does not tell you how it was produced.
+        </p>
+        <p>
+          You could run the model again, provided you trust the machine doing the check and can
+          afford another inference. But even matching outputs leave a gap. In the experiments
+          below, we changed individual instruction results and often got exactly the same text
+          back. The computation had changed; the answer had not.
+        </p>
+        <p>
+          Optimistic verification, used in blockchain fault proofs such as Truebit, Arbitrum,
+          Cannon and Asterisc, reduces the work required of a referee. Two parties run the
+          computation and report a hash of the final machine state. If they disagree, the referee
+          asks for the hash halfway through each run. If those hashes match, the disagreement is
+          in the second half; otherwise, it is in the first. Repeating this search leaves one
+          instruction to check, after about log<sub>2</sub>&nbsp;N rounds for a run of N steps.
+          The parties still do the execution. The referee only checks the disputed step.
+        </p>
+        <p>
+          This requires honest machines to agree bit for bit. Floating point makes that harder,
+          which is why Asterisc, the RISC-V fault-proof VM that MLVM builds on, left it out.
+          Its ISA notes explain the decision:
+        </p>
+        <blockquote>
+          <p><code>RV{32,64}{D,F,Q}</code>: no-op: No floating points support (since no IEEE754 determinism with rounding modes etc., nor worth the complexity)</p>
+          <cite>ethereum-optimism/asterisc</cite>
+        </blockquote>
+        <p>
+          That omission is expensive for neural networks. In the five BERT-family encoders we
+          ran, 58 to 69% of instructions were floating-point arithmetic, loads or stores. An
+          integer-only target can still run these models by compiling each float operation into
+          an integer routine. In our matrix-multiplication comparison, that took 25 times as many
+          instructions (<a href="#placement">§8.4</a>). MLVM adds floating-point instructions
+          to Asterisc and implements them in software, so their behavior does not depend on the
+          host CPU. This article explains that implementation and the disputes we tested with it.
+        </p>
+
+        <h3 id="why-riscv">Why use a RISC-V virtual machine?</h3>
+        <p>
+          To settle a disagreement, both parties and the referee need an exact definition of a
+          step. RISC-V gives us a common instruction set with operations small enough to check
+          individually: add two values, read memory, take a branch. C and Rust compilers already
+          target it. That lets us run compiled inference code, including the code that loads
+          inputs and prepares the answer, through the same machine.
+        </p>
+        <p>
+          The RISC-V executable runs inside MLVM, so the host does not need a RISC-V processor.
+          MLVM supplies the arithmetic, memory and system-call behavior. Keeping those rules
+          fixed lets the same executable run on different hosts and gives the referee a precise
+          transition to check. The cost is interpretation overhead; the
+          <a href="#limits">measurements and limitations</a> describe that tradeoff.
+        </p>
+
+        <h3 id="new">Starting from Asterisc</h3>
+        <p>
+          The integer RV64 interpreter, the Merkle memory, the Go state
+          oracle (<code>slow</code>) and the Solidity step function (<code>RISCV.sol</code>) come
+          from Asterisc, by protolambda and Optimism. MLVM added floating point and SoftFloat, the
+          committed file system and its proofs, deterministic randomness, the syscalls that static
+          glibc and Rust <code>std</code> need, and a way to include the answer in the final state.
+          The dispute simulator, profiler and browser playground let us test and inspect those
+          additions on actual model runs.
+        </p>
+      </section>
+
+      <!-- 2 ------------------------------------------------------------------------------ -->
+      <section id="overview">
+        <h2><span class="num">2</span>From a model run to a disputed step</h2>
+        <figure class="fig" id="fig1">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 312" role="img" aria-labelledby="fig1-t">
+              <title id="fig1-t">System overview: inputs become a prestate root, the fast VM produces a poststate root, two machines with different roots are bisected down to one step, and three referees check that step.</title>
+              <defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-head"/></marker></defs>
+              <rect class="f-box" x="8" y="16" width="166" height="64" rx="10"/>
+              <text class="f-t" x="91" y="42" text-anchor="middle">ELF + inputs</text>
+              <text class="f-s" x="91" y="62" text-anchor="middle">weights, prompt</text>
+              <rect class="f-box" x="198" y="16" width="166" height="64" rx="10"/>
+              <text class="f-t" x="281" y="42" text-anchor="middle">prestate root</text>
+              <text class="f-m" x="281" y="62" text-anchor="middle">0x03bd61b5…</text>
+              <rect class="f-box-hi" x="388" y="16" width="166" height="64" rx="10"/>
+              <text class="f-t" x="471" y="42" text-anchor="middle">fast VM</text>
+              <text class="f-s" x="471" y="62" text-anchor="middle">software IEEE-754</text>
+              <rect class="f-box" x="578" y="16" width="174" height="64" rx="10"/>
+              <text class="f-t" x="665" y="42" text-anchor="middle">poststate root</text>
+              <text class="f-s" x="665" y="62" text-anchor="middle">answer committed</text>
+              <line class="f-line" x1="174" y1="48" x2="196" y2="48" marker-end="url(#ah1)"/>
+              <line class="f-line" x1="364" y1="48" x2="386" y2="48" marker-end="url(#ah1)"/>
+              <line class="f-line" x1="554" y1="48" x2="576" y2="48" marker-end="url(#ah1)"/>
+
+              <line class="f-line" x1="471" y1="80" x2="471" y2="126" marker-end="url(#ah1)"/>
+              <text class="f-s" x="480" y="108">two machines, different roots</text>
+              <rect class="f-box" x="198" y="128" width="356" height="64" rx="10"/>
+              <text class="f-t" x="376" y="154" text-anchor="middle">bisection over state hashes</text>
+              <text class="f-s" x="376" y="174" text-anchor="middle">“hash after n steps?” · ≈ log₂ N questions</text>
+              <line class="f-line" x1="554" y1="160" x2="576" y2="160" marker-end="url(#ah1)"/>
+              <rect class="f-box" x="578" y="128" width="174" height="64" rx="10"/>
+              <text class="f-t" x="665" y="154" text-anchor="middle">one disputed step</text>
+              <text class="f-s" x="665" y="174" text-anchor="middle">witness + proofs</text>
+              <line class="f-line" x1="198" y1="160" x2="176" y2="160" marker-end="url(#ah1)"/>
+              <rect class="f-box-alt" x="8" y="128" width="166" height="64" rx="10"/>
+              <text class="f-t" x="91" y="154" text-anchor="middle">dispute record</text>
+              <text class="f-s" x="91" y="174" text-anchor="middle">a few KB of JSON</text>
+              <line class="f-line" x1="91" y1="192" x2="91" y2="238" marker-end="url(#ah1)"/>
+              <rect class="f-box-alt" x="8" y="240" width="166" height="64" rx="10"/>
+              <text class="f-t" x="91" y="266" text-anchor="middle">mlvm referee</text>
+              <text class="f-s" x="91" y="286" text-anchor="middle">rules again, no rerun</text>
+
+              <polyline class="f-line" points="665,192 665,214"/>
+              <line class="f-line" x1="286" y1="214" x2="665" y2="214"/>
+              <line class="f-line" x1="286" y1="214" x2="286" y2="238" marker-end="url(#ah1)"/>
+              <line class="f-line" x1="475" y1="214" x2="475" y2="238" marker-end="url(#ah1)"/>
+              <line class="f-line" x1="664" y1="214" x2="664" y2="238" marker-end="url(#ah1)"/>
+              <rect class="f-box" x="198" y="240" width="176" height="64" rx="10"/>
+              <text class="f-t" x="286" y="266" text-anchor="middle">RISCV.sol in an EVM</text>
+              <text class="f-s" x="286" y="286" text-anchor="middle">integer, memory · gas</text>
+              <rect class="f-box" x="387" y="240" width="176" height="64" rx="10"/>
+              <text class="f-t" x="475" y="266" text-anchor="middle">slow.Step</text>
+              <text class="f-s" x="475" y="286" text-anchor="middle">Go mirror of RISCV.sol</text>
+              <rect class="f-box-hi" x="576" y="240" width="176" height="64" rx="10"/>
+              <text class="f-t" x="664" y="266" text-anchor="middle">SoftFloat</text>
+              <text class="f-s" x="664" y="286" text-anchor="middle">float arithmetic</text>
+            </svg>
+          </div>
+          <figcaption><b>Figure 1.</b> The top row is an ordinary run. When two machines report
+          different final states, bisection narrows their disagreement to one step. The parties
+          replay parts of the run to answer questions; the referee checks only that step.
+          <code>RISCV.sol</code> can run in an EVM, <code>slow.Step</code> is its Go counterpart,
+          and SoftFloat handles float arithmetic locally.</figcaption>
+        </figure>
+        <p>
+          The program running inside the VM is called the <em>guest</em>. It is a statically
+          linked RISC-V executable (an ELF file), built from C with GCC or from Rust with rustc.
+          The Rust model guests use Hugging Face's Candle and <code>tokenizers</code>. Before
+          execution, MLVM loads the program and its files, including the weights, tokenizer and
+          prompt, into the guest's address space.
+        </p>
+        <p>
+          MLVM can hash the machine state into a 32-byte value, called a <em>state root</em>.
+          This is a commitment: it lets another party check that a supplied piece of state
+          belongs to that machine state. We call the initial hash the <em>prestate root</em> and
+          the hash after the program halts the <em>poststate root</em>. The former identifies
+          the computation's starting point; the latter includes what the program left in memory,
+          including its answer.
+        </p>
+        <p>
+          The first byte of every state hash is replaced by a status code: 0 for halted normally,
+          1 for invalid, 2 for panicked, 3 for still running. The demo's prestate begins
+          <code>0x03bd61b5…</code> and its poststate <code>0x00beedb0…</code>, so a contract can
+          read the outcome of a run without decoding anything.
+        </p>
+        <p>
+          If two runs start with the same root but finish with different roots, the referee uses
+          the binary search described above, also called <em>bisection</em>. To check the remaining
+          instruction, it needs a <em>witness</em>: an encoding of the state before the step,
+          plus proofs for the memory that step reads or writes. These fit in a small dispute
+          record. Anyone with the record can repeat the referee's check without loading the model
+          or replaying the full run.
+        </p>
+        <details class="technical-details" open>
+          <summary>How the components fit together in the implementation</summary>
+          <figure class="repo-figure">
+            <a class="figure-image" href="figures/architecture.svg" target="_blank" rel="noopener"><img src="figures/architecture.svg" width="960" height="1150" loading="lazy" alt="How MLVM works, in six parts: the inputs of a run (program, input files, fixed random bytes); running one instruction at a time (fetch, decode, execute, write back; integer math, software floating point, system calls); the 32-byte fingerprint of the whole machine (a 674-byte state record with the roots of memory, files and the stored answer); finding the first instruction where two runs differ; checking that one instruction with RISCV.sol, slow.Step or SoftFloat; and where it runs (command line, browser, CI on six platforms)."></a>
+            <figcaption><strong>The implementation map.</strong> Follow the six numbered sections from inputs to verification. Each part says in plain words what it does; the grey lines give the package, address or proof size behind it. <a href="figures/architecture.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+          </figure>
+        </details>
+        <p class="reading-signpost">For a first pass, you can go straight to <a href="#bisection">how the search works</a>
+          or <a href="#lies">what happened in the experiments</a>. The next sections explain the implementation.</p>
+      </section>
+
+      <!-- 3 ------------------------------------------------------------------------------ -->
+      <section id="floats">
+        <h2><span class="num">3</span>Floating point without the host FPU</h2>
+        <p class="section-intro">These models represent weights and intermediate values as floating-point numbers. MLVM needs each operation to produce the same bits on every host, including its rounding and exception flags.</p>
+        <figure class="repo-figure">
+          <a class="figure-image" href="figures/model-instruction-mix.svg" target="_blank" rel="noopener"><img src="figures/model-instruction-mix.svg" width="900" height="340" loading="lazy" alt="Five BERT-family instruction profiles. Floating-point arithmetic and loads or stores make up 58 to 69 percent of execution."></a>
+          <figcaption><strong>Floating point is a large part of these runs.</strong> The green and purple segments are float arithmetic and float memory operations. Together they account for 58–69% of instructions in the five BERT-family models. <a href="figures/model-instruction-mix.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+        </figure>
+        <h3>3.1 Why a Go float addition is not enough</h3>
+        <p>
+          A Go interpreter could execute <code>fadd.s</code> as a Go <code>float32</code> addition.
+          That handles ordinary inputs in the usual rounding mode, but implementing a RISC-V
+          instruction also means reproducing its rounding rules, exception flags and special
+          cases. A plain Go addition does not give the interpreter control over all of those:
+        </p>
+        <ul>
+          <li><strong>Rounding is per instruction.</strong> A RISC-V float instruction carries a
+            3-bit <code>rm</code> field that selects one of five rounding modes for that instruction
+            alone, or the dynamic mode in <code>frm</code>. Go has no way to set the host's rounding
+            mode, let alone per instruction.</li>
+          <li><strong>Exception flags are architectural state.</strong> Invalid, divide-by-zero,
+            overflow, underflow and inexact accumulate in <code>fflags</code>, and a program can read
+            them. They have to be computed exactly, and they are committed.</li>
+          <li><strong>NaNs differ.</strong> RISC-V requires the canonical NaN. Hosts differ in how they
+            propagate NaN payloads, and the WebAssembly specification explicitly leaves the sign and
+            payload bits of a NaN result nondeterministic.</li>
+          <li><strong>The Go compiler may fuse.</strong> The Go specification allows an implementation
+            to combine <code>x*y + z</code> into one fused multiply-add, so the same Go source can
+            round once on arm64 and twice on amd64.</li>
+          <li><strong>RISC-V has its own rules.</strong> Single-precision values are NaN-boxed inside
+            64-bit registers. <code>fmin</code> and <code>fmax</code> order −0 below +0 and return the
+            non-NaN operand. Out-of-range conversions saturate.</li>
+        </ul>
+        <p>MLVM therefore implements guest float arithmetic with integer operations. The host CPU's floating-point unit does not determine the result.</p>
+
+        <h3>3.2 SoftFloat in Go</h3>
+        <p>
+          MLVM implements all 62 instructions in RISC-V's F and D extensions, for single- and
+          double-precision floating point. The arithmetic comes from <code>rvgo/comp</code>, a
+          hand port of Berkeley SoftFloat Release 3e to Go. It has 121 files and about 5,800 lines,
+          or about 6,100 including support types and RISC-V-specific NaN handling.
+          <code>fast/vm.go</code> decodes each instruction and calls the corresponding operation.
+          Before that call, it selects the rounding mode:
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Code: selecting the rounding mode</summary>
+        <p class="code-label">rvgo/fast/vm.go</p>
+<pre class="code"><code><span class="c">// The rounding mode comes from the instruction's rm field, except that rm == 7 means
+// "dynamic": use frm from the CSR. RISC-V's rm encoding and Berkeley's rounding-mode
+// numbering agree on 0..4 (RNE, RTZ, RDN, RUP, RMM), so no translation is needed.</span>
+beginFloatOp := func(rm U64) {
+    mode := rm
+    if mode == 7 {
+        mode = and64(shr64(toU64(5), s.FCSR), toU64(0x7))
+    }
+    if gt64(mode, toU64(4)) != 0 {
+        revertWithCode(0xbadf1041, fmt.Errorf("reserved rounding mode: %d", mode))
+    }
+    Softfloat_exceptionFlags = 0
+    Softfloat_roundingMode = uint8(mode)
+}</code></pre>
+        </details>
+        <p>
+          After the operation, the VM merges any exception flags raised by SoftFloat into
+          <code>fcsr</code>, the floating-point control and status register. It occupies 8 bytes
+          in the state witness. A reserved rounding mode causes the step to fail. Single-precision
+          reads also check NaN-boxing: a 32-bit value in a 64-bit float register must have all its
+          upper bits set to 1. Otherwise, the read returns a canonical NaN:
+        </p>
+<pre class="code"><code>unboxF32 := func(v U64) uint32 {
+    if v&amp;0xFFFF_FFFF_0000_0000 != 0xFFFF_FFFF_0000_0000 {
+        return 0x7FC00000 <span class="c">// canonical single-precision NaN</span>
+    }
+    return uint32(v)
+}</code></pre>
+        <p>
+          The fused multiply-add needed one more step. Berkeley's <code>mulAdd</code> takes an
+          operation field that negates either the product or the addend, but not both, while RISC-V
+          has four variants. All four go through the plain operation with the signs of
+          <code>a</code> and <code>c</code> flipped as needed. This is what the RISC-V reference
+          implementation does, and it is safe on NaN operands because every NaN result is
+          canonicalised.
+        </p>
+
+        <h3>3.3 Bugs the tests found</h3>
+        <p>
+          The F and D suites from <code>riscv-tests</code> initially passed 9 of 23 tests. After
+          fixes, all 23 passed. Eleven failures had the same cause: the computed value was correct,
+          but the port never raised exception flags and ignored <code>frm</code>. Those tests
+          failed on an <code>fsflags</code> check. The remaining three exposed problems with
+          <code>fmin</code>/<code>fmax</code> NaN selection and NaN-boxing.
+        </p>
+        <p>
+          We exclude the 21 <code>rv32*</code> suites from that count. On an RV64 machine, their
+          register-width check exits successfully after about 68 steps, before running any float
+          instructions. Counting those as passes would overstate coverage; the harness checks
+          that they take this early exit.
+        </p>
+        <p>
+          We also compare the port with an independent implementation.
+          <code>TestSoftFloatAgainstNativeFPU</code> checks it against the host FPU on 200,000
+          random operand pairs per operation, drawn toward subnormals, wide exponent gaps and exact
+          ties. For <code>+ − × ÷ √</code> the correctly rounded result is unique, so any
+          disagreement needs investigation. This test and the float sub-game's bit-exact test
+          harness (<a href="#float-referee">§8.3</a>) found defects in code that had already shipped:
+        </p>
+        <ul>
+          <li><code>F64_div</code> rounded the wrong way on about 2% of inputs. The port had dropped
+            a truncation that the C code has; the identical line eight statements earlier kept it.
+<pre class="code"><code>- (uint64_t) doubleTerm * ((uint32_t) sigB &gt;&gt; 4);   <span class="c">/* Berkeley: truncate, then shift */</span>
+- uint64(doubleTerm)*uint64(sigB&gt;&gt;4)                <span class="c">// the port: shifted all 64 bits</span></code></pre></li>
+          <li><code>F64_to_ui64</code> ignored its operand: it declared a variable, never assigned
+            it, and converted the constant zero. <code>fcvt.lu.d</code> returned 0 for every input.</li>
+          <li><code>0 × ∞</code> returned the canonical NaN without raising <em>invalid</em>. The
+            value was right, so only a flags comparison could notice.</li>
+        </ul>
+        <p>
+          The conformance suites missed all three. The <code>F64_div</code> bug also survived the
+          end-to-end determinism checks and five transformer models.
+        </p>
+        <div class="callout">
+          <p>These bugs explain why we need both kinds of test. Comparing state roots across
+          machines checks reproducibility, but the same arithmetic bug can produce matching roots
+          everywhere. Comparing with an independent implementation checks the arithmetic itself.</p>
+        </div>
+
+        <h3>3.4 Why native builds can still give different numbers</h3>
+        <p>
+          Correct instructions do not guarantee that two builds of the same source produce the
+          same result. We saw this when fixing fused multiply-add. Previously, MLVM evaluated
+          <code>fmadd</code> as a multiply followed by an add, rounding twice. The C MLP's result
+          differed from a native run by about 13 units in the last place (ULP), a measure of the
+          gap between nearby floating-point values. Rounding once reduced the difference to 1 ULP.
+        </p>
+        <p>
+          The five transformer scores stayed bit-identical after that fix. Their Candle kernels
+          used separate multiplies and adds on the paths contributing to the score; Rust does not
+          fuse <code>a*b + c</code> unless asked. The C MLP reaches libm routines that do use fused
+          multiply-adds to evaluate polynomials, so it was affected.
+        </p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Model (Candle, f32)</th><th class="num">Instructions</th><th class="num">MLVM</th><th class="num">Native arm64</th><th class="num">Distance</th></tr></thead>
+            <tbody>
+              <tr><td>all-MiniLM-L6-v2</td><td class="num">925M</td><td class="num mono">0.6110916734</td><td class="num mono">0.6110918522</td><td class="num">3 ULP</td></tr>
+              <tr><td>bge-small-en-v1.5</td><td class="num">1,697M</td><td class="num mono">0.7658209205</td><td class="num mono">0.7658217549</td><td class="num">14 ULP</td></tr>
+              <tr><td>all-MiniLM-L12-v2</td><td class="num">1,690M</td><td class="num mono">0.6257025003</td><td class="num mono">0.6257022619</td><td class="num">4 ULP</td></tr>
+              <tr><td>bge-base-en-v1.5</td><td class="num">6,061M</td><td class="num mono">0.7760061622</td><td class="num mono">0.7760072947</td><td class="num">19 ULP</td></tr>
+              <tr><td>bert-base-uncased</td><td class="num">6,107M</td><td class="num mono">0.6334546804</td><td class="num mono">0.6334548593</td><td class="num">3 ULP</td></tr>
+            </tbody>
+            <caption>The same Rust source and Candle version, built for RV64IMAFD and run in MLVM, or built for macOS arm64 and run natively. Single runs, recorded with an earlier VM build.</caption>
+          </table>
+        </div>
+        <p>
+          In these runs, the remaining difference of 3 to 19 ULP did not track run length:
+          bert-base executed 6.6 times as many instructions as MiniLM-L6, with the same 3 ULP gap.
+          The builds also used different math libraries: glibc's <code>erf</code>,
+          <code>tanh</code> and <code>exp</code> inside the guest, and Apple's libm natively. Those
+          libraries, along with target-specific <code>std</code> code and compiler output, can
+          account for differences even when individual instructions are correct.
+        </p>
+        <p>
+          This is why an MLVM dispute compares runs of the same executable. The math library is
+          linked into that executable, so both parties use the same routines as well as the same
+          model and inputs. Comparing a VM run with a separately compiled native build is useful
+          for testing, but it is a different comparison.
+        </p>
+      </section>
+
+      <!-- 4 ------------------------------------------------------------------------------ -->
+      <section id="doors">
+        <h2><span class="num">4</span>Making the rest of the run reproducible</h2>
+        <p>
+          Floating-point arithmetic is only part of the problem. A program can also change its
+          behavior based on the clock, random bytes, available CPUs or files on the host. MLVM
+          controls what the guest sees through its system calls. There is no guest kernel:
+          <code>ecall</code> dispatches on the syscall number in <code>a7</code>. The fast VM
+          recognises 37 Linux syscall numbers, answers 35 and refuses 2. That is enough for the
+          static glibc and Rust <code>std</code> programs used here to start, allocate memory,
+          read files and print.
+        </p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Channel</th><th>What MLVM does</th></tr></thead>
+            <tbody>
+              <tr><td>Threads, scheduling</td><td>One hart and no scheduler. <code>clone</code> creates no thread, <code>futex</code> is a no-op, <code>sched_yield</code> returns at once. There is no interleaving to disagree about.</td></tr>
+              <tr><td>Time</td><td><code>clock_gettime</code> returns a constant, 1337 s and 42 ns.</td></tr>
+              <tr><td>Randomness</td><td><code>getrandom</code> reads from a 5 MiB window at <code>0x1500_0000_0000_0000</code> that is part of the committed initial state. Its cursor is in the witness.</td></tr>
+              <tr><td>Host introspection</td><td>Paths under <code>/proc</code>, <code>/sys</code>, <code>/dev</code> and <code>/run</code> get <code>EACCES</code>. glibc and language runtimes probe a long tail of these for hugepage sizes, CPU topology and cgroup limits.</td></tr>
+              <tr><td>Input and output</td><td>No host I/O at run time. Files are staged into the address space at load time and served from Merkle memory (<a href="#files">§5.3</a>).</td></tr>
+              <tr><td>The ISA</td><td>No compressed instructions, no privileged mode, no virtual memory. Fences are no-ops: one hart, no store buffer, no instruction cache.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          These restrictions sometimes require changes to guest code. For example, Hugging Face
+          <code>tokenizers</code> uses rayon to parallelise <code>encode_batch</code>. Rayon cannot
+          create its thread pool here, so the call panics. Encoding sentences one at a time gives
+          the same token IDs and avoids the thread pool. Another less obvious dependency is Rust's
+          hash maps: they seed themselves from <code>getrandom</code>, which can affect the
+          program's instruction count. The randomness bytes must therefore be part of the inputs
+          both parties agree on.
+        </p>
+        <h3 id="cross-platform">The same program on different hosts</h3>
+        <p>
+          The native CLI runs on Linux, macOS and Windows. A WebAssembly build brings the same
+          interpreter to the browser. Each host executes the same guest binary and staged
+          inputs, with the same software arithmetic and system-call rules. This lets someone
+          repeat a run or check its dispute record on a different computer.
+        </p>
+        <p>
+          To check this across hosts, <code>.github/workflows/determinism.yml</code> runs five
+          prompts through the TinyStories guest on linux/amd64, linux/arm64, darwin/arm64,
+          darwin/amd64, windows/amd64 and WebAssembly under Node. It fails unless all six produce
+          the same prestate, step count and poststate. "Once upon a time" takes 38,186,542
+          instructions and ends in <code>0x00beedb0…97f9</code> on every platform. The merged table
+          is published with the playground, which compares your browser's root against it.
+        </p>
+      </section>
+
+      <!-- 5 ------------------------------------------------------------------------------ -->
+      <section id="state">
+        <h2><span class="num">5</span>One root for the whole machine</h2>
+        <p class="section-intro">A referee needs to check small pieces of a potentially large machine. The state root makes this possible: each supplied piece can be checked against the same hash.</p>
+        <h3>5.1 The 674-byte state witness</h3>
+        <p>
+          To compute a state root, MLVM encodes the machine in a fixed 674-byte witness, hashes it
+          with Keccak-256, then replaces the hash's first byte with the status code. The witness
+          contains registers and control fields, plus roots for memory and the file system. It
+          does not contain a copy of every byte in memory. Asterisc's witness was 362 bytes; MLVM
+          added 312 for float registers, the randomness window, <code>fcsr</code> and the file-system root.
+        </p>
+        <figure class="fig" id="fig2">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 148" role="img" aria-labelledby="fig2-t">
+              <title id="fig2-t">Byte layout of the 674-byte state witness. The first 362 bytes are Asterisc's: memory root, pre-image key and offset, control fields and the 32 integer registers. MLVM added 312 bytes: 32 float registers, the randomness base and cursor, fcsr, and the file-system root.</title>
+              <line class="f-thin" x1="20" y1="28" x2="405" y2="28"/>
+              <line class="f-thin" x1="20" y1="24" x2="20" y2="32"/>
+              <line class="f-thin" x1="405" y1="24" x2="405" y2="32"/>
+              <text class="f-s" x="212" y="20" text-anchor="middle">Asterisc · 362 bytes</text>
+              <line class="f-thin" x1="408" y1="28" x2="740" y2="28"/>
+              <line class="f-thin" x1="408" y1="24" x2="408" y2="32"/>
+              <line class="f-thin" x1="740" y1="24" x2="740" y2="32"/>
+              <text class="f-t" x="574" y="20" text-anchor="middle" style="font-size:13.5px">added by MLVM · 312 bytes</text>
+              <rect class="f-seg" x="20" y="38" width="34.2" height="34"><title>memory root: bytes 0–31</title></rect>
+              <rect class="f-seg" x="54.2" y="38" width="42.7" height="34"><title>pre-image key and offset: bytes 32–71</title></rect>
+              <rect class="f-seg" x="96.9" y="38" width="36.3" height="34"><title>pc, exit code, exited, step, heap, load reservation: bytes 72–105</title></rect>
+              <rect class="f-seg" x="133.2" y="38" width="273.5" height="34"><title>x0–x31: bytes 106–361</title></rect>
+              <rect class="f-seg-new" x="406.7" y="38" width="273.5" height="34"><title>f0–f31: bytes 362–617</title></rect>
+              <rect class="f-seg-new" x="680.2" y="38" width="17.1" height="34"><title>randomness base and cursor: bytes 618–633</title></rect>
+              <rect class="f-seg-new" x="697.3" y="38" width="8.5" height="34"><title>fcsr: bytes 634–641</title></rect>
+              <rect class="f-seg-new" x="705.8" y="38" width="34.2" height="34"><title>file-system root: bytes 642–673</title></rect>
+              <text class="f-t" x="270" y="60" text-anchor="middle" style="font-size:14px">x0–x31 · 256</text>
+              <text class="f-t" x="543" y="60" text-anchor="middle" style="font-size:14px">f0–f31 · 256</text>
+              <!-- left cluster: labels to the right of their leaders -->
+              <polyline class="f-thin" points="115,72 115,92 119,92"/>
+              <text class="f-s" x="122" y="97">pc, exit, step, heap, reservation · 34</text>
+              <polyline class="f-thin" points="75.5,72 75.5,113 79,113"/>
+              <text class="f-s" x="82" y="118">pre-image key, offset · 40</text>
+              <polyline class="f-thin" points="37,72 37,134 41,134"/>
+              <text class="f-s" x="44" y="139">memory root · 32</text>
+              <!-- right cluster: labels to the left of their leaders -->
+              <polyline class="f-thin" points="688.7,72 688.7,92 685,92"/>
+              <text class="f-s" x="682" y="97" text-anchor="end">randomness · 16</text>
+              <polyline class="f-thin" points="701.5,72 701.5,113 698,113"/>
+              <text class="f-s" x="695" y="118" text-anchor="end">fcsr: flags, rounding mode · 8</text>
+              <polyline class="f-thin" points="722.9,72 722.9,134 719,134"/>
+              <text class="f-s" x="716" y="139" text-anchor="end">file-system root · 32</text>
+            </svg>
+          </div>
+          <figcaption><b>Figure 2.</b> The state witness, drawn to scale in bytes. The memory and file
+          systems enter as 32-byte roots, so the witness has the same size whether the guest touched
+          one page or a gigabyte of weights.</figcaption>
+        </figure>
+
+        <h3>5.2 Memory: 2<sup>64</sup> bytes as a sparse Merkle tree</h3>
+        <p>
+          The guest sees a full 64-bit address space, but MLVM allocates only the 4 KiB pages it
+          touches. A glibc "hello world" touches about 240 pages out of the possible 2<sup>52</sup>.
+          Memory is arranged in a binary Merkle tree: each leaf holds 32 bytes, and each parent
+          hashes its two children. The root commits the contents of the whole address space.
+          To check one leaf, the referee needs that leaf and the sibling hashes along its path to
+          the root, rather than all of memory.
+        </p>
+        <figure class="fig" id="fig3">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 282" role="img" aria-labelledby="fig3-t">
+              <title id="fig3-t">A 64-bit address splits into a 52-bit page index, a 7-bit leaf index and a 5-bit byte offset. The Merkle tree has 52 levels above the pages and 7 inside each page; a proof is the 32-byte leaf and its 59 siblings.</title>
+              <rect class="f-seg" x="20" y="8" width="585" height="30"/>
+              <rect class="f-seg-new" x="605" y="8" width="78.75" height="30"/>
+              <rect class="f-seg" x="683.75" y="8" width="56.25" height="30"/>
+              <text class="f-t" x="312" y="28" text-anchor="middle" style="font-size:14px">page index · 52 bits</text>
+              <text class="f-t" x="644" y="28" text-anchor="middle" style="font-size:14px">leaf 7</text>
+              <text class="f-t" x="712" y="28" text-anchor="middle" style="font-size:14px">byte 5</text>
+              <text class="f-tick" x="20" y="52">bit 63</text>
+              <text class="f-tick" x="605" y="52" text-anchor="middle">11</text>
+              <text class="f-tick" x="684" y="52" text-anchor="middle">4</text>
+              <text class="f-tick" x="740" y="52" text-anchor="end">0</text>
+
+              <polygon class="f-tri" points="312,74 585,180 40,180"/>
+              <polygon class="f-dash" points="262,136 296,180 228,180"/>
+              <text class="f-s" x="220" y="156" text-anchor="end">all-zero subtree:</text>
+              <text class="f-s" x="220" y="172" text-anchor="end">one precomputed hash</text>
+              <polyline class="f-path" points="312,74 338,96 322,118 378,140 428,162 470,180"/>
+              <circle class="f-node" cx="312" cy="74" r="5"/>
+              <circle class="f-node" cx="338" cy="96" r="3.5"/>
+              <circle class="f-node" cx="322" cy="118" r="3.5"/>
+              <circle class="f-node" cx="378" cy="140" r="3.5"/>
+              <circle class="f-node" cx="428" cy="162" r="3.5"/>
+              <text class="f-s" x="324" y="70">memory root: witness bytes 0–31</text>
+
+              <rect class="f-box-alt" x="50" y="186" width="12" height="12"/>
+              <rect class="f-box-alt" x="66" y="186" width="12" height="12"/>
+              <rect class="f-box-alt" x="82" y="186" width="12" height="12"/>
+              <rect class="f-box-alt" x="540" y="186" width="12" height="12"/>
+              <text class="f-s" x="50" y="218">allocated pages</text>
+              <text class="f-s" x="50" y="236">(hello world: 240)</text>
+              <polygon class="f-box-hi" points="470,186 506,238 434,238"/>
+              <rect class="f-box-alt" x="434" y="242" width="9" height="12"/>
+              <rect class="f-box-alt" x="445" y="242" width="9" height="12"/>
+              <rect class="f-box-alt" x="456" y="242" width="9" height="12"/>
+              <rect class="f-box-hi" x="467" y="242" width="9" height="12"/>
+              <rect class="f-box-alt" x="478" y="242" width="9" height="12"/>
+              <rect class="f-box-alt" x="489" y="242" width="9" height="12"/>
+              <text class="f-s" x="471" y="274" text-anchor="middle">32-byte leaf</text>
+
+              <line class="f-thin" x1="604" y1="74" x2="604" y2="180"/>
+              <line class="f-thin" x1="600" y1="74" x2="608" y2="74"/>
+              <line class="f-thin" x1="600" y1="180" x2="608" y2="180"/>
+              <text class="f-t" x="614" y="122">52 levels</text>
+              <text class="f-s" x="614" y="142">which page</text>
+              <line class="f-thin" x1="604" y1="186" x2="604" y2="238"/>
+              <line class="f-thin" x1="600" y1="238" x2="608" y2="238"/>
+              <text class="f-t" x="614" y="208">7 levels</text>
+              <text class="f-s" x="614" y="228">leaf in the page</text>
+              <text class="f-s" x="614" y="262">proof: 60 × 32 B</text>
+            </svg>
+          </div>
+          <figcaption><b>Figure 3.</b> The path from a memory address to the root. A Merkle proof for one 32-byte
+          word is the word itself and one sibling per level: 60 × 32 = 1,920 bytes. Unallocated
+          regions use precomputed hashes for all-zero subtrees, so empty pages do not need to be
+          allocated.</figcaption>
+        </figure>
+        <p>
+          The implementation avoids hashing empty or unchanged memory. An unallocated subtree
+          uses <code>zeroHashes[depth]</code>, computed once. A write marks the nodes on its path
+          to the root as stale; those paths are recomputed only when a root is requested. On an Apple M3
+          Max, recomputing the root of a 1 MiB working set from scratch takes about 31 µs, and one
+          proof against a warm cache about 7 µs.
+        </p>
+        <p>
+          Proof order must match the contract's expectations. <code>trackMemAccess</code> checks
+          that proofs are appended in the order the verifier consumes them, and
+          <code>verifyMemChange</code> checks that a write targets the word covered by its proof.
+          Both panic on a mismatch, so these mistakes are caught during proof generation.
+        </p>
+
+        <h3 id="files">5.3 Files are committed state too</h3>
+        <figure class="repo-figure">
+          <a class="figure-image" href="figures/address-space.svg" target="_blank" rel="noopener"><img src="figures/address-space.svg" width="900" height="560" loading="lazy" alt="Guest memory map showing staged input files, predetermined random bytes, the stack, the heap and the executable, all covered by the memory root."></a>
+          <figcaption><strong>Files and random bytes live in guest memory.</strong> The model reads its inputs from these reserved regions rather than from the host. This diagram shows the main input and runtime regions; the separate answer window is described in <a href="#answers">section 6</a>. <a href="figures/address-space.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+        </figure>
+        <p>
+          The model's weights need the same protection as the program's memory. Otherwise, two
+          machines could claim the same starting state while reading different files. At load time,
+          each file is placed in its own 64 GiB-aligned slot starting at <code>0x2000_0000_0000_0000</code>, and
+          <code>openat</code>, <code>read</code> and <code>lseek</code> are served straight out of
+          Merkle memory. The bytes are covered by the memory root. The metadata (which name maps to
+          which address and size, which descriptors are open, and at what offset) is bound by the
+          last 32 bytes of the witness, through two fixed-depth trees of 1,024 leaves each: a file
+          index sorted by name, and a descriptor tree indexed by fd.
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Encoding: file and descriptor commitments</summary>
+        <p class="code-label">docs/ARCHITECTURE.md · integers are unsigned 64-bit big-endian</p>
+<pre class="code"><code>fileID         = keccak256(path bytes)
+fileLeaf       = keccak256("MLVM-FILE-V2\0" || fileID || size || address)
+descriptor     = keccak256("MLVM-FD-V2\0" || fileID || offset)
+filesystemRoot = keccak256("MLVM-FILESYSTEM-V2\0" || filePointer || nextFd || fileCount
+                           || fileTreeRoot || descriptorTreeRoot)</code></pre>
+        </details>
+        <p>
+          A file syscall carries a fixed 992-byte proof: the five-word header, one file leaf with its
+          ten siblings, and one descriptor leaf with its ten siblings. The slow Go interpreter and
+          <code>RISCV.sol</code> both authenticate it, so <code>openat</code>, a staged
+          <code>read</code>, <code>fcntl</code>, <code>lseek</code> and <code>close</code> can be
+          checked as individual state transitions. Keeping these proofs bounded imposes limits:
+          files are read-only, names are at most 255 bytes, there are at most 1,024 files and
+          descriptors, and a <code>read</code> moves at most 32 bytes. That last limit has a
+          measurable cost. Candle's MiniLM spends 12.8% of its billion instructions reading staged files.
+        </p>
+
+        <h3>5.4 What one step costs to prove</h3>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Piece</th><th class="num">Bytes</th><th>When</th></tr></thead>
+            <tbody>
+              <tr><td>State witness</td><td class="num">674</td><td>every step</td></tr>
+              <tr><td>Memory proof</td><td class="num">1,920</td><td>per 32-byte word touched: the instruction fetch, plus the word a load or store touches (two if it straddles a 32-byte boundary)</td></tr>
+              <tr><td>File-system proof</td><td class="num">992</td><td>file syscalls only</td></tr>
+              <tr><td>Typical CPU step</td><td class="num">2,594</td><td>witness and one branch; 4,514 with two</td></tr>
+            </tbody>
+            <caption>A 2,000-step sample averages 3,239 bytes per step. Capturing a proof costs about 7 µs per step, against 40 ns to execute one, so normal runs and proof capture are separate modes.</caption>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6 ------------------------------------------------------------------------------ -->
+      <section id="answers">
+        <h2><span class="num">6</span>Keeping the answer in the state</h2>
+        <p>
+          A dispute checks a transition between machine states. For that check to say anything
+          about the model's answer, the answer has to remain in the final state. MLVM does not
+          include the stdout stream in its state hash. A machine can therefore print a different
+          answer and still finish with the honest machine's root.
+        </p>
+        <p>
+          MLVM guests write their answer into a fixed location in memory and leave it there. The
+          window is 64 bytes and 64-byte aligned, so its two 32-byte leaves are siblings and a single
+          1,920-byte branch proves the whole answer against the poststate root.
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Code: writing the answer into memory</summary>
+        <p class="code-label">examples/mlvm_result.h</p>
+<pre class="code"><code><span class="c">/*  0x3100000000000000  +0   magic "MLVM_OUT"   +8  length     &lt;- leaf,    proof[0]
+                        +16  payload[0..16]
+                        +32  payload[16..48]                   &lt;- sibling, proof[1]  */</span>
+static inline void mlvm_commit_result(const void *data, uint64_t len) {
+    ...
+    for (i = 0; i &lt; MLVM_RESULT_MAX; i++)
+        payload[i] = (i &lt; len) ? src[i] : 0;  <span class="c">/* the leaf is committed whole */</span>
+    hdr[1] = len;
+    hdr[0] = MLVM_RESULT_MAGIC;  <span class="c">/* written last: a partial write is never valid */</span>
+}</code></pre>
+        </details>
+        <p>
+          The TinyStories decoders commit their generated token IDs, the MLP its probabilities and
+          argmax, and the BERT guest its similarity score. To see why this matters, we forged the
+          same BERT score twice: once in what the machine prints, once in what it commits.
+        </p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>all-MiniLM-L6-v2, 1.06B instructions</th><th>Liar prints</th><th>Liar commits</th><th>Final states</th><th>Dispute</th></tr></thead>
+            <tbody>
+              <tr><td><code>--lie output</code></td><td class="mono">score: 0.9110916734</td><td class="mono">score: 0.6110916734</td><td>identical</td><td>none: nothing to rule on</td></tr>
+              <tr><td><code>--lie commit</code></td><td class="mono">score: 0.6110916734</td><td class="mono">score: 0.9110916734</td><td>differ</td><td>30 questions, one <code>sb</code>; <code>RISCV.sol</code> rules for 131,492 gas</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          For the forged print, we changed Rust's stdout buffer just before the <code>write(2)</code>
+          at instruction 1,048,851,296. The buffer was overwritten during the remaining 13.6 million
+          instructions. By the time the program halted, the state no longer contained the changed
+          bytes. For the forged commit, we changed a <code>6</code> to a <code>9</code> in the result
+          window at instruction 1,048,853,135. That byte remained until the end, and bisection found
+          the store that wrote it.
+        </p>
+        <div class="callout">
+          <p>A guest needs to store its answer in the result window for a verifier to check it
+          against the final state. Printed output is useful to a person reading the run, but it
+          is not a reliable record for this protocol.</p>
+        </div>
+      </section>
+
+      <!-- 7 ------------------------------------------------------------------------------ -->
+      <section id="bisection">
+        <h2><span class="num">7</span>Bisection at 14.8 billion instructions</h2>
+        <p class="section-intro">Each round cuts the search interval in half. A longer model run needs more work from the two machines, but only a few more questions from the referee.</p>
+        <h3>7.1 Narrowing the interval</h3>
+        <p>
+          The search tracks two instruction counts, <code>lo</code> and <code>hi</code>. Both
+          parties agree on the state after <code>lo</code> instructions and disagree after
+          <code>hi</code>. Initially, <code>lo = 0</code> and <code>hi</code> is the length of the
+          longer run. Each round asks about the midpoint and cuts the interval in half, keeping
+          one agreed state and one disputed state as its endpoints.
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Code: the binary search loop</summary>
+        <p class="code-label">rvgo/internal/liar/game.go · errors elided</p>
+<pre class="code"><code><span class="c">// Invariant: the parties agree on the state after lo instructions and disagree after hi.</span>
+lo, hi := uint64(0), max(honest.Steps(), liar.Steps())
+for n := 1; hi-lo &gt; 1; n++ {
+    mid := lo + (hi-lo)/2
+    h, _ := honest.HashAt(mid)
+    l, _ := liar.HashAt(mid)
+    r := Round{N: n, Lo: lo, Hi: hi, Mid: mid, Honest: h, Liar: l, Agree: h == l}
+    honest.Observe(r)   <span class="c">// moves are public: each party pins its machine at lo</span>
+    liar.Observe(r)
+    if r.Agree {
+        lo = mid
+    } else {
+        hi = mid
+    }
+}
+t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for instruction lo</span></code></pre>
+        </details>
+        <p>
+          A lie can change how long a run is (on MiniLM-L12 the liar's run was 16 instructions
+          shorter, on bge-base 68 longer), which is why <code>hi</code> starts at the longer run. A
+          party asked about a step after its own halt answers with its final hash. The number of
+          questions is <span class="mono">⌊log₂&nbsp;N⌋</span> or <span class="mono">⌈log₂&nbsp;N⌉</span>,
+          whatever the program does.
+        </p>
+        <figure class="fig" id="fig4">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 292" role="img" aria-labelledby="fig4-t">
+              <title id="fig4-t">Questions needed to isolate one instruction against instructions executed, on a log scale, for disputes over the gallery's 13 programs. Every point lies on the log2 N line: 18 questions for 263 thousand instructions, 26 for 38 million, 30 for 1.06 billion, 32 for 6.75 billion, 34 for 14.8 billion.</title>
+              <text class="f-tick" x="64" y="10">questions</text>
+              <line class="f-grid" x1="64" x2="736" y1="197.2" y2="197.2"/>
+              <line class="f-grid" x1="64" x2="736" y1="152.4" y2="152.4"/>
+              <line class="f-grid" x1="64" x2="736" y1="107.6" y2="107.6"/>
+              <line class="f-grid" x1="64" x2="736" y1="62.8" y2="62.8"/>
+              <line class="f-grid" x1="64" x2="736" y1="18" y2="18"/>
+              <text class="f-tick" x="56" y="246" text-anchor="end">16</text>
+              <text class="f-tick" x="56" y="201.2" text-anchor="end">20</text>
+              <text class="f-tick" x="56" y="156.4" text-anchor="end">24</text>
+              <text class="f-tick" x="56" y="111.6" text-anchor="end">28</text>
+              <text class="f-tick" x="56" y="66.8" text-anchor="end">32</text>
+              <text class="f-tick" x="56" y="22" text-anchor="end">36</text>
+              <line class="f-axis" x1="64" x2="736" y1="242" y2="242"/>
+              <line class="f-axis" x1="64" x2="64" y1="242" y2="247"/>
+              <line class="f-axis" x1="186.2" x2="186.2" y1="242" y2="247"/>
+              <line class="f-axis" x1="308.4" x2="308.4" y1="242" y2="247"/>
+              <line class="f-axis" x1="430.5" x2="430.5" y1="242" y2="247"/>
+              <line class="f-axis" x1="552.7" x2="552.7" y1="242" y2="247"/>
+              <line class="f-axis" x1="674.9" x2="674.9" y1="242" y2="247"/>
+              <text class="f-tick" x="64" y="262" text-anchor="middle">100K</text>
+              <text class="f-tick" x="186.2" y="262" text-anchor="middle">1M</text>
+              <text class="f-tick" x="308.4" y="262" text-anchor="middle">10M</text>
+              <text class="f-tick" x="430.5" y="262" text-anchor="middle">100M</text>
+              <text class="f-tick" x="552.7" y="262" text-anchor="middle">1B</text>
+              <text class="f-tick" x="674.9" y="262" text-anchor="middle">10B</text>
+              <text class="f-tick" x="400" y="284" text-anchor="middle">instructions executed (log scale)</text>
+              <line class="f-ref" x1="64" y1="235.2" x2="736" y2="30.5"/>
+              <text class="f-label" x="700" y="70">log₂ N</text>
+              <circle class="f-dot" cx="115.3" cy="219.6" r="5"><title>ieee (C, f64): 263,030 instructions, 18 questions</title></circle>
+              <circle class="f-dot" cx="120.4" cy="219.6" r="5"><title>MLP (C, f64): 289,482 instructions, 18 questions</title></circle>
+              <circle class="f-dot" cx="120.4" cy="208.4" r="5"><title>MLP (C, f64): 289,482 instructions, 19 questions</title></circle>
+              <circle class="f-dot" cx="147.9" cy="208.4" r="5"><title>matmul (C, f64): 486,505 instructions, 19 questions</title></circle>
+              <circle class="f-dot" cx="180.8" cy="197.2" r="5"><title>GEMM with float instructions: 903,446 instructions, 20 questions</title></circle>
+              <circle class="f-dot" cx="352.3" cy="141.2" r="5"><title>GEMM with compiler soft-float: 22,898,400 instructions, 25 questions</title></circle>
+              <circle class="f-dot" cx="379.5" cy="130" r="5"><title>TinyStories-260K (C): 38,186,542 instructions, 26 questions</title></circle>
+              <circle class="f-dot" cx="379.5" cy="141.2" r="5"><title>TinyStories-260K (C): 38,186,542 instructions, 25 questions</title></circle>
+              <circle class="f-dot" cx="441.2" cy="118.8" r="5"><title>TinyStories-260K (Candle): 122,197,182 instructions, 27 questions</title></circle>
+              <circle class="f-dot" cx="555.9" cy="85.2" r="5"><title>all-MiniLM-L6-v2: 1,062,488,466 instructions, 30 questions</title></circle>
+              <circle class="f-dot" cx="586.5" cy="74" r="5"><title>all-MiniLM-L12-v2: 1,889,889,048 instructions, 31 questions</title></circle>
+              <circle class="f-dot" cx="586.7" cy="74" r="5"><title>bge-small-en-v1.5: 1,896,458,947 instructions, 31 questions</title></circle>
+              <circle class="f-dot" cx="653.7" cy="62.8" r="5"><title>bge-base-en-v1.5: 6,705,827,787 instructions, 32 questions</title></circle>
+              <circle class="f-dot" cx="654.1" cy="62.8" r="5"><title>bert-base-uncased: 6,752,543,098 instructions, 32 questions</title></circle>
+              <circle class="f-dot" cx="695.6" cy="40.4" r="5"><title>SmolLM2-135M: 14,764,379,315 instructions, 34 questions</title></circle>
+              <text class="f-label" x="171" y="184" text-anchor="end">float GEMM · 0.9M · 20</text>
+              <text class="f-label" x="342" y="131" text-anchor="end">soft-float GEMM · 22.9M · 25</text>
+              <text class="f-label" x="370" y="110" text-anchor="end">TinyStories (C) · 38.2M · 25–26</text>
+              <text class="f-label" x="546" y="75" text-anchor="end">MiniLM-L6 · 1.06B · 30</text>
+              <text class="f-label" x="644" y="53" text-anchor="end">bge-base, bert-base · 6.7B · 32</text>
+              <text class="f-label" x="686" y="30" text-anchor="end">SmolLM2-135M · 14.8B · 34</text>
+            </svg>
+          </div>
+          <figcaption><b>Figure 4.</b> Questions per dispute across the gallery's 13 programs (hover
+          a point for its program). A run 56,000 times longer needs 16 more questions.</figcaption>
+        </figure>
+
+        <h3>7.2 Answering without replaying from the start</h3>
+        <p>
+          The referee does little work during this search, but the parties need to recover earlier
+          states. Replaying from the start for every question would cost hundreds of billions of
+          instructions for the SmolLM2 dispute. MLVM instead saves checkpoints and reuses the states
+          reached during earlier rounds.
+        </p>
+        <figure class="fig" id="fig5">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 392" role="img" aria-labelledby="fig5-t">
+              <title id="fig5-t">(a) A party saves copies of its machine at regular intervals and pins its machine at lo, the last agreed step, so a question about mid replays only from lo. (b) A saved copy and the running machine share memory pages; a page is copied only when one side first writes it.</title>
+              <defs><marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-head"/></marker></defs>
+              <text class="f-panel" x="0" y="16">(a) answering a question</text>
+              <rect class="f-band" x="380" y="52" width="90" height="26"/>
+              <line class="f-axis" x1="20" y1="65" x2="740" y2="65" style="stroke-width:2"/>
+              <circle class="f-ckpt" cx="20" cy="65" r="6"/>
+              <circle class="f-ckpt" cx="180" cy="65" r="6"/>
+              <circle class="f-ckpt" cx="340" cy="65" r="6"/>
+              <circle class="f-ckpt" cx="500" cy="65" r="6"/>
+              <circle class="f-ckpt" cx="660" cy="65" r="6"/>
+              <line class="f-mark-lo" x1="380" y1="44" x2="380" y2="86"/>
+              <line class="f-mark-hi" x1="470" y1="44" x2="470" y2="86"/>
+              <path class="f-head" d="M425,58 L431,65 L425,72 L419,65 Z"/>
+              <text class="f-s" x="380" y="38" text-anchor="middle">lo</text>
+              <text class="f-s" x="425" y="38" text-anchor="middle">mid</text>
+              <text class="f-s" x="470" y="38" text-anchor="middle">hi</text>
+              <rect class="f-box-alt" x="736" y="57" width="8" height="16"/>
+              <text class="f-s" x="740" y="38" text-anchor="end">halt</text>
+              <text class="f-s" x="20" y="38">step 0</text>
+              <path class="f-line" d="M382,74 Q402,100 421,75" marker-end="url(#ah5)"/>
+              <text class="f-s" x="402" y="114" text-anchor="middle">replay from lo</text>
+              <circle class="f-ckpt" cx="28" cy="140" r="6"/>
+              <text class="f-s" x="42" y="145">saved copy, every 2²² instructions at first; at most 64</text>
+              <line class="f-mark-lo" x1="470" y1="132" x2="470" y2="148"/>
+              <text class="f-s" x="480" y="145">lo: agreed</text>
+              <line class="f-mark-hi" x1="590" y1="132" x2="590" y2="148"/>
+              <text class="f-s" x="600" y="145">hi: differ</text>
+
+              <text class="f-panel" x="0" y="190">(b) copies share pages until one side writes</text>
+              <text class="f-s" x="200" y="214" text-anchor="middle">saved copy (step k)</text>
+              <text class="f-s" x="410" y="214" text-anchor="middle">memory pages</text>
+              <text class="f-s" x="620" y="214" text-anchor="middle">running machine</text>
+              <rect class="f-box-alt" x="330" y="224" width="160" height="26" rx="5"/><text class="f-s" x="410" y="242" text-anchor="middle">page 0</text>
+              <rect class="f-box-alt" x="330" y="258" width="160" height="26" rx="5"/><text class="f-s" x="410" y="276" text-anchor="middle">page 1</text>
+              <rect class="f-box-alt" x="330" y="292" width="160" height="26" rx="5"/><text class="f-s" x="410" y="310" text-anchor="middle">page 2 at step k</text>
+              <rect class="f-box-hi" x="330" y="326" width="160" height="26" rx="5"/><text class="f-s" x="410" y="344" text-anchor="middle">page 2, written</text>
+              <rect class="f-box-alt" x="330" y="360" width="160" height="26" rx="5"/><text class="f-s" x="410" y="378" text-anchor="middle">page 3</text>
+              <rect class="f-box-alt" x="170" y="224" width="60" height="26" rx="4"/><text class="f-m" x="200" y="242" text-anchor="middle">p0</text>
+              <line class="f-thin" x1="230" y1="237" x2="328" y2="237" marker-end="url(#ah5)"/>
+              <rect class="f-box-alt" x="170" y="258" width="60" height="26" rx="4"/><text class="f-m" x="200" y="276" text-anchor="middle">p1</text>
+              <line class="f-thin" x1="230" y1="271" x2="328" y2="271" marker-end="url(#ah5)"/>
+              <rect class="f-box-alt" x="170" y="292" width="60" height="26" rx="4"/><text class="f-m" x="200" y="310" text-anchor="middle">p2</text>
+              <line class="f-thin" x1="230" y1="305" x2="328" y2="305" marker-end="url(#ah5)"/>
+              <rect class="f-box-alt" x="170" y="360" width="60" height="26" rx="4"/><text class="f-m" x="200" y="378" text-anchor="middle">p3</text>
+              <line class="f-thin" x1="230" y1="373" x2="328" y2="373" marker-end="url(#ah5)"/>
+              <rect class="f-box-alt" x="590" y="224" width="60" height="26" rx="4"/><text class="f-m" x="620" y="242" text-anchor="middle">p0</text>
+              <line class="f-thin" x1="590" y1="237" x2="492" y2="237" marker-end="url(#ah5)"/>
+              <rect class="f-box-alt" x="590" y="258" width="60" height="26" rx="4"/><text class="f-m" x="620" y="276" text-anchor="middle">p1</text>
+              <line class="f-thin" x1="590" y1="271" x2="492" y2="271" marker-end="url(#ah5)"/>
+              <rect class="f-box-hi" x="590" y="326" width="60" height="26" rx="4"/><text class="f-m" x="620" y="344" text-anchor="middle">p2</text>
+              <line class="f-path" x1="590" y1="339" x2="492" y2="339" marker-end="url(#ah5)"/>
+              <rect class="f-box-alt" x="590" y="360" width="60" height="26" rx="4"/><text class="f-m" x="620" y="378" text-anchor="middle">p3</text>
+              <line class="f-thin" x1="590" y1="373" x2="492" y2="373" marker-end="url(#ah5)"/>
+            </svg>
+          </div>
+          <figcaption><b>Figure 5.</b> (a) Replay starts from the latest of three states: the nearest
+          saved copy, the last agreed step <code>lo</code>, or the last state asked about. (b)
+          <code>Clone</code> copies the page map, not the pages. The first write to a shared page
+          copies that one page.</figcaption>
+        </figure>
+        <p>
+          <strong>Checkpoints.</strong> During its run each party saves a copy of its machine every
+          2<sup>22</sup> = 4,194,304 instructions, and answers a question by replaying from the
+          nearest copy at or before the step asked.
+        </p>
+        <p>
+          <strong>Sharing unchanged pages.</strong> Copying gigabytes of weights at every checkpoint
+          would be too expensive. <code>Memory.Clone</code> copies the map of page pointers and the
+          cached upper tree nodes while sharing the pages themselves. Ownership is tracked with epochs: every
+          <code>Memory</code> has one, every page records the epoch that may write it in place, and
+          both sides take fresh epochs at a clone. Every write goes through one function:
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Code: copying a page on its first write</summary>
+        <p class="code-label">rvgo/fast/memory.go</p>
+<pre class="code"><code><span class="c">// writablePage returns the page at pageIndex for writing. A page shared with a clone is
+// first copied, together with its node cache, so the other Memory keeps seeing the old
+// bytes. Every write to page data goes through here.</span>
+func (m *Memory) writablePage(pageIndex uint64) (*CachedPage, bool) {
+    p, ok := m.pageLookup(pageIndex)
+    if !ok || p.epoch == m.epoch {
+        return p, ok
+    }
+    data := *p.Data
+    own := &amp;CachedPage{epoch: m.epoch, Data: &amp;data, Cache: p.Cache, Ok: p.Ok}
+    m.pages[pageIndex] = own
+    ...
+}</code></pre>
+        </details>
+        <p>
+          Beyond the page map and tree cache, a checkpoint needs separate storage only for pages
+          that are changed. Read-only weights stay shared across all copies.
+        </p>
+        <p>
+          <strong>Bounded memory.</strong> A party keeps at most 64 copies. When a run would save a
+          65th, it doubles its interval and drops every other copy. A billion-instruction BERT run
+          keeps 64 copies about 17 million instructions apart, and SmolLM2's 14.8 billion about 268
+          million apart.
+        </p>
+        <p>
+          <strong>Reusing the last agreed state.</strong> Every round is public, so each party knows
+          the interval still in dispute. After an agreeing round a party keeps its machine at
+          <code>lo</code>, and later questions replay only inside the interval. Each question
+          therefore replays at most one checkpoint interval, and once the interval in dispute is
+          shorter than that, at most the interval itself, which halves every round.
+        </p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Dispute</th><th class="num">Instructions</th><th class="num">Questions</th><th class="num">CPU</th><th class="num">Peak memory</th></tr></thead>
+            <tbody>
+              <tr><td>TinyStories-260K (C), one-ULP lie</td><td class="num">38,186,542</td><td class="num">26</td><td class="num">3.9 s</td><td class="num">58 MB</td></tr>
+              <tr><td>all-MiniLM-L6-v2 (Candle), one-ULP lie</td><td class="num">1,062,488,466</td><td class="num">30</td><td class="num">100 s</td><td class="num">2.5 GB</td></tr>
+              <tr><td>bert-base-uncased (Candle), one-ULP lie</td><td class="num">6,752,543,098</td><td class="num">32</td><td class="num">618 s</td><td class="num">8.6 GB</td></tr>
+              <tr><td>SmolLM2-135M (Candle), forged token</td><td class="num">14,764,379,315</td><td class="num">34</td><td class="num">1,511 s</td><td class="num">9.9 GB</td></tr>
+            </tbody>
+            <caption>CPU time for the whole command on an Apple M3 Max: both machines' full runs, the lie, the bisection and the verdict.</caption>
+          </table>
+        </div>
+      </section>
+
+      <!-- 8 ------------------------------------------------------------------------------ -->
+      <section id="referee">
+        <h2><span class="num">8</span>Checking the disputed instruction</h2>
+        <h3>8.1 Recovering the instruction from the proof</h3>
+        <p>
+          At the end of bisection, the honest party supplies a 674-byte witness for the state
+          before instruction <code>lo</code>, along with the memory proofs needed to execute it.
+          The referee first hashes the witness and checks it against the root both parties agreed
+          on. It then reads the program counter from the witness and recovers the instruction word
+          from the memory proof. This prevents a party from supplying a different instruction
+          while claiming to defend the same step:
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Code: checking the instruction proof</summary>
+        <p class="code-label">rvgo/internal/liar/game.go · provenInstruction</p>
+<pre class="code"><code>leaf := memProof[:32]
+node := common.BytesToHash(leaf)
+path := pc &gt;&gt; 5
+for i := 0; i &lt; 64-5; i++ {                    <span class="c">// 59 siblings, leaf upward</span>
+    sibling := memProof[32*(i+1) : 32*(i+2)]
+    if (path&gt;&gt;i)&amp;1 == 0 {
+        node = crypto.Keccak256Hash(node[:], sibling)
+    } else {
+        node = crypto.Keccak256Hash(sibling, node[:])
+    }
+}
+if node != common.BytesToHash(sw[:32]) {       <span class="c">// witness bytes 0–31: the memory root</span>
+    return 0, fmt.Errorf("instruction proof does not match the witness memory root")
+}</code></pre>
+        </details>
+        <p>Then it executes that one instruction, by one of three routes.</p>
+
+        <h3>8.2 Integer and memory instructions: <code>slow.Step</code> and <code>RISCV.sol</code></h3>
+        <p>
+          MLVM has three execution paths. The fast interpreter runs whole programs; the other
+          two check supported steps from a witness:
+        </p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th></th><th><code>rvgo/fast</code></th><th><code>rvgo/slow</code></th><th><code>RISCV.sol</code></th></tr></thead>
+            <tbody>
+              <tr><td>Carrier</td><td>Go <code>uint64</code> on a real state</td><td>Go <code>uint256</code> on a state oracle</td><td>Yul <code>uint256</code> in the EVM</td></tr>
+              <tr><td>Speed</td><td>about 25M instructions/s</td><td>thousands of steps/s</td><td>one step, about 84K gas</td></tr>
+              <tr><td>Float</td><td>everything</td><td colspan="2">loads, stores, sign injection and moves; arithmetic reverts</td></tr>
+              <tr><td>Purpose</td><td>run, profile, answer questions</td><td>independent oracle, referee</td><td>a step a chain could execute</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          All three use the same small set of operations (<code>add64</code>,
+          <code>shr64</code>, <code>signExtend64</code>, …). It is defined twice, once over Go
+          <code>uint64</code> in <code>fast/yul64.go</code> and once over 256-bit words in
+          <code>slow/yul256.go</code>. The fast VM keeps <code>riscvStep</code> in a single function
+          to make it easier to compare with the Yul implementation line by line. For every
+          one of the 84 integer, multiply and atomic conformance suites, the three produce the same
+          post-state hash, step for step. An average step costs about 84,000 gas and the worst
+          186,089.
+        </p>
+        <p>
+          The native CLI embeds <code>RISCV.sol</code>'s compiled bytecode and runs it in an
+          in-process EVM alongside <code>slow.Step</code>. CI checks that the embedded bytecode
+          matches the contract source. In the gallery's disputes,
+          an <code>addi</code> costs 47,888 gas, an <code>fld</code> that misread one bit 83,675 (its
+          proof is 3,840 bytes, one branch for the fetch and one for the loaded word), and the
+          <code>sb</code> that stored a forged token 131,482 to 131,569.
+        </p>
+        <p>
+          Keeping three implementations in step has a cost of its own. When the float registers
+          grew the witness from 362 bytes, <code>RISCV.sol</code> still located its proof calldata
+          with the literal <code>548</code>, derived in a comment from the old layout. Every proof
+          was rejected before a single instruction executed. The offset is now derived from
+          <code>stateSize()</code>.
+        </p>
+
+        <h3 id="float-referee">8.3 Float arithmetic: SoftFloat re-execution</h3>
+        <p>
+          <code>RISCV.sol</code> carries the float registers but does not execute float arithmetic.
+          A Yul port of SoftFloat would add several thousand lines of bit manipulation to the
+          verifier and would need careful testing and review. The current referee checks float
+          arithmetic locally. The OP-FP opcode (<code>0x53</code>) and the four fused
+          multiply-add opcodes (<code>0x43</code>, <code>0x47</code>, <code>0x4b</code>,
+          <code>0x4f</code>) read and write only registers and <code>fcsr</code>, and all of those
+          are in the witness. The referee builds a small machine with those registers and the
+          proven instruction word, executes it once, writes the results back into a copy of the witness,
+          and hashes it:
+        </p>
+        <details class="technical-details code-detail">
+          <summary>Code: recomputing a floating-point step</summary>
+        <p class="code-label">rvgo/internal/liar/game.go · refereeFloatStep, simplified</p>
+<pre class="code"><code>m := fast.NewVMState()
+m.PC = pc
+for i := 0; i &lt; 32; i++ {
+    m.Registers[i] = binary.BigEndian.Uint64(sw[witRegs+8*i:])
+    m.FRegisters[i] = binary.BigEndian.Uint64(sw[witFRegs+8*i:])
+}
+m.FCSR = binary.BigEndian.Uint64(sw[witFCSR:])
+m.Memory.SetUnaligned(pc, word)                <span class="c">// the proven instruction word, nothing else</span>
+inst.Step(false)
+if m.PC != pc+4 || m.Exited {
+    return fmt.Errorf("0x%08x is not a register-only float instruction", word)
+}
+post := copy of sw with PC, step, x0–x31, f0–f31 and fcsr replaced
+return post.StateHash()</code></pre>
+        </details>
+        <p>
+          This check uses the same SoftFloat implementation as the fast VM, so it does not provide
+          an independent check of that implementation or an on-chain verdict. MLVM also has an
+          experimental on-chain route for <code>f64</code>, called nesting: compile one operation for RV64IMA,
+          where it becomes an integer soft-float routine, and run that routine as a nested machine
+          whose steps <code>RISCV.sol</code> can execute. Nested traces average 83 to 680 steps per
+          operation, which adds 7 to 10 bisection rounds. It computes in round-to-nearest-even only,
+          covers no <code>f32</code>, and is not bound to an outer game.
+        </p>
+
+        <h3 id="placement">8.4 The cost of compiling floats into integer code</h3>
+        <p>
+          To measure the cost of the integer-only approach, we built the same Rust matrix
+          multiplication (GEMM) program twice. It uses <code>no_std</code>, with no libc, allocator
+          or libm, to isolate the cost of floating-point operations.
+          For RV64IMAFD, MLVM executes <code>fmul.d</code> with SoftFloat. For RV64IMA, the compiler
+          expands every float operation into integer code: <code>__muldf3</code>,
+          <code>__adddf3</code>.
+        </p>
+        <figure class="fig" id="fig6">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 146" role="img" aria-labelledby="fig6-t">
+              <title id="fig6-t">The same GEMM takes 903,446 instructions with float instructions and 22,898,400 with compiler soft-float, 25.3 times as many. A lie needs 20 questions in the first build, ruled by SoftFloat locally, and 25 in the second, ruled by RISCV.sol.</title>
+              <text class="f-t" x="0" y="26">rv64imafd</text>
+              <text class="f-s" x="0" y="44">fmul.d in the ISA</text>
+              <rect class="f-bar" x="200" y="12" width="19" height="26" rx="3"/>
+              <text class="f-s" x="228" y="30">903,446 instructions · 20 questions · SoftFloat rules, locally</text>
+              <text class="f-t" x="0" y="96">rv64ima</text>
+              <text class="f-s" x="0" y="114">compiler soft-float</text>
+              <rect class="f-bar" x="200" y="82" width="480" height="26" rx="3"/>
+              <text class="f-t" x="690" y="100" style="font-size:14px">25.3×</text>
+              <text class="f-s" x="200" y="132">22,898,400 instructions · 25 questions · RISCV.sol rules, 48,576 gas</text>
+            </svg>
+          </div>
+          <figcaption><b>Figure 6.</b> One multiplication, lied about in each build. Both builds print
+          the same bits (<code>trace = 0xbfe61436da4b68e0</code>), from two independent IEEE-754
+          implementations: MLVM's SoftFloat port and Rust's <code>compiler_builtins</code>.</figcaption>
+        </figure>
+        <p>
+          Each double-precision operation expands into about 91 integer instructions, the branchy
+          exponent alignment, normalisation and rounding of <code>__adddf3</code> and
+          <code>__muldf3</code>. In the soft-float build the disputed step is the <code>mulhu</code>
+          that forms the high half of the mantissa product, an integer instruction that
+          <code>RISCV.sol</code> settles by itself. The price is 25 times the instructions to
+          execute and bisect over, and five more questions.
+        </p>
+        <p>
+          The two builds show the tradeoff in this workload. Compiling floats into integer code
+          lets the existing integer verifier check the disputed operation, but increases the
+          instruction count by about 25 times. That also means more work when replaying a disputed
+          interval. With F and D instructions, the trace is shorter, but float arithmetic needs
+          its own verifier. Those instructions are also somewhat slower to interpret: bge-base
+          runs at 19.6M instructions/s here, compared with about 25M for integer code.
+        </p>
+
+        <h3>8.5 The dispute record</h3>
+        <p>
+          A finished dispute can be saved as a JSON record (<code>mlvm.dispute-record/1</code>)
+          of a few kilobytes. It contains the questions, both parties' answers, and the witness
+          and Merkle proofs for the disputed instruction. A new referee can check that record
+          by verifying the following:
+        </p>
+        <ol>
+          <li>Each round asks about the midpoint of the interval still in dispute, starting from
+            <code>[0, max(steps)]</code>, and the rounds end with <code>hi − lo = 1</code>.</li>
+          <li>The verdict's step is <code>lo</code>, and its agreed prestate and the two poststates
+            are the answers both parties gave at <code>lo</code> and <code>hi</code>.</li>
+          <li>The witness hashes to the agreed prestate, and its step field is <code>lo</code>.</li>
+          <li>The first memory proof proves the instruction word against the witness memory root.</li>
+          <li>Executing that one instruction gives the referee's poststate: SoftFloat for float
+            arithmetic, <code>slow.Step</code> (and, natively, <code>RISCV.sol</code> in an EVM, which
+            must agree) for everything else.</li>
+        </ol>
+<pre class="code"><code>$ mlvm referee dispute.json
+  ✓ 25 questions, each about the midpoint of the instructions still in dispute, narrow
+    38,186,542 instructions to step 38,060,100.
+  ✓ The 674-byte state witness hashes to the state both machines agreed on before it.
+  ✓ The instruction word is proven by a Merkle proof against the witness's memory root.
+  ✓ The record's verdict is the one the referee reaches now.
+    referee computes                     0x0307f3e7...  → honest wins
+    RISCV.sol in an EVM returns          0x0307f3e7...  (agrees, 131,482 gas)</code></pre>
+        <p>
+          The tests tamper with a valid record by changing a question, an answer, a witness byte
+          or a proof sibling, and require the referee to reject it. Checking the gallery records
+          in the playground takes about a millisecond, including the SmolLM2 record. Its 34 rounds
+          refer to a 14.8-billion-instruction run, but the referee only needs the record to check
+          the verdict.
+        </p>
+      </section>
+
+      <!-- 9 ------------------------------------------------------------------------------ -->
+      <section id="lies">
+        <h2><span class="num">9</span>What happened when we changed one result</h2>
+        <h3>9.1 Finding a change that survives</h3>
+        <p>
+          To test bisection and the referee, we built a version of the VM that deliberately changes
+          one result. We call it the <em>liar</em>. We ran it on the gallery's 13 programs, from a
+          263,030-instruction C program to SmolLM2-135M, with five kinds of change:
+        </p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th><code>--lie</code></th><th>The lying machine…</th><th>Ruled by</th></tr></thead>
+            <tbody>
+              <tr><td><code>ulp</code></td><td>rounds one float result one unit in the last place the wrong way</td><td>SoftFloat, from the witness</td></tr>
+              <tr><td><code>load</code></td><td>reads one bit of one loaded value wrong (a weight or an activation)</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
+              <tr><td><code>int</code></td><td>flips the lowest bit of one integer result</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
+              <tr><td><code>output</code></td><td>prints bytes it did not compute</td><td>usually nothing: stdout is not state</td></tr>
+              <tr><td><code>commit</code>, <code>token</code></td><td>commits an answer it did not compute</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Many small changes disappear before the program finishes. Rounding can absorb them,
+          or a later write can overwrite the affected value. That leaves no difference in the
+          final roots for bisection to find. To select a useful test case, the liar forks at a
+          candidate instruction and runs two copies in lockstep: one unchanged, one with a bit
+          flipped. It compares registers and every word either copy stores. When those match,
+          it checks the full state hash as well, covering syscall writes, file state and the
+          randomness cursor. If the states have converged, it abandons that candidate.
+        </p>
+        <p>
+          The liar keeps a change if it survives 2.5 million instructions, longer than one
+          TinyStories forward pass (about 1.8 million). By then it has often reached data that
+          later passes retain, such as the KV cache. This is only a heuristic. If the difference
+          disappears later, or the program crashes, the liar starts again with the next candidate.
+        </p>
+        <figure class="fig" id="fig7">
+          <div class="fig-body">
+            <svg viewBox="0 0 760 200" role="img" aria-labelledby="fig7-t">
+              <title id="fig7-t">(a) A flipped bit is absorbed by rounding: the lie copy converges with the honest shadow and is abandoned. (b) The difference outlives the 2.5-million-instruction lockstep window and is kept.</title>
+              <text class="f-panel" x="0" y="16">(a) erased: abandon the lie</text>
+              <line class="f-thin" x1="10" y1="80" x2="60" y2="80" style="stroke-width:2.5"/>
+              <path class="f-honest" d="M60,80 L340,80"/>
+              <path class="f-liar" d="M60,80 C88,118 150,120 198,82"/>
+              <circle cx="60" cy="80" r="5" class="f-node"/>
+              <circle cx="200" cy="80" r="5" class="f-ckpt"/>
+              <text class="f-s" x="60" y="62" text-anchor="middle">flip one bit</text>
+              <text class="f-s" x="200" y="62" text-anchor="middle">identical state hash</text>
+              <text class="f-s" x="248" y="100">honest shadow</text>
+              <text class="f-s" x="110" y="134" text-anchor="middle">lie copy</text>
+              <text class="f-s" x="10" y="166">MiniLM-L6, SmolLM2: erased lies were</text>
+              <text class="f-s" x="10" y="184">gone within 3 to 1,425 instructions</text>
+
+              <text class="f-panel" x="400" y="16">(b) survived: keep the lie</text>
+              <line class="f-thin" x1="410" y1="80" x2="450" y2="80" style="stroke-width:2.5"/>
+              <path class="f-honest" d="M450,80 L690,80"/>
+              <path class="f-honest-dash" d="M690,80 L750,80"/>
+              <path class="f-liar" d="M450,80 C475,116 505,118 540,118 L750,118"/>
+              <circle cx="450" cy="80" r="5" class="f-node"/>
+              <text class="f-s" x="450" y="62" text-anchor="middle">flip one bit</text>
+              <text class="f-s" x="560" y="72">honest shadow</text>
+              <text class="f-s" x="560" y="110">lie copy</text>
+              <line class="f-thin" x1="450" y1="140" x2="690" y2="140"/>
+              <line class="f-thin" x1="450" y1="134" x2="450" y2="146"/>
+              <line class="f-thin" x1="690" y1="134" x2="690" y2="146"/>
+              <line class="f-dash" x1="690" y1="56" x2="690" y2="134"/>
+              <text class="f-s" x="570" y="164" text-anchor="middle">lockstep window: 2.5M instructions</text>
+              <text class="f-s" x="410" y="188">kept: this machine is now the liar</text>
+            </svg>
+          </div>
+          <figcaption><b>Figure 7.</b> How the liar chooses a lie that a referee will have to find.
+          The shadow is discarded once a lie is kept.</figcaption>
+        </figure>
+
+        <h3>9.2 Why small changes disappear</h3>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Program</th><th>Lie</th><th class="num">Tries</th><th>What happened to the others</th></tr></thead>
+            <tbody>
+              <tr><td>GEMM with float instructions (f64)</td><td>1 ULP</td><td class="num">153</td><td>absorbed by the rounding of the dot product's sum</td></tr>
+              <tr><td>bge-small-en-v1.5</td><td>1 ULP</td><td class="num">16</td><td>fifteen vanished before one stuck</td></tr>
+              <tr><td>all-MiniLM-L6-v2</td><td>misread one bit</td><td class="num">13</td><td>gone 397,422 instructions later, once the packed operand buffer was consumed and packed again</td></tr>
+              <tr><td>SmolLM2-135M</td><td>1 ULP</td><td class="num">11</td><td>nine erased within 3 to 1,425 instructions; one outlived the window but vanished before the end, so the liar ran again</td></tr>
+              <tr><td>all-MiniLM-L6-v2</td><td>1 ULP</td><td class="num">8</td><td>seven erased within 3 to 364 instructions</td></tr>
+              <tr><td>MLP (C)</td><td>one integer bit</td><td class="num">5</td><td>the first four crashed the program</td></tr>
+              <tr><td>TinyStories-260K (C)</td><td>1 ULP</td><td class="num">4</td><td>two erased within 20 instructions, one after 308,787</td></tr>
+              <tr><td>bert-base-uncased</td><td>1 ULP</td><td class="num">1</td><td>the first lie stuck</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          In a dot product, changing one product by 1 ULP can leave the rounded sum unchanged.
+          A misread operand can also disappear when its buffer is overwritten. The lockstep runs
+          let us record exactly when the states matched again. For the erased ULP changes in
+          MiniLM-L6, that took 3 to 364 instructions; in SmolLM2, 3 to 1,425. Two of TinyStories'
+          three erased changes were gone in under 20 instructions.
+        </p>
+
+        <h3>9.3 Different states can still produce the same answer</h3>
+        <p>
+          In the runs with a surviving arithmetic change, both TinyStories implementations still
+          printed the original story. SmolLM2 printed and committed the same 16 tokens, MiniLM-L6
+          printed the same score to ten digits, and <code>ieee</code> printed the same digits.
+          Their state roots differed, even though those outputs matched. On the larger BERTs,
+          the change reached the committed score: bge-base went from <code>0.7760061622</code> to
+          <code>0.7760063410</code>, differing in the seventh decimal place. Comparing state roots
+          detected all of these surviving changes; comparing displayed answers would have missed most of them.
+        </p>
+
+        <h3>9.4 Comparing the C and Candle decoders</h3>
+        <p>
+          The TinyStories checkpoint runs twice in the gallery: as the llama2.c-style C decoder
+          (38.2 million instructions, hand-written loops with fused multiply-adds) and through
+          Candle's <code>llama2_c</code> model (122.2 million, separate multiplies and adds in a
+          general <code>gemm</code>). Despite rounding differently, they chose the same 16 tokens
+          on all three prompts we tried. In the measured SmolLM2 run, single-threaded SoftFloat
+          execution also chose the same 16 tokens as native Candle with NEON and threads. Greedy
+          decoding tolerated the numerical differences in these examples. Matching tokens still
+          does not imply matching execution, which is why the dispute compares two runs of the
+          same VM executable.
+        </p>
+      </section>
+
+      <!-- 10 ----------------------------------------------------------------------------- -->
+      <section id="xray">
+        <h2><span class="num">10</span>Where the instructions go</h2>
+        <p>
+          Since the interpreter sees every instruction, it can count them exactly.
+          <code>mlvm xray</code> records those counts by function, which helped explain several
+          unexpected costs in the model runs below. These are instruction counts, not elapsed
+          time: an operation's share of the profile does not necessarily equal its share of runtime.
+        </p>
+        <p>
+          The profiler decodes each PC's instruction word once. Its disassembler agrees with GNU
+          objdump on every instruction in the embedded guests. It tracks calls with a shadow stack: a
+          <code>jal</code> or <code>jalr</code> that links through <code>ra</code> or
+          <code>t0</code> pushes a frame, <code>jalr zero, 0(ra)</code> pops one, and a jump into
+          another function replaces the top frame. The poststate is identical with and without
+          profiling, and Rust symbols are demangled.
+        </p>
+        <figure class="repo-figure">
+          <a class="figure-image" href="figures/xray-flame.svg" target="_blank" rel="noopener"><img src="figures/xray-flame.svg" width="1200" height="380" loading="lazy" alt="TinyStories instruction flame graph. Matrix multiplication occupies 83.2 percent of the 38.2-million-instruction run."></a>
+          <figcaption><strong>Read width as work.</strong> Each block is a function; blocks above it are calls it makes. The wide <code>matmul</code> block accounts for 83.2% of this run's instructions. Color shows the floating-point share of a function's own instructions, not elapsed time. <a href="figures/xray-flame.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+        </figure>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Program</th><th>What the exact count shows</th></tr></thead>
+            <tbody>
+              <tr><td>TinyStories-260K (C)</td><td><code>matmul</code> is 83.2% of 38.2M instructions. Loading and reading the prompt takes 3.0M, then each token 1.77M (one forward pass).</td></tr>
+              <tr><td>TinyStories-260K (Candle)</td><td>5.42M instructions per token, <code>gemm</code> 41%. 7.7%, 9.5M instructions, is <code>num_cpus::get_num_cpus</code>: Candle asks how many CPUs there are on every <code>matmul</code> unless <code>RAYON_NUM_THREADS</code> is set. Setting it takes the run from 122,197,182 to 113,196,552 instructions, with the same tokens.</td></tr>
+              <tr><td>SmolLM2-135M (Candle)</td><td>3.0B instructions to load, the first token at 5.1B, then 640M per token. <code>gemm</code> is 76%. 13% is <code>Tensor::to_dtype</code> converting bf16 weights to f32, and the tied embedding matrix is converted twice.</td></tr>
+              <tr><td>all-MiniLM-L6-v2 (Candle)</td><td>The forward pass is 70.1%, one microkernel (<code>gemm_f32::microkernel::scalar::f32::x2x4</code>) 56.9%. Reading staged files is 12.8%, building the tokenizer 11.6%. 342.6M single-precision operations against 6.4M double.</td></tr>
+              <tr><td>MLP (C)</td><td>73% is libgcc registering and sorting unwind tables at start-up and exit. The network's <code>dense</code> is 4.3%.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 11 ----------------------------------------------------------------------------- -->
+      <section id="browser">
+        <h2><span class="num">11</span>The same machine in a browser tab</h2>
+        <p>
+          The <a href="./">playground</a> uses the same Go packages as the CLI.
+          <code>rvgo/wasm</code> compiles them with <code>GOOS=js GOARCH=wasm</code> into a 10 MB module (4
+          MB gzipped) that embeds the TinyStories guest, weights and tokenizer. Each party runs in
+          its own Web Worker, and the computation stays in the browser.
+        </p>
+        <p>
+          On an Apple M3 Max in Chrome, the 38-million-instruction TinyStories run takes about
+          8 seconds with profiling on (5.3 million instructions per second). The native CLI takes
+          about 1.2 seconds. A lying run in the browser takes about 9 seconds, and bisection takes
+          about 5 with both parties answering in parallel. Each party keeps up to eleven
+          machine copies, about 90 MB, and half as many on small devices.
+        </p>
+        <p>
+          The browser build leaves out the EVM, so integer verdicts there use <code>slow.Step</code>
+          only. The WebAssembly build is one of the six
+          in the determinism matrix, and CI plays a full dispute across three WebAssembly instances
+          in Node worker threads, failing unless bisection lands on the lie.
+        </p>
+      </section>
+
+      <!-- 12 ----------------------------------------------------------------------------- -->
+      <section id="limits">
+        <h2><span class="num">12</span>Limits</h2>
+        <figure class="repo-figure">
+          <a class="figure-image" href="figures/model-scaling.svg" target="_blank" rel="noopener"><img src="figures/model-scaling.svg" width="900" height="440" loading="lazy" alt="BERT-family model benchmarks: inference grows from 0.93 to 6.11 billion instructions, with 285 to 1,288 MiB of memory touched."></a>
+          <figcaption><strong>Larger models still cost more to run.</strong> These earlier inference benchmarks measure instructions and memory touched by one run. The dispute experiments use later builds and keep multiple checkpoints, so their step counts and peak memory differ. <a href="https://github.com/yao-jz/mlvm/blob/main/docs/BENCHMARKS.md">Benchmark details</a> · <a href="figures/model-scaling.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+        </figure>
+        <p>The experiments above exercise individual verification components and a local dispute simulation. Several gaps remain before they can form a complete protocol; <a href="https://github.com/yao-jz/mlvm/blob/main/docs/STATUS.md">docs/STATUS.md</a> tracks them.</p>
+        <ul>
+          <li><strong>There is no complete, deployed dispute game.</strong> The local simulation
+            and experimental contracts do not yet provide bonds, timeouts, a challenge period or
+            challenger services.</li>
+          <li><strong><code>f32</code> arithmetic cannot be settled on chain.</strong> The nested
+            <code>f64</code> route is experimental and round-to-nearest-even only, and real code
+            rounds otherwise: glibc's <code>expm1</code>, reached from the C MLP's <code>tanh</code>,
+            executes <code>fcvt.w.d …, rtz</code>.</li>
+          <li><strong>Syscall coverage is incomplete in the verifiers.</strong> The fast VM answers 35
+            syscalls, <code>slow</code> mirrors 22 and <code>RISCV.sol</code> 27, and they disagree on
+            <code>getrandom</code>: the fast VM serves committed bytes, <code>slow</code> reverts, and
+            <code>RISCV.sol</code> treats it as a no-op. No complete glibc or Rust <code>std</code>
+            trace replays end to end in either verifier. The disputes above end on instructions
+            the verifiers do support.</li>
+          <li><strong>Execution is much slower than native inference.</strong> On the BERT models MLVM is 673 to 1,627 times slower than
+            native Candle on the same machine: interpretation retires about 20 million instructions
+            per second, and the guest runs scalar code where native Candle uses SIMD.</li>
+          <li><strong>Large-model disputes need several gigabytes of memory.</strong> A dispute over a 110M-parameter model peaks at 8 to 9
+            GB, over SmolLM2-135M at about 10 GB.</li>
+          <li><strong>It is unaudited, pre-1.0 research software.</strong> Formats and interfaces may
+            change.</li>
+        </ul>
+      </section>
+
+      <!-- 13 ----------------------------------------------------------------------------- -->
+      <section id="next">
+        <h2><span class="num">13</span>What comes next</h2>
+        <ul>
+          <li><strong>The vector extension.</strong> Supporting vector instructions would let guest
+            kernels process several values per instruction. Its effect on execution and proof
+            costs still needs to be measured.</li>
+          <li><strong>Half precision (Zfh).</strong> SoftFloat's <code>f16</code> operations are
+            already ported; the instruction decoder still needs to call them. This would allow
+            guests to use half-precision arithmetic directly.</li>
+          <li><strong>Settling <code>f32</code>.</strong> Nested single-precision operations with
+            NaN-boxed results, and binding the disputed outer instruction, its operands and its
+            result to the nested game.</li>
+          <li><strong>Syscall equivalence.</strong> Make randomness and every remaining syscall agree
+            across the three implementations, with trace-level differential tests sampled from
+            complete guests.</li>
+          <li><strong>A complete dispute protocol.</strong> <code>RISCV.sol</code>'s <code>step()</code>
+            already matches the OP Stack's <code>IBigStepper</code> signature. Integration still
+            needs the game rules, bonds, timeouts and challenger services described above.</li>
+        </ul>
+      </section>
+
+      <hr>
+
+      <section id="reproduce" class="cite">
+        <h2>Reproduce and cite</h2>
+        <p>The measurements on this page come from the repository's documents and recorded runs. These commands run the demo, inspect a dispute record and reproduce the gallery experiments:</p>
+<pre class="code"><code>brew install yao-jz/tap/mlvm         <span class="c"># or: git clone … &amp;&amp; make build</span>
+mlvm demo "Once upon a time"         <span class="c"># the run, its prestate and poststate</span>
+mlvm liar --json &gt; dispute.json      <span class="c"># a one-ULP lie, found by bisection</span>
+mlvm referee dispute.json            <span class="c"># rule on it again from the record</span>
+mlvm xray --svg flame.svg            <span class="c"># the exact profile</span>
+
+make test-all                        <span class="c"># fast, slow and EVM cross-checks (needs Foundry)</span>
+./scripts/gallery.sh --all           <span class="c"># the whole gallery, about two CPU hours</span></code></pre>
+        <p>
+          Details live in <a href="https://github.com/yao-jz/mlvm/blob/main/docs/ARCHITECTURE.md">ARCHITECTURE</a>,
+          <a href="https://github.com/yao-jz/mlvm/blob/main/docs/ISA.md">ISA</a>,
+          <a href="https://github.com/yao-jz/mlvm/blob/main/docs/BENCHMARKS.md">BENCHMARKS</a>,
+          <a href="https://github.com/yao-jz/mlvm/blob/main/docs/GALLERY.md">GALLERY</a> and the
+          <a href="https://github.com/yao-jz/mlvm/tree/main/spec">format specifications</a>.
+          If MLVM is useful in your work, please cite it:
+        </p>
+<pre class="code"><code>@software{yao_mlvm,
+  author = {Yao, Jianzhu},
+  title  = {{MLVM}: deterministic {RV64IMAFD} execution over committed memory},
+  url    = {https://github.com/yao-jz/mlvm},
+  year   = {2026}
+}</code></pre>
+      </section>
+    </article>
+  </div>
+
+  <footer class="footer post-foot">
+    <p>MLVM is MIT licensed and derived from <a href="https://github.com/ethereum-optimism/asterisc">Asterisc</a>; floating point is a Go port of Berkeley SoftFloat 3e; the TinyStories-260K model is from <a href="https://github.com/karpathy/llama2.c">karpathy/llama2.c</a> (MIT).</p>
+    <p><a href="./">Playground</a> · <a href="https://github.com/yao-jz/mlvm">github.com/yao-jz/mlvm</a></p>
+  </footer>
+
+  <script>
+    // Highlight the section being read in the table of contents.
+    (() => {
+      const links = new Map([...document.querySelectorAll(".toc li a")].map((a) => [a.getAttribute("href").slice(1), a]));
+      if (!("IntersectionObserver" in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((a) => a.classList.remove("active"));
+          links.get(e.target.id)?.classList.add("active");
+        }
+      }, { rootMargin: "-20% 0px -70% 0px" });
+      links.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+    })();
+  </script>
+</body>
+</html>

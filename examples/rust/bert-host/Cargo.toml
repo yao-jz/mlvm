@@ -1,0 +1,21 @@
+[package]
+name = "bert-host"
+version = "0.1.0"
+edition = "2021"
+
+# The host reference for examples/rust/bert-riscv.
+#
+# src/main.rs is byte-identical to the guest's, and the dependency versions are pinned to
+# the same ones, so any difference in output between the two is attributable to the
+# execution environment rather than to the program. That is what scripts/model-determinism.sh
+# measures.
+
+[dependencies]
+candle-core = "0.4.1"
+candle-nn = "0.4.1"
+candle-transformers = "0.4.1"
+tokenizers = { path = "../../../third_party/tokenizers/tokenizers", default-features = false, features = ["unstable_wasm"] }
+clap = { version = "4.2.4", features = ["derive"] }
+anyhow = { version = "1", features = ["backtrace"] }
+serde_json = "1.0.99"
+memmap2 = "0.9.4"

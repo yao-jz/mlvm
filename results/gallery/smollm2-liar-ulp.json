@@ -1,0 +1,418 @@
+{
+  "format": "mlvm.dispute-record/1",
+  "guest": "SmolLM2-135M through Candle (Rust), 16 tokens",
+  "lie": "1 ULP on a floating-point arithmetic instruction at or after step 7382189657",
+  "honestText": ", there was a little girl named Lily. She lived in a big house with",
+  "liarText": ", there was a little girl named Lily. She lived in a big house with",
+  "honestCommitted": "0x010010001c009902b401fd002e07f41f250d60371e00020941101901fd001208f3085f01",
+  "liarCommitted": "0x010010001c009902b401fd002e07f41f250d60371e00020941101901fd001208f3085f01",
+  "attempts": [
+    {
+      "step": 7382189665,
+      "pc": 3441636,
+      "instruction": "fmul.s ft3,ft3,ft4",
+      "erasedAfter": 3
+    },
+    {
+      "step": 7382189672,
+      "pc": 3441664,
+      "instruction": "fadd.s fa3,fa3,ft3",
+      "erasedAfter": 937
+    },
+    {
+      "step": 7382190609,
+      "pc": 3441668,
+      "instruction": "fmul.s ft3,ft4,ft5",
+      "erasedAfter": 3
+    },
+    {
+      "step": 7382190616,
+      "pc": 3441696,
+      "instruction": "fadd.s fa1,fa1,ft3",
+      "erasedAfter": 1425
+    },
+    {
+      "step": 7382192041,
+      "pc": 3441780,
+      "instruction": "fadd.s fa4,fa4,fa3",
+      "vanished": true
+    },
+    {
+      "step": 7382192042,
+      "pc": 3441784,
+      "instruction": "fadd.s fa3,fa2,fa1",
+      "erasedAfter": 25
+    },
+    {
+      "step": 7382192077,
+      "pc": 3441636,
+      "instruction": "fmul.s ft3,ft3,ft4",
+      "erasedAfter": 74
+    },
+    {
+      "step": 7382192151,
+      "pc": 3441644,
+      "instruction": "fmul.s ft3,ft5,ft6",
+      "erasedAfter": 762
+    },
+    {
+      "step": 7382192913,
+      "pc": 3441668,
+      "instruction": "fmul.s ft3,ft4,ft5",
+      "erasedAfter": 3
+    },
+    {
+      "step": 7382192920,
+      "pc": 3441696,
+      "instruction": "fadd.s fa1,fa1,ft3",
+      "erasedAfter": 253
+    },
+    {
+      "step": 7382193173,
+      "pc": 3441700,
+      "instruction": "fmul.s ft3,ft4,ft5",
+      "kept": true
+    }
+  ],
+  "honestSteps": 14764379315,
+  "liarSteps": 14764379315,
+  "prestate": "0x034301861ad83dd40a712905e2a471c9fe2ac852258785263e37517444476b0a",
+  "honestPost": "0x00fa382dcc06aa5217a0bbfae645c0ded0956564e1c5732041b10db5f87bd083",
+  "liarPost": "0x00580b80e70169de9d515dc83ae7fec144372808c708ba083b5d0aecc9436c88",
+  "deviation": {
+    "kind": "ulp",
+    "step": 7382193173,
+    "pc": 3441700,
+    "instruction": "fmul.s ft3,ft4,ft5",
+    "location": "ft3",
+    "honest": "0.00950023811 (0x3c1ba6e3)",
+    "forged": "0.00950023718 (0x3c1ba6e2)"
+  },
+  "rounds": [
+    {
+      "n": 1,
+      "lo": 0,
+      "hi": 14764379315,
+      "mid": 7382189657,
+      "honest": "0x03edcc6884c312a7ba994e0959053530e2f3582205f9e7044c7b7ae8601b0765",
+      "liar": "0x03edcc6884c312a7ba994e0959053530e2f3582205f9e7044c7b7ae8601b0765",
+      "agree": true
+    },
+    {
+      "n": 2,
+      "lo": 7382189657,
+      "hi": 14764379315,
+      "mid": 11073284486,
+      "honest": "0x03a647e93c6b367494c2a7d51179d860910fce57c7c0029036fa97068a7b16b2",
+      "liar": "0x035df3d2581f0a27a8b0787eb8b7d886a93945f3292fd741291f7a349e965d81",
+      "agree": false
+    },
+    {
+      "n": 3,
+      "lo": 7382189657,
+      "hi": 11073284486,
+      "mid": 9227737071,
+      "honest": "0x0329f8fbe3c9953e172f8ca491c230a27df06b18ed2bc19eee4f875e17ee11ab",
+      "liar": "0x031292b923fa7e81c26ebd3f84a1510e6ddcdf10f2e1c60ec53b9ccdf3fd5c84",
+      "agree": false
+    },
+    {
+      "n": 4,
+      "lo": 7382189657,
+      "hi": 9227737071,
+      "mid": 8304963364,
+      "honest": "0x032b45727908b95cf93457838cea3ed78cb6141298121a16e7462e504135cc23",
+      "liar": "0x03ae857798019f55ae6f9df92040c4d2869df8e15359316f92a96ad45d142924",
+      "agree": false
+    },
+    {
+      "n": 5,
+      "lo": 7382189657,
+      "hi": 8304963364,
+      "mid": 7843576510,
+      "honest": "0x0360b582de26afc182b39f1e89aad028078694fbd7fc36c2beb24ec1f6c84fd8",
+      "liar": "0x036ae6ac31654d4542951de0c578d8d6a53f65f13f53ab086bd4b24bc4de1204",
+      "agree": false
+    },
+    {
+      "n": 6,
+      "lo": 7382189657,
+      "hi": 7843576510,
+      "mid": 7612883083,
+      "honest": "0x03e899d8f28c2ae1aded59516b074279300570a7fef56dcfd0e7b6dfdb6458c2",
+      "liar": "0x03a8ac551aaf5d4b91ec44adcfd8689b4345b846c4330eddf347b478af4ff635",
+      "agree": false
+    },
+    {
+      "n": 7,
+      "lo": 7382189657,
+      "hi": 7612883083,
+      "mid": 7497536370,
+      "honest": "0x03ddd2c7c2883d7fb169941d56e5d2c37fc9ceb04fc743c005049f8cfdd002d5",
+      "liar": "0x03a3f66c3de6939ddcddc435168612d4f7b49317e99a96ba975d0d6f6bb0e043",
+      "agree": false
+    },
+    {
+      "n": 8,
+      "lo": 7382189657,
+      "hi": 7497536370,
+      "mid": 7439863013,
+      "honest": "0x038a221a2188252ae620555b639371375b58a8f920b737735de69ffb7135d4ba",
+      "liar": "0x0378c34e845560e9015fcf6a903a45897a2cf6f0fe8f58474b7a9de0d3a82f15",
+      "agree": false
+    },
+    {
+      "n": 9,
+      "lo": 7382189657,
+      "hi": 7439863013,
+      "mid": 7411026335,
+      "honest": "0x03160708145485730b6bd176cb47a3c183d2656eae4b1c38b10851151e13b21f",
+      "liar": "0x03489ba55cb742867204dc45da2cc29d11dfee3a0ebc39064103b884e74d82d5",
+      "agree": false
+    },
+    {
+      "n": 10,
+      "lo": 7382189657,
+      "hi": 7411026335,
+      "mid": 7396607996,
+      "honest": "0x0348c0119348e8a72254cec806ca0b506c7bcef68d953444f59f3907defa34b0",
+      "liar": "0x03f10c5b32a391e1c18cab49189e87e5f63a26740da71ed4f0dca90c968794e2",
+      "agree": false
+    },
+    {
+      "n": 11,
+      "lo": 7382189657,
+      "hi": 7396607996,
+      "mid": 7389398826,
+      "honest": "0x0331fdc86617ee1a69e9b6400106e8d230cb3a547e1cfc78bdc4e1b793231621",
+      "liar": "0x03e0862a7fdf3c58e39859acd6e36745fed00532ead8eb4926a70668323e053c",
+      "agree": false
+    },
+    {
+      "n": 12,
+      "lo": 7382189657,
+      "hi": 7389398826,
+      "mid": 7385794241,
+      "honest": "0x0330b3705352cc1e82b6b21a28e8458bb6191582bb66214a88f4bd8b6843d8d9",
+      "liar": "0x0340ffe8d560fb7e7b7867afa60efa2a86ab1c22cff98fb8429a48a32164094f",
+      "agree": false
+    },
+    {
+      "n": 13,
+      "lo": 7382189657,
+      "hi": 7385794241,
+      "mid": 7383991949,
+      "honest": "0x03e2eb9bbb72be1b04e07d0523565c9972bcd46d7494dadecd8dc239df7bf2db",
+      "liar": "0x0327c49ff84f4da183e83e5741148d09f817062339ec3473efa6e5b85185ea5e",
+      "agree": false
+    },
+    {
+      "n": 14,
+      "lo": 7382189657,
+      "hi": 7383991949,
+      "mid": 7383090803,
+      "honest": "0x03c0fd50d0a846288098c2433d229ea1f94b910295a8d81554f047863ff0eb34",
+      "liar": "0x032e1b21f9833069f2c30a3004416f9d5da636a20752922384d1ea58a0779fd3",
+      "agree": false
+    },
+    {
+      "n": 15,
+      "lo": 7382189657,
+      "hi": 7383090803,
+      "mid": 7382640230,
+      "honest": "0x03c00616641becf0c24ec75ee825e52309d7110ad67bf26ff77f7717cb2b67dc",
+      "liar": "0x036f901dd3bfc5935335ae9019379aad0bc6f0a23e0f2c70efa491105e9f418e",
+      "agree": false
+    },
+    {
+      "n": 16,
+      "lo": 7382189657,
+      "hi": 7382640230,
+      "mid": 7382414943,
+      "honest": "0x03501d902b454d105d9fa4a376f62c096ad42750ef81cd30d7bb0e4803fb1820",
+      "liar": "0x036cfcaa10d7888047cde12d5cf4881a252f089e0867a07434bcc20bd2b97bc4",
+      "agree": false
+    },
+    {
+      "n": 17,
+      "lo": 7382189657,
+      "hi": 7382414943,
+      "mid": 7382302300,
+      "honest": "0x03851392a1c6ecfef5ac534e80af2fb5e22da221a9d052a040587d579f1a3c53",
+      "liar": "0x03a3230d8823a639e48d707ef16fad1a663f5ccd96b99419fef7d9d3acf894c5",
+      "agree": false
+    },
+    {
+      "n": 18,
+      "lo": 7382189657,
+      "hi": 7382302300,
+      "mid": 7382245978,
+      "honest": "0x03369df81a0c29300e9c89e791fe36b1bf63f7ecc08283f223f4d87a9fd46f87",
+      "liar": "0x03715fc26fca9aecc8535e43f513af8f3d456182bff102b237dc83fcdaad5dcd",
+      "agree": false
+    },
+    {
+      "n": 19,
+      "lo": 7382189657,
+      "hi": 7382245978,
+      "mid": 7382217817,
+      "honest": "0x03f97f2a18d87621ab8f709d51c20576bde6b8ba2d5c7cf2d9067259c16244bd",
+      "liar": "0x033f3004c192d451f415595b15f3254e1afe4cab560434e7f559ad299fcbf5a1",
+      "agree": false
+    },
+    {
+      "n": 20,
+      "lo": 7382189657,
+      "hi": 7382217817,
+      "mid": 7382203737,
+      "honest": "0x031da0a181e92df9ba485d5bce174aaa9fa4cd3e9e55c49cfae5a8b04dd7ba11",
+      "liar": "0x03715f3d657fc60619eefb91daf7e3b2717ba094657d76f067af4c13496e7a12",
+      "agree": false
+    },
+    {
+      "n": 21,
+      "lo": 7382189657,
+      "hi": 7382203737,
+      "mid": 7382196697,
+      "honest": "0x03f40bf40d4a68d13db05934be8adca2fb07fcb3a49da33d3fed08630cbc14ff",
+      "liar": "0x03df5ddbbe4d59a51fefa9f8e6d2ad5ecb6c188a1cd6cf22f485fb458c392784",
+      "agree": false
+    },
+    {
+      "n": 22,
+      "lo": 7382189657,
+      "hi": 7382196697,
+      "mid": 7382193177,
+      "honest": "0x034d2f7059ccc12fdbd25ba1923ca3d02e0388427daa8bc898fa6457adb402aa",
+      "liar": "0x03d934fae3b697b4da2fb3b6e85c59cb11163aa8235a59a082f90fa26b97fadf",
+      "agree": false
+    },
+    {
+      "n": 23,
+      "lo": 7382189657,
+      "hi": 7382193177,
+      "mid": 7382191417,
+      "honest": "0x03d591af0a659239d36084321f8593621459e3bccd396095c7bc7504f0258308",
+      "liar": "0x03d591af0a659239d36084321f8593621459e3bccd396095c7bc7504f0258308",
+      "agree": true
+    },
+    {
+      "n": 24,
+      "lo": 7382191417,
+      "hi": 7382193177,
+      "mid": 7382192297,
+      "honest": "0x03045fa7180810506f1a6759541ecfc9c703af20e45412b463bca276ac38d58f",
+      "liar": "0x03045fa7180810506f1a6759541ecfc9c703af20e45412b463bca276ac38d58f",
+      "agree": true
+    },
+    {
+      "n": 25,
+      "lo": 7382192297,
+      "hi": 7382193177,
+      "mid": 7382192737,
+      "honest": "0x035658c91f4f6f8aabf13b619e2461b5c62b2675b4c0542b7b634cb76836093e",
+      "liar": "0x035658c91f4f6f8aabf13b619e2461b5c62b2675b4c0542b7b634cb76836093e",
+      "agree": true
+    },
+    {
+      "n": 26,
+      "lo": 7382192737,
+      "hi": 7382193177,
+      "mid": 7382192957,
+      "honest": "0x0397607c51357c0ec4b2a4a539fb7652f10740eeac9482c7e69e8600062cfbf9",
+      "liar": "0x0397607c51357c0ec4b2a4a539fb7652f10740eeac9482c7e69e8600062cfbf9",
+      "agree": true
+    },
+    {
+      "n": 27,
+      "lo": 7382192957,
+      "hi": 7382193177,
+      "mid": 7382193067,
+      "honest": "0x03590272ebde2ea8cc41913eb7635c7c5390f0f62498853f2e73d06e9dbc4594",
+      "liar": "0x03590272ebde2ea8cc41913eb7635c7c5390f0f62498853f2e73d06e9dbc4594",
+      "agree": true
+    },
+    {
+      "n": 28,
+      "lo": 7382193067,
+      "hi": 7382193177,
+      "mid": 7382193122,
+      "honest": "0x03c2d2eb0e98d5eae9fb85be99440cb1fadbfca0fe9660b4e60c9f59b341fe50",
+      "liar": "0x03c2d2eb0e98d5eae9fb85be99440cb1fadbfca0fe9660b4e60c9f59b341fe50",
+      "agree": true
+    },
+    {
+      "n": 29,
+      "lo": 7382193122,
+      "hi": 7382193177,
+      "mid": 7382193149,
+      "honest": "0x03ce3fc12ec0bda0ccb095f067b6629493699379d9c3602d8f59d49ed4e4a41b",
+      "liar": "0x03ce3fc12ec0bda0ccb095f067b6629493699379d9c3602d8f59d49ed4e4a41b",
+      "agree": true
+    },
+    {
+      "n": 30,
+      "lo": 7382193149,
+      "hi": 7382193177,
+      "mid": 7382193163,
+      "honest": "0x033afb865bc96827e4beb0a8053e29e2e6c6a01c4aa1c5c936017d35d9b28e7e",
+      "liar": "0x033afb865bc96827e4beb0a8053e29e2e6c6a01c4aa1c5c936017d35d9b28e7e",
+      "agree": true
+    },
+    {
+      "n": 31,
+      "lo": 7382193163,
+      "hi": 7382193177,
+      "mid": 7382193170,
+      "honest": "0x0301965344a32e964c3d12a341168363ba5392e8bc8678185d0a9e808729c977",
+      "liar": "0x0301965344a32e964c3d12a341168363ba5392e8bc8678185d0a9e808729c977",
+      "agree": true
+    },
+    {
+      "n": 32,
+      "lo": 7382193170,
+      "hi": 7382193177,
+      "mid": 7382193173,
+      "honest": "0x03f661c83dac6975a9b22b1429b64314f98574867c245d8d7f4d8c662304b77c",
+      "liar": "0x03f661c83dac6975a9b22b1429b64314f98574867c245d8d7f4d8c662304b77c",
+      "agree": true
+    },
+    {
+      "n": 33,
+      "lo": 7382193173,
+      "hi": 7382193177,
+      "mid": 7382193175,
+      "honest": "0x038fd903a08655911926761b3e036d39bd2edaa94c901bada31f0de8e6a43bc7",
+      "liar": "0x0361d68078fc84d8003e952516f90af703ed955c822b35a6e9f932dc95b4d45f",
+      "agree": false
+    },
+    {
+      "n": 34,
+      "lo": 7382193173,
+      "hi": 7382193175,
+      "mid": 7382193174,
+      "honest": "0x03a8327efefce984d2c26ab1fa490a485b271f765d4c80b9207dacb8fe63d87d",
+      "liar": "0x0304bbbadfac85f13fe9abd42fd7805494b74b5d7ad385443118ec9c97ed6c77",
+      "agree": false
+    }
+  ],
+  "verdict": {
+    "step": 7382193173,
+    "pc": 3441700,
+    "word": "0x105271d3",
+    "instruction": "fmul.s ft3,ft4,ft5",
+    "function": "gemm_f32::gemm::f32::scalar::gemm_basic",
+    "class": "float-arith",
+    "agreedPrestate": "0x03f661c83dac6975a9b22b1429b64314f98574867c245d8d7f4d8c662304b77c",
+    "honestPost": "0x03a8327efefce984d2c26ab1fa490a485b271f765d4c80b9207dacb8fe63d87d",
+    "liarPost": "0x0304bbbadfac85f13fe9abd42fd7805494b74b5d7ad385443118ec9c97ed6c77",
+    "refereePost": "0x03a8327efefce984d2c26ab1fa490a485b271f765d4c80b9207dacb8fe63d87d",
+    "method": "SoftFloat re-execution of this one instruction from the 674-byte state witness, after checking the instruction word's Merkle proof against the witness memory root",
+    "winner": "honest",
+    "stateWitness": "0x5b98d235e9504bfbd11efe15027e1d035937f5d50b1832273d6c2f554d3e658f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000348424000000000001b803541500009a9000000000000000000000000000000000000000000000000000289f3c0fffffffffffde20000000000067140800007f0000000760000094e0002238e000009a10000a2330abb2a1b2b1a7bfae000000000000024000009a500020b42000000000000003cd0000000000000240000000000000024000009a10000a1f70000094e0002235200000000000000900000000000000000100000000000000f000009a10000a1f60000000000000060000009a5000209c2000009a10000a28600000000000000000000000000000000100009a5000209c200000000000000600000000000000000100000000000000010000996000067a400fffffffffffdf4000000000000000010000000000000000ffffffffbd71c496ffffffff3dff08a9ffffffffbe83cad8ffffffffbdacd396ffffffff3d1f0000ffffffff3e7a9bfeffffffff3dc70000ffffffff3d868588ffffffff3f800000ffffffff00000000ffffffffbcf5e068ffffffffbed2ed9affffffffbdbdd261ffffffffbdd60db6ffffffff3dbca0c8ffffffff00000000ffffffff3d489e7e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000005800000000000000012d8a8c95d89750a740ab6dd188dc93e7330babce0028afc0ef9a3aca13384f1a",
+    "memProof": "0xd3f53500d371521053753500d371731007a282008722830007a3c2008723c300d3f63600d371521053763600d371731007a202008722030007a342008723430044d37dfb8e913a4c56c87941f25d143aaf69cc94ce05a28cd23078045a1338383542812239b0b8e00762639d3cbc9a77a2c9d38321b88228f93c91681819cbd96283be45ac1bef37e6aa7f15bbfbcea59e89af33ae20e27894ccb7315b738dba4d1d6a0a03399db6e653e8684fca32fb248952f6285cc8afa1d9c944150978652c47e1fb931e62369d753017f481c1746a38e567a1fd93c3e31661696a74f932c2a303a56fc1d1c74f0ef7050d85ae02f920b1781eead5330b3fd888814e2d5e7a92e9c918fb61da0e0882c66947e203113f6fa17dc8ceb9ff8a1dceeb473911aada85f2ca1268b530ac6520e63f75780f19f594ce176a97b459354da8574e55c03cf2d8d7aa94f10ceeee153d8ab5ff9f6a20bc4f8d9c34b7a22722de2b7d0fb3e8e89e837c7031b0bb026d838c47e6bb4ae37ff12e0175036c11928868aaac3ab37130cf7d0278c5528c8d7c827372ba8ed01caf58908b7b2e57f07fe32ba5558374a19668a73f47fc0970c34369f942317aa1ab335e6e14fbaafee5c6213c6e4bcae4c64758b2311287aa3a76e71560e43d2dc5566a4032ac88e46108345a1acac8736fd34ca50b9708acec00c069cf939624cedda8a4eee0045eab0b18d9057c8c5ad9d8722047b8f3d510f5c91550bb13adf9c888992082a365d7bf5191a4d2852e637dfb89e3cff8b653ac6a26fd2a73a1dc6233078e9659af83b4c0281e58016c0322ffb2d3fbb269189a4a79bfcb06515f1b7b3f84881be07edb18115a2dce0a8a7f68bb74560f8f71837c2c2ebbcbf7fffb42ae1896f13f7c7479a0b46a28b6f55540f89444f63de0378e3d121be09e06cc9ded1c20e65876d36aa0c65e9645644786b620e2dd2ad648ddfcbf4a7e5b1a3a4ecfe7f64667a3f0b7e2f4418588ed35a2458cffeb39b93d26f18d2ab13bdce6aee58e7b99359ec2dfd95a9c16dc00d6ef18b7933a6f8dc65ccb55667138776f7dea101070dc8796e3774df84f40ae0c8229d0d6069e5c8f39a7c299677a09d367fc7b05e3bc380ee652cdc72595f74c7b1043d0e1ffbab734648c838dfb0527d971b602bc216c9619ef0abf5ac974a1ed57f4050aa510dd9c74f508277b39d7973bb2dfccc5eeb0618db8cd74046ff337f0a7bf2c8e03e10f642c1886798d71806ab1e888d9e5ee87d0838c5655cb21c6cb83313b5a631175dff4963772cce9108188b34ac87c81c41e662ee4dd2dd7b2bc707961b1e646c4047669dcb6584f0d8d770daf5d7e7deb2e388ab20e2573d171a88108e79d820e98f26c0b84aa8b2f4aa4968dbb818ea32293237c50ba75ee485f4c22adf2f741400bdf8d6a9cc7df7ecae576221665d7358448818bb4ae4562849e949e17ac16e0be16688e156b5cf15e098c627c0056a927ae5ba08d7291c96c8cbddcc148bf48a6d68c7974b94356f53754ef6171d757bf558bebd2ceec7f3c5dce04a4782f88c2c6036ae78ee206d0bc5289d20461a2e21908c2968c0699040a6fd866a577a99a9d2ec88745c815fd4a472c789244daae824d72ddc272aab68a8c3022e36f10454437c1886f3ff9927b64f232df414f27e429a4bef3083bc31a671d046ea5c1f5b8c3094d72868d9dfdc12c7334ac5f743cc5c365a9a6a15c1f240ac25880c7a9d1de290696cb766074a1d83d9278164adcf616c3bfabf63999a01966c998b7bb572774035a63ead49da73b5987f34775786645d0c5dd7c04a2f8a75dcae085213652f5bce3ea8b9b9bedd1cab3c5e9b88b152c9b8a7b79637d35911848b0c41e7cc7cca2ab4fe9a15f9c38bb4bb9392ce8f9667926ed9daf79db7d04d5021d2be4224f433429863ed4983bfbc419ebdd72553311718cc203016e894a8834a52f07815c63cea823985b94c00136b42fa10d3ef857d04d9c03ead7c6317d797a090fa1271ad9c7addfbcb412e9643d4fb33b1809c42623f474055fa9400a2027a7a885c8dfa4efe20666b4ee27d7529c134d7f28d53f175f6bf4b62faa2110d5b76f0f770c15e628181c1fcc18f970a9c34d24b2fc8c50ca9c07a7156ef4e5ff4bdf002eda0b11c1d359d0b59a54680704dbb9db631457879b27e0dfdbe50158fd9cf9b4cf77605c4ac4c95bd65fc9f6f9295a686647cb999090819cda700820c282c613cedcd218540bbc6f37b01c6567c4a1ea624f092a3a5cca2d6f0f0db231972fce627f0ecca0dee60f17551c5f8fdaeb5ab560b2ceb781cdb339361a0fbee1b9dffad59115138c8d6a70dda9ccc1bf0bbdd7fee15764845db875f6432559ff8dbc9055324431bc34e5b93d15da307317849eccd90c0c7b98870b9317c15a5959dcfb84c76dcc908c4fe6ba92126339bf06e458f6646df5e83ba7c3d35bc263b3222c8e9040068847749ca8e8f9f5cbc4ca567512665fd76ff7877b70bfdb97e04cfadb061a3b48b1a80d4e3f2405f9cb3f2f0a7a897d86f193db33ff4ec2870062559c54471a4de0d6869122d74d780d06d03be7b177cbd36801c2e1e6bc7492867d57e6558d6835485a88e8903c5cbbeb3834b7a5c1cba9aa5fee0c95ec3f17a33ec3d8047fff799187f5ae2040bbe913c226c34c9fbe4389dd728984257a816892b3cae3e43191dd291f0eb5",
+    "proofBytes": 1920,
+    "boundary": "Not on-chain settlement: RISCV.sol does not implement floating-point arithmetic, and MLVM's experimental nested float sub-game covers only f64 in round-to-nearest-even mode."
+  },
+  "seconds": 2014.65206475
+}

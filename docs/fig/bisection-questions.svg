@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 792 324" width="792" height="324" role="img" aria-labelledby="fig4-t">
+<title id="fig4-t">Questions needed to isolate one instruction against instructions executed, on a log scale, for disputes over the gallery's 13 programs. Every point lies on the log2 N line: 18 questions for 263 thousand instructions, 26 for 38 million, 30 for 1.06 billion, 32 for 6.75 billion, 34 for 14.8 billion.</title>
+<style>
+    svg {
+      --surface: #ffffff; --surface-2: #f6f8fa; --ink: #1f2328; --ink-2: #59636e;
+      --muted: #8c959f; --grid: #eaeef2; --axis: #d0d7de; --caller: #d0d7de;
+      --accent: #3b7dd8; --honest: #3b7dd8; --liar: #c9743a;
+      --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      svg {
+        --surface: #0d1117; --surface-2: #161b22; --ink: #e6edf3; --ink-2: #9198a1;
+        --muted: #6e7681; --grid: #21262d; --axis: #30363d; --caller: #30363d;
+      }
+    }
+    .bg { fill: var(--surface); stroke: var(--axis); stroke-width: 1; }
+    text { font-family: var(--sans); }
+    .f-box { fill: var(--surface); stroke: var(--axis); stroke-width: 1.25; }
+    .f-box-alt { fill: var(--surface-2); stroke: var(--axis); stroke-width: 1.25; }
+    .f-box-hi { fill: color-mix(in srgb, var(--accent) 12%, var(--surface)); stroke: var(--accent); stroke-width: 1.5; }
+    .f-box-liar { fill: color-mix(in srgb, var(--liar) 12%, var(--surface)); stroke: var(--liar); stroke-width: 1.5; }
+    .f-t { fill: var(--ink); font-size: 16px; font-weight: 600; }
+    .f-s { fill: var(--ink-2); font-size: 14.5px; }
+    .f-m { fill: var(--ink-2); font-family: var(--mono) !important; font-size: 13.5px; }
+    .f-panel { fill: var(--ink); font-size: 15px; font-weight: 600; }
+    .f-line { stroke: var(--ink-2); stroke-width: 1.5; fill: none; }
+    .f-thin { stroke: var(--muted); stroke-width: 1; fill: none; }
+    .f-dash { stroke: var(--muted); stroke-width: 1.25; stroke-dasharray: 4 3; fill: none; }
+    .f-head { fill: var(--ink-2); }
+    .f-grid { stroke: var(--grid); stroke-width: 1; }
+    .f-axis { stroke: var(--axis); stroke-width: 1; }
+    .f-tick { fill: var(--muted); font-size: 13px; }
+    .f-ref { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+    .f-dot { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+    .f-label { fill: var(--ink-2); font-size: 14px; }
+    .f-seg { fill: var(--caller); stroke: var(--surface); stroke-width: 2; }
+    .f-seg-new { fill: color-mix(in srgb, var(--accent) 34%, var(--surface)); stroke: var(--surface); stroke-width: 2; }
+    .f-tri { fill: var(--surface-2); stroke: var(--axis); stroke-width: 1.25; }
+    .f-path { stroke: var(--accent); stroke-width: 2.25; fill: none; }
+    .f-node { fill: var(--accent); }
+    .f-honest { stroke: var(--honest); stroke-width: 2.5; fill: none; }
+    .f-liar { stroke: var(--liar); stroke-width: 2.5; fill: none; }
+    .f-honest-dash { stroke: var(--honest); stroke-width: 2; stroke-dasharray: 5 4; fill: none; opacity: 0.6; }
+    .f-band { fill: color-mix(in srgb, var(--accent) 14%, transparent); }
+    .f-bar { fill: var(--accent); }
+    .f-ckpt { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.5; }
+    .f-mark-lo { stroke: var(--honest); stroke-width: 2; }
+    .f-mark-hi { stroke: var(--liar); stroke-width: 2; }
+</style>
+<rect class="bg" x="-15.5" y="-15.5" width="791" height="323" rx="12"/>
+<text class="f-tick" x="64" y="10">questions</text>
+<line class="f-grid" x1="64" x2="736" y1="197.2" y2="197.2"/>
+<line class="f-grid" x1="64" x2="736" y1="152.4" y2="152.4"/>
+<line class="f-grid" x1="64" x2="736" y1="107.6" y2="107.6"/>
+<line class="f-grid" x1="64" x2="736" y1="62.8" y2="62.8"/>
+<line class="f-grid" x1="64" x2="736" y1="18" y2="18"/>
+<text class="f-tick" x="56" y="246" text-anchor="end">16</text>
+<text class="f-tick" x="56" y="201.2" text-anchor="end">20</text>
+<text class="f-tick" x="56" y="156.4" text-anchor="end">24</text>
+<text class="f-tick" x="56" y="111.6" text-anchor="end">28</text>
+<text class="f-tick" x="56" y="66.8" text-anchor="end">32</text>
+<text class="f-tick" x="56" y="22" text-anchor="end">36</text>
+<line class="f-axis" x1="64" x2="736" y1="242" y2="242"/>
+<line class="f-axis" x1="64" x2="64" y1="242" y2="247"/>
+<line class="f-axis" x1="186.2" x2="186.2" y1="242" y2="247"/>
+<line class="f-axis" x1="308.4" x2="308.4" y1="242" y2="247"/>
+<line class="f-axis" x1="430.5" x2="430.5" y1="242" y2="247"/>
+<line class="f-axis" x1="552.7" x2="552.7" y1="242" y2="247"/>
+<line class="f-axis" x1="674.9" x2="674.9" y1="242" y2="247"/>
+<text class="f-tick" x="64" y="262" text-anchor="middle">100K</text>
+<text class="f-tick" x="186.2" y="262" text-anchor="middle">1M</text>
+<text class="f-tick" x="308.4" y="262" text-anchor="middle">10M</text>
+<text class="f-tick" x="430.5" y="262" text-anchor="middle">100M</text>
+<text class="f-tick" x="552.7" y="262" text-anchor="middle">1B</text>
+<text class="f-tick" x="674.9" y="262" text-anchor="middle">10B</text>
+<text class="f-tick" x="400" y="284" text-anchor="middle">instructions executed (log scale)</text>
+<line class="f-ref" x1="64" y1="235.2" x2="736" y2="30.5"/>
+<text class="f-label" x="700" y="70">log₂ N</text>
+<circle class="f-dot" cx="115.3" cy="219.6" r="5"><title>ieee (C, f64): 263,030 instructions, 18 questions</title></circle>
+<circle class="f-dot" cx="120.4" cy="219.6" r="5"><title>MLP (C, f64): 289,482 instructions, 18 questions</title></circle>
+<circle class="f-dot" cx="120.4" cy="208.4" r="5"><title>MLP (C, f64): 289,482 instructions, 19 questions</title></circle>
+<circle class="f-dot" cx="147.9" cy="208.4" r="5"><title>matmul (C, f64): 486,505 instructions, 19 questions</title></circle>
+<circle class="f-dot" cx="180.8" cy="197.2" r="5"><title>GEMM with float instructions: 903,446 instructions, 20 questions</title></circle>
+<circle class="f-dot" cx="352.3" cy="141.2" r="5"><title>GEMM with compiler soft-float: 22,898,400 instructions, 25 questions</title></circle>
+<circle class="f-dot" cx="379.5" cy="130" r="5"><title>TinyStories-260K (C): 38,186,542 instructions, 26 questions</title></circle>
+<circle class="f-dot" cx="379.5" cy="141.2" r="5"><title>TinyStories-260K (C): 38,186,542 instructions, 25 questions</title></circle>
+<circle class="f-dot" cx="441.2" cy="118.8" r="5"><title>TinyStories-260K (Candle): 122,197,182 instructions, 27 questions</title></circle>
+<circle class="f-dot" cx="555.9" cy="85.2" r="5"><title>all-MiniLM-L6-v2: 1,062,488,466 instructions, 30 questions</title></circle>
+<circle class="f-dot" cx="586.5" cy="74" r="5"><title>all-MiniLM-L12-v2: 1,889,889,048 instructions, 31 questions</title></circle>
+<circle class="f-dot" cx="586.7" cy="74" r="5"><title>bge-small-en-v1.5: 1,896,458,947 instructions, 31 questions</title></circle>
+<circle class="f-dot" cx="653.7" cy="62.8" r="5"><title>bge-base-en-v1.5: 6,705,827,787 instructions, 32 questions</title></circle>
+<circle class="f-dot" cx="654.1" cy="62.8" r="5"><title>bert-base-uncased: 6,752,543,098 instructions, 32 questions</title></circle>
+<circle class="f-dot" cx="695.6" cy="40.4" r="5"><title>SmolLM2-135M: 14,764,379,315 instructions, 34 questions</title></circle>
+<text class="f-label" x="171" y="184" text-anchor="end">float GEMM · 0.9M · 20</text>
+<text class="f-label" x="342" y="131" text-anchor="end">soft-float GEMM · 22.9M · 25</text>
+<text class="f-label" x="370" y="110" text-anchor="end">TinyStories (C) · 38.2M · 25–26</text>
+<text class="f-label" x="546" y="75" text-anchor="end">MiniLM-L6 · 1.06B · 30</text>
+<text class="f-label" x="644" y="53" text-anchor="end">bge-base, bert-base · 6.7B · 32</text>
+<text class="f-label" x="686" y="30" text-anchor="end">SmolLM2-135M · 14.8B · 34</text>
+</svg>

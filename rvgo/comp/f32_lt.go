@@ -1,0 +1,24 @@
+package comp
+
+import (
+	. "github.com/yao-jz/mlvm/rvgo/include"
+)
+
+func F32_lt(a, b Float32_t) bool {
+	uiA := uint32(a)
+	uiB := uint32(b)
+	var signA, signB bool
+
+	if IsNaNF32UI(uiA) || IsNaNF32UI(uiB) {
+		// Signaling comparison: any NaN operand is an invalid operation, quiet or not.
+		Softfloat_raiseFlags(Softfloat_flag_invalid)
+		return false
+	}
+	signA = SignF32UI(uiA)
+	signB = SignF32UI(uiB)
+	if signA != signB {
+		return signA && (uint32((uiA|uiB)<<1) != 0)
+	} else {
+		return (uiA != uiB) && (signA != (uiA < uiB))
+	}
+}

@@ -1,0 +1,264 @@
+{
+  "steps": 903446,
+  "floatShare": 0.5477250438875151,
+  "floatArith": 239640,
+  "floatArithByPrecision": {
+    "d": 239640
+  },
+  "classes": [
+    {
+      "name": "int-alu",
+      "count": 286387,
+      "share": 0.31699404280942084
+    },
+    {
+      "name": "float-loadstore",
+      "count": 250587,
+      "share": 0.27736798878959007
+    },
+    {
+      "name": "float-arith",
+      "count": 239640,
+      "share": 0.2652510498690569
+    },
+    {
+      "name": "branch",
+      "count": 120911,
+      "share": 0.1338331233964177
+    },
+    {
+      "name": "float-move",
+      "count": 4613,
+      "share": 0.005106005228868134
+    },
+    {
+      "name": "int-muldiv",
+      "count": 1152,
+      "share": 0.0012751177159453914
+    },
+    {
+      "name": "store",
+      "count": 88,
+      "share": 0.00009740482552360628
+    },
+    {
+      "name": "load",
+      "count": 52,
+      "share": 0.000057557396900312805
+    },
+    {
+      "name": "jump",
+      "count": 9,
+      "share": 0.00000996185715582337
+    },
+    {
+      "name": "system",
+      "count": 7,
+      "share": 0.000007748111121195954
+    }
+  ],
+  "mnemonics": [
+    {
+      "name": "addi",
+      "count": 262396,
+      "share": 0.29043905225104766
+    },
+    {
+      "name": "fld",
+      "count": 240218,
+      "share": 0.2658908224730642
+    },
+    {
+      "name": "fmul.d",
+      "count": 121536,
+      "share": 0.1345249190322388
+    },
+    {
+      "name": "bne",
+      "count": 120864,
+      "share": 0.13378110036460397
+    },
+    {
+      "name": "fadd.d",
+      "count": 116952,
+      "share": 0.12945101312087276
+    },
+    {
+      "name": "fsd",
+      "count": 10369,
+      "share": 0.011477166316525836
+    },
+    {
+      "name": "auipc",
+      "count": 9238,
+      "share": 0.010225292933944032
+    },
+    {
+      "name": "add",
+      "count": 6442,
+      "share": 0.007130475977534905
+    },
+    {
+      "name": "slli",
+      "count": 5433,
+      "share": 0.006013641103065374
+    },
+    {
+      "name": "fsgnj.d",
+      "count": 4609,
+      "share": 0.005101577736798879
+    },
+    {
+      "name": "and",
+      "count": 1152,
+      "share": 0.0012751177159453914
+    },
+    {
+      "name": "fcvt.d.wu",
+      "count": 1152,
+      "share": 0.0012751177159453914
+    },
+    {
+      "name": "mul",
+      "count": 1152,
+      "share": 0.0012751177159453914
+    },
+    {
+      "name": "srli",
+      "count": 1152,
+      "share": 0.0012751177159453914
+    },
+    {
+      "name": "sub",
+      "count": 411,
+      "share": 0.00045492481011593386
+    },
+    {
+      "name": "sb",
+      "count": 81,
+      "share": 0.00008965671440241033
+    },
+    {
+      "name": "andi",
+      "count": 60,
+      "share": 0.00006641238103882247
+    },
+    {
+      "name": "lbu",
+      "count": 48,
+      "share": 0.00005312990483105797
+    },
+    {
+      "name": "srl",
+      "count": 48,
+      "share": 0.00005312990483105797
+    },
+    {
+      "name": "bltu",
+      "count": 41,
+      "share": 0.00004538179370986202
+    },
+    {
+      "name": "sltiu",
+      "count": 32,
+      "share": 0.00003541993655403865
+    },
+    {
+      "name": "jalr",
+      "count": 9,
+      "share": 0.00000996185715582337
+    },
+    {
+      "name": "or",
+      "count": 9,
+      "share": 0.00000996185715582337
+    },
+    {
+      "name": "addw",
+      "count": 8,
+      "share": 0.000008854984138509662
+    },
+    {
+      "name": "ecall",
+      "count": 7,
+      "share": 0.000007748111121195954
+    },
+    {
+      "name": "sd",
+      "count": 7,
+      "share": 0.000007748111121195954
+    },
+    {
+      "name": "bgeu",
+      "count": 6,
+      "share": 0.0000066412381038822465
+    },
+    {
+      "name": "ld",
+      "count": 4,
+      "share": 0.000004427492069254831
+    },
+    {
+      "name": "subw",
+      "count": 3,
+      "share": 0.0000033206190519411233
+    },
+    {
+      "name": "fmv.d.x",
+      "count": 2,
+      "share": 0.0000022137460346274155
+    },
+    {
+      "name": "fmv.x.d",
+      "count": 2,
+      "share": 0.0000022137460346274155
+    },
+    {
+      "name": "lui",
+      "count": 2,
+      "share": 0.0000022137460346274155
+    },
+    {
+      "name": "addiw",
+      "count": 1,
+      "share": 0.0000011068730173137078
+    }
+  ],
+  "functions": [
+    {
+      "name": "_start",
+      "self": 903266,
+      "total": 903446,
+      "share": 0.9998007628568836
+    },
+    {
+      "name": "compiler_builtins::mem::memset",
+      "self": 174,
+      "total": 174,
+      "share": 0.00019259590501258516
+    },
+    {
+      "name": "memset",
+      "self": 6,
+      "total": 6,
+      "share": 0.0000066412381038822465
+    }
+  ],
+  "tree": {
+    "name": "all",
+    "value": 903446,
+    "self": 0,
+    "float": 0,
+    "children": [
+      {
+        "name": "_start",
+        "value": 903446,
+        "self": 903446,
+        "float": 494840
+      }
+    ]
+  },
+  "uniquePCs": 367,
+  "frames": 3,
+  "description": "GEMM, float instructions (Rust no_std)"
+}

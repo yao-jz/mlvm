@@ -1,0 +1,129 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  # Publish an existing tag with this workflow file, for example after a fix to the
+  # workflow itself. The release is still built from the tagged source.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing annotated tag to release, such as v0.1.0'
+        required: true
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+
+jobs:
+  release:
+    name: Build, smoke, attest, then publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      # Optional push access to yao-jz/homebrew-tap: a deploy key with write access
+      # (scripts/github-setup.sh creates one) or a token with contents:write. Without
+      # either, the release still publishes; only the Homebrew formula update is skipped.
+      HOMEBREW_TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
+      HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ env.TAG }}
+          fetch-depth: 0
+
+      # actions/checkout re-creates the triggering tag as a lightweight ref; fetch the
+      # tag object itself before checking that it is annotated.
+      - name: Require annotated tag
+        run: |
+          git fetch --force origin "refs/tags/$TAG:refs/tags/$TAG"
+          bash scripts/require-annotated-tag.sh "$TAG"
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Verify core
+        run: make check
+
+      - name: Source-tree demo smoke
+        run: bash scripts/archive-smoke.sh
+
+      # Older versions of archive-smoke.sh rewrite the checked-in example receipt (its
+      # createdAt changes), and GoReleaser refuses a dirty tree.
+      - name: Restore files the smoke test rewrote
+        run: |
+          git checkout -- results/
+          git status --porcelain
+          test -z "$(git status --porcelain --untracked-files=no)"
+
+      - name: Build archives (do not publish yet)
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean --skip=publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Unpack Linux archive smoke
+        run: bash scripts/archive-unpack-smoke.sh dist
+
+      # Build attestations need a public repository (or GitHub Enterprise Cloud).
+      - name: Attest release archives
+        if: ${{ !github.event.repository.private }}
+        uses: actions/attest@v4
+        with:
+          subject-checksums: ./dist/checksums.txt
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="$TAG"
+          # Release notes are the CHANGELOG section for this version.
+          awk -v v="${tag#v}" '
+            $0 ~ "^## \\[?" v "\\]?( |$)" { on = 1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          [ -s notes.md ] || { echo "CHANGELOG.md has no section for ${tag#v}"; exit 1; }
+          # v0.2.0-rc1 and similar are pre-releases: never "latest" for install.sh.
+          prerelease=()
+          case "$tag" in *-*) prerelease=(--prerelease) ;; esac
+          gh release create "$tag" \
+            --title "MLVM ${tag}" \
+            --notes-file notes.md \
+            "${prerelease[@]}" \
+            dist/*.tar.gz dist/*.zip dist/checksums.txt
+
+      - name: Update the Homebrew tap
+        if: ${{ (env.HOMEBREW_TAP_DEPLOY_KEY != '' || env.HOMEBREW_TAP_TOKEN != '') && !contains(env.TAG, '-') }}
+        run: |
+          version="${TAG#v}"
+          python3 scripts/homebrew-formula.py --version "$version" --checksums dist/checksums.txt > mlvm.rb
+          if [ -n "$HOMEBREW_TAP_DEPLOY_KEY" ]; then
+            install -m 600 /dev/null "$RUNNER_TEMP/tap_key"
+            printf '%s\n' "$HOMEBREW_TAP_DEPLOY_KEY" > "$RUNNER_TEMP/tap_key"
+            export GIT_SSH_COMMAND="ssh -i $RUNNER_TEMP/tap_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+            git clone --depth 1 git@github.com:yao-jz/homebrew-tap.git tap
+          else
+            git clone --depth 1 "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/yao-jz/homebrew-tap.git" tap
+          fi
+          mkdir -p tap/Formula
+          cp mlvm.rb tap/Formula/mlvm.rb
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/mlvm.rb
+          if git diff --cached --quiet; then
+            echo "Formula/mlvm.rb is already at ${version}"
+          else
+            git commit -m "mlvm ${version}"
+            git push
+          fi

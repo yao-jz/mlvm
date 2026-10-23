@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" width="900" height="440" role="img" aria-label="steps and memory per model">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .title { fill: #14161a; font: 600 17px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #5b6270; font: 400 12px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #14161a; font: 500 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .note  { fill: #5b6270; font: 400 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .axis  { stroke: #c9ced6; stroke-width: 1; }
+    .grid  { stroke: #e6e9ee; stroke-width: 1; }
+    .box   { stroke: #ffffff; stroke-width: 1.5; }
+    .ontop { fill: #ffffff; font: 600 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0d1117; }
+      .title { fill: #e6edf3; }
+      .sub   { fill: #9198a1; }
+      .lbl   { fill: #e6edf3; }
+      .note  { fill: #9198a1; }
+      .axis  { stroke: #30363d; }
+      .grid  { stroke: #21262d; }
+      .box   { stroke: #0d1117; }
+      .ontop { fill: #0d1117; }
+    }
+  </style>
+
+<rect class="bg" width="900" height="440"/>
+<text class="title" x="40" y="40">Cost scales with the model, not with the VM</text>
+<text class="sub" x="40" y="61">Emulated instructions per full inference. Memory is dominated by the checkpoint staged into the address space.</text>
+<text class="lbl" x="40" y="116">minilm-l6</text>
+<text class="note" x="40" y="131">23M / 6L / h384</text>
+<rect class="box" x="190" y="100" width="65.3" height="28" rx="3" fill="#2ea08c"/>
+<text class="note" x="267.3" y="119">0.93B steps</text>
+<rect x="190" y="130" width="110.5" height="6" rx="2" fill="#c9743a" opacity="0.75"/>
+<text class="note" x="312.5" y="137" opacity="0.8">285 MiB</text>
+<text class="lbl" x="40" y="162">bge-small</text>
+<text class="note" x="40" y="177">33M / 12L / h384</text>
+<rect class="box" x="190" y="146" width="119.7" height="28" rx="3" fill="#2ea08c"/>
+<text class="note" x="321.7" y="165">1.70B steps</text>
+<rect x="190" y="176" width="158.0" height="6" rx="2" fill="#c9743a" opacity="0.75"/>
+<text class="note" x="360.0" y="183" opacity="0.8">408 MiB</text>
+<text class="lbl" x="40" y="208">minilm-l12</text>
+<text class="note" x="40" y="223">33M / 12L / h384</text>
+<rect class="box" x="190" y="192" width="119.3" height="28" rx="3" fill="#2ea08c"/>
+<text class="note" x="321.3" y="211">1.69B steps</text>
+<rect x="190" y="222" width="157.8" height="6" rx="2" fill="#c9743a" opacity="0.75"/>
+<text class="note" x="359.8" y="229" opacity="0.8">407 MiB</text>
+<text class="lbl" x="40" y="254">bge-base</text>
+<text class="note" x="40" y="269">110M / 12L / h768</text>
+<rect class="box" x="190" y="238" width="427.7" height="28" rx="3" fill="#2ea08c"/>
+<text class="note" x="629.7" y="257">6.06B steps</text>
+<rect x="190" y="268" width="496.2" height="6" rx="2" fill="#c9743a" opacity="0.75"/>
+<text class="note" x="698.2" y="275" opacity="0.8">1280 MiB</text>
+<text class="lbl" x="40" y="300">bert-base</text>
+<text class="note" x="40" y="315">110M / 12L / h768</text>
+<rect class="box" x="190" y="284" width="431.0" height="28" rx="3" fill="#2ea08c"/>
+<text class="note" x="633.0" y="303">6.11B steps</text>
+<rect x="190" y="314" width="499.5" height="6" rx="2" fill="#c9743a" opacity="0.75"/>
+<text class="note" x="701.5" y="321" opacity="0.8">1288 MiB</text>
+<rect x="40" y="378" width="12" height="12" rx="2" fill="#2ea08c"/>
+<text class="note" x="58" y="388">emulated steps</text>
+<rect x="159.60000000000002" y="378" width="12" height="12" rx="2" fill="#c9743a"/>
+<text class="note" x="177.60000000000002" y="388">memory touched</text>
+<text class="note" x="40" y="412">A proof for one instruction commits to all of that memory with a single 32-byte root, whatever its size.</text>
+</svg>

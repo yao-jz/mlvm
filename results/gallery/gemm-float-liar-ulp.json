@@ -1,0 +1,1142 @@
+{
+  "format": "mlvm.dispute-record/1",
+  "guest": "GEMM, float instructions (Rust no_std)",
+  "lie": "1 ULP on a fmul.d at or after step 451723",
+  "honestText": "C[0][0]   = 0x3fac51aec2906e04",
+  "liarText": "C[0][0]   = 0x3fac51aec2906e04",
+  "attempts": [
+    {
+      "step": 451732,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451745,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451758,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451771,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451784,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451797,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451810,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451823,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451836,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451849,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451862,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451875,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451888,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451901,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 21
+    },
+    {
+      "step": 451926,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451939,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451952,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451965,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451978,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 451991,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452004,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452017,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452030,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452043,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452056,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452069,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452082,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452095,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452108,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452121,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452134,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452147,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452160,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452173,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452186,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452199,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452212,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452225,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 21
+    },
+    {
+      "step": 452250,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452263,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452276,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452289,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452302,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452315,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452328,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452341,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452354,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452367,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452380,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452393,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452406,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452419,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452432,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452445,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452458,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452471,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452484,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452497,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452510,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452523,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452536,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452549,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 21
+    },
+    {
+      "step": 452574,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452587,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452600,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452613,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452626,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452639,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452652,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452665,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452678,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452691,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452704,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452717,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452730,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452743,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452756,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452769,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452782,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452795,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452808,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452821,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452834,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452847,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452860,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452873,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 21
+    },
+    {
+      "step": 452898,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452911,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452924,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452937,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452950,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452963,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452976,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 452989,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453002,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453015,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453028,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453041,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453054,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453067,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453080,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453093,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453106,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453119,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453132,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453145,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453158,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453171,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453184,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453197,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 21
+    },
+    {
+      "step": 453222,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453235,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453248,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453261,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453274,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453287,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453300,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453313,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453326,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453339,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453352,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453365,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453378,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453391,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453404,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453417,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453430,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453443,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453456,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453469,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453482,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453495,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453508,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453521,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 21
+    },
+    {
+      "step": 453546,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453559,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453572,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453585,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453598,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453611,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453624,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453637,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453650,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453663,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453676,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453689,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453702,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453715,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453728,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453741,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453754,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453767,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "erasedAfter": 9
+    },
+    {
+      "step": 453780,
+      "pc": 66252,
+      "instruction": "fmul.d fa3,fa3,fa2",
+      "kept": true
+    }
+  ],
+  "honestSteps": 903446,
+  "liarSteps": 903446,
+  "prestate": "0x03cc85548d4619145d7a107253824e067c94c25c3d014fb3ff9a11330294bf82",
+  "honestPost": "0x00a5f8fe032001cc591feb6bc72eefffd1815eea5b4c2f6b7c7fb60cd2129910",
+  "liarPost": "0x00d7b7fdf72cc31bf92089dedbda31dc2aaf44009940b7de3b67fc5bef7baf76",
+  "deviation": {
+    "kind": "ulp",
+    "step": 453780,
+    "pc": 66252,
+    "instruction": "fmul.d fa3,fa3,fa2",
+    "location": "fa3",
+    "honest": "0.00065501008717781719 (0x3f45769f7394cf78)",
+    "forged": "0.0006550100871778173 (0x3f45769f7394cf79)"
+  },
+  "rounds": [
+    {
+      "n": 1,
+      "lo": 0,
+      "hi": 903446,
+      "mid": 451723,
+      "honest": "0x037842cc32fdc8e4535eb988f438300027a1cdb94aee8648481d6dc19603ca29",
+      "liar": "0x037842cc32fdc8e4535eb988f438300027a1cdb94aee8648481d6dc19603ca29",
+      "agree": true
+    },
+    {
+      "n": 2,
+      "lo": 451723,
+      "hi": 903446,
+      "mid": 677584,
+      "honest": "0x03c8ffd93a4c26588febb7983f7daf6b48da8de39384676a9213dc47e84c99fc",
+      "liar": "0x036c5f6e41997c98bed384baf111c4ef5e38c6b0394393a82b24235c9f89b481",
+      "agree": false
+    },
+    {
+      "n": 3,
+      "lo": 451723,
+      "hi": 677584,
+      "mid": 564653,
+      "honest": "0x03f470a577c4b25534b1f8da6082a53305c616974a9bf0f3c0f96dd78c608891",
+      "liar": "0x03abd6900c0262b2ab58af44e4e67f3b1562b49d3bedf087a80d91400923a314",
+      "agree": false
+    },
+    {
+      "n": 4,
+      "lo": 451723,
+      "hi": 564653,
+      "mid": 508188,
+      "honest": "0x03b763eca6828d47229ddcb912abb5b1fbd1bd6aff200ba91b02bb4a069af8ab",
+      "liar": "0x036c4495d69b46bfb16d2cbcdafc0708ca58828f729432afef47e07783edf8ad",
+      "agree": false
+    },
+    {
+      "n": 5,
+      "lo": 451723,
+      "hi": 508188,
+      "mid": 479955,
+      "honest": "0x03d711f01f0115dd9ce978613c6cde88e29205583142ee282f8106de7a8e0d3f",
+      "liar": "0x03fc4d4919dc08c920874a0ad28107e8b6c7b29339e5f9f8b1264f3887746931",
+      "agree": false
+    },
+    {
+      "n": 6,
+      "lo": 451723,
+      "hi": 479955,
+      "mid": 465839,
+      "honest": "0x03082b56027761bc86541bd7be4a928ea05e11ca1a7e5e1fcdc0b11be82cbec9",
+      "liar": "0x03f2e4f7e0184528922dc08f015a849d9a8fa378f76f1f46a85fc51f95522a0c",
+      "agree": false
+    },
+    {
+      "n": 7,
+      "lo": 451723,
+      "hi": 465839,
+      "mid": 458781,
+      "honest": "0x03f6e075df4009718a7068c374785ef3fd3934a99bd9640545f59d0ad99590a0",
+      "liar": "0x03fff6a5af37421ba48ba5d7da0e814f08e306ac62574dbe46c136d2c3495eec",
+      "agree": false
+    },
+    {
+      "n": 8,
+      "lo": 451723,
+      "hi": 458781,
+      "mid": 455252,
+      "honest": "0x03ef262bea74c04155f896a10f6b0380dd0dbad9141e6f885b33119cee82dc47",
+      "liar": "0x03f93cd7dad96a710a9c92b26691cd4ba524b0a7d59e0776511267447b5995b8",
+      "agree": false
+    },
+    {
+      "n": 9,
+      "lo": 451723,
+      "hi": 455252,
+      "mid": 453487,
+      "honest": "0x03e67a62c34a175133650e1944d14759f973e567098b47d9b2426c20c1e36000",
+      "liar": "0x03e67a62c34a175133650e1944d14759f973e567098b47d9b2426c20c1e36000",
+      "agree": true
+    },
+    {
+      "n": 10,
+      "lo": 453487,
+      "hi": 455252,
+      "mid": 454369,
+      "honest": "0x03bbd615d0d28184a4b5da7c3bc31b2ecb56a86f70fce50007bd794211d642a0",
+      "liar": "0x032360138eaa96e4b52c8c3d9f326624a1cb1bba262cb10768ecd7b8ea412e01",
+      "agree": false
+    },
+    {
+      "n": 11,
+      "lo": 453487,
+      "hi": 454369,
+      "mid": 453928,
+      "honest": "0x03bc3d00fbaed8d15a4ad062ae222418229d96b9c7a3b4014653726653bdf04b",
+      "liar": "0x0355ca9c7cf277f814308fe840c4164f6327b1bc4ce6986ce0b3ef4b3915833e",
+      "agree": false
+    },
+    {
+      "n": 12,
+      "lo": 453487,
+      "hi": 453928,
+      "mid": 453707,
+      "honest": "0x03f3f01082b98121ae9a9cbd878f99036b19929f8b746f8331d2aa04b09f86a2",
+      "liar": "0x03f3f01082b98121ae9a9cbd878f99036b19929f8b746f8331d2aa04b09f86a2",
+      "agree": true
+    },
+    {
+      "n": 13,
+      "lo": 453707,
+      "hi": 453928,
+      "mid": 453817,
+      "honest": "0x033329c800460e3428c5a4867e1a053487e77d0e7a262c241fd9da74e36dd58f",
+      "liar": "0x03ca20826d5dc2ad74d4feea8dab1faf437ff5634c8a3acb948b4c42dfde4c0f",
+      "agree": false
+    },
+    {
+      "n": 14,
+      "lo": 453707,
+      "hi": 453817,
+      "mid": 453762,
+      "honest": "0x0344817367ae5e094ecc47b883eac54e7600e9c11c9c840a051dbdf5a5ff1995",
+      "liar": "0x0344817367ae5e094ecc47b883eac54e7600e9c11c9c840a051dbdf5a5ff1995",
+      "agree": true
+    },
+    {
+      "n": 15,
+      "lo": 453762,
+      "hi": 453817,
+      "mid": 453789,
+      "honest": "0x032adbc68dcfbece6f9e3d55f98eab466d0555b93b2a36f2c64f6aa8929daa78",
+      "liar": "0x0302770014336b61bdeb40effb3888b212b8ee7e25c4f414132bc95aceefb98b",
+      "agree": false
+    },
+    {
+      "n": 16,
+      "lo": 453762,
+      "hi": 453789,
+      "mid": 453775,
+      "honest": "0x03d236fbcc1675b8d4b8b2530e621027d342124f5291bb679b811aa326c464fa",
+      "liar": "0x03d236fbcc1675b8d4b8b2530e621027d342124f5291bb679b811aa326c464fa",
+      "agree": true
+    },
+    {
+      "n": 17,
+      "lo": 453775,
+      "hi": 453789,
+      "mid": 453782,
+      "honest": "0x03fe7d304914d36626a524a389f86a7b914fab06506a4a2267cdd2169c191125",
+      "liar": "0x03a1aa8f5ec937930c354b10c61534b77b4c0e04f7c9ce9bd6deb8684d929db0",
+      "agree": false
+    },
+    {
+      "n": 18,
+      "lo": 453775,
+      "hi": 453782,
+      "mid": 453778,
+      "honest": "0x037dc56c9dd16172dcf6b994339efcb8e062844179e2bb1735c7b44f6321debe",
+      "liar": "0x037dc56c9dd16172dcf6b994339efcb8e062844179e2bb1735c7b44f6321debe",
+      "agree": true
+    },
+    {
+      "n": 19,
+      "lo": 453778,
+      "hi": 453782,
+      "mid": 453780,
+      "honest": "0x039dcf54b65efa3b6ba8f00a9c22f8ba9e49555defdd2c2cb884461b1edca50a",
+      "liar": "0x039dcf54b65efa3b6ba8f00a9c22f8ba9e49555defdd2c2cb884461b1edca50a",
+      "agree": true
+    },
+    {
+      "n": 20,
+      "lo": 453780,
+      "hi": 453782,
+      "mid": 453781,
+      "honest": "0x0377ad1aa683e54fcf095c9b61ce52614fa2205cbe7fea974ab07f78aa4aacec",
+      "liar": "0x033026f58add98f878072c047b6bcc302b7e6aa151d96bda3e699f56d15c9ba0",
+      "agree": false
+    }
+  ],
+  "verdict": {
+    "step": 453780,
+    "pc": 66252,
+    "word": "0x12c6f6d3",
+    "instruction": "fmul.d fa3,fa3,fa2",
+    "function": "_start",
+    "class": "float-arith",
+    "agreedPrestate": "0x039dcf54b65efa3b6ba8f00a9c22f8ba9e49555defdd2c2cb884461b1edca50a",
+    "honestPost": "0x0377ad1aa683e54fcf095c9b61ce52614fa2205cbe7fea974ab07f78aa4aacec",
+    "liarPost": "0x033026f58add98f878072c047b6bcc302b7e6aa151d96bda3e699f56d15c9ba0",
+    "refereePost": "0x0377ad1aa683e54fcf095c9b61ce52614fa2205cbe7fea974ab07f78aa4aacec",
+    "method": "SoftFloat re-execution of this one instruction from the 674-byte state witness, after checking the instruction word's Merkle proof against the witness memory root",
+    "winner": "honest",
+    "stateWitness": "0xf8d84dcb0178968c77d9e25da787a86a15d55ef6747d16bfa245d8aee6b09f9d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000102cc0000000000000006ec9400007f00000000000000000000000000000000000000000000000000000000000fffffffffffffc0000000000000000000000000000000000000000000014728000000000001232800000000000123e800000000000129280000000000000000000000000001172800000000000129280000000000013b2800000000000000190000000000000008000000000000000400000000000000100000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000147b800000000000123b800000000000112c40000000000000019000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003feff7ced916872b3f50624dd2f1a9fc3fe4f5d7b6df529bbf8d915e1348688700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000150000000000000000000000000000000000000000000001dfffb70b5ad88f4234682f169b0cc841c8dcad33853bd87b1a88d049ecdc798b",
+    "memProof": "0x0736cf45171f00008735cf45d3f6c6125377d7025377b71227b0ee00938e8e00130e8e00e3987efc938818001303030c9382020c13081800e390d8fa13b88700f064ef9308311a598bd071bd63186d8ed79f294bcafef16c35ddf42efcde336854a81cc08f8a578871fc8e0518ed0a75cd0c549456b6a5b7c897415ad871639c8b30c84ca9263256a644e6f2cd4237587e3a5411809b5035ad3decd34ab2e5f6a495c7de0062efee9f4f4fc653d9973f95b5f48f4bcf4f3b83507647a6327fd6cc9b50eaeeee41273f938d8ea0cc17be0de4f180c79351568c265ce532ff19ff887c22bd8750d34016ac3c66b5ff102dacdd73f6b014e710b51e8022af9a19680a7cf2f6f1677d236540dae698aedfbb7fb5287c768b52162464b8c1e3f6a76fedebecb267f81d2845746d6e5e84edbd04c18a2e9f1278adfa48dc399c77bae7b67cb6f55ff5ca9f0b554d469784e40206109183677ad3238a6200b133355aa6f9dc3e7fe016e050eff260334f18a5d4fe391d82092319f5964f2e2eb7c1c3a5f8b13a49e282f609c317a833fb8d976d11517c571d1221a265d25af778ecf8923490c6ceeb450aecdc82e28293031d10c7d73bf85e57bf041a97360aa2c5d99cc1df82d9c4b87413eae2ef048f94b4d3554cea73d92b0f7af96e0271c691e2bb5c67add7c6caf302256adedf7ab114da0acfe870d449a3a489f781d659e8beccda7bce9f4e8618b6bd2f4132ce798cdc7a60e7e1460a7299e3c6342a579626d22733e50f526ec2fa19a22b31e8ed50f23cd1fdf94c9154ed3a7609a2f1ff981fe1d3b5c807b281e4683cc6d6315cf95b9ade8641defcb32372f1c126e398ef7a5a2dce0a8a7f68bb74560f8f71837c2c2ebbcbf7fffb42ae1896f13f7c7479a0b46a28b6f55540f89444f63de0378e3d121be09e06cc9ded1c20e65876d36aa0c65e9645644786b620e2dd2ad648ddfcbf4a7e5b1a3a4ecfe7f64667a3f0b7e2f4418588ed35a2458cffeb39b93d26f18d2ab13bdce6aee58e7b99359ec2dfd95a9c16dc00d6ef18b7933a6f8dc65ccb55667138776f7dea101070dc8796e3774df84f40ae0c8229d0d6069e5c8f39a7c299677a09d367fc7b05e3bc380ee652cdc72595f74c7b1043d0e1ffbab734648c838dfb0527d971b602bc216c9619ef0abf5ac974a1ed57f4050aa510dd9c74f508277b39d7973bb2dfccc5eeb0618db8cd74046ff337f0a7bf2c8e03e10f642c1886798d71806ab1e888d9e5ee87d0838c5655cb21c6cb83313b5a631175dff4963772cce9108188b34ac87c81c41e662ee4dd2dd7b2bc707961b1e646c4047669dcb6584f0d8d770daf5d7e7deb2e388ab20e2573d171a88108e79d820e98f26c0b84aa8b2f4aa4968dbb818ea32293237c50ba75ee485f4c22adf2f741400bdf8d6a9cc7df7ecae576221665d7358448818bb4ae4562849e949e17ac16e0be16688e156b5cf15e098c627c0056a927ae5ba08d7291c96c8cbddcc148bf48a6d68c7974b94356f53754ef6171d757bf558bebd2ceec7f3c5dce04a4782f88c2c6036ae78ee206d0bc5289d20461a2e21908c2968c0699040a6fd866a577a99a9d2ec88745c815fd4a472c789244daae824d72ddc272aab68a8c3022e36f10454437c1886f3ff9927b64f232df414f27e429a4bef3083bc31a671d046ea5c1f5b8c3094d72868d9dfdc12c7334ac5f743cc5c365a9a6a15c1f240ac25880c7a9d1de290696cb766074a1d83d9278164adcf616c3bfabf63999a01966c998b7bb572774035a63ead49da73b5987f34775786645d0c5dd7c04a2f8a75dcae085213652f5bce3ea8b9b9bedd1cab3c5e9b88b152c9b8a7b79637d35911848b0c41e7cc7cca2ab4fe9a15f9c38bb4bb9390c4e2d8ce834ffd7a6cd85d7113d4521abb857774845c4291e6f6d010d97e3185bc799d83e3bb31501b3da786680df30fbc18eb41cbce611e8c0e9c72f69571ca10d3ef857d04d9c03ead7c6317d797a090fa1271ad9c7addfbcb412e9643d4fb33b1809c42623f474055fa9400a2027a7a885c8dfa4efe20666b4ee27d7529c134d7f28d53f175f6bf4b62faa2110d5b76f0f770c15e628181c1fcc18f970a9c34d24b2fc8c50ca9c07a7156ef4e5ff4bdf002eda0b11c1d359d0b59a54680704dbb9db631457879b27e0dfdbe50158fd9cf9b4cf77605c4ac4c95bd65fc9f6f9295a686647cb999090819cda700820c282c613cedcd218540bbc6f37b01c6567c4a1ea624f092a3a5cca2d6f0f0db231972fce627f0ecca0dee60f17551c5f8fdaeb5ab560b2ceb781cdb339361a0fbee1b9dffad59115138c8d6a70dda9ccc1bf0bbdd7fee15764845db875f6432559ff8dbc9055324431bc34e5b93d15da307317849eccd90c0c7b98870b9317c15a5959dcfb84c76dcc908c4fe6ba92126339bf06e458f6646df5e83ba7c3d35bc263b3222c8e9040068847749ca8e8f95045e4342aeb521eb3a5587ec268ed3aa6faf32b62b0bc41a9d549521f406fc3ec7d4dabb75e0d3e144d7cc882372d13746b6dcd481b1b229bcaec9f7422cdfb84e35c5d92171376cae5c86300822d729cd3a8479583bef09527027dba5f11263c5cbbeb3834b7a5c1cba9aa5fee0c95ec3f17a33ec3d8047fff799187f5ae2040bbe913c226c34c9fbe4389dd728984257a816892b3cae3e43191dd291f0eb5",
+    "proofBytes": 1920,
+    "boundary": "Not on-chain settlement: RISCV.sol does not implement floating-point arithmetic, and MLVM's experimental nested float sub-game covers only f64 in round-to-nearest-even mode."
+  },
+  "seconds": 0.209578416
+}

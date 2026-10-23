@@ -1,0 +1,236 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1150" width="960" height="1150" role="img" aria-label="How MLVM works: the inputs of a run, executing one instruction at a time, fingerprinting the whole machine, finding the first disagreement between two runs, and checking that one instruction">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .panel { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1; }
+    .card  { fill: #ffffff; stroke: #d0d7de; stroke-width: 1; }
+    .void  { fill: none; stroke: #8c959f; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .title { fill: #1f2328; font: 600 19px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #59636e; font: 400 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #1f2328; font: 500 13.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .hdr   { fill: #59636e; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.06em; }
+    .m     { fill: #1f2328; font: 400 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .mm    { fill: #59636e; font: 400 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ms    { fill: #59636e; font: 400 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .tag   { font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .stage { fill: #1f2328; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .wire  { stroke: #8c959f; stroke-width: 1.3; fill: none; }
+    .head  { fill: #8c959f; }
+    .seg   { fill: #d0d7de; stroke: #f6f8fa; stroke-width: 1.5; }
+    .segn  { fill: #3b7dd8; fill-opacity: 0.38; stroke: #f6f8fa; stroke-width: 1.5; }
+    .mt    { fill: #1f2328; font: 600 14px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .d     { fill: #424a53; font: 400 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .c     { fill: #6e7781; font: 400 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0d1117; }
+      .panel { fill: #161b22; stroke: #30363d; }
+      .card  { fill: #0d1117; stroke: #30363d; }
+      .void  { stroke: #6e7681; }
+      .title, .lbl, .m, .stage { fill: #e6edf3; }
+      .sub, .hdr, .mm, .ms { fill: #9198a1; }
+      .wire  { stroke: #6e7681; }
+      .head  { fill: #6e7681; }
+      .seg   { fill: #30363d; stroke: #161b22; }
+      .segn  { fill-opacity: 0.55; stroke: #161b22; }
+      .mt    { fill: #e6edf3; }
+      .d     { fill: #b7bdc8; }
+      .c     { fill: #7d8590; }
+    }
+  </style>
+
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="bg" width="960" height="1150"/>
+<text class="title" x="24" y="34">How MLVM works</text>
+<text class="sub" x="24" y="56">A model run you can check one instruction at a time. Each module: what it does, and in grey, the code behind it.</text>
+<rect class="panel" x="24" y="74" width="284" height="300" rx="8"/>
+<text class="hdr" x="38" y="96">01 · INPUTS</text>
+<text class="lbl" x="38" y="116">What a run starts from</text>
+<rect class="card" x="38" y="136" width="256" height="68" rx="6"/>
+<rect x="38" y="144" width="3" height="52" rx="1.5" fill="#2ea08c"/>
+<text class="mt" x="52" y="157">The program</text>
+<text class="d" x="52" y="176">The model's code, compiled for RISC-V</text>
+<text class="c" x="52" y="193">static RV64IMAFD ELF, C or Rust</text>
+<rect class="card" x="38" y="212" width="256" height="68" rx="6"/>
+<rect x="38" y="220" width="3" height="52" rx="1.5" fill="#2ea08c"/>
+<text class="mt" x="52" y="233">Input files</text>
+<text class="d" x="52" y="252">Weights, tokenizer and prompt</text>
+<text class="c" x="52" y="269">copied into memory before the run</text>
+<rect class="card" x="38" y="288" width="256" height="68" rx="6"/>
+<rect x="38" y="296" width="3" height="52" rx="1.5" fill="#2ea08c"/>
+<text class="mt" x="52" y="309">Fixed random bytes</text>
+<text class="d" x="52" y="328">Every run gets the same “random” bytes</text>
+<text class="c" x="52" y="345">5 MiB blob served by getrandom</text>
+<line class="wire" x1="308" y1="224" x2="330" y2="224" marker-end="url(#ah)"/>
+<rect class="panel" x="332" y="74" width="604" height="300" rx="8"/>
+<text class="hdr" x="346" y="96">02 · RUN</text>
+<text class="lbl" x="346" y="116">Execute the program one instruction at a time</text>
+<rect class="card" x="346" y="136" width="132" height="50" rx="6"/>
+<text class="mt" x="412" y="156" text-anchor="middle">Fetch</text>
+<text class="d" x="412" y="174" text-anchor="middle">read the instruction</text>
+<rect class="card" x="494" y="136" width="132" height="50" rx="6"/>
+<text class="mt" x="560" y="156" text-anchor="middle">Decode</text>
+<text class="d" x="560" y="174" text-anchor="middle">find what it asks</text>
+<line class="wire" x1="479" y1="161" x2="492" y2="161" marker-end="url(#ah)"/>
+<rect class="card" x="642" y="136" width="132" height="50" rx="6"/>
+<text class="mt" x="708" y="156" text-anchor="middle">Execute</text>
+<text class="d" x="708" y="174" text-anchor="middle">compute the result</text>
+<line class="wire" x1="627" y1="161" x2="640" y2="161" marker-end="url(#ah)"/>
+<rect class="card" x="790" y="136" width="132" height="50" rx="6"/>
+<text class="mt" x="856" y="156" text-anchor="middle">Write back</text>
+<text class="d" x="856" y="174" text-anchor="middle">update the state</text>
+<line class="wire" x1="775" y1="161" x2="788" y2="161" marker-end="url(#ah)"/>
+<text class="d" x="346" y="206">Each instruction is one of these kinds of work:</text>
+<rect class="card" x="346" y="218" width="184" height="100" rx="6"/>
+<rect x="346" y="226" width="3" height="84" rx="1.5" fill="#3b7dd8"/>
+<text class="mt" x="360" y="239">Integer math</text>
+<text class="d" x="360" y="258">Add, multiply, compare,</text>
+<text class="d" x="360" y="275">read and write memory</text>
+<text class="c" x="360" y="307">rvgo/fast · yul64.go</text>
+<rect class="card" x="542" y="218" width="184" height="100" rx="6"/>
+<rect x="542" y="226" width="3" height="84" rx="1.5" fill="#8b6cc9"/>
+<text class="mt" x="556" y="239">Floating point</text>
+<text class="d" x="556" y="258">Done in software, so every</text>
+<text class="d" x="556" y="275">computer gets the same bits</text>
+<text class="c" x="556" y="307">rvgo/comp · SoftFloat 3e</text>
+<rect class="card" x="738" y="218" width="184" height="100" rx="6"/>
+<rect x="738" y="226" width="3" height="84" rx="1.5" fill="#7d8590"/>
+<text class="mt" x="752" y="239">System calls</text>
+<text class="d" x="752" y="258">Files, memory and time come</text>
+<text class="d" x="752" y="275">from the VM, never the host</text>
+<text class="c" x="752" y="307">37 Linux syscalls</text>
+<text class="c" x="346" y="350">About 20 million instructions per second natively; the same code runs in a browser.</text>
+<line class="wire" x1="480" y1="374" x2="480" y2="400" marker-end="url(#ah)"/>
+<text class="c" x="490" y="392">after any instruction</text>
+<rect class="panel" x="24" y="402" width="912" height="272" rx="8"/>
+<text class="hdr" x="38" y="424">03 · FINGERPRINT</text>
+<text class="lbl" x="38" y="444">The whole machine hashes to one 32-byte fingerprint</text>
+<text class="d" x="38" y="466">A 674-byte state record holds the registers and the roots of memory and files. Its hash is the fingerprint, also called the state root.</text>
+<line class="wire" x1="40.0" y1="496" x2="510.6" y2="496"/>
+<line class="wire" x1="40.0" y1="492" x2="40.0" y2="500"/>
+<line class="wire" x1="510.6" y1="492" x2="510.6" y2="500"/>
+<text class="c" x="275.32" y="489" text-anchor="middle">inherited from Asterisc · 362 B</text>
+<line class="wire" x1="514.6" y1="496" x2="920.0" y2="496"/>
+<line class="wire" x1="514.6" y1="492" x2="514.6" y2="500"/>
+<line class="wire" x1="920.0" y1="492" x2="920.0" y2="500"/>
+<text class="c" x="717.32" y="489" text-anchor="middle">added by MLVM · 312 B</text>
+<rect class="seg" x="40.0" y="504" width="41.8" height="28"><title>state record bytes 0–32</title></rect>
+<rect class="seg" x="81.8" y="504" width="52.2" height="28"><title>state record bytes 32–72</title></rect>
+<rect class="seg" x="134.0" y="504" width="44.4" height="28"><title>state record bytes 72–106</title></rect>
+<rect class="seg" x="178.4" y="504" width="334.2" height="28"><title>state record bytes 106–362</title></rect>
+<text class="d" x="345.519" y="522" text-anchor="middle">32 integer registers</text>
+<rect class="segn" x="512.6" y="504" width="334.2" height="28"><title>state record bytes 362–618</title></rect>
+<text class="d" x="679.763" y="522" text-anchor="middle">32 float registers</text>
+<rect class="segn" x="846.9" y="504" width="20.9" height="28"><title>state record bytes 618–634</title></rect>
+<rect class="segn" x="867.8" y="504" width="10.4" height="28"><title>state record bytes 634–642</title></rect>
+<rect class="segn" x="878.2" y="504" width="41.8" height="28"><title>state record bytes 642–674</title></rect>
+<line class="wire" x1="60.9" y1="532" x2="60.9" y2="538"/>
+<line class="wire" x1="107.9" y1="532" x2="107.9" y2="538"/>
+<line class="wire" x1="156.2" y1="532" x2="156.2" y2="538"/>
+<line class="wire" x1="857.3" y1="532" x2="857.3" y2="538"/>
+<line class="wire" x1="873.0" y1="532" x2="873.0" y2="538"/>
+<line class="wire" x1="899.1" y1="532" x2="899.1" y2="538"/>
+<text class="c" x="40" y="551">memory root · pre-image key · pc, step, heap</text>
+<text class="c" x="920" y="551" text-anchor="end">randomness · fcsr · files root</text>
+<rect class="card" x="40" y="568" width="282.667" height="92" rx="6"/>
+<rect x="40" y="576" width="3" height="76" rx="1.5" fill="#2ea08c"/>
+<text class="mt" x="54" y="589">Memory</text>
+<text class="d" x="54" y="608">A Merkle tree over all 2⁶⁴ bytes: one word</text>
+<text class="d" x="54" y="625">is proven with a 1,920-byte proof</text>
+<text class="c" x="54" y="649">4 KiB pages · rvgo/fast/memory.go</text>
+<rect class="card" x="338.667" y="568" width="282.667" height="92" rx="6"/>
+<rect x="338.667" y="576" width="3" height="76" rx="1.5" fill="#2ea08c"/>
+<text class="mt" x="352.667" y="589">Files</text>
+<text class="d" x="352.667" y="608">Staged files and open file handles</text>
+<text class="d" x="352.667" y="625">have their own trees, proven the same way</text>
+<text class="c" x="352.667" y="649">992-byte proof · rvgo/fast/file.go</text>
+<rect class="card" x="637.333" y="568" width="282.667" height="92" rx="6"/>
+<rect x="637.333" y="576" width="3" height="76" rx="1.5" fill="#3b7dd8"/>
+<text class="mt" x="651.333" y="589">The answer</text>
+<text class="d" x="651.333" y="608">The model writes its answer to a fixed</text>
+<text class="d" x="651.333" y="625">address, so the fingerprint covers it</text>
+<text class="c" x="651.333" y="649">MLVM_OUT · 0x3100_0000_0000_0000</text>
+<line class="wire" x1="264" y1="674" x2="264" y2="700" marker-end="url(#ah)"/>
+<text class="c" x="274" y="692">fingerprints of two runs</text>
+<line class="wire" x1="732" y1="674" x2="732" y2="700" marker-end="url(#ah)"/>
+<text class="c" x="742" y="692">state record + memory proofs</text>
+<rect class="panel" x="24" y="702" width="480" height="286" rx="8"/>
+<text class="hdr" x="38" y="724">04 · FIND</text>
+<text class="lbl" x="38" y="744">Find the first instruction where two runs differ</text>
+<text class="d" x="38" y="772" fill="#3b7dd8">original run</text>
+<line x1="136" y1="768" x2="486" y2="768" stroke="#3b7dd8" stroke-width="2"/>
+<circle class="card" cx="136" cy="768" r="3.5"/>
+<circle class="card" cx="186" cy="768" r="3.5"/>
+<circle class="card" cx="236" cy="768" r="3.5"/>
+<circle class="card" cx="286" cy="768" r="3.5"/>
+<circle class="card" cx="336" cy="768" r="3.5"/>
+<circle class="card" cx="386" cy="768" r="3.5"/>
+<circle class="card" cx="436" cy="768" r="3.5"/>
+<circle class="card" cx="486" cy="768" r="3.5"/>
+<text class="d" x="38" y="800" fill="#c9743a">changed run</text>
+<line x1="136" y1="796" x2="352" y2="796" stroke="#7d8590" stroke-width="2"/>
+<line x1="352" y1="796" x2="486" y2="796" stroke="#c9743a" stroke-width="2"/>
+<circle class="card" cx="136" cy="796" r="3.5"/>
+<circle class="card" cx="186" cy="796" r="3.5"/>
+<circle class="card" cx="236" cy="796" r="3.5"/>
+<circle class="card" cx="286" cy="796" r="3.5"/>
+<circle class="card" cx="336" cy="796" r="3.5"/>
+<circle class="card" cx="386" cy="796" r="3.5"/>
+<circle class="card" cx="436" cy="796" r="3.5"/>
+<circle class="card" cx="486" cy="796" r="3.5"/>
+<path d="M348,792 l8,8 m0,-8 l-8,8" stroke="#c9743a" stroke-width="2"/>
+<rect x="340" y="758" width="24" height="48" fill="#3b7dd8" fill-opacity="0.12"/>
+<text class="c" x="352" y="822" text-anchor="middle">the search ends here</text>
+<text class="d" x="38" y="852">1. The two runs end with different fingerprints.</text>
+<text class="d" x="38" y="871">2. Ask both for their fingerprint halfway through.</text>
+<text class="d" x="38" y="890">3. Keep the half where they first differ, and repeat.</text>
+<text class="d" x="38" y="909">About log₂ N rounds: 26 for 38 million instructions,</text>
+<text class="d" x="38" y="928">34 for 14.8 billion. Saved checkpoints let each side answer</text>
+<text class="d" x="38" y="947">without running from the start.</text>
+<text class="c" x="38" y="974">rvgo/internal/liar · checkpoint every 2²² instructions</text>
+<line class="wire" x1="504" y1="845" x2="526" y2="845" marker-end="url(#ah)"/>
+<rect class="panel" x="528" y="702" width="408" height="286" rx="8"/>
+<text class="hdr" x="542" y="724">05 · CHECK</text>
+<text class="lbl" x="542" y="744">Re-execute only that one instruction</text>
+<text class="d" x="542" y="766">✓ The state record hashes to the fingerprint both runs agreed on.</text>
+<text class="d" x="542" y="785">✓ The memory proofs match its memory root.</text>
+<rect class="card" x="542" y="800" width="380" height="48" rx="6"/>
+<rect x="542" y="808" width="3" height="32" rx="1.5" fill="#3b7dd8"/>
+<text class="mt" x="556" y="821">RISCV.sol</text>
+<text class="c" x="556" y="837">integer and memory · ≈84K gas</text>
+<text class="d" x="642" y="821">A smart contract runs the step in an EVM</text>
+<rect class="card" x="542" y="854" width="380" height="48" rx="6"/>
+<rect x="542" y="862" width="3" height="32" rx="1.5" fill="#2ea08c"/>
+<text class="mt" x="556" y="875">slow.Step</text>
+<text class="c" x="556" y="891">integer, memory and file steps</text>
+<text class="d" x="642" y="875">The same rules, written in Go</text>
+<rect class="card" x="542" y="908" width="380" height="48" rx="6"/>
+<rect x="542" y="916" width="3" height="32" rx="1.5" fill="#8b6cc9"/>
+<text class="mt" x="556" y="929">SoftFloat</text>
+<text class="c" x="556" y="945">float arithmetic · a local check</text>
+<text class="d" x="642" y="929">Recomputes a floating-point result</text>
+<text class="d" x="542" y="974">→ a few-kilobyte record that anyone can check again</text>
+<text class="hdr" x="24" y="1026">06 · WHERE IT RUNS</text>
+<rect class="card" x="24" y="1036" width="219" height="92" rx="6"/>
+<rect x="24" y="1044" width="3" height="76" rx="1.5" fill="#7d8590"/>
+<text class="mt" x="38" y="1057">Command line</text>
+<text class="d" x="38" y="1076">Native builds for Linux,</text>
+<text class="d" x="38" y="1093">macOS and Windows</text>
+<text class="c" x="38" y="1117">cmd/mlvm · brew · install.sh</text>
+<rect class="card" x="255" y="1036" width="219" height="92" rx="6"/>
+<rect x="255" y="1044" width="3" height="76" rx="1.5" fill="#7d8590"/>
+<text class="mt" x="269" y="1057">Browser</text>
+<text class="d" x="269" y="1076">The same VM, compiled to</text>
+<text class="d" x="269" y="1093">WebAssembly</text>
+<text class="c" x="269" y="1117">rvgo/wasm · the playground</text>
+<rect class="card" x="486" y="1036" width="219" height="92" rx="6"/>
+<rect x="486" y="1044" width="3" height="76" rx="1.5" fill="#7d8590"/>
+<text class="mt" x="500" y="1057">Every push</text>
+<text class="d" x="500" y="1076">Six platforms must produce</text>
+<text class="d" x="500" y="1093">identical fingerprints</text>
+<text class="c" x="500" y="1117">workflows/determinism.yml</text>
+<rect class="void" x="717" y="1036" width="219" height="92" rx="8"/>
+<text class="mt" x="731" y="1057">Not yet</text>
+<text class="d" x="731" y="1076">An on-chain dispute game with</text>
+<text class="d" x="731" y="1093">bonds and clocks; an audit</text>
+<text class="c" x="731" y="1117">see docs/STATUS.md</text>
+</svg>

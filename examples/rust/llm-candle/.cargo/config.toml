@@ -1,0 +1,8 @@
+# Cross-compiling to the VM: static glibc, and allow libgcc and compiler_builtins to both
+# define the soft-float helpers. Same settings as ../bert-riscv.
+[target.riscv64imafd-unknown-linux-gnu]        # settings for this target (now use this one)
+linker = "riscv64-unknown-linux-gnu-gcc" 
+rustflags = [
+    "-C", "target-feature=+crt-static",      # can't be in spec
+    "-C", "link-arg=-Wl,--allow-multiple-definition",      # allow multiple definition for __unorddf2 __addsf3 __adddf3 __adddf3 __ledf2 __ltdf2 __muldf3 __mulsf3
+]

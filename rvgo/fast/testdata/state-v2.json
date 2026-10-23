@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "memory": [],
+  "preimageKey": [
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0
+  ],
+  "preimageOffset": 5,
+  "pc": 4096,
+  "exit": 0,
+  "exited": false,
+  "step": 7,
+  "heap": 268435456,
+  "loadReservation": 0,
+  "registers": [
+    0, 11, 22, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0
+  ],
+  "fregisters": [
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 99
+  ],
+  "lastHint": "0x0102",
+  "fileSystem": {
+    "version": 2,
+    "files": [
+      {
+        "name": "input.bin",
+        "size": 3,
+        "addr": 2305843009213693952
+      }
+    ],
+    "descriptors": [
+      {
+        "fd": 100,
+        "name": "input.bin",
+        "offset": 1
+      }
+    ],
+    "nextFd": 101
+  },
+  "filePointer": 2305843077933170688,
+  "randomFileAddr": 1513209474796486656,
+  "randomFileOffset": 8,
+  "fcsr": 37,
+  "opCount": {
+    "ADD": 2
+  }
+}

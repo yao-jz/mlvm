@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 528" width="900" height="528" role="img" aria-label="MLVM RISC-V instruction coverage by extension">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .title { fill: #14161a; font: 600 17px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #5b6270; font: 400 12px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #14161a; font: 500 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .note  { fill: #5b6270; font: 400 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .addr  { fill: #5b6270; font: 400 11.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .axis  { stroke: #c9ced6; stroke-width: 1; }
+    .brk   { stroke: #c9ced6; stroke-width: 1; stroke-dasharray: 3 3; }
+    .box   { stroke: #ffffff; stroke-width: 1.5; }
+    .ontop { fill: #ffffff; font: 600 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0d1117; }
+      .title { fill: #e6edf3; }
+      .sub   { fill: #9198a1; }
+      .lbl   { fill: #e6edf3; }
+      .note  { fill: #9198a1; }
+      .addr  { fill: #9198a1; }
+      .axis  { stroke: #30363d; }
+      .brk   { stroke: #30363d; }
+      .box   { stroke: #0d1117; }
+      .ontop { fill: #0d1117; }
+    }
+  </style>
+
+<rect class="bg" width="900" height="528"/>
+<text class="title" x="40" y="40">RV64IMAFD instruction coverage</text>
+<text class="sub" x="40" y="61">Generated from rvgo/fast/vm.go by scripts/isa-coverage.py. Partial means it decodes and executes, with a documented semantic gap.</text>
+<text class="lbl" x="40" y="103">RV32I</text>
+<rect class="box" x="130.0" y="88" width="551.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="405.5" y="103" text-anchor="middle">38</text>
+<rect class="box" x="682.5" y="88" width="29.0" height="21" rx="3" fill="#d9a441"/>
+<text class="ontop" x="697.0" y="103" text-anchor="middle">2</text>
+<text class="note" x="724" y="103">40 / 40</text>
+<text class="lbl" x="40" y="137">RV64I</text>
+<rect class="box" x="130.0" y="122" width="174.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="217.0" y="137" text-anchor="middle">12</text>
+<text class="note" x="724" y="137">12 / 12</text>
+<text class="lbl" x="40" y="171">RV32M</text>
+<rect class="box" x="130.0" y="156" width="116.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="188.0" y="171" text-anchor="middle">8</text>
+<text class="note" x="724" y="171">8 / 8</text>
+<text class="lbl" x="40" y="205">RV64M</text>
+<rect class="box" x="130.0" y="190" width="72.5" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="166.2" y="205" text-anchor="middle">5</text>
+<text class="note" x="724" y="205">5 / 5</text>
+<text class="lbl" x="40" y="239">RV32A</text>
+<rect class="box" x="130.0" y="224" width="159.5" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="209.8" y="239" text-anchor="middle">11</text>
+<text class="note" x="724" y="239">11 / 11</text>
+<text class="lbl" x="40" y="273">RV64A</text>
+<rect class="box" x="130.0" y="258" width="159.5" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="209.8" y="273" text-anchor="middle">11</text>
+<text class="note" x="724" y="273">11 / 11</text>
+<text class="lbl" x="40" y="307">RV32F</text>
+<rect class="box" x="130.0" y="292" width="377.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="318.5" y="307" text-anchor="middle">26</text>
+<text class="note" x="724" y="307">26 / 26</text>
+<text class="lbl" x="40" y="341">RV64F</text>
+<rect class="box" x="130.0" y="326" width="58.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="159.0" y="341" text-anchor="middle">4</text>
+<text class="note" x="724" y="341">4 / 4</text>
+<text class="lbl" x="40" y="375">RV32D</text>
+<rect class="box" x="130.0" y="360" width="377.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="318.5" y="375" text-anchor="middle">26</text>
+<text class="note" x="724" y="375">26 / 26</text>
+<text class="lbl" x="40" y="409">RV64D</text>
+<rect class="box" x="130.0" y="394" width="87.0" height="21" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="173.5" y="409" text-anchor="middle">6</text>
+<text class="note" x="724" y="409">6 / 6</text>
+<text class="lbl" x="40" y="443">Zicsr</text>
+<rect class="box" x="130.0" y="428" width="87.0" height="21" rx="3" fill="#d9a441"/>
+<text class="ontop" x="173.5" y="443" text-anchor="middle">6</text>
+<text class="note" x="724" y="443">6 / 6</text>
+<text class="lbl" x="40" y="477">Zifencei</text>
+<rect class="box" x="130.0" y="462" width="14.5" height="21" rx="3" fill="#d9a441"/>
+<text class="note" x="724" y="477">1 / 1</text>
+<rect x="40" y="492" width="12" height="12" rx="2" fill="#2ea08c"/>
+<text class="note" x="58" y="502">full</text>
+<rect x="92" y="492" width="12" height="12" rx="2" fill="#d9a441"/>
+<text class="note" x="110" y="502">partial</text>
+<rect x="165" y="492" width="12" height="12" rx="2" fill="#b04a5a"/>
+<text class="note" x="183" y="502">missing</text>
+</svg>

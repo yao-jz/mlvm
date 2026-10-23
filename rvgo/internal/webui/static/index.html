@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MLVM Execution Receipt</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main>
+    <p class="eyebrow">MLVM · mlvm-1</p>
+    <h1>Same binary. Same prompt. Same story.</h1>
+    <p class="lede">A tiny language model ran inside a deterministic RISC-V machine. The generated tokens live in the poststate hash.</p>
+
+    <nav class="acts" aria-label="Demo acts">
+      <button type="button" class="act active" data-act="1">1 · Receipt</button>
+      <button type="button" class="act" data-act="2">2 · Expand</button>
+      <button type="button" class="act" data-act="3">3 · Tamper</button>
+    </nav>
+
+    <section id="act1" class="act-panel">
+      <section id="status" class="panel">Loading receipt…</section>
+      <section class="panel story-panel">
+        <p class="kicker">Generated text</p>
+        <p id="story" class="story"></p>
+      </section>
+      <section class="panel">
+        <h2>Claim</h2>
+        <dl id="claim"></dl>
+      </section>
+      <section class="panel">
+        <h2>What this verifies</h2>
+        <ul>
+          <li>The guest ELF, model, tokenizer, and prompt hash into the prestate.</li>
+          <li>The generated token IDs live inside the poststate memory root.</li>
+          <li>Optional slow-step checks the integer store that commits <code>MLVM_OUT</code>.</li>
+        </ul>
+        <p class="note">This is not a production dispute game. Full decoder-trace settlement still needs nested f32. Bonds, timeouts, and audits are out of scope.</p>
+      </section>
+    </section>
+
+    <section id="act2" class="act-panel hidden">
+      <section class="panel">
+        <h2>Bisection tree</h2>
+        <p class="note">Replay simulation of bisection shape from the receipt hashes — not a committed decoder trace and not an on-chain dispute.</p>
+        <pre id="dispute"></pre>
+        <button type="button" id="bisect" class="btn">Bisect midpoint</button>
+      </section>
+      <section class="panel">
+        <h2>Artifacts</h2>
+        <pre id="artifacts"></pre>
+      </section>
+    </section>
+
+    <section id="act3" class="act-panel hidden">
+      <section class="panel">
+        <h2>Tamper the poststate</h2>
+        <p class="note">Forge the claimed poststate hash. The simulated receipt trace rejects it. This shows the <em>shape</em> of a dispute, not on-chain settlement of every TinyStories instruction.</p>
+        <button type="button" id="tamper" class="btn danger">Forge poststate</button>
+        <pre id="tamper-out"></pre>
+      </section>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

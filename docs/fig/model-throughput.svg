@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 352" width="900" height="352" role="img" aria-label="throughput per model">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .title { fill: #14161a; font: 600 17px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #5b6270; font: 400 12px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #14161a; font: 500 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .note  { fill: #5b6270; font: 400 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .axis  { stroke: #c9ced6; stroke-width: 1; }
+    .grid  { stroke: #e6e9ee; stroke-width: 1; }
+    .box   { stroke: #ffffff; stroke-width: 1.5; }
+    .ontop { fill: #ffffff; font: 600 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0d1117; }
+      .title { fill: #e6edf3; }
+      .sub   { fill: #9198a1; }
+      .lbl   { fill: #e6edf3; }
+      .note  { fill: #9198a1; }
+      .axis  { stroke: #30363d; }
+      .grid  { stroke: #21262d; }
+      .box   { stroke: #0d1117; }
+      .ontop { fill: #0d1117; }
+    }
+  </style>
+
+<rect class="bg" width="900" height="352"/>
+<text class="title" x="40" y="40">Emulation rate holds as float intensity rises</text>
+<text class="sub" x="40" y="61">Millions of emulated instructions per second, against the share of the trace executed by the software FPU.</text>
+<text class="lbl" x="40" y="115">minilm-l6</text>
+<text class="note" x="40" y="130">58% float, 47s</text>
+<rect class="box" x="200" y="100" width="389.9" height="24" rx="3" fill="#3b7dd8"/>
+<text class="note" x="601.9" y="117">19.6 M instr/s</text>
+<text class="lbl" x="40" y="155">bge-small</text>
+<text class="note" x="40" y="170">63% float, 87s</text>
+<rect class="box" x="200" y="140" width="387.5" height="24" rx="3" fill="#3b7dd8"/>
+<text class="note" x="599.5" y="157">19.5 M instr/s</text>
+<text class="lbl" x="40" y="195">minilm-l12</text>
+<text class="note" x="40" y="210">63% float, 87s</text>
+<rect class="box" x="200" y="180" width="387.4" height="24" rx="3" fill="#3b7dd8"/>
+<text class="note" x="599.4" y="197">19.5 M instr/s</text>
+<text class="lbl" x="40" y="235">bge-base</text>
+<text class="note" x="40" y="250">69% float, 309s</text>
+<rect class="box" x="200" y="220" width="389.6" height="24" rx="3" fill="#3b7dd8"/>
+<text class="note" x="601.6" y="237">19.6 M instr/s</text>
+<text class="lbl" x="40" y="275">bert-base</text>
+<text class="note" x="40" y="290">68% float, 309s</text>
+<rect class="box" x="200" y="260" width="392.0" height="24" rx="3" fill="#3b7dd8"/>
+<text class="note" x="604.0" y="277">19.8 M instr/s</text>
+<text class="note" x="40" y="316">A workload that is over half floating point runs at a comparable rate to one with none, because a software</text>
+<text class="note" x="40" y="332">FADD.D costs little more than the fetch, decode and dispatch every instruction already pays.</text>
+</svg>

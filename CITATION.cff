@@ -1,0 +1,51 @@
+cff-version: 1.2.0
+title: "MLVM: deterministic RV64IMAFD execution over committed memory"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - given-names: Jianzhu
+    family-names: Yao
+    email: jy0246@princeton.edu
+    affiliation: Princeton University
+repository-code: "https://github.com/yao-jz/mlvm"
+abstract: >-
+  MLVM is a deterministic RISC-V RV64IMAFD emulator and proof-tooling laboratory.
+  It executes floating-point instructions through a Go port of Berkeley SoftFloat,
+  stores memory in a sparse Merkle tree, produces single-transition witnesses, and
+  includes experimental Go and Solidity verification components. C and Rust
+  numerical guests, including BERT-family workload demonstrations, run inside the
+  fast interpreter. The proof components are research-grade and do not constitute
+  a complete or audited dispute protocol.
+keywords:
+  - RISC-V
+  - virtual machine
+  - fraud proof
+  - verifiable computation
+  - machine learning
+  - floating point
+  - IEEE 754
+  - determinism
+  - reproducibility
+license: MIT
+references:
+  - type: software
+    title: "asterisc: RISC-V interactive fraud-proof technology"
+    authors:
+      - alias: protolambda
+    repository-code: "https://github.com/ethereum-optimism/asterisc"
+    license: MIT
+    notes: >-
+      MLVM's virtual machine is derived from asterisc. The RISC-V interpreter,
+      merkleized memory, bisection tooling and Solidity mirror originate there.
+  - type: software
+    title: "Berkeley SoftFloat"
+    authors:
+      - given-names: John R.
+        family-names: Hauser
+    url: "http://www.jhauser.us/arithmetic/SoftFloat.html"
+    notes: >-
+      rvgo/comp is a hand port of Berkeley SoftFloat Release 3e to Go.
+  - type: software
+    title: "candle: minimalist ML framework for Rust"
+    repository-code: "https://github.com/huggingface/candle"
+    license: MIT

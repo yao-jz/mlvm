@@ -1,0 +1,10 @@
+# Check out text with LF on every platform: golden files, hex bytecode and scripts are
+# compared byte for byte, and Windows CI runs the same checks as Linux and macOS.
+* text=auto eol=lf
+
+# Guest images, model weights and fixtures are bytes, never text.
+*.elf binary
+*.bin binary
+*.wasm binary
+*.png binary
+rvgo/internal/e2edemo/assets/** binary

@@ -1,0 +1,26 @@
+{
+  "format": "mlvm.dispute-record/1",
+  "guest": "Candle BERT (Rust), all-MiniLM-L6-v2",
+  "lie": "print \"score: 0.91\" at byte 499 of stdout",
+  "honestText": "score: 0.6110916734 'The cat sits outside' 'The cat plays in the garden'",
+  "liarText": "score: 0.9110916734 'The cat sits outside' 'The cat plays in the garden'",
+  "honestCommitted": "score: 0.6110916734",
+  "liarCommitted": "score: 0.6110916734",
+  "honestSteps": 1062488466,
+  "liarSteps": 1062488466,
+  "prestate": "0x03ce156bb41e1088b644244d12551e4aa0ebb13c62cb1e54e6bd54fff1f52ed2",
+  "honestPost": "0x00804eb1592d97c94f533831d6f9bce51dd95185fab31a96e4b71e3aa03d826f",
+  "liarPost": "0x00804eb1592d97c94f533831d6f9bce51dd95185fab31a96e4b71e3aa03d826f",
+  "deviation": {
+    "kind": "output",
+    "step": 1048851296,
+    "pc": 4272508,
+    "instruction": "addi a7,zero,64",
+    "location": "0x7f1000005130, the buffer of the next write(2) to stdout",
+    "honest": "\"score: 0.61\"",
+    "forged": "\"score: 0.91\""
+  },
+  "rounds": null,
+  "noDispute": true,
+  "seconds": 89.131672
+}

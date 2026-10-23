@@ -1,0 +1,24 @@
+[package]
+name = "float-placement"
+version = "0.1.0"
+edition = "2021"
+
+# A no_std kernel used to answer one question: is floating point cheaper to emulate in the
+# interpreter or in the compiler?
+#
+# The same source is built twice - once for RV64IMAFD, where the VM executes FADD.D
+# through its software IEEE-754 implementation, and once for RV64IMA, where the compiler
+# has no float instructions available and expands each operation into a soft-float helper
+# from compiler_builtins. Both run in the same VM; the metric is emulated step count.
+#
+# no_std deliberately: it removes libc, the allocator and libm from the comparison, so the
+# step-count difference is attributable to floating point alone. It also means no sysroot
+# is required for the soft-float target - compiler_builtins supplies __adddf3 and friends.
+
+[dependencies]
+
+[profile.release]
+opt-level = 2
+panic = "abort"
+lto = true
+debug = false

@@ -1,0 +1,65 @@
+MIT License
+
+Copyright (c) 2024 MLVM contributors
+Copyright (c) 2023 @protolambda
+Copyright (c) 2024 Optimism
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+Provenance and third-party components
+================================================================================
+
+cmd/, rvgo/, rvsol/, tests/
+    Derived from https://github.com/ethereum-optimism/asterisc, MIT licensed,
+    copyright (c) 2023 @protolambda, transferred to the Optimism organisation in
+    2024. The RISC-V interpreter, merkleized memory, bisection tooling and the
+    Solidity mirror originate there.
+
+    MLVM's additions to that base, also MIT and covered by the copyright above:
+      rvgo/comp/          RV32/64 F and D via Berkeley SoftFloat
+      rvgo/include/       SoftFloat support types
+      rvgo/riscv/         RISC-V NaN specialisation
+      rvgo/fast/file.go   in-memory file system
+      rvgo/fast/trace.go  diagnostic tracing
+      floating-point decoding, syscall surface and instruction profiling in
+      rvgo/fast/vm.go, and the tests and benchmarks in rvgo/test/
+
+rvgo/comp, include, riscv
+    A hand port to Go of Berkeley SoftFloat Release 3e by John R. Hauser,
+    http://www.jhauser.us/arithmetic/SoftFloat.html
+    Copyright (c) 2011-2018 The Regents of the University of California.
+    Distributed under a 3-clause BSD-style license; see the upstream
+    COPYING.txt. The port preserves the original algorithms and structure.
+
+tests/riscv-tests/
+    Test vectors generated from
+    https://github.com/riscv-software-src/riscv-tests, distributed under the
+    license in tests/riscv-tests/LICENSE.
+
+rvsol/lib/         (git submodules, not distributed here)
+    forge-std   MIT / Apache-2.0, https://github.com/foundry-rs/forge-std
+    optimism    MIT,              https://github.com/ethereum-optimism/optimism
+
+third_party/                (git submodules, not distributed here)
+    candle      MIT / Apache-2.0, https://github.com/huggingface/candle
+    MLinRust    see its own README, https://github.com/Raibows/MLinRust
+
+Model checkpoints downloaded by scripts/model-bench.sh are not distributed with
+this repository and remain under their own licenses on the Hugging Face Hub.

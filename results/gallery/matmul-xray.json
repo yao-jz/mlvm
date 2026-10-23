@@ -1,0 +1,1350 @@
+{
+  "steps": 486505,
+  "floatShare": 0.2928212454137162,
+  "floatArith": 71713,
+  "floatArithByPrecision": {
+    "d": 71713
+  },
+  "classes": [
+    {
+      "name": "int-alu",
+      "count": 202531,
+      "share": 0.4162978797751308
+    },
+    {
+      "name": "branch",
+      "count": 77237,
+      "share": 0.15875890278619953
+    },
+    {
+      "name": "float-arith",
+      "count": 71713,
+      "share": 0.14740444599747177
+    },
+    {
+      "name": "float-loadstore",
+      "count": 69692,
+      "share": 0.14325032630702664
+    },
+    {
+      "name": "load",
+      "count": 35156,
+      "share": 0.07226236112681267
+    },
+    {
+      "name": "jump",
+      "count": 16887,
+      "share": 0.034710845726148756
+    },
+    {
+      "name": "store",
+      "count": 9748,
+      "share": 0.020036793044264704
+    },
+    {
+      "name": "int-muldiv",
+      "count": 2390,
+      "share": 0.004912590826404662
+    },
+    {
+      "name": "float-move",
+      "count": 1054,
+      "share": 0.002166473109217788
+    },
+    {
+      "name": "system",
+      "count": 62,
+      "share": 0.0001274395946598699
+    },
+    {
+      "name": "atomic",
+      "count": 35,
+      "share": 0.00007194170666282978
+    }
+  ],
+  "mnemonics": [
+    {
+      "name": "addi",
+      "count": 123517,
+      "share": 0.2538863937677927
+    },
+    {
+      "name": "fld",
+      "count": 66603,
+      "share": 0.1369009568246986
+    },
+    {
+      "name": "bne",
+      "count": 47226,
+      "share": 0.09707197253882283
+    },
+    {
+      "name": "fmul.d",
+      "count": 35840,
+      "share": 0.0736683076227377
+    },
+    {
+      "name": "fadd.d",
+      "count": 33824,
+      "share": 0.0695244653189587
+    },
+    {
+      "name": "beq",
+      "count": 16781,
+      "share": 0.03449296512882704
+    },
+    {
+      "name": "slli",
+      "count": 16662,
+      "share": 0.03424836332617342
+    },
+    {
+      "name": "add",
+      "count": 15002,
+      "share": 0.030836270953022066
+    },
+    {
+      "name": "lbu",
+      "count": 14302,
+      "share": 0.02939743681976547
+    },
+    {
+      "name": "ld",
+      "count": 13323,
+      "share": 0.02738512451053946
+    },
+    {
+      "name": "andi",
+      "count": 12726,
+      "share": 0.026158004542604908
+    },
+    {
+      "name": "or",
+      "count": 10712,
+      "share": 0.02201827319349236
+    },
+    {
+      "name": "sd",
+      "count": 9485,
+      "share": 0.01949620250562687
+    },
+    {
+      "name": "jal",
+      "count": 9478,
+      "share": 0.019481814164294304
+    },
+    {
+      "name": "jalr",
+      "count": 7409,
+      "share": 0.015229031561854452
+    },
+    {
+      "name": "lw",
+      "count": 7398,
+      "share": 0.01520642131118899
+    },
+    {
+      "name": "addiw",
+      "count": 6069,
+      "share": 0.012474691935334683
+    },
+    {
+      "name": "bgeu",
+      "count": 5537,
+      "share": 0.01138117799405967
+    },
+    {
+      "name": "blt",
+      "count": 3895,
+      "share": 0.008006084212906342
+    },
+    {
+      "name": "auipc",
+      "count": 3808,
+      "share": 0.00782725768491588
+    },
+    {
+      "name": "bltu",
+      "count": 3612,
+      "share": 0.007424384127604033
+    },
+    {
+      "name": "slliw",
+      "count": 3592,
+      "share": 0.007383274580939559
+    },
+    {
+      "name": "sraiw",
+      "count": 3512,
+      "share": 0.007218836394281662
+    },
+    {
+      "name": "fsd",
+      "count": 3089,
+      "share": 0.006349369482328034
+    },
+    {
+      "name": "srli",
+      "count": 2120,
+      "share": 0.004357611946434261
+    },
+    {
+      "name": "and",
+      "count": 2069,
+      "share": 0.004252782602439852
+    },
+    {
+      "name": "sub",
+      "count": 2067,
+      "share": 0.004248671647773404
+    },
+    {
+      "name": "fcvt.d.w",
+      "count": 2048,
+      "share": 0.004209617578442154
+    },
+    {
+      "name": "remw",
+      "count": 2048,
+      "share": 0.004209617578442154
+    },
+    {
+      "name": "fmv.d.x",
+      "count": 1034,
+      "share": 0.0021253635625533137
+    },
+    {
+      "name": "mul",
+      "count": 222,
+      "share": 0.00045631596797566316
+    },
+    {
+      "name": "bge",
+      "count": 186,
+      "share": 0.0003823187839796097
+    },
+    {
+      "name": "lui",
+      "count": 169,
+      "share": 0.0003473756693148066
+    },
+    {
+      "name": "sb",
+      "count": 150,
+      "share": 0.0003083215999835562
+    },
+    {
+      "name": "srl",
+      "count": 127,
+      "share": 0.0002610456213194109
+    },
+    {
+      "name": "sw",
+      "count": 107,
+      "share": 0.00021993607465493675
+    },
+    {
+      "name": "addw",
+      "count": 97,
+      "share": 0.00019938130132269967
+    },
+    {
+      "name": "lb",
+      "count": 88,
+      "share": 0.00018088200532368628
+    },
+    {
+      "name": "xori",
+      "count": 62,
+      "share": 0.0001274395946598699
+    },
+    {
+      "name": "remu",
+      "count": 61,
+      "share": 0.00012538411732664618
+    },
+    {
+      "name": "divu",
+      "count": 59,
+      "share": 0.00012127316266019876
+    },
+    {
+      "name": "sltu",
+      "count": 58,
+      "share": 0.00011921768532697505
+    },
+    {
+      "name": "lhu",
+      "count": 45,
+      "share": 0.00009249647999506685
+    },
+    {
+      "name": "subw",
+      "count": 45,
+      "share": 0.00009249647999506685
+    },
+    {
+      "name": "fence",
+      "count": 33,
+      "share": 0.00006783075199638237
+    },
+    {
+      "name": "srliw",
+      "count": 30,
+      "share": 0.00006166431999671124
+    },
+    {
+      "name": "sll",
+      "count": 23,
+      "share": 0.00004727597866414528
+    },
+    {
+      "name": "ori",
+      "count": 22,
+      "share": 0.00004522050133092157
+    },
+    {
+      "name": "xor",
+      "count": 18,
+      "share": 0.00003699859199802674
+    },
+    {
+      "name": "ecall",
+      "count": 15,
+      "share": 0.00003083215999835562
+    },
+    {
+      "name": "sllw",
+      "count": 12,
+      "share": 0.000024665727998684493
+    },
+    {
+      "name": "amoswap.d",
+      "count": 9,
+      "share": 0.00001849929599901337
+    },
+    {
+      "name": "csrrs",
+      "count": 9,
+      "share": 0.00001849929599901337
+    },
+    {
+      "name": "fmv.x.d",
+      "count": 6,
+      "share": 0.000012332863999342247
+    },
+    {
+      "name": "sh",
+      "count": 6,
+      "share": 0.000012332863999342247
+    },
+    {
+      "name": "amoswap.d.aq",
+      "count": 5,
+      "share": 0.000010277386666118539
+    },
+    {
+      "name": "amoswap.w",
+      "count": 5,
+      "share": 0.000010277386666118539
+    },
+    {
+      "name": "csrrw",
+      "count": 5,
+      "share": 0.000010277386666118539
+    },
+    {
+      "name": "flt.d",
+      "count": 5,
+      "share": 0.000010277386666118539
+    },
+    {
+      "name": "srai",
+      "count": 5,
+      "share": 0.000010277386666118539
+    },
+    {
+      "name": "feq.d",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "fsgnjx.d",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "lr.d.aq",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "lr.w",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "sc.d.aq",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "sc.w.aq",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "slti",
+      "count": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "sltiu",
+      "count": 3,
+      "share": 0.000006166431999671123
+    },
+    {
+      "name": "fsgnj.d",
+      "count": 1,
+      "share": 0.000002055477333223708
+    },
+    {
+      "name": "fsqrt.d",
+      "count": 1,
+      "share": 0.000002055477333223708
+    }
+  ],
+  "functions": [
+    {
+      "name": "main",
+      "self": 255712,
+      "total": 269343,
+      "share": 0.5256102198333008
+    },
+    {
+      "name": "read_encoded_value_with_base",
+      "self": 127244,
+      "total": 127244,
+      "share": 0.2615471577887175
+    },
+    {
+      "name": "classify_object_over_fdes",
+      "self": 82060,
+      "total": 211192,
+      "share": 0.16867246996433746
+    },
+    {
+      "name": "__printf_fp_buffer_1",
+      "self": 3039,
+      "total": 10169,
+      "share": 0.006246595615666848
+    },
+    {
+      "name": "__mpn_divrem",
+      "self": 2043,
+      "total": 2043,
+      "share": 0.004199340191776035
+    },
+    {
+      "name": "hack_digit",
+      "self": 2020,
+      "total": 5143,
+      "share": 0.00415206421311189
+    },
+    {
+      "name": "__mpn_mul_1",
+      "self": 1324,
+      "total": 1324,
+      "share": 0.0027214519891881894
+    },
+    {
+      "name": "get_cie_encoding",
+      "self": 1212,
+      "total": 2258,
+      "share": 0.002491238527867134
+    },
+    {
+      "name": "__strlen",
+      "self": 1100,
+      "total": 1100,
+      "share": 0.002261025066546079
+    },
+    {
+      "name": "memcpy",
+      "self": 1056,
+      "total": 1342,
+      "share": 0.0021705840638842357
+    },
+    {
+      "name": "_int_malloc",
+      "self": 861,
+      "total": 1139,
+      "share": 0.0017697659839056125
+    },
+    {
+      "name": "__printf_buffer",
+      "self": 824,
+      "total": 12545,
+      "share": 0.0016937133225763353
+    },
+    {
+      "name": "ptmalloc_init",
+      "self": 610,
+      "total": 864,
+      "share": 0.0012538411732664618
+    },
+    {
+      "name": "strchrnul",
+      "self": 436,
+      "total": 436,
+      "share": 0.0008961881172855367
+    },
+    {
+      "name": "__printf_buffer_write",
+      "self": 420,
+      "total": 1067,
+      "share": 0.0008633004799539573
+    },
+    {
+      "name": "__tunable_get_val",
+      "self": 383,
+      "total": 383,
+      "share": 0.0007872478186246801
+    },
+    {
+      "name": "_wordcopy_fwd_aligned",
+      "self": 255,
+      "total": 255,
+      "share": 0.0005241467199720455
+    },
+    {
+      "name": "malloc",
+      "self": 237,
+      "total": 2407,
+      "share": 0.00048714812797401877
+    },
+    {
+      "name": "memset",
+      "self": 232,
+      "total": 232,
+      "share": 0.0004768707413079002
+    },
+    {
+      "name": "__mpn_rshift",
+      "self": 216,
+      "total": 216,
+      "share": 0.0004439831039763209
+    },
+    {
+      "name": "getenv",
+      "self": 216,
+      "total": 530,
+      "share": 0.0004439831039763209
+    },
+    {
+      "name": "__printf_fp_l_buffer",
+      "self": 212,
+      "total": 10469,
+      "share": 0.00043576119464342606
+    },
+    {
+      "name": "_dlfo_process_initial",
+      "self": 210,
+      "total": 306,
+      "share": 0.00043165023997697867
+    },
+    {
+      "name": "__mpn_mul",
+      "self": 208,
+      "total": 452,
+      "share": 0.0004275392853105312
+    },
+    {
+      "name": "_IO_cleanup",
+      "self": 189,
+      "total": 627,
+      "share": 0.0003884852159792808
+    },
+    {
+      "name": "_IO_flush_all",
+      "self": 177,
+      "total": 335,
+      "share": 0.0003638194879805963
+    },
+    {
+      "name": "__vfprintf_internal",
+      "self": 164,
+      "total": 13543,
+      "share": 0.00033709828264868807
+    },
+    {
+      "name": "_dl_non_dynamic_init",
+      "self": 161,
+      "total": 3224,
+      "share": 0.00033093185064901696
+    },
+    {
+      "name": "_IO_default_xsputn",
+      "self": 150,
+      "total": 150,
+      "share": 0.0003083215999835562
+    },
+    {
+      "name": "__libc_start_main_impl",
+      "self": 147,
+      "total": 486491,
+      "share": 0.00030215516798388507
+    },
+    {
+      "name": "__libc_setup_tls",
+      "self": 143,
+      "total": 406,
+      "share": 0.00029393325865099024
+    },
+    {
+      "name": "sysmalloc",
+      "self": 140,
+      "total": 254,
+      "share": 0.00028776682665131913
+    },
+    {
+      "name": "__printf_buffer_flush_to_file",
+      "self": 130,
+      "total": 684,
+      "share": 0.000267212053319082
+    },
+    {
+      "name": "__mpn_cmp",
+      "self": 126,
+      "total": 126,
+      "share": 0.0002589901439861872
+    },
+    {
+      "name": "read_int",
+      "self": 116,
+      "total": 116,
+      "share": 0.0002384353706539501
+    },
+    {
+      "name": "__mpn_extract_double",
+      "self": 96,
+      "total": 96,
+      "share": 0.00019732582398947595
+    },
+    {
+      "name": "_dl_find_object_from_map",
+      "self": 96,
+      "total": 96,
+      "share": 0.00019732582398947595
+    },
+    {
+      "name": "__run_exit_handlers",
+      "self": 89,
+      "total": 106631,
+      "share": 0.00018293748265691
+    },
+    {
+      "name": "_IO_printf",
+      "self": 88,
+      "total": 13631,
+      "share": 0.00018088200532368628
+    },
+    {
+      "name": "_dl_aux_init",
+      "self": 85,
+      "total": 187,
+      "share": 0.00017471557332401517
+    },
+    {
+      "name": "_dl_init_paths",
+      "self": 81,
+      "total": 1906,
+      "share": 0.00016649366399112034
+    },
+    {
+      "name": "_IO_new_file_overflow",
+      "self": 77,
+      "total": 371,
+      "share": 0.0001582717546582255
+    },
+    {
+      "name": "__mpn_lshift",
+      "self": 64,
+      "total": 64,
+      "share": 0.00013155054932631732
+    },
+    {
+      "name": "btree_insert",
+      "self": 62,
+      "total": 317,
+      "share": 0.0001274395946598699
+    },
+    {
+      "name": "version_lock_lock_exclusive",
+      "self": 60,
+      "total": 60,
+      "share": 0.00012332863999342248
+    },
+    {
+      "name": "sysmalloc_mmap_fallback",
+      "self": 57,
+      "total": 64,
+      "share": 0.00011716220799375135
+    },
+    {
+      "name": "_IO_file_xsputn",
+      "self": 56,
+      "total": 554,
+      "share": 0.00011510673066052764
+    },
+    {
+      "name": "__printf_buffer_done",
+      "self": 56,
+      "total": 56,
+      "share": 0.00011510673066052764
+    },
+    {
+      "name": "_int_free",
+      "self": 56,
+      "total": 56,
+      "share": 0.00011510673066052764
+    },
+    {
+      "name": "new_do_write",
+      "self": 54,
+      "total": 101,
+      "share": 0.00011099577599408022
+    },
+    {
+      "name": "__tls_init_tp",
+      "self": 52,
+      "total": 74,
+      "share": 0.0001068848213276328
+    },
+    {
+      "name": "__libc_early_init",
+      "self": 51,
+      "total": 169,
+      "share": 0.0001048293439944091
+    },
+    {
+      "name": "__tunables_init",
+      "self": 51,
+      "total": 51,
+      "share": 0.0001048293439944091
+    },
+    {
+      "name": "_IO_default_setbuf",
+      "self": 49,
+      "total": 67,
+      "share": 0.00010071838932796168
+    },
+    {
+      "name": "__printf_buffer_to_file_done",
+      "self": 48,
+      "total": 732,
+      "share": 0.00009866291199473797
+    },
+    {
+      "name": "__printf_buffer_to_file_init",
+      "self": 46,
+      "total": 46,
+      "share": 0.00009455195732829056
+    },
+    {
+      "name": "_dl_find_object_init",
+      "self": 46,
+      "total": 593,
+      "share": 0.00009455195732829056
+    },
+    {
+      "name": "_IO_file_doallocate",
+      "self": 44,
+      "total": 265,
+      "share": 0.00009044100266184314
+    },
+    {
+      "name": "__internal_atexit",
+      "self": 43,
+      "total": 79,
+      "share": 0.00008838552532861943
+    },
+    {
+      "name": "get_pc_range",
+      "self": 40,
+      "total": 40,
+      "share": 0.00008221909332894831
+    },
+    {
+      "name": "version_lock_unlock_exclusive",
+      "self": 40,
+      "total": 40,
+      "share": 0.00008221909332894831
+    },
+    {
+      "name": "__memrchr",
+      "self": 39,
+      "total": 39,
+      "share": 0.0000801636159957246
+    },
+    {
+      "name": "_dl_tls_static_surplus_init",
+      "self": 39,
+      "total": 81,
+      "share": 0.0000801636159957246
+    },
+    {
+      "name": "__deregister_frame_info_bases",
+      "self": 38,
+      "total": 105684,
+      "share": 0.00007810813866250089
+    },
+    {
+      "name": "_dlfo_sort_mappings",
+      "self": 37,
+      "total": 37,
+      "share": 0.00007605266132927718
+    },
+    {
+      "name": "tcache_init",
+      "self": 37,
+      "total": 423,
+      "share": 0.00007605266132927718
+    },
+    {
+      "name": "__libc_alloca_cutoff",
+      "self": 36,
+      "total": 36,
+      "share": 0.00007399718399605348
+    },
+    {
+      "name": "__new_exitfn",
+      "self": 36,
+      "total": 36,
+      "share": 0.00007399718399605348
+    },
+    {
+      "name": "_dl_debug_initialize",
+      "self": 35,
+      "total": 35,
+      "share": 0.00007194170666282978
+    },
+    {
+      "name": "_dl_get_origin",
+      "self": 34,
+      "total": 34,
+      "share": 0.00006988622932960607
+    },
+    {
+      "name": "_IO_new_file_write",
+      "self": 32,
+      "total": 47,
+      "share": 0.00006577527466315866
+    },
+    {
+      "name": "_wordcopy_fwd_dest_aligned",
+      "self": 31,
+      "total": 31,
+      "share": 0.00006371979732993495
+    },
+    {
+      "name": "btree_release_tree_recursively",
+      "self": 31,
+      "total": 51,
+      "share": 0.00006371979732993495
+    },
+    {
+      "name": "_dl_early_allocate",
+      "self": 30,
+      "total": 30,
+      "share": 0.00006166431999671124
+    },
+    {
+      "name": "_IO_doallocbuf",
+      "self": 29,
+      "total": 294,
+      "share": 0.00005960884266348753
+    },
+    {
+      "name": "free",
+      "self": 29,
+      "total": 85,
+      "share": 0.00005960884266348753
+    },
+    {
+      "name": "sbrk",
+      "self": 29,
+      "total": 50,
+      "share": 0.00005960884266348753
+    },
+    {
+      "name": "call_fini",
+      "self": 28,
+      "total": 105913,
+      "share": 0.00005755336533026382
+    },
+    {
+      "name": "__sigsetjmp",
+      "self": 27,
+      "total": 27,
+      "share": 0.00005549788799704011
+    },
+    {
+      "name": "btree_allocate_node",
+      "self": 27,
+      "total": 225,
+      "share": 0.00005549788799704011
+    },
+    {
+      "name": "release_registered_frames",
+      "self": 27,
+      "total": 173,
+      "share": 0.00005549788799704011
+    },
+    {
+      "name": "_IO_setb",
+      "self": 26,
+      "total": 26,
+      "share": 0.0000534424106638164
+    },
+    {
+      "name": "__libc_init_first",
+      "self": 25,
+      "total": 3278,
+      "share": 0.000051386933330592695
+    },
+    {
+      "name": "__register_frame_info",
+      "self": 25,
+      "total": 105641,
+      "share": 0.000051386933330592695
+    },
+    {
+      "name": "__libc_cleanup_push_defer",
+      "self": 24,
+      "total": 24,
+      "share": 0.00004933145599736899
+    },
+    {
+      "name": "_dl_protect_relro",
+      "self": 24,
+      "total": 29,
+      "share": 0.00004933145599736899
+    },
+    {
+      "name": "alloc_perturb",
+      "self": 24,
+      "total": 24,
+      "share": 0.00004933145599736899
+    },
+    {
+      "name": "__pthread_tunables_init",
+      "self": 23,
+      "total": 88,
+      "share": 0.00004727597866414528
+    },
+    {
+      "name": "__init_misc",
+      "self": 22,
+      "total": 98,
+      "share": 0.00004522050133092157
+    },
+    {
+      "name": "__libc_start_call_main",
+      "self": 22,
+      "total": 376043,
+      "share": 0.00004522050133092157
+    },
+    {
+      "name": "__brk",
+      "self": 21,
+      "total": 21,
+      "share": 0.00004316502399769786
+    },
+    {
+      "name": "_IO_file_setbuf",
+      "self": 18,
+      "total": 85,
+      "share": 0.00003699859199802674
+    },
+    {
+      "name": "_IO_file_sync",
+      "self": 18,
+      "total": 18,
+      "share": 0.00003699859199802674
+    },
+    {
+      "name": "__ctype_init",
+      "self": 18,
+      "total": 18,
+      "share": 0.00003699859199802674
+    },
+    {
+      "name": "__do_global_dtors_aux",
+      "self": 18,
+      "total": 105712,
+      "share": 0.00003699859199802674
+    },
+    {
+      "name": "_IO_do_write",
+      "self": 16,
+      "total": 117,
+      "share": 0.00003288763733157933
+    },
+    {
+      "name": "__write",
+      "self": 15,
+      "total": 15,
+      "share": 0.00003083215999835562
+    },
+    {
+      "name": "rindex",
+      "self": 15,
+      "total": 37,
+      "share": 0.00003083215999835562
+    },
+    {
+      "name": "__tls_pre_init_tp",
+      "self": 13,
+      "total": 13,
+      "share": 0.0000267212053319082
+    },
+    {
+      "name": "frame_dummy",
+      "self": 13,
+      "total": 105981,
+      "share": 0.0000267212053319082
+    },
+    {
+      "name": "__GI___getrlimit",
+      "self": 12,
+      "total": 12,
+      "share": 0.000024665727998684493
+    },
+    {
+      "name": "__libc_cleanup_pop_restore",
+      "self": 12,
+      "total": 12,
+      "share": 0.000024665727998684493
+    },
+    {
+      "name": "__sigjmp_save",
+      "self": 11,
+      "total": 11,
+      "share": 0.000022610250665460785
+    },
+    {
+      "name": "_start",
+      "self": 11,
+      "total": 486505,
+      "share": 0.000022610250665460785
+    },
+    {
+      "name": "register_tm_clones",
+      "self": 11,
+      "total": 11,
+      "share": 0.000022610250665460785
+    },
+    {
+      "name": "__fstatat64",
+      "self": 7,
+      "total": 7,
+      "share": 0.000014388341332565955
+    },
+    {
+      "name": "__mmap",
+      "self": 7,
+      "total": 7,
+      "share": 0.000014388341332565955
+    },
+    {
+      "name": "exit",
+      "self": 7,
+      "total": 106638,
+      "share": 0.000014388341332565955
+    },
+    {
+      "name": "[unknown]",
+      "self": 6,
+      "total": 6,
+      "share": 0.000012332863999342247
+    },
+    {
+      "name": "deregister_tm_clones",
+      "self": 6,
+      "total": 6,
+      "share": 0.000012332863999342247
+    },
+    {
+      "name": "fstat64",
+      "self": 6,
+      "total": 6,
+      "share": 0.000012332863999342247
+    },
+    {
+      "name": "__mprotect",
+      "self": 5,
+      "total": 5,
+      "share": 0.000010277386666118539
+    },
+    {
+      "name": "__deregister_frame_info",
+      "self": 4,
+      "total": 4,
+      "share": 0.000008221909332894832
+    },
+    {
+      "name": "__cxa_atexit",
+      "self": 3,
+      "total": 3,
+      "share": 0.000006166431999671123
+    },
+    {
+      "name": "_Exit",
+      "self": 2,
+      "total": 2,
+      "share": 0.000004110954666447416
+    },
+    {
+      "name": "_IO_file_stat",
+      "self": 2,
+      "total": 2,
+      "share": 0.000004110954666447416
+    },
+    {
+      "name": "__GI__setjmp",
+      "self": 2,
+      "total": 2,
+      "share": 0.000004110954666447416
+    }
+  ],
+  "tree": {
+    "name": "all",
+    "value": 486505,
+    "self": 0,
+    "float": 0,
+    "children": [
+      {
+        "name": "_start",
+        "value": 486505,
+        "self": 14,
+        "float": 0,
+        "children": [
+          {
+            "name": "__libc_start_main_impl",
+            "value": 486491,
+            "self": 1189,
+            "float": 0,
+            "children": [
+              {
+                "name": "__libc_start_call_main",
+                "value": 376043,
+                "self": 62,
+                "float": 12,
+                "children": [
+                  {
+                    "name": "main",
+                    "value": 269343,
+                    "self": 255712,
+                    "float": 142411,
+                    "children": [
+                      {
+                        "name": "_IO_printf",
+                        "value": 13631,
+                        "self": 88,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "__vfprintf_internal",
+                            "value": 13543,
+                            "self": 998,
+                            "float": 0,
+                            "children": [
+                              {
+                                "name": "__printf_buffer",
+                                "value": 12545,
+                                "self": 2076,
+                                "float": 8,
+                                "children": [
+                                  {
+                                    "name": "__printf_fp_l_buffer",
+                                    "value": 10469,
+                                    "self": 300,
+                                    "float": 0,
+                                    "children": [
+                                      {
+                                        "name": "__printf_fp_buffer_1",
+                                        "value": 10169,
+                                        "self": 5026,
+                                        "float": 28,
+                                        "children": [
+                                          {
+                                            "name": "hack_digit",
+                                            "value": 5143,
+                                            "self": 2020,
+                                            "float": 0,
+                                            "children": [
+                                              {
+                                                "name": "__mpn_divrem",
+                                                "value": 2043,
+                                                "self": 2043,
+                                                "float": 0
+                                              },
+                                              {
+                                                "name": "__mpn_mul_1",
+                                                "value": 1080,
+                                                "self": 1080,
+                                                "float": 0
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "exit",
+                    "value": 106638,
+                    "self": 7,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "__run_exit_handlers",
+                        "value": 106631,
+                        "self": 718,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "call_fini",
+                            "value": 105913,
+                            "self": 201,
+                            "float": 0,
+                            "children": [
+                              {
+                                "name": "__do_global_dtors_aux",
+                                "value": 105712,
+                                "self": 28,
+                                "float": 0,
+                                "children": [
+                                  {
+                                    "name": "__deregister_frame_info_bases",
+                                    "value": 105684,
+                                    "self": 88,
+                                    "float": 0,
+                                    "children": [
+                                      {
+                                        "name": "classify_object_over_fdes",
+                                        "value": 105596,
+                                        "self": 41030,
+                                        "float": 0,
+                                        "children": [
+                                          {
+                                            "name": "read_encoded_value_with_base",
+                                            "value": 63437,
+                                            "self": 63437,
+                                            "float": 0
+                                          },
+                                          {
+                                            "name": "get_cie_encoding",
+                                            "value": 1129,
+                                            "self": 1129,
+                                            "float": 0
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "frame_dummy",
+                "value": 105981,
+                "self": 340,
+                "float": 0,
+                "children": [
+                  {
+                    "name": "__register_frame_info",
+                    "value": 105641,
+                    "self": 45,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "classify_object_over_fdes",
+                        "value": 105596,
+                        "self": 41030,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "read_encoded_value_with_base",
+                            "value": 63437,
+                            "self": 63437,
+                            "float": 0
+                          },
+                          {
+                            "name": "get_cie_encoding",
+                            "value": 1129,
+                            "self": 1129,
+                            "float": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "__libc_init_first",
+                "value": 3278,
+                "self": 54,
+                "float": 0,
+                "children": [
+                  {
+                    "name": "_dl_non_dynamic_init",
+                    "value": 3224,
+                    "self": 1318,
+                    "float": 0,
+                    "children": [
+                      {
+                        "name": "_dl_init_paths",
+                        "value": 1906,
+                        "self": 81,
+                        "float": 0,
+                        "children": [
+                          {
+                            "name": "malloc",
+                            "value": 1825,
+                            "self": 1825,
+                            "float": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "uniquePCs": 5345,
+  "frames": 158,
+  "description": "32x32 matrix multiply (C, f64)"
+}

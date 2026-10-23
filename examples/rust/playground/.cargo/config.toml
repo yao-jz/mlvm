@@ -1,0 +1,24 @@
+[build]
+target = "riscv64ima-unknown-linux-gnu"
+
+[target.'riscv64gc-unknown-linux-gnu']
+rustflags = [
+  "-C", "target-feature=-c,-f,-d",
+  "-C", "target-feature=+crt-static",     # link glibc statically
+  "-C", "opt-level=0",
+]
+linker = "riscv64-unknown-linux-gnu-gcc"
+
+[target.riscv64ima-unknown-linux-gnu]        # settings for this target (now use this one)
+linker = "riscv64-unknown-linux-gnu-gcc" 
+rustflags = [
+    "-C", "target-feature=+crt-static",      # can't be in spec
+    "-C", "link-arg=-Wl,--allow-multiple-definition",      # allow multiple definition for __unorddf2 __addsf3 __adddf3 __adddf3 __ledf2 __ltdf2 __muldf3 __mulsf3
+]
+
+[target.riscv64imafd-unknown-linux-gnu]        # settings for this target (now use this one)
+linker = "riscv64-unknown-linux-gnu-gcc" 
+rustflags = [
+    "-C", "target-feature=+crt-static",      # can't be in spec
+    "-C", "link-arg=-Wl,--allow-multiple-definition",      # allow multiple definition for __unorddf2 __addsf3 __adddf3 __adddf3 __ledf2 __ltdf2 __muldf3 __mulsf3
+]

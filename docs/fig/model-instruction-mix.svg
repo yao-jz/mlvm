@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" width="900" height="340" role="img" aria-label="instruction mix per model">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .title { fill: #14161a; font: 600 17px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #5b6270; font: 400 12px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #14161a; font: 500 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .note  { fill: #5b6270; font: 400 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .axis  { stroke: #c9ced6; stroke-width: 1; }
+    .grid  { stroke: #e6e9ee; stroke-width: 1; }
+    .box   { stroke: #ffffff; stroke-width: 1.5; }
+    .ontop { fill: #ffffff; font: 600 11.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0d1117; }
+      .title { fill: #e6edf3; }
+      .sub   { fill: #9198a1; }
+      .lbl   { fill: #e6edf3; }
+      .note  { fill: #9198a1; }
+      .axis  { stroke: #30363d; }
+      .grid  { stroke: #21262d; }
+      .box   { stroke: #0d1117; }
+      .ontop { fill: #0d1117; }
+    }
+  </style>
+
+<rect class="bg" width="900" height="340"/>
+<text class="title" x="40" y="40">Where the instructions go</text>
+<text class="sub" x="40" y="61">Instruction mix per model, measured inside MLVM. Bars are 100% of the executed trace.</text>
+<text class="lbl" x="40" y="106">minilm-l6</text>
+<text class="note" x="40" y="121">23M params</text>
+<rect class="box" x="150.0" y="92" width="162.5" height="26" rx="3" fill="#3b7dd8"/>
+<text class="ontop" x="231.3" y="110" text-anchor="middle">27%</text>
+<rect class="box" x="312.5" y="92" width="54.1" height="26" rx="3" fill="#7d8590"/>
+<text class="ontop" x="339.6" y="110" text-anchor="middle">9%</text>
+<rect class="box" x="366.6" y="92" width="229.0" height="26" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="481.1" y="110" text-anchor="middle">38%</text>
+<rect class="box" x="595.6" y="92" width="117.0" height="26" rx="3" fill="#8b6cc9"/>
+<text class="ontop" x="654.1" y="110" text-anchor="middle">19%</text>
+<rect class="box" x="712.6" y="92" width="37.4" height="26" rx="3" fill="#c9ced6"/>
+<text class="ontop" x="731.3" y="110" text-anchor="middle">6%</text>
+<text class="note" x="762" y="110">58% float</text>
+<text class="lbl" x="40" y="148">bge-small</text>
+<text class="note" x="40" y="163">33M params</text>
+<rect class="box" x="150.0" y="134" width="151.7" height="26" rx="3" fill="#3b7dd8"/>
+<text class="ontop" x="225.8" y="152" text-anchor="middle">25%</text>
+<rect class="box" x="301.7" y="134" width="39.1" height="26" rx="3" fill="#7d8590"/>
+<text class="ontop" x="321.2" y="152" text-anchor="middle">7%</text>
+<rect class="box" x="340.7" y="134" width="250.1" height="26" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="465.8" y="152" text-anchor="middle">42%</text>
+<rect class="box" x="590.8" y="134" width="127.7" height="26" rx="3" fill="#8b6cc9"/>
+<text class="ontop" x="654.6" y="152" text-anchor="middle">21%</text>
+<rect class="box" x="718.5" y="134" width="31.5" height="26" rx="3" fill="#c9ced6"/>
+<text class="note" x="762" y="152">63% float</text>
+<text class="lbl" x="40" y="190">minilm-l12</text>
+<text class="note" x="40" y="205">33M params</text>
+<rect class="box" x="150.0" y="176" width="151.5" height="26" rx="3" fill="#3b7dd8"/>
+<text class="ontop" x="225.7" y="194" text-anchor="middle">25%</text>
+<rect class="box" x="301.5" y="176" width="38.8" height="26" rx="3" fill="#7d8590"/>
+<text class="ontop" x="320.9" y="194" text-anchor="middle">6%</text>
+<rect class="box" x="340.3" y="176" width="250.6" height="26" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="465.6" y="194" text-anchor="middle">42%</text>
+<rect class="box" x="590.9" y="176" width="127.9" height="26" rx="3" fill="#8b6cc9"/>
+<text class="ontop" x="654.8" y="194" text-anchor="middle">21%</text>
+<rect class="box" x="718.8" y="176" width="31.2" height="26" rx="3" fill="#c9ced6"/>
+<text class="note" x="762" y="194">63% float</text>
+<text class="lbl" x="40" y="232">bge-base</text>
+<text class="note" x="40" y="247">110M params</text>
+<rect class="box" x="150.0" y="218" width="140.2" height="26" rx="3" fill="#3b7dd8"/>
+<text class="ontop" x="220.1" y="236" text-anchor="middle">23%</text>
+<rect class="box" x="290.2" y="218" width="21.4" height="26" rx="3" fill="#7d8590"/>
+<rect class="box" x="311.7" y="218" width="275.2" height="26" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="449.3" y="236" text-anchor="middle">46%</text>
+<rect class="box" x="586.9" y="218" width="139.1" height="26" rx="3" fill="#8b6cc9"/>
+<text class="ontop" x="656.4" y="236" text-anchor="middle">23%</text>
+<rect class="box" x="725.9" y="218" width="24.1" height="26" rx="3" fill="#c9ced6"/>
+<text class="note" x="762" y="236">69% float</text>
+<text class="lbl" x="40" y="274">bert-base</text>
+<text class="note" x="40" y="289">110M params</text>
+<rect class="box" x="150.0" y="260" width="141.4" height="26" rx="3" fill="#3b7dd8"/>
+<text class="ontop" x="220.7" y="278" text-anchor="middle">24%</text>
+<rect class="box" x="291.4" y="260" width="23.2" height="26" rx="3" fill="#7d8590"/>
+<rect class="box" x="314.6" y="260" width="272.9" height="26" rx="3" fill="#2ea08c"/>
+<text class="ontop" x="451.1" y="278" text-anchor="middle">45%</text>
+<rect class="box" x="587.5" y="260" width="137.9" height="26" rx="3" fill="#8b6cc9"/>
+<text class="ontop" x="656.5" y="278" text-anchor="middle">23%</text>
+<rect class="box" x="725.4" y="260" width="24.6" height="26" rx="3" fill="#c9ced6"/>
+<text class="note" x="762" y="278">68% float</text>
+<rect x="40" y="302" width="12" height="12" rx="2" fill="#3b7dd8"/>
+<text class="note" x="58" y="312">integer ALU</text>
+<rect x="138.2" y="302" width="12" height="12" rx="2" fill="#7d8590"/>
+<text class="note" x="156.2" y="312">int load/store</text>
+<rect x="255.0" y="302" width="12" height="12" rx="2" fill="#2ea08c"/>
+<text class="note" x="273.0" y="312">float ALU</text>
+<rect x="340.8" y="302" width="12" height="12" rx="2" fill="#8b6cc9"/>
+<text class="note" x="358.8" y="312">float load/store</text>
+<rect x="470.0" y="302" width="12" height="12" rx="2" fill="#c9ced6"/>
+<text class="note" x="488.0" y="312">branch/jump/system</text>
+</svg>

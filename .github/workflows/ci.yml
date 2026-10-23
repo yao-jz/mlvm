@@ -1,0 +1,343 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  vm:
+    name: VM and conformance suites
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l cmd rvgo)
+          if [ -n "$unformatted" ]; then
+            echo "these files need gofmt:"; echo "$unformatted"; exit 1
+          fi
+
+      - name: Documentation and shell checks
+        run: |
+          python3 scripts/check-links.py
+          for script in scripts/*.sh; do bash -n "$script"; done
+
+      # 84 integer/multiply/atomic suites plus the F/D suites, which are classified into
+      # pass, documented known-failure and rv32-self-skip. See docs/ISA.md#conformance.
+      - name: RISC-V conformance
+        run: go test ./... -count=1
+
+  archives:
+    name: Release snapshot archives
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Snapshot archives
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --snapshot --clean --skip=publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Unpack Linux archive smoke
+        run: bash scripts/archive-unpack-smoke.sh dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mlvm-snapshot-dist
+          path: dist/*
+          if-no-files-found: error
+
+  archives-macos:
+    name: Unpack Darwin archive smoke
+    needs: archives
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: mlvm-snapshot-dist
+          path: dist
+      - name: Unpack Darwin archive smoke
+        run: bash scripts/archive-unpack-smoke.sh dist
+
+  archives-windows:
+    name: Unpack Windows archive smoke
+    needs: archives
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: mlvm-snapshot-dist
+          path: dist
+      - name: Unpack Windows archive smoke
+        shell: bash
+        run: bash scripts/archive-unpack-smoke.sh dist
+
+  # MLVM implements RV64IMAFD without the C (compressed) extension. Distribution
+  # cross-compilers ship a glibc and start-up files built for rv64gc, so their static
+  # binaries contain compressed instructions. This builds riscv-gnu-toolchain 2024.02.02
+  # for rv64imafd/lp64d once and caches it for the jobs that compile guests. It is the
+  # toolchain the embedded guests were built with: GCC 13.2 (c891d8dc23e) and glibc 2.38.
+  # Later glibc versions call syscalls (such as fstat, 80) that MLVM does not implement.
+  toolchain:
+    name: RV64IMAFD cross toolchain (cached)
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - id: cache
+        uses: actions/cache@v4
+        with:
+          path: /opt/riscv
+          key: riscv-gnu-toolchain-2024.02.02-rv64imafd-lp64d-v1
+
+      - name: Build riscv-gnu-toolchain for rv64imafd
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake autotools-dev curl python3 libmpc-dev \
+            libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool \
+            patchutils bc zlib1g-dev libexpat-dev
+          git clone --depth 1 --branch 2024.02.02 https://github.com/riscv-collab/riscv-gnu-toolchain
+          cd riscv-gnu-toolchain
+          git submodule update --init --depth 1 binutils gcc glibc
+          sudo mkdir -p /opt/riscv && sudo chown "$USER" /opt/riscv
+          ./configure --prefix=/opt/riscv --with-arch=rv64imafd --with-abi=lp64d --disable-gdb
+          make linux -j"$(nproc)"
+          /opt/riscv/bin/riscv64-unknown-linux-gnu-gcc --version
+
+  guests:
+    name: Guest programs and determinism
+    needs: toolchain
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Restore the RV64IMAFD cross toolchain
+        uses: actions/cache/restore@v4
+        with:
+          path: /opt/riscv
+          key: riscv-gnu-toolchain-2024.02.02-rv64imafd-lp64d-v1
+          fail-on-cache-miss: true
+
+      - run: echo /opt/riscv/bin >> "$GITHUB_PATH"
+
+      - name: Cross-compile the examples
+        run: make -C examples CROSS=riscv64-unknown-linux-gnu-
+
+      - name: Run them in the VM
+        run: |
+          ./scripts/run-elf.sh examples/build/hello
+          ./scripts/run-elf.sh examples/build/mlp
+          ./scripts/run-elf.sh examples/build/fileio examples/data/sample.txt
+
+      - name: One-command demo with slow-step verify
+        run: |
+          make build
+          bin/mlvm demo --verify --json > /tmp/mlvm-demo-receipt.json
+          python3 -c 'import json; r=json.load(open("/tmp/mlvm-demo-receipt.json")); assert r["demo"]=="decoder"; assert r["verifier"]["passed"]; assert "little girl" in r["generatedText"]; assert r["steps"]>0'
+
+      - name: Canonical demo digest
+        run: bash scripts/archive-smoke.sh
+
+      - name: TinyStories decoder guest
+        run: |
+          make -C examples/decoder CROSS=riscv64-unknown-linux-gnu-
+          ./scripts/decoder-fetch.sh
+          cp examples/decoder/build/decoder models/pack260k/decoder.elf
+          bin/mlvm demo --model-pack models/pack260k --json --receipt results/decoder-receipt.json "Once upon a time"
+          python3 -c 'import json; r=json.load(open("results/decoder-receipt.json")); assert r["tokens"]==[432,383,286,261,376,298,315,421,395,317,426,338,401,396,267,337]; assert "little girl" in r["generatedText"]'
+
+      # Informational until it has held on a few runs: does the same toolchain on Linux
+      # rebuild the embedded guest byte for byte?
+      - name: Embedded guests rebuilt from source
+        continue-on-error: true
+        run: |
+          sha256sum examples/decoder/build/decoder rvgo/internal/e2edemo/assets/decoder-rv64imafd.elf
+          cmp examples/decoder/build/decoder rvgo/internal/e2edemo/assets/decoder-rv64imafd.elf
+
+      # Portability regression for the examples whose native and guest arithmetic is
+      # expected to agree bit for bit. Transcendental-library differences are measured
+      # separately and are not covered by this job.
+      - name: Floating-point determinism vs the host FPU
+        run: ./scripts/determinism.sh ieee matmul
+
+      - name: Fraud-proof pipeline
+        run: ./scripts/fraud-proof-demo.sh
+
+      - name: Instruction coverage
+        run: ./scripts/isa-coverage.py --check
+
+      # Builds the same no_std kernel for rv64imafd and rv64ima and compares step counts.
+      # Also checks the two builds agree bit-for-bit, which is a real correctness signal:
+      # MLVM's SoftFloat and Rust's compiler_builtins are independent implementations.
+      - name: Float placement (interpreter vs compiler)
+        run: |
+          # Pinned: the co-processor image and step counts depend on the compiler, and newer
+          # nightlies require -Zjson-target-spec for the custom RV64IMA target.
+          rustup toolchain install nightly-2024-10-29 --component rust-src --profile minimal
+          rustup default nightly-2024-10-29
+          ./scripts/float-placement.sh
+
+  contracts:
+    name: Solidity verifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      # Init only what Foundry needs. `submodules: recursive` on the checkout would also
+      # pull the whole Optimism monorepo history and every one of its nested submodules,
+      # which is several minutes and a few hundred MB for a handful of .sol files.
+      - name: Fetch Solidity dependencies
+        run: |
+          git submodule update --init --depth 1 rvsol/lib/forge-std
+          git -C rvsol/lib/forge-std submodule update --init --depth 1
+          git submodule update --init --depth 1 rvsol/lib/optimism
+          git -C rvsol/lib/optimism submodule update --init --depth 1 --recursive \
+              packages/contracts-bedrock/lib
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Build
+        working-directory: rvsol
+        run: forge build
+
+      # SoftFloat64.t.sol checks the Yul IEEE-754 port against 1,522 vectors generated from
+      # rvgo/comp; FloatSubGame.t.sol checks the sub-game's contract boundary against values
+      # produced by actually running the nested machine in Go. The broader coverage of
+      # RISCV.sol is TestEVMStep in rvgo/test, which replays every conformance suite through
+      # a real EVM.
+      - name: Test
+        working-directory: rvsol
+        run: forge test -vvv
+
+      - name: Slow and EVM transition cross-checks
+        env:
+          MLVM_RUN_SLOW: '1'
+          MLVM_RUN_EVM: '1'
+        run: go test ./rvgo/test/ -count=1 -timeout 20m
+
+      # `mlvm liar` embeds RISCV.sol's runtime bytecode; fail if it no longer matches the
+      # contract just built (refresh with `make evm-artifact`).
+      - name: Embedded RISCV.sol bytecode is current
+        run: go test ./rvgo/internal/evmstep/ -run TestEmbeddedMatchesArtifact -count=1 -v
+
+  subgame:
+    name: Experimental float proof components
+    needs: toolchain
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # The only job that needs all three toolchains at once: Go for the VM, Rust nightly for
+    # the RV64IMA co-processor, and Foundry for the experimental terminal verifier path.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Restore the RV64IMAFD cross toolchain
+        uses: actions/cache/restore@v4
+        with:
+          path: /opt/riscv
+          key: riscv-gnu-toolchain-2024.02.02-rv64imafd-lp64d-v1
+          fail-on-cache-miss: true
+
+      - run: echo /opt/riscv/bin >> "$GITHUB_PATH"
+
+      - name: Fetch Solidity dependencies
+        run: |
+          git submodule update --init --depth 1 rvsol/lib/forge-std
+          git -C rvsol/lib/forge-std submodule update --init --depth 1
+          git submodule update --init --depth 1 rvsol/lib/optimism
+          git -C rvsol/lib/optimism submodule update --init --depth 1 --recursive \
+              packages/contracts-bedrock/lib
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Build the guest program and the contracts
+        run: |
+          make -C examples CROSS=riscv64-unknown-linux-gnu-
+          (cd rvsol && forge build)
+
+      - name: Build the float co-processor
+        run: |
+          # Pinned: the co-processor image and step counts depend on the compiler, and newer
+          # nightlies require -Zjson-target-spec for the custom RV64IMA target.
+          rustup toolchain install nightly-2024-10-29 --component rust-src --profile minimal
+          rustup default nightly-2024-10-29
+          cd examples/rust/float-coprocessor
+          cargo build --target riscv64ima-unknown-linux-gnu.json \
+            -Zbuild-std=core,compiler_builtins \
+            -Zbuild-std-features=compiler-builtins-mem --release
+
+      # The nested machine must agree with rvgo/comp bit-for-bit on all 1,522 differential
+      # vectors, or the experimental route would represent a different computation.
+      - name: Sub-game vs the VM's own SoftFloat
+        run: go test ./rvgo/test/ -run TestFloatSubGame -count=1 -v
+
+      # The fixture is generated from Go and the contract must reproduce every value in it.
+      # Regenerating here catches drift between the two rather than testing a stale file.
+      - name: Contract boundary vs Go
+        run: |
+          go run ./cmd/mlvm float-subgame-fixture \
+            --out rvsol/test/float-subgame-fixture.json
+          git diff --exit-code rvsol/test/float-subgame-fixture.json \
+            || echo "note: fixture regenerated and differs; the contract test below is authoritative"
+          (cd rvsol && forge test --match-contract FloatSubGame -vv)
+
+      # Exercises the experimental terminal f64 route in an EVM. It does not implement
+      # the outer bisection protocol or bind a full model trace to this sub-game.
+      - name: Experimental f64 terminal route
+        run: go test ./rvgo/test/ -run TestFloatTerminalRoute -count=1 -v -timeout 20m
+
+      # The commitment layer: answer bytes are read from a caller-supplied post-state and
+      # shown to move when the answer is tampered with. No dispute game is implied.
+      - name: Proposed post-state answer readback
+        run: |
+          go run ./cmd/mlvm ml-claim \
+            --path examples/build/mlp --random-file rvgo/random \
+            --fixture rvsol/test/ml-claim-fixture.json \
+            --fixture-no-result examples/build/hello >/dev/null
+          (cd rvsol && forge test --match-contract MLClaim -vv)
+          go test ./rvgo/test/ -run TestMLClaimReadback -count=1 -v -timeout 10m
