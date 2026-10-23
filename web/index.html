@@ -75,6 +75,10 @@
         <li><span class="step-number">2</span><h3>Find the first disagreement</h3><p>If two runs end with different fingerprints, compare them halfway through, keep the half where they first differ, and repeat. About log₂ N rounds leave one instruction: 26 for this page’s 38 million, 34 for 14.8 billion.</p></li>
         <li><span class="step-number">3</span><h3>Check that one instruction</h3><p>A referee re-executes only that instruction, from a 674-byte record of the machine’s state and proofs of the memory it touches. It never runs the model.</p></li>
       </ol>
+      <figure class="repo-figure">
+        <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="From an answer to one checked instruction. Someone runs a model and returns an answer that cannot be checked by itself. Step 1: MLVM fingerprints the machine after every instruction. Step 2: when two runs end with different fingerprints, halving the run about log2 N times finds the first instruction where they differ. Step 3: a referee re-executes only that instruction, from a 674-byte state record and a memory proof."></a>
+        <figcaption>The three steps in one picture: a fingerprint after every instruction, a search for the first one that differs, and a check of that single instruction. <a href="figures/overview.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+      </figure>
       <div class="design-notes">
         <div class="design-copy">
           <h3 id="why-riscv">Why a RISC-V virtual machine?</h3>
