@@ -71,6 +71,37 @@ tokenizer and guest the demos use are embedded in the binary.
   <img src="docs/fig/architecture.svg" width="880" alt="How MLVM works, in six parts: the inputs of a run (program, input files, fixed random bytes); running one instruction at a time (fetch, decode, execute, write back; integer math, software floating point, system calls); the 32-byte fingerprint of the whole machine (a 674-byte state record with the roots of memory, files and the stored answer); finding the first instruction where two runs differ; checking that one instruction with RISCV.sol, slow.Step or SoftFloat; and where it runs (command line, browser, CI on six platforms).">
 </p>
 
+## Bring your own model
+
+A model is a program to MLVM. Anything that builds as a static RV64IMAFD Linux binary runs:
+C or C++ through GCC, or Rust through [Candle](https://github.com/huggingface/candle). The
+repository runs TinyStories (in C and in Candle), five BERT-family encoders and SmolLM2-135M
+this way.
+
+```bash
+# 1. Build: static, no compressed instructions, no FP contraction
+riscv64-unknown-linux-gnu-gcc -O2 -static -march=rv64imafd -mabi=lp64d -ffp-contract=off -o model model.c -lm
+#    Rust + Candle: nightly, an RV64IMAFD target spec and build-std (see examples/rust)
+cargo +nightly build --release --target riscv64imafd-unknown-linux-gnu.json -Zbuild-std=std,panic_abort
+
+# 2. Stage the weights into guest memory, then profile the run or dispute it
+mlvm xray --elf ./model --load-file model.safetensors=weights/model.safetensors --svg flame.svg
+mlvm liar --elf ./model --load-file model.safetensors=weights/model.safetensors
+```
+
+- **Inputs** are files staged into guest memory. `--load-file guestPath=hostPath` gives each
+  one a fixed name, so the weights and the prompt are part of the starting fingerprint.
+  `--random-file` serves `getrandom` from a fixed blob.
+- **The answer** goes into a 64-byte window at `MLVM_OUT`, with up to 48 bytes of payload:
+  `mlvm_commit_result` in [`examples/mlvm_result.h`](examples/mlvm_result.h), or the Rust
+  version in [`llm-candle`](examples/rust/llm-candle/src/main.rs). Printed output is not
+  part of the state; the committed answer is.
+- **Limits:** one thread, no compressed (`C`) instructions, and the system calls listed in
+  [docs/SYSCALLS.md](docs/SYSCALLS.md).
+
+Walkthroughs: [your own C program](docs/EXAMPLES.md#7-running-your-own-program) ·
+[Candle guests](examples/rust/README.md) · [SmolLM2-135M](examples/rust/llm-candle/README.md).
+
 ## Profiles, exactly
 
 A deterministic machine can count instead of sample. `mlvm xray` attributes every instruction
