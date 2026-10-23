@@ -297,6 +297,7 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 .tip-label { color: var(--ink-2); }
 
 .footer { max-width: 1080px; margin: 40px auto 0; padding: 24px 16px 48px; border-top: 1px solid var(--border); font-size: 13px; color: var(--ink-2); }
+.footer-author strong { color: var(--ink); font-weight: 600; }
 
 @media (max-width: 820px) {
   .two-col, .machines, .grid-2 { grid-template-columns: 1fr; }
