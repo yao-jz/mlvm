@@ -22,3 +22,6 @@
 [submodule "third_party/MLinRust"]
 	path = third_party/MLinRust
 	url = https://github.com/Raibows/MLinRust
+[submodule "third_party/tokenizers"]
+	path = third_party/tokenizers
+	url = https://github.com/huggingface/tokenizers

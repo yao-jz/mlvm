@@ -98,9 +98,6 @@ web/dist/
 .claude/
 .idea/
 
-# tokenizers is cloned by hand for the BERT guest, not a submodule
-third_party/tokenizers/
-
 # burn
 my_burn_app/
 

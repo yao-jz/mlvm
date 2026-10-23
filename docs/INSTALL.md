@@ -241,11 +241,14 @@ rustflags = ["-C", "link-arg=-Wl,--allow-multiple-definition"]
 ```
 </details>
 
-The Rust guests also need `tokenizers` vendored at `third_party/tokenizers` with
-`default-features = false` — the default feature set pulls in `onig`, which needs a C
-regex engine and network access at build time. It is not a submodule because only this one
-guest needs it; clone [huggingface/tokenizers](https://github.com/huggingface/tokenizers)
-there if you want to rebuild the BERT guest.
+The Rust guests also need [huggingface/tokenizers](https://github.com/huggingface/tokenizers),
+pinned as a submodule at `third_party/tokenizers` and built with `default-features = false`
+— the default feature set pulls in `onig`, which needs a C regex engine and network access
+at build time:
+
+```bash
+git submodule update --init third_party/tokenizers
+```
 
 ## 6. Optional: RISC-V conformance test vectors
 

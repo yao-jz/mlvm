@@ -36,8 +36,8 @@ rustup component add rust-src
 # 2. a RISC-V cross linker (see ../../docs/INSTALL.md)
 riscv64-unknown-linux-gnu-gcc --version
 
-# 3. submodules, for candle
-git submodule update --init third_party/candle
+# 3. submodules: candle and tokenizers
+git submodule update --init third_party/candle third_party/tokenizers
 ```
 
 ### The tokenizers dependency
@@ -46,12 +46,9 @@ git submodule update --init third_party/candle
 pull in `onig`, a C regex engine that needs network access at build time and does not
 cross-compile cleanly.
 
-```bash
-git clone https://github.com/huggingface/tokenizers third_party/tokenizers
-```
-
-`Cargo.toml` already points at `third_party/tokenizers/tokenizers` with
-`default-features = false`.
+The submodule pins `third_party/tokenizers` to the commit these guests were built with
+(`b62132e`, 0.23.2-dev), and each `Cargo.toml` already points at
+`third_party/tokenizers/tokenizers` with `default-features = false`.
 
 ---
 

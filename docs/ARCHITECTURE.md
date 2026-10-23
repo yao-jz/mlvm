@@ -479,7 +479,7 @@ mlvm/
 │
 ├── docs/                     you are here, plus fig/ for the diagrams
 ├── scripts/                  run-elf, determinism, fraud-proof demo, bench, ISA coverage
-└── third_party/              submodules: candle, MLinRust
+└── third_party/              submodules: candle, tokenizers, MLinRust
 ```
 
 ### Where the work is
