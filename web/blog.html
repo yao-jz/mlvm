@@ -41,14 +41,14 @@
         <li><a href="#problem">The problem</a></li>
         <li><a href="#overview">From a model run to a disputed instruction</a></li>
         <li><a href="#floats">Making floating-point math repeatable</a></li>
-        <li><a href="#doors">Keeping other inputs the same</a></li>
+        <li><a href="#doors">How the VM handles Linux calls and inputs</a></li>
         <li><a href="#state">One hash for the whole virtual machine</a></li>
-        <li><a href="#answers">Keeping the answer in the state</a></li>
+        <li><a href="#answers">Saving the answer in VM memory</a></li>
         <li><a href="#bisection">Finding one instruction among 14.8 billion</a></li>
         <li><a href="#referee">Checking the disputed instruction</a></li>
-        <li><a href="#lies">What happened when we introduced faults</a></li>
-        <li><a href="#xray">Where the instructions go</a></li>
-        <li><a href="#browser">The same machine in a browser tab</a></li>
+        <li><a href="#lies">Testing changed instruction results and answers</a></li>
+        <li><a href="#xray">Counting RISC-V instructions by function</a></li>
+        <li><a href="#browser">The RISC-V VM in a browser tab</a></li>
         <li><a href="#limits">Limits</a></li>
         <li><a href="#next">What comes next</a></li>
         <li class="unnumbered"><a href="#reproduce">Reproduce and cite</a></li>
@@ -61,25 +61,26 @@
       <p class="eyebrow">Inside MLVM / An illustrated walkthrough</p>
       <h1>One faulty RISC-V multiplication among 14.8 billion instructions</h1>
       <p class="dek">
-        We ran SmolLM2-135M twice inside MLVM's RISC-V virtual machine. In the second run, we
+        We ran the SmolLM2-135M language model twice inside MLVM's RISC-V virtual machine. In the second run, we
         flipped the lowest bit of one floating-point multiplication instruction's result.
-        Both runs generated the same 16 tokens, but their final VM hashes differed. MLVM found
+        Both runs generated the same 16 tokens (pieces of text), but their final VM hashes differed. MLVM found
         the faulty instruction in 34 hash comparisons and re-executed it from a saved VM state.
       </p>
       <p class="byline">Jianzhu Yao (<a href="https://x.com/alexbert135" rel="noopener">@alexbert135</a>) and Pramod Viswanath · Princeton University · 22 October 2026</p>
 
       <nav class="reading-path" aria-label="Suggested reading routes">
         <p class="eyebrow">Choose a way in</p>
-        <a href="#overview"><strong>Understand the idea</strong><span>The machine, the state and the search.</span><span aria-hidden="true">↓</span></a>
-        <a href="#lies"><strong>See the faulty instruction</strong><span>What we changed and what MLVM caught.</span><span aria-hidden="true">↓</span></a>
-        <a href="#floats"><strong>Follow the implementation</strong><span>Floating point, memory and the verifier.</span><span aria-hidden="true">↓</span></a>
+        <a href="#overview"><strong>How the RISC-V VM is checked</strong><span>Inputs, VM hashes and one instruction check.</span><span aria-hidden="true">↓</span></a>
+        <a href="#lies"><strong>See the SmolLM2 test</strong><span>The changed multiplication and its result.</span><span aria-hidden="true">↓</span></a>
+        <a href="#floats"><strong>Why floats repeat across hardware</strong><span>Software floating-point rules and tests.</span><span aria-hidden="true">↓</span></a>
       </nav>
 
       <aside class="tldr" aria-labelledby="tldr-h">
         <h2 id="tldr-h">What MLVM does</h2>
         <ul>
-          <li>MLVM executes compiled RISC-V model programs inside a virtual machine. Its in-memory
-            file system supplies model files, and the VM answers supported Linux system calls.</li>
+          <li>MLVM executes model programs compiled for RISC-V inside a virtual machine. Its
+            in-memory file system supplies model files; the VM handles supported Linux system
+            calls, the program's requests to the OS.</li>
           <li>The same RISC-V program and inputs can run on different hardware. A hash of VM
             registers, memory and files lets the two runs compare their results, including a
             saved answer.</li>
@@ -112,7 +113,7 @@
           You could run the model again, provided you trust the machine doing the check and can
           afford another inference. But even matching outputs leave a gap. In the experiments
           below, we deliberately made one instruction return a wrong value. The text often stayed
-          the same even when the final machine state changed. Comparing answers alone would have
+          the same even when the final VM hash changed. Comparing answers alone would have
           missed that error.
         </p>
         <p>
@@ -137,8 +138,8 @@
         <p>
           That omission is expensive for neural networks. In the five BERT-family encoders we
           ran, 58 to 69% of instructions were floating-point arithmetic, loads or stores. An
-          integer-only target can still run these models by compiling each float operation into
-          an integer routine. In our matrix-multiplication comparison, that took 25 times as many
+          integer-only RISC-V target can still run these models by turning each floating-point
+          multiply or add into an integer routine. In our matrix-multiplication comparison, that took 25 times as many
           instructions (<a href="#placement">§8.4</a>). MLVM adds floating-point instructions
           to Asterisc and implements them in software, so their behavior does not depend on the
           host CPU. This article explains that implementation and the disputes we tested with it.
@@ -178,8 +179,8 @@
       <section id="overview">
         <h2><span class="num">2</span>From a model run to a disputed instruction</h2>
         <figure class="repo-figure" id="fig1">
-          <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="When two runs start alike but finish differently, MLVM compares their machine states halfway through until one instruction remains, then locally checks that instruction from a saved state and memory proof."></a>
-          <figcaption><b>Figure 1.</b> MLVM hashes the memory, registers and stored answer after any instruction. If we make one instruction return a wrong value and the error survives, the final hashes differ. Comparing hashes halfway through the runs finds
+          <a class="figure-image" href="figures/overview.svg" target="_blank" rel="noopener"><img src="figures/overview.svg" width="960" height="464" loading="lazy" alt="Two RISC-V VM runs compare hashes of registers, memory and files after instructions, locate one disputed instruction, and re-execute it from saved VM values."></a>
+          <figcaption><b>Figure 1.</b> MLVM hashes the RISC-V VM's registers, memory, file system and stored answer after any instruction. If we make one instruction return a wrong value and the error survives, the final hashes differ. Comparing hashes halfway through the runs finds
           the instruction where they split. A local referee re-executes that instruction using
           <code>RISCV.sol</code> in an EVM, its Go counterpart <code>slow.Step</code>, or SoftFloat
           for float arithmetic. <a href="figures/overview.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
@@ -217,7 +218,7 @@
         <details class="technical-details" open>
           <summary>How the components fit together in the implementation</summary>
           <figure class="repo-figure">
-            <a class="figure-image" href="figures/architecture.svg" target="_blank" rel="noopener"><img src="figures/architecture.svg" width="960" height="1150" loading="lazy" alt="How MLVM works, in six parts: the inputs of a run (program, input files, fixed random bytes); running one instruction at a time (fetch, decode, execute, write back; integer math, software floating point, system calls); the 32-byte fingerprint of the whole machine (a 674-byte state record with the roots of memory, files and the stored answer); finding a step where two runs split; checking that one instruction with RISCV.sol, slow.Step or SoftFloat; and where it runs (command line, browser, CI on six platforms)."></a>
+            <a class="figure-image" href="figures/architecture.svg" target="_blank" rel="noopener"><img src="figures/architecture.svg" width="960" height="1150" loading="lazy" alt="A model program compiled for RISC-V runs inside MLVM with staged files and supported Linux system calls. Two runs compare VM hashes, locate one disputed RISC-V instruction, and re-execute it from saved state and memory proofs. The same VM runs on multiple host platforms."></a>
             <figcaption><strong>The implementation map.</strong> Follow the six numbered sections from inputs to verification. Each part says in plain words what it does; the grey lines give the package, address or proof size behind it. <a href="figures/architecture.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
           </figure>
         </details>
@@ -266,7 +267,7 @@
           double-precision floating point. The arithmetic comes from <code>rvgo/comp</code>, a
           hand port of Berkeley SoftFloat Release 3e to Go. It has 121 files and about 5,800 lines,
           or about 6,100 including support types and RISC-V-specific NaN handling.
-          <code>fast/vm.go</code> decodes each instruction and calls the corresponding operation.
+          <code>fast/vm.go</code> decodes each RISC-V floating-point instruction and calls the corresponding SoftFloat function.
           Before that call, it selects the rounding mode:
         </p>
         <details class="technical-details code-detail">
@@ -288,7 +289,7 @@ beginFloatOp := func(rm U64) {
 }</code></pre>
         </details>
         <p>
-          After the operation, the VM merges any exception flags raised by SoftFloat into
+          After the floating-point instruction, the VM merges any exception flags raised by SoftFloat into
           <code>fcsr</code>, the floating-point control and status register. It occupies 8 bytes
           in the state witness. A reserved rounding mode causes the step to fail. Single-precision
           reads also check NaN-boxing: a 32-bit value in a 64-bit float register must have all its
@@ -396,11 +397,12 @@ beginFloatOp := func(rm U64) {
 
       <!-- 4 ------------------------------------------------------------------------------ -->
       <section id="doors">
-        <h2><span class="num">4</span>Keeping other inputs the same</h2>
+        <h2><span class="num">4</span>How the VM handles Linux calls and inputs</h2>
         <p>
-          Floating-point arithmetic is only part of the problem. A program can also change its
-          behavior based on the clock, random bytes, available CPUs or files on the host. MLVM
-          controls what the guest sees through its system calls. There is no guest kernel:
+          Floating-point arithmetic is only part of making a RISC-V run repeatable. The guest
+          program can also read the clock, random bytes, CPU information or files. MLVM answers
+          its supported Linux system calls from controlled VM state and staged inputs. There is no
+          Linux kernel inside the VM:
           <code>ecall</code> dispatches on the syscall number in <code>a7</code>. The fast VM
           recognises 37 Linux syscall numbers, answers 35 and refuses 2. That is enough for the
           static glibc and Rust <code>std</code> programs used here to start, allocate memory,
@@ -433,13 +435,13 @@ beginFloatOp := func(rm U64) {
           The native CLI runs on Linux, macOS and Windows. A WebAssembly build brings the same
           interpreter to the browser. Each host executes the same guest binary and staged
           inputs, with the same software arithmetic and system-call rules. This lets someone
-          repeat a run or check its dispute record on a different computer.
+          repeat a run or re-execute a disputed RISC-V instruction from a saved file on a different computer.
         </p>
         <p>
           To check this across hosts, <code>.github/workflows/determinism.yml</code> runs five
           prompts through the TinyStories guest on linux/amd64, linux/arm64, darwin/arm64,
           darwin/amd64, windows/amd64 and WebAssembly under Node. It fails unless all six produce
-          the same prestate, step count and poststate. "Once upon a time" takes 38,186,542
+          the same starting VM hash, RISC-V instruction count and final VM hash. "Once upon a time" takes 38,186,542
           instructions and ends in <code>0x00beedb0…97f9</code> on every platform. The merged table
           is published with the playground, which compares your browser's root against it.
         </p>
@@ -448,7 +450,7 @@ beginFloatOp := func(rm U64) {
       <!-- 5 ------------------------------------------------------------------------------ -->
       <section id="state">
         <h2><span class="num">5</span>One hash for the whole virtual machine</h2>
-        <p class="section-intro">A referee needs to check small pieces of a potentially large machine. The state root makes this possible: each supplied piece can be checked against the same hash.</p>
+        <p class="section-intro">A model can use gigabytes of VM memory, but checking one RISC-V instruction only needs the values it touched. MLVM hashes the full VM state, then supplies proofs that those few values belong to that state.</p>
         <h3>5.1 The 674-byte state witness</h3>
         <p>
           To compute a state root, MLVM encodes the machine in a fixed 674-byte witness, hashes it
@@ -582,14 +584,14 @@ beginFloatOp := func(rm U64) {
           Both panic on a mismatch, so these mistakes are caught during proof generation.
         </p>
 
-        <h3 id="files">5.3 Files are committed state too</h3>
+        <h3 id="files">5.3 Staged model files are part of VM state</h3>
         <figure class="repo-figure">
           <a class="figure-image" href="figures/address-space.svg" target="_blank" rel="noopener"><img src="figures/address-space.svg" width="900" height="560" loading="lazy" alt="Guest memory map showing staged input files, predetermined random bytes, the stack, the heap and the executable, all covered by the memory root."></a>
           <figcaption><strong>Files and random bytes live in guest memory.</strong> The model reads its inputs from these reserved regions rather than from the host. This diagram shows the main input and runtime regions; the separate answer window is described in <a href="#answers">section 6</a>. <a href="figures/address-space.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
         </figure>
         <p>
-          The model's weights need the same protection as the program's memory. Otherwise, two
-          machines could claim the same starting state while reading different files. At load time,
+          The model's weights must be included in the starting VM hash. Otherwise, two runs could
+          report the same starting hash while reading different weight files. At load time,
           each file is placed in its own 64 GiB-aligned slot starting at <code>0x2000_0000_0000_0000</code>, and
           <code>openat</code>, <code>read</code> and <code>lseek</code> are served straight out of
           Merkle memory. The bytes are covered by the memory root. The metadata (which name maps to
@@ -622,24 +624,24 @@ filesystemRoot = keccak256("MLVM-FILESYSTEM-V2\0" || filePointer || nextFd || fi
           <table class="table">
             <thead><tr><th>Piece</th><th class="num">Bytes</th><th>When</th></tr></thead>
             <tbody>
-              <tr><td>State witness</td><td class="num">674</td><td>every checked step</td></tr>
+              <tr><td>VM state witness</td><td class="num">674</td><td>every checked RISC-V instruction</td></tr>
               <tr><td>Memory proof</td><td class="num">1,920</td><td>per 32-byte word touched: the instruction fetch, plus the word a load or store touches (two if it straddles a 32-byte boundary)</td></tr>
               <tr><td>File-system proof</td><td class="num">992</td><td>file syscalls only</td></tr>
-              <tr><td>Typical CPU step</td><td class="num">2,594</td><td>witness and one branch; 4,514 with two</td></tr>
+              <tr><td>Typical instruction check</td><td class="num">2,594</td><td>VM state witness and one memory proof; 4,514 with two</td></tr>
             </tbody>
-            <caption>A 2,000-step sample averages 3,239 bytes per step. Capturing a proof costs about 7 µs per step, against 40 ns to execute one, so normal runs and proof capture are separate modes.</caption>
+            <caption>For a sample of 2,000 RISC-V instructions, checking one needs 3,239 bytes on average. Capturing a memory proof takes about 7 µs per instruction, compared with 40 ns to execute it, so normal runs and proof capture use separate modes.</caption>
           </table>
         </div>
       </section>
 
       <!-- 6 ------------------------------------------------------------------------------ -->
       <section id="answers">
-        <h2><span class="num">6</span>Keeping the answer in the state</h2>
+        <h2><span class="num">6</span>Saving the answer in VM memory</h2>
         <p>
-          A dispute checks a transition between machine states. For that check to say anything
-          about the model's answer, the answer has to remain in the final state. MLVM does not
-          include the stdout stream in its state hash. A machine can therefore print a different
-          answer and still finish with the original run's root.
+          Checking one RISC-V instruction can only reveal a wrong answer if the answer remains
+          in the VM's final state. MLVM includes VM memory in its final hash, but does not include
+          text printed to the screen. A run can therefore print different words and still end
+          with the original VM hash.
         </p>
         <p>
           MLVM guests write their answer into a fixed location in memory and leave it there. The
@@ -670,7 +672,7 @@ static inline void mlvm_commit_result(const void *data, uint64_t len) {
             <thead><tr><th>all-MiniLM-L6-v2, 1.06B instructions</th><th>Faulty run prints</th><th>Faulty run stores</th><th>Final states</th><th>Dispute</th></tr></thead>
             <tbody>
               <tr><td><code>--lie output</code></td><td class="mono">score: 0.9110916734</td><td class="mono">score: 0.6110916734</td><td>identical</td><td>none: nothing to rule on</td></tr>
-              <tr><td><code>--lie commit</code></td><td class="mono">score: 0.6110916734</td><td class="mono">score: 0.9110916734</td><td>differ</td><td>30 questions, one <code>sb</code>; <code>RISCV.sol</code> rules for 131,492 gas</td></tr>
+              <tr><td><code>--lie commit</code></td><td class="mono">score: 0.6110916734</td><td class="mono">score: 0.9110916734</td><td>differ</td><td>30 VM hash comparisons locate one <code>sb</code>; <code>RISCV.sol</code> checks it for 131,492 gas</td></tr>
             </tbody>
           </table>
         </div>
@@ -692,7 +694,7 @@ static inline void mlvm_commit_result(const void *data, uint64_t len) {
       <!-- 7 ------------------------------------------------------------------------------ -->
       <section id="bisection">
         <h2><span class="num">7</span>Finding one instruction among 14.8 billion</h2>
-        <p class="section-intro">Each round cuts the search interval in half. A longer model run needs more work from the two machines, but only a few more questions from the referee.</p>
+        <p class="section-intro">Each comparison asks both RISC-V VMs for their hash after the same instruction count. Matching or differing hashes cut the remaining instruction range in half, so even a long model run takes only a few more comparisons.</p>
         <h3>7.1 Narrowing the interval</h3>
         <p>
           The search tracks two instruction counts, <code>lo</code> and <code>hi</code>. Both
@@ -724,15 +726,15 @@ t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for inst
         <p>
           A fault can change how long a run is (on MiniLM-L12 the faulty run was 16 instructions
           shorter, on bge-base 68 longer), which is why <code>hi</code> starts at the longer run. A
-          party asked about a step after its own halt answers with its final hash. The number of
-          questions is <span class="mono">⌊log₂&nbsp;N⌋</span> or <span class="mono">⌈log₂&nbsp;N⌉</span>,
+          VM asked for a hash after more instructions than it executed returns its final hash. The number of
+          VM hash comparisons is <span class="mono">⌊log₂&nbsp;N⌋</span> or <span class="mono">⌈log₂&nbsp;N⌉</span>,
           whatever the program does.
         </p>
         <figure class="fig" id="fig4">
           <div class="fig-body">
             <svg viewBox="0 0 760 292" role="img" aria-labelledby="fig4-t">
-              <title id="fig4-t">Questions needed to isolate one instruction against instructions executed, on a log scale, for disputes over the gallery's 13 programs. Every point lies on the log2 N line: 18 questions for 263 thousand instructions, 26 for 38 million, 30 for 1.06 billion, 32 for 6.75 billion, 34 for 14.8 billion.</title>
-              <text class="f-tick" x="64" y="10">questions</text>
+              <title id="fig4-t">VM hash comparisons needed to isolate one RISC-V instruction against instructions executed, on a log scale, for 13 programs. Every point lies on the log2 N line: 18 comparisons for 263 thousand instructions, 26 for 38 million, 30 for 1.06 billion, 32 for 6.75 billion, 34 for 14.8 billion.</title>
+              <text class="f-tick" x="64" y="10">hash checks</text>
               <line class="f-grid" x1="64" x2="736" y1="197.2" y2="197.2"/>
               <line class="f-grid" x1="64" x2="736" y1="152.4" y2="152.4"/>
               <line class="f-grid" x1="64" x2="736" y1="107.6" y2="107.6"/>
@@ -783,21 +785,20 @@ t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for inst
               <text class="f-label" x="686" y="30" text-anchor="end">SmolLM2-135M · 14.8B · 34</text>
             </svg>
           </div>
-          <figcaption><b>Figure 4.</b> Questions per dispute across the gallery's 13 programs (hover
-          a point for its program). A run 56,000 times longer needs 16 more questions.</figcaption>
+          <figcaption><b>Figure 4.</b> Hash comparisons needed to locate one RISC-V instruction across 13 programs (hover a point for its program). A run 56,000 times longer needs 16 more comparisons.</figcaption>
         </figure>
 
         <h3>7.2 Answering without replaying from the start</h3>
         <p>
-          The referee does little work during this search, but the parties need to recover earlier
-          states. Replaying from the start for every question would cost hundreds of billions of
+          During the search, the checker only compares hashes, but both RISC-V VMs must produce
+          hashes for earlier instruction counts. Replaying from the start for every comparison would cost hundreds of billions of
           instructions for the SmolLM2 dispute. MLVM instead saves checkpoints and reuses the states
           reached during earlier rounds.
         </p>
         <figure class="fig" id="fig5">
           <div class="fig-body">
             <svg viewBox="0 0 760 392" role="img" aria-labelledby="fig5-t">
-              <title id="fig5-t">(a) A party saves copies of its machine at regular intervals and pins its machine at lo, the last agreed step, so a question about mid replays only from lo. (b) A saved copy and the running machine share memory pages; a page is copied only when one side first writes it.</title>
+              <title id="fig5-t">(a) Each RISC-V VM saves copies at regular instruction counts and keeps a copy at lo, the last agreed count, so a hash request at mid replays only from lo. (b) A saved VM and a running VM share memory pages until one writes a page.</title>
               <defs><marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-head"/></marker></defs>
               <text class="f-panel" x="0" y="16">(a) answering a question</text>
               <rect class="f-band" x="380" y="52" width="90" height="26"/>
@@ -815,7 +816,7 @@ t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for inst
               <text class="f-s" x="470" y="38" text-anchor="middle">hi</text>
               <rect class="f-box-alt" x="736" y="57" width="8" height="16"/>
               <text class="f-s" x="740" y="38" text-anchor="end">halt</text>
-              <text class="f-s" x="20" y="38">step 0</text>
+              <text class="f-s" x="20" y="38">0 instructions</text>
               <path class="f-line" d="M382,74 Q402,100 421,75" marker-end="url(#ah5)"/>
               <text class="f-s" x="402" y="114" text-anchor="middle">replay from lo</text>
               <circle class="f-ckpt" cx="28" cy="140" r="6"/>
@@ -826,12 +827,12 @@ t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for inst
               <text class="f-s" x="600" y="145">hi: differ</text>
 
               <text class="f-panel" x="0" y="190">(b) copies share pages until one side writes</text>
-              <text class="f-s" x="200" y="214" text-anchor="middle">saved copy (step k)</text>
+              <text class="f-s" x="200" y="214" text-anchor="middle">saved VM (after k instructions)</text>
               <text class="f-s" x="410" y="214" text-anchor="middle">memory pages</text>
               <text class="f-s" x="620" y="214" text-anchor="middle">running machine</text>
               <rect class="f-box-alt" x="330" y="224" width="160" height="26" rx="5"/><text class="f-s" x="410" y="242" text-anchor="middle">page 0</text>
               <rect class="f-box-alt" x="330" y="258" width="160" height="26" rx="5"/><text class="f-s" x="410" y="276" text-anchor="middle">page 1</text>
-              <rect class="f-box-alt" x="330" y="292" width="160" height="26" rx="5"/><text class="f-s" x="410" y="310" text-anchor="middle">page 2 at step k</text>
+              <rect class="f-box-alt" x="330" y="292" width="160" height="26" rx="5"/><text class="f-s" x="410" y="310" text-anchor="middle">page 2 after k</text>
               <rect class="f-box-hi" x="330" y="326" width="160" height="26" rx="5"/><text class="f-s" x="410" y="344" text-anchor="middle">page 2, written</text>
               <rect class="f-box-alt" x="330" y="360" width="160" height="26" rx="5"/><text class="f-s" x="410" y="378" text-anchor="middle">page 3</text>
               <rect class="f-box-alt" x="170" y="224" width="60" height="26" rx="4"/><text class="f-m" x="200" y="242" text-anchor="middle">p0</text>
@@ -853,14 +854,14 @@ t, _ := honest.TransitionAt(lo)   <span class="c">// witness and proofs for inst
             </svg>
           </div>
           <figcaption><b>Figure 5.</b> (a) Replay starts from the latest of three states: the nearest
-          saved copy, the last agreed step <code>lo</code>, or the last state asked about. (b)
+          saved copy, the last agreed instruction count <code>lo</code>, or the last state asked about. (b)
           <code>Clone</code> copies the page map, not the pages. The first write to a shared page
           copies that one page.</figcaption>
         </figure>
         <p>
           <strong>Checkpoints.</strong> During its run each party saves a copy of its machine every
           2<sup>22</sup> = 4,194,304 instructions, and answers a question by replaying from the
-          nearest copy at or before the step asked.
+          nearest copy at or before the requested instruction count.
         </p>
         <p>
           <strong>Sharing unchanged pages.</strong> Copying gigabytes of weights at every checkpoint
@@ -899,7 +900,7 @@ func (m *Memory) writablePage(pageIndex uint64) (*CachedPage, bool) {
         <p>
           <strong>Reusing the last agreed state.</strong> Every round is public, so each party knows
           the interval still in dispute. After an agreeing round a party keeps its machine at
-          <code>lo</code>, and later questions replay only inside the interval. Each question
+          <code>lo</code>, and later hash requests replay only inside the interval. Each request
           therefore replays at most one checkpoint interval, and once the interval in dispute is
           shorter than that, at most the interval itself, which halves every round.
         </p>
@@ -927,7 +928,7 @@ func (m *Memory) writablePage(pageIndex uint64) (*CachedPage, bool) {
           The referee first hashes the witness and checks it against the root both parties agreed
           on. It then reads the program counter from the witness and recovers the instruction word
           from the memory proof. This prevents a party from supplying a different instruction
-          while claiming to defend the same step:
+          while presenting a witness for the same VM state and instruction count:
         </p>
         <details class="technical-details code-detail">
           <summary>Code: checking the instruction proof</summary>
@@ -961,7 +962,7 @@ if node != common.BytesToHash(sw[:32]) {       <span class="c">// witness bytes 
               <tr><td>Carrier</td><td>Go <code>uint64</code> on a real state</td><td>Go <code>uint256</code> on a state oracle</td><td>Yul <code>uint256</code> in the EVM</td></tr>
               <tr><td>Speed</td><td>about 25M instructions/s</td><td>thousands of steps/s</td><td>one step, about 84K gas</td></tr>
               <tr><td>Float</td><td>everything</td><td colspan="2">loads, stores, sign injection and moves; arithmetic reverts</td></tr>
-              <tr><td>Purpose</td><td>run, profile, answer questions</td><td>independent oracle, referee</td><td>a step a chain could execute</td></tr>
+              <tr><td>Purpose</td><td>run, profile, return past VM hashes</td><td>independent instruction checker</td><td>one RISC-V instruction in an EVM</td></tr>
             </tbody>
           </table>
         </div>
@@ -1024,10 +1025,10 @@ return post.StateHash()</code></pre>
         <p>
           This check uses the same SoftFloat implementation as the fast VM, so it does not provide
           an independent check of that implementation or an on-chain verdict. MLVM also has an
-          experimental on-chain route for <code>f64</code>, called nesting: compile one operation for RV64IMA,
-          where it becomes an integer soft-float routine, and run that routine as a nested machine
+          experimental on-chain route for <code>f64</code>, called nesting: compile the behavior of
+          one RISC-V <code>f64</code> instruction into an RV64IMA integer routine, then run that routine as a nested machine
           whose steps <code>RISCV.sol</code> can execute. Nested traces average 83 to 680 steps per
-          operation, which adds 7 to 10 bisection rounds. It computes in round-to-nearest-even only,
+          floating-point instruction, which adds 7 to 10 hash comparisons. It computes in round-to-nearest-even only,
           covers no <code>f32</code>, and is not bound to an outer game.
         </p>
 
@@ -1037,22 +1038,22 @@ return post.StateHash()</code></pre>
           multiplication (GEMM) program twice. It uses <code>no_std</code>, with no libc, allocator
           or libm, to isolate the cost of floating-point operations.
           For RV64IMAFD, MLVM executes <code>fmul.d</code> with SoftFloat. For RV64IMA, the compiler
-          expands every float operation into integer code: <code>__muldf3</code>,
+          expands every floating-point instruction into integer code: <code>__muldf3</code>,
           <code>__adddf3</code>.
         </p>
         <figure class="fig" id="fig6">
           <div class="fig-body">
             <svg viewBox="0 0 760 146" role="img" aria-labelledby="fig6-t">
-              <title id="fig6-t">The same GEMM takes 903,446 instructions with float instructions and 22,898,400 with compiler soft-float, 25.3 times as many. A fault needs 20 questions in the first build, ruled by SoftFloat locally, and 25 in the second, ruled by RISCV.sol.</title>
+              <title id="fig6-t">The same GEMM takes 903,446 RISC-V instructions when it uses the RISC-V floating-point instruction set and 22,898,400 when the compiler expands floats into integer code, 25.3 times as many. Locating a changed result needs 20 VM hash comparisons in the first build and 25 in the second.</title>
               <text class="f-t" x="0" y="26">rv64imafd</text>
               <text class="f-s" x="0" y="44">fmul.d in the ISA</text>
               <rect class="f-bar" x="200" y="12" width="19" height="26" rx="3"/>
-              <text class="f-s" x="228" y="30">903,446 instructions · 20 questions · SoftFloat rules, locally</text>
+              <text class="f-s" x="228" y="30">903,446 instructions · 20 hash checks · SoftFloat checks locally</text>
               <text class="f-t" x="0" y="96">rv64ima</text>
               <text class="f-s" x="0" y="114">compiler soft-float</text>
               <rect class="f-bar" x="200" y="82" width="480" height="26" rx="3"/>
               <text class="f-t" x="690" y="100" style="font-size:14px">25.3×</text>
-              <text class="f-s" x="200" y="132">22,898,400 instructions · 25 questions · RISCV.sol rules, 48,576 gas</text>
+              <text class="f-s" x="200" y="132">22,898,400 instructions · 25 hash checks · RISCV.sol, 48,576 gas</text>
             </svg>
           </div>
           <figcaption><b>Figure 6.</b> One multiplication, made wrong in each build. Both builds print
@@ -1060,30 +1061,29 @@ return post.StateHash()</code></pre>
           implementations: MLVM's SoftFloat port and Rust's <code>compiler_builtins</code>.</figcaption>
         </figure>
         <p>
-          Each double-precision operation expands into about 91 integer instructions, the branchy
+          Each double-precision multiply or add in the source expands into about 91 integer instructions, the branchy
           exponent alignment, normalisation and rounding of <code>__adddf3</code> and
           <code>__muldf3</code>. In the soft-float build the disputed step is the <code>mulhu</code>
           that forms the high half of the mantissa product, an integer instruction that
           <code>RISCV.sol</code> settles by itself. The price is 25 times the instructions to
-          execute and bisect over, and five more questions.
+          execute and compare, and five more VM hash comparisons.
         </p>
         <p>
           The two builds show the tradeoff in this workload. Compiling floats into integer code
-          lets the existing integer verifier check the disputed operation, but increases the
+          lets the existing integer verifier check the disputed RISC-V instruction, but increases the
           instruction count by about 25 times. That also means more work when replaying a disputed
           interval. With F and D instructions, the trace is shorter, but float arithmetic needs
           its own verifier. Those instructions are also somewhat slower to interpret: bge-base
           runs at 19.6M instructions/s here, compared with about 25M for integer code.
         </p>
 
-        <h3>8.5 The dispute record</h3>
+        <h3>8.5 Saving one RISC-V instruction check</h3>
         <p>
-          A finished dispute can be saved as a JSON record (<code>mlvm.dispute-record/1</code>)
-          of a few kilobytes. It contains the questions, both parties' answers, and the witness
-          and Merkle proofs for the disputed instruction. A new referee can check whether those
-          recorded claims are internally consistent and whether the supported disputed step is
-          correct. The record alone cannot prove that either party ran the entire program as
-          claimed. The referee checks:
+          MLVM saves both VMs' hashes at each comparison, the VM state before the disputed
+          instruction, and its memory proofs in a JSON file of a few kilobytes
+          (<code>mlvm.dispute-record/1</code>). Another computer can verify the file's hashes and
+          re-execute the supported RISC-V instruction. The file alone cannot prove that either
+          computer ran the entire program. The checker verifies:
         </p>
         <ol>
           <li>Each round asks about the midpoint of the interval still in dispute, starting from
@@ -1105,31 +1105,31 @@ return post.StateHash()</code></pre>
     referee computes                     0x0307f3e7...  → honest wins
     RISCV.sol in an EVM returns          0x0307f3e7...  (agrees, 131,482 gas)</code></pre>
         <p>
-          The tests tamper with a valid record by changing a question, an answer, a witness byte
-          or a proof sibling, and require the referee to reject it. Checking the gallery records
-          in the playground takes about a millisecond, including the SmolLM2 record. Its 34 rounds
-          refer to a 14.8-billion-instruction run, but the referee only needs the record to repeat
-          the local verdict on the disputed step.
+          The tests tamper with a valid file by changing one midpoint request, one VM hash, a witness byte
+          or a proof sibling, and require the checker to reject it. Checking the saved gallery files
+          in the browser takes about a millisecond, including the SmolLM2 file. Its 34 comparisons
+          refer to a 14.8-billion-instruction run, but the checker only needs the file to repeat
+          the local result for the disputed RISC-V instruction.
         </p>
       </section>
 
       <!-- 9 ------------------------------------------------------------------------------ -->
       <section id="lies">
-        <h2><span class="num">9</span>What happened when we introduced faults</h2>
+        <h2><span class="num">9</span>Testing changed RISC-V instruction results and answers</h2>
         <h3>9.1 Finding a change that survives</h3>
         <p>
-          To test bisection and the referee, we built a version of the VM that deliberately makes
-          one run diverge; the <code>mlvm liar</code> command runs it. We ran it on the gallery's 13 programs, from a
-          263,030-instruction C program to SmolLM2-135M, with five kinds of fault:
+          The <code>mlvm liar</code> command repeats a model run with one deliberate change: it
+          changes a RISC-V instruction's result, the printed text, or the answer saved in VM
+          memory. We tested it on 13 programs, from a 263,030-instruction C program to SmolLM2-135M:
         </p>
         <div class="table-scroll">
           <table class="table">
-            <thead><tr><th><code>--lie</code></th><th>The faulty run…</th><th>Ruled by</th></tr></thead>
+            <thead><tr><th><code>--lie</code></th><th>Change made in the second run</th><th>Checked by</th></tr></thead>
             <tbody>
               <tr><td><code>ulp</code></td><td>rounds one float result one unit in the last place the wrong way</td><td>SoftFloat, from the witness</td></tr>
               <tr><td><code>load</code></td><td>reads one bit of one loaded value wrong (a weight or an activation)</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
               <tr><td><code>int</code></td><td>flips the lowest bit of one integer result</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
-              <tr><td><code>output</code></td><td>prints bytes it did not compute</td><td>usually nothing: stdout is not state</td></tr>
+              <tr><td><code>output</code></td><td>prints bytes it did not compute</td><td>no instruction check if final VM hashes match</td></tr>
               <tr><td><code>commit</code>, <code>token</code></td><td>commits an answer it did not compute</td><td><code>RISCV.sol</code>, <code>slow.Step</code></td></tr>
             </tbody>
           </table>
@@ -1211,7 +1211,7 @@ return post.StateHash()</code></pre>
           three erased changes were gone in under 20 instructions.
         </p>
 
-        <h3>9.3 Different states can still produce the same answer</h3>
+        <h3>9.3 Different VM hashes can still print the same answer</h3>
         <p>
           In the runs with a surviving arithmetic change, both TinyStories implementations still
           printed the original story. SmolLM2 printed and committed the same 16 tokens, MiniLM-L6
@@ -1238,12 +1238,12 @@ return post.StateHash()</code></pre>
 
       <!-- 10 ----------------------------------------------------------------------------- -->
       <section id="xray">
-        <h2><span class="num">10</span>Where the instructions go</h2>
+        <h2><span class="num">10</span>Counting RISC-V instructions by function</h2>
         <p>
           Since the interpreter sees every instruction, it can count them exactly.
           <code>mlvm xray</code> records those counts by function, which helped explain several
           unexpected costs in the model runs below. These are instruction counts, not elapsed
-          time: an operation's share of the profile does not necessarily equal its share of runtime.
+          time: a function's share of the instruction count does not necessarily equal its share of runtime.
         </p>
         <p>
           The profiler decodes each PC's instruction word once. Its disassembler agrees with GNU
@@ -1264,7 +1264,7 @@ return post.StateHash()</code></pre>
               <tr><td>TinyStories-260K (C)</td><td><code>matmul</code> is 83.2% of 38.2M instructions. Loading and reading the prompt takes 3.0M, then each token 1.77M (one forward pass).</td></tr>
               <tr><td>TinyStories-260K (Candle)</td><td>5.42M instructions per token, <code>gemm</code> 41%. 7.7%, 9.5M instructions, is <code>num_cpus::get_num_cpus</code>: Candle asks how many CPUs there are on every <code>matmul</code> unless <code>RAYON_NUM_THREADS</code> is set. Setting it takes the run from 122,197,182 to 113,196,552 instructions, with the same tokens.</td></tr>
               <tr><td>SmolLM2-135M (Candle)</td><td>3.0B instructions to load, the first token at 5.1B, then 640M per token. <code>gemm</code> is 76%. 13% is <code>Tensor::to_dtype</code> converting bf16 weights to f32, and the tied embedding matrix is converted twice.</td></tr>
-              <tr><td>all-MiniLM-L6-v2 (Candle)</td><td>The forward pass is 70.1%, one microkernel (<code>gemm_f32::microkernel::scalar::f32::x2x4</code>) 56.9%. Reading staged files is 12.8%, building the tokenizer 11.6%. 342.6M single-precision operations against 6.4M double.</td></tr>
+              <tr><td>all-MiniLM-L6-v2 (Candle)</td><td>The forward pass is 70.1%, one microkernel (<code>gemm_f32::microkernel::scalar::f32::x2x4</code>) 56.9%. Reading staged files is 12.8%, building the tokenizer 11.6%. It executes 342.6M single-precision arithmetic instructions and 6.4M double-precision ones.</td></tr>
               <tr><td>MLP (C)</td><td>73% is libgcc registering and sorting unwind tables at start-up and exit. The network's <code>dense</code> is 4.3%.</td></tr>
             </tbody>
           </table>
@@ -1273,18 +1273,18 @@ return post.StateHash()</code></pre>
 
       <!-- 11 ----------------------------------------------------------------------------- -->
       <section id="browser">
-        <h2><span class="num">11</span>The same machine in a browser tab</h2>
+        <h2><span class="num">11</span>The RISC-V VM in a browser tab</h2>
         <p>
           The <a href="./">playground</a> uses the same Go packages as the CLI.
           <code>rvgo/wasm</code> compiles them with <code>GOOS=js GOARCH=wasm</code> into a 10 MB module (4
-          MB gzipped) that embeds the TinyStories guest, weights and tokenizer. Each party runs in
-          its own Web Worker, and the computation stays in the browser.
+          MB gzipped) that embeds the TinyStories RISC-V executable, weights and tokenizer. The
+          original and changed VM runs each use a Web Worker, and execution stays in the browser.
         </p>
         <p>
           On an Apple M3 Max in Chrome, the 38-million-instruction TinyStories run takes about
           8 seconds with profiling on (5.3 million instructions per second). The native CLI takes
           about 1.2 seconds. A faulty run in the browser takes about 9 seconds, and bisection takes
-          about 5 with both parties answering in parallel. Each party keeps up to eleven
+          about 5 with both VMs answering in parallel. Each VM keeps up to eleven
           machine copies, about 90 MB, and half as many on small devices.
         </p>
         <p>
@@ -1300,9 +1300,9 @@ return post.StateHash()</code></pre>
         <h2><span class="num">12</span>Limits</h2>
         <figure class="repo-figure">
           <a class="figure-image" href="figures/model-scaling.svg" target="_blank" rel="noopener"><img src="figures/model-scaling.svg" width="900" height="440" loading="lazy" alt="BERT-family model benchmarks: inference grows from 0.93 to 6.11 billion instructions, with 285 to 1,288 MiB of memory touched."></a>
-          <figcaption><strong>Larger models still cost more to run.</strong> These earlier inference benchmarks measure instructions and memory touched by one run. The dispute experiments use later builds and keep multiple checkpoints, so their step counts and peak memory differ. <a href="https://github.com/yao-jz/mlvm/blob/main/docs/BENCHMARKS.md">Benchmark details</a> · <a href="figures/model-scaling.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
+          <figcaption><strong>Larger models still cost more to run.</strong> These earlier inference benchmarks measure RISC-V instructions and VM memory touched by one run. The changed-run tests use later builds and keep multiple VM copies, so their instruction counts and peak memory differ. <a href="https://github.com/yao-jz/mlvm/blob/main/docs/BENCHMARKS.md">Benchmark details</a> · <a href="figures/model-scaling.svg" target="_blank" rel="noopener">Open full-size ↗</a></figcaption>
         </figure>
-        <p>The experiments above exercise individual verification components and a local dispute simulation. Several gaps remain before they can form a complete protocol; <a href="https://github.com/yao-jz/mlvm/blob/main/docs/STATUS.md">docs/STATUS.md</a> tracks them.</p>
+        <p>The runs above test RISC-V VM execution, hash comparison and local re-execution of supported instructions. A complete dispute protocol still needs the pieces listed below; <a href="https://github.com/yao-jz/mlvm/blob/main/docs/STATUS.md">docs/STATUS.md</a> tracks them.</p>
         <ul>
           <li><strong>There is no complete, deployed dispute game.</strong> The local simulation
             and experimental contracts do not yet provide bonds, timeouts, a challenge period or
@@ -1322,7 +1322,7 @@ return post.StateHash()</code></pre>
             per second, and the guest runs scalar code where native Candle uses SIMD.</li>
           <li><strong>Large-model disputes need several gigabytes of memory.</strong> A dispute over a 110M-parameter model peaks at 8 to 9
             GB, over SmolLM2-135M at about 10 GB.</li>
-          <li><strong>It is unaudited, pre-1.0 research software.</strong> Formats and interfaces may
+          <li><strong>MLVM is unaudited and pre-1.0.</strong> Formats and interfaces may
             change.</li>
         </ul>
       </section>
@@ -1353,11 +1353,11 @@ return post.StateHash()</code></pre>
 
       <section id="reproduce" class="cite">
         <h2>Reproduce and cite</h2>
-        <p>The measurements on this page come from the repository's documents and recorded runs. These commands run the demo, inspect a dispute record and reproduce the gallery experiments:</p>
+        <p>The measurements on this page come from the repository's documents and recorded RISC-V VM runs. These commands run TinyStories, recheck one instruction from a saved file and reproduce the recorded tests:</p>
 <pre class="code"><code>brew install yao-jz/tap/mlvm         <span class="c"># or: git clone … &amp;&amp; make build</span>
 mlvm demo "Once upon a time"         <span class="c"># the run, its prestate and poststate</span>
 mlvm liar --json &gt; dispute.json      <span class="c"># a one-ULP fault, found by bisection</span>
-mlvm referee dispute.json            <span class="c"># rule on it again from the record</span>
+mlvm referee dispute.json            <span class="c"># recheck the RISC-V instruction from the file</span>
 mlvm xray --svg flame.svg            <span class="c"># the exact profile</span>
 
 make test-all                        <span class="c"># fast, slow and EVM cross-checks (needs Foundry)</span>

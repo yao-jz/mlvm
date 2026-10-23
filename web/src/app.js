@@ -810,7 +810,7 @@ async function showGallery() {
       const code = document.createElement("code");
       code.textContent = l.instruction;
       at.append(code, document.createTextNode(` in ${l.function}`));
-      tr.append(at, td(l.judge === "RISCV.sol" ? `RISCV.sol in an EVM, ${fmt(l.gas)} gas` : "SoftFloat re-execution"));
+      tr.append(at, td(l.judge === "RISCV.sol" ? `RISCV.sol (EVM), ${fmt(l.gas)} gas` : "SoftFloat (software float check)"));
       const replay = td("", "replay-cell");
       if (l.record) {
         const button = el("button", { class: "ghost", type: "button", "aria-label": `Replay the search on ${e.title}: ${l.lie}` }, "Replay");

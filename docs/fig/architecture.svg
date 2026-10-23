@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1150" width="960" height="1150" role="img" aria-label="How MLVM works: the inputs of a run, executing one instruction at a time, fingerprinting the whole machine, finding a disputed step between two runs, and checking that one instruction">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1150" width="960" height="1150" role="img" aria-label="A compiled model runs in a RISC-V virtual machine with staged files and supported Linux system calls; two runs compare VM hashes and re-execute one disputed instruction">
 
   <style>
     .bg    { fill: #ffffff; }
@@ -43,10 +43,10 @@
 <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <rect class="bg" width="960" height="1150"/>
 <text class="title" x="24" y="34">How MLVM works</text>
-<text class="sub" x="24" y="56">A model run you can check one instruction at a time. Each module: what it does, and in grey, the code behind it.</text>
+<text class="sub" x="24" y="56">A compiled RISC-V model runs with controlled files and Linux calls; VM hashes let others compare and check it.</text>
 <rect class="panel" x="24" y="74" width="284" height="300" rx="8"/>
 <text class="hdr" x="38" y="96">01 · INPUTS</text>
-<text class="lbl" x="38" y="116">What a run starts from</text>
+<text class="lbl" x="38" y="116">Inputs loaded into the RISC-V VM</text>
 <rect class="card" x="38" y="136" width="256" height="68" rx="6"/>
 <rect x="38" y="144" width="3" height="52" rx="1.5" fill="#2ea08c"/>
 <text class="mt" x="52" y="157">The program</text>
@@ -56,7 +56,7 @@
 <rect x="38" y="220" width="3" height="52" rx="1.5" fill="#2ea08c"/>
 <text class="mt" x="52" y="233">Input files</text>
 <text class="d" x="52" y="252">Weights, tokenizer and prompt</text>
-<text class="c" x="52" y="269">copied into memory before the run</text>
+<text class="c" x="52" y="269">staged in VM memory before run</text>
 <rect class="card" x="38" y="288" width="256" height="68" rx="6"/>
 <rect x="38" y="296" width="3" height="52" rx="1.5" fill="#2ea08c"/>
 <text class="mt" x="52" y="309">Fixed random bytes</text>
@@ -65,13 +65,13 @@
 <line class="wire" x1="308" y1="224" x2="330" y2="224" marker-end="url(#ah)"/>
 <rect class="panel" x="332" y="74" width="604" height="300" rx="8"/>
 <text class="hdr" x="346" y="96">02 · RUN</text>
-<text class="lbl" x="346" y="116">Execute the program one instruction at a time</text>
+<text class="lbl" x="346" y="116">Execute the RISC-V program in software</text>
 <rect class="card" x="346" y="136" width="132" height="50" rx="6"/>
 <text class="mt" x="412" y="156" text-anchor="middle">Fetch</text>
 <text class="d" x="412" y="174" text-anchor="middle">read the instruction</text>
 <rect class="card" x="494" y="136" width="132" height="50" rx="6"/>
 <text class="mt" x="560" y="156" text-anchor="middle">Decode</text>
-<text class="d" x="560" y="174" text-anchor="middle">find what it asks</text>
+<text class="d" x="560" y="174" text-anchor="middle">identify opcode</text>
 <line class="wire" x1="479" y1="161" x2="492" y2="161" marker-end="url(#ah)"/>
 <rect class="card" x="642" y="136" width="132" height="50" rx="6"/>
 <text class="mt" x="708" y="156" text-anchor="middle">Execute</text>
@@ -79,12 +79,12 @@
 <line class="wire" x1="627" y1="161" x2="640" y2="161" marker-end="url(#ah)"/>
 <rect class="card" x="790" y="136" width="132" height="50" rx="6"/>
 <text class="mt" x="856" y="156" text-anchor="middle">Write back</text>
-<text class="d" x="856" y="174" text-anchor="middle">update the state</text>
+<text class="d" x="856" y="174" text-anchor="middle">update VM state</text>
 <line class="wire" x1="775" y1="161" x2="788" y2="161" marker-end="url(#ah)"/>
-<text class="d" x="346" y="206">Each instruction is one of these kinds of work:</text>
+<text class="d" x="346" y="206">RISC-V instructions include:</text>
 <rect class="card" x="346" y="218" width="184" height="100" rx="6"/>
 <rect x="346" y="226" width="3" height="84" rx="1.5" fill="#3b7dd8"/>
-<text class="mt" x="360" y="239">Integer math</text>
+<text class="mt" x="360" y="239">Integer and memory</text>
 <text class="d" x="360" y="258">Add, multiply, compare,</text>
 <text class="d" x="360" y="275">read and write memory</text>
 <text class="c" x="360" y="307">rvgo/fast · yul64.go</text>
@@ -97,16 +97,16 @@
 <rect class="card" x="738" y="218" width="184" height="100" rx="6"/>
 <rect x="738" y="226" width="3" height="84" rx="1.5" fill="#7d8590"/>
 <text class="mt" x="752" y="239">System calls</text>
-<text class="d" x="752" y="258">Files, memory and time come</text>
-<text class="d" x="752" y="275">from the VM, never the host</text>
-<text class="c" x="752" y="307">37 Linux syscalls</text>
+<text class="d" x="752" y="258">VM handles file reads,</text>
+<text class="d" x="752" y="275">memory and clock calls</text>
+<text class="c" x="752" y="307">35 supported Linux calls</text>
 <text class="c" x="346" y="350">About 20 million instructions per second natively; the same code runs in a browser.</text>
 <line class="wire" x1="480" y1="374" x2="480" y2="400" marker-end="url(#ah)"/>
 <text class="c" x="490" y="392">after any instruction</text>
 <rect class="panel" x="24" y="402" width="912" height="272" rx="8"/>
-<text class="hdr" x="38" y="424">03 · FINGERPRINT</text>
-<text class="lbl" x="38" y="444">The whole machine hashes to one 32-byte fingerprint</text>
-<text class="d" x="38" y="466">A 674-byte state record holds the registers and the roots of memory and files. Its hash is the fingerprint, also called the state root.</text>
+<text class="hdr" x="38" y="424">03 · VM HASH</text>
+<text class="lbl" x="38" y="444">One 32-byte hash identifies the RISC-V VM state</text>
+<text class="d" x="38" y="466">A 674-byte VM state record holds registers and roots for memory and files. Hashing that record gives the state root.</text>
 <line class="wire" x1="40.0" y1="496" x2="510.6" y2="496"/>
 <line class="wire" x1="40.0" y1="492" x2="40.0" y2="500"/>
 <line class="wire" x1="510.6" y1="492" x2="510.6" y2="500"/>
@@ -149,15 +149,15 @@
 <rect x="637.333" y="576" width="3" height="76" rx="1.5" fill="#3b7dd8"/>
 <text class="mt" x="651.333" y="589">The answer</text>
 <text class="d" x="651.333" y="608">The model writes its answer to a fixed</text>
-<text class="d" x="651.333" y="625">address, so the fingerprint covers it</text>
+<text class="d" x="651.333" y="625">address, so the VM hash covers it</text>
 <text class="c" x="651.333" y="649">MLVM_OUT · 0x3100_0000_0000_0000</text>
 <line class="wire" x1="264" y1="674" x2="264" y2="700" marker-end="url(#ah)"/>
-<text class="c" x="274" y="692">fingerprints of two runs</text>
+<text class="c" x="274" y="692">VM hashes from two runs</text>
 <line class="wire" x1="732" y1="674" x2="732" y2="700" marker-end="url(#ah)"/>
-<text class="c" x="742" y="692">state record + memory proofs</text>
+<text class="c" x="742" y="692">saved VM state + memory proofs</text>
 <rect class="panel" x="24" y="702" width="480" height="286" rx="8"/>
 <text class="hdr" x="38" y="724">04 · FIND</text>
-<text class="lbl" x="38" y="744">Find a step where two runs split</text>
+<text class="lbl" x="38" y="744">Find a disputed RISC-V instruction</text>
 <text class="d" x="38" y="772" fill="#3b7dd8">original run</text>
 <line x1="136" y1="768" x2="486" y2="768" stroke="#3b7dd8" stroke-width="2"/>
 <circle class="card" cx="136" cy="768" r="3.5"/>
@@ -182,9 +182,9 @@
 <path d="M348,792 l8,8 m0,-8 l-8,8" stroke="#c9743a" stroke-width="2"/>
 <rect x="340" y="758" width="24" height="48" fill="#3b7dd8" fill-opacity="0.12"/>
 <text class="c" x="352" y="822" text-anchor="middle">the search ends here</text>
-<text class="d" x="38" y="852">1. The two runs end with different fingerprints.</text>
-<text class="d" x="38" y="871">2. Ask both for their fingerprint halfway through.</text>
-<text class="d" x="38" y="890">3. Keep the half whose endpoints differ, and repeat.</text>
+<text class="d" x="38" y="852">1. The two runs end with different VM hashes.</text>
+<text class="d" x="38" y="871">2. Ask both for their hash halfway through.</text>
+<text class="d" x="38" y="890">3. Keep the range whose hashes differ; repeat.</text>
 <text class="d" x="38" y="909">About log₂ N rounds: 26 for 38 million instructions,</text>
 <text class="d" x="38" y="928">34 for 14.8 billion. Saved checkpoints let each side answer</text>
 <text class="d" x="38" y="947">without running from the start.</text>
@@ -192,26 +192,26 @@
 <line class="wire" x1="504" y1="845" x2="526" y2="845" marker-end="url(#ah)"/>
 <rect class="panel" x="528" y="702" width="408" height="286" rx="8"/>
 <text class="hdr" x="542" y="724">05 · CHECK</text>
-<text class="lbl" x="542" y="744">Re-execute only that one instruction</text>
-<text class="d" x="542" y="766">✓ The state record hashes to the fingerprint both runs agreed on.</text>
-<text class="d" x="542" y="785">✓ The memory proofs match its memory root.</text>
+<text class="lbl" x="542" y="744">Re-execute one RISC-V instruction</text>
+<text class="d" x="542" y="766">✓ Saved VM values match the agreed hash.</text>
+<text class="d" x="542" y="785">✓ Memory proofs match the VM memory root.</text>
 <rect class="card" x="542" y="800" width="380" height="48" rx="6"/>
 <rect x="542" y="808" width="3" height="32" rx="1.5" fill="#3b7dd8"/>
 <text class="mt" x="556" y="821">RISCV.sol</text>
 <text class="c" x="556" y="837">integer and memory · ≈84K gas</text>
-<text class="d" x="642" y="821">A smart contract runs the step in an EVM</text>
+<text class="d" x="642" y="821">EVM bytecode checks one instruction</text>
 <rect class="card" x="542" y="854" width="380" height="48" rx="6"/>
 <rect x="542" y="862" width="3" height="32" rx="1.5" fill="#2ea08c"/>
 <text class="mt" x="556" y="875">slow.Step</text>
-<text class="c" x="556" y="891">integer, memory and file steps</text>
-<text class="d" x="642" y="875">The same rules, written in Go</text>
+<text class="c" x="556" y="891">integer, memory and file calls</text>
+<text class="d" x="642" y="875">Go checks the same instruction</text>
 <rect class="card" x="542" y="908" width="380" height="48" rx="6"/>
 <rect x="542" y="916" width="3" height="32" rx="1.5" fill="#8b6cc9"/>
 <text class="mt" x="556" y="929">SoftFloat</text>
 <text class="c" x="556" y="945">float arithmetic · a local check</text>
-<text class="d" x="642" y="929">Recomputes a floating-point result</text>
-<text class="d" x="542" y="974">→ a few-kilobyte record that anyone can check again</text>
-<text class="hdr" x="24" y="1026">06 · WHERE IT RUNS</text>
+<text class="d" x="642" y="929">Re-executes a float instruction</text>
+<text class="d" x="542" y="974">→ a small file lets another computer recheck this instruction</text>
+<text class="hdr" x="24" y="1026">06 · RUN AND RECHECK</text>
 <rect class="card" x="24" y="1036" width="219" height="92" rx="6"/>
 <rect x="24" y="1044" width="3" height="76" rx="1.5" fill="#7d8590"/>
 <text class="mt" x="38" y="1057">Command line</text>
@@ -226,13 +226,13 @@
 <text class="c" x="269" y="1117">rvgo/wasm · the playground</text>
 <rect class="card" x="486" y="1036" width="219" height="92" rx="6"/>
 <rect x="486" y="1044" width="3" height="76" rx="1.5" fill="#7d8590"/>
-<text class="mt" x="500" y="1057">Every push</text>
-<text class="d" x="500" y="1076">Six platforms must produce</text>
-<text class="d" x="500" y="1093">identical fingerprints</text>
-<text class="c" x="500" y="1117">workflows/determinism.yml</text>
-<rect class="void" x="717" y="1036" width="219" height="92" rx="8"/>
-<text class="mt" x="731" y="1057">Not yet</text>
-<text class="d" x="731" y="1076">An on-chain dispute game with</text>
-<text class="d" x="731" y="1093">bonds and clocks; an audit</text>
-<text class="c" x="731" y="1117">see docs/STATUS.md</text>
+<text class="mt" x="500" y="1057">Cross-hardware test</text>
+<text class="d" x="500" y="1076">TinyStories matches on Mac,</text>
+<text class="d" x="500" y="1093">Linux, Windows and WASM</text>
+<text class="c" x="500" y="1117">5 prompts · 6 platforms</text>
+<rect class="card" x="717" y="1036" width="219" height="92" rx="8"/>
+<text class="mt" x="731" y="1057">Saved check file</text>
+<text class="d" x="731" y="1076">Another computer rechecks</text>
+<text class="d" x="731" y="1093">one RISC-V instruction</text>
+<text class="c" x="731" y="1117">mlvm referee · browser</text>
 </svg>

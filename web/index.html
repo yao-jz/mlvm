@@ -300,6 +300,41 @@
       <p class="more-detail"><a href="blog.html#lies">Read what these experiments show →</a></p>
     </section>
 
+    <section id="install" class="act">
+      <p class="eyebrow">On your computer</p>
+      <h2>Run the RISC-V VM locally.</h2>
+      <p class="lede small">The MLVM command-line tool runs the same RISC-V virtual machine on Linux, macOS and Windows. It can execute the built-in TinyStories program or a statically linked RISC-V program you compile yourself.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Install MLVM</h3>
+          <pre class="code"><code>brew install yao-jz/tap/mlvm</code></pre>
+          <details class="technical-details"><summary>Install on Linux or Windows, or build from source</summary>
+            <p class="note">On Linux and macOS:</p>
+            <pre class="code"><code>curl -fsSL https://raw.githubusercontent.com/yao-jz/mlvm/main/install.sh | sh</code></pre>
+            <p class="note">To build from source with Go 1.23 or later:</p>
+            <pre class="code"><code>git clone https://github.com/yao-jz/mlvm && cd mlvm && make build</code></pre>
+            <p class="note">On Windows, download the zip from <a href="https://github.com/yao-jz/mlvm/releases">GitHub Releases</a>. The <a href="https://github.com/yao-jz/mlvm/blob/main/docs/INSTALL.md">installation guide</a> covers all three systems.</p>
+          </details>
+        </div>
+        <div class="card">
+          <h3>Run TinyStories and check a changed instruction</h3>
+          <pre class="code"><code><span class="c"># Execute TinyStories in the RISC-V VM; print its final VM hash</span>
+mlvm demo "Once upon a time"
+
+<span class="c"># Change one RISC-V instruction result and locate it</span>
+mlvm liar</code></pre>
+          <details class="technical-details"><summary>Save the instruction check or run your own program</summary>
+            <pre class="code"><code><span class="c"># Save the hash comparisons and recheck the disputed instruction</span>
+mlvm liar --lie token --word Tim --json > dispute.json
+mlvm referee dispute.json
+
+<span class="c"># Run a statically linked RISC-V executable with a staged model file</span>
+mlvm xray --elf ./your-program --load-file model.safetensors=weights/model.safetensors</code></pre>
+            <p class="note"><a href="https://github.com/yao-jz/mlvm#bring-your-own-model">How to compile and run your own model →</a></p>
+          </details>
+        </div>
+      </div>
+    </section>
 
   </main>
 

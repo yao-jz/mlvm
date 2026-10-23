@@ -25,27 +25,27 @@ FLAMES = ROOT / "docs" / "gallery"
 # and the smallest and largest BERT.
 FEATURED = {"decoder", "tinystories-candle", "smollm2", "gemm-softfloat", "minilm-l6", "bert-base"}
 ENTRIES = [
-    ("decoder", "TinyStories-260K", "C, llama2.c-style decoder, f32, 16 tokens"),
-    ("tinystories-candle", "TinyStories-260K through Candle", "Rust, the same model, tokens and answer layout as the C decoder"),
-    ("mlp", "MLP", "C, f64, the embedded example"),
-    ("matmul", "matmul", "C, f64, a 32x32 matrix multiply"),
-    ("ieee", "ieee", "C, f64, an IEEE-754 rounding regression"),
-    ("gemm-float", "GEMM with float instructions", "Rust no_std, rv64imafd"),
-    ("gemm-softfloat", "GEMM in soft-float", "Rust no_std, rv64ima: floats compiled to integer code"),
-    ("smollm2", "SmolLM2-135M", "Rust, Candle Llama: a Hugging Face LLM, 135M parameters"),
-    ("minilm-l6", "all-MiniLM-L6-v2", "Rust, Candle BERT, 22.7M parameters"),
-    ("minilm-l12", "all-MiniLM-L12-v2", "Rust, Candle BERT, 33.4M parameters"),
-    ("bge-small", "bge-small-en-v1.5", "Rust, Candle BERT, 33.4M parameters"),
-    ("bge-base", "bge-base-en-v1.5", "Rust, Candle BERT, 109.5M parameters"),
-    ("bert-base", "bert-base-uncased", "Rust, Candle BERT, 110.1M parameters"),
+    ("decoder", "TinyStories-260K", "C model program compiled for RISC-V; generates 16 text pieces"),
+    ("tinystories-candle", "TinyStories-260K through Candle", "Rust/Candle program for the same TinyStories model, compiled for RISC-V"),
+    ("mlp", "MLP", "C neural-network program using RISC-V 64-bit floating-point instructions"),
+    ("matmul", "matmul", "C program multiplying two 32 × 32 matrices with RISC-V floating-point instructions"),
+    ("ieee", "ieee", "C program testing RISC-V floating-point rounding"),
+    ("gemm-float", "GEMM with float instructions", "Rust matrix multiplication using RISC-V floating-point instructions"),
+    ("gemm-softfloat", "GEMM in soft-float", "Rust matrix multiplication with floating-point math compiled into RISC-V integer instructions"),
+    ("smollm2", "SmolLM2-135M", "Rust/Candle language model with 135M parameters, compiled for RISC-V"),
+    ("minilm-l6", "all-MiniLM-L6-v2", "Rust/Candle BERT encoder with 22.7M parameters, compiled for RISC-V"),
+    ("minilm-l12", "all-MiniLM-L12-v2", "Rust/Candle BERT encoder with 33.4M parameters, compiled for RISC-V"),
+    ("bge-small", "bge-small-en-v1.5", "Rust/Candle BERT encoder with 33.4M parameters, compiled for RISC-V"),
+    ("bge-base", "bge-base-en-v1.5", "Rust/Candle BERT encoder with 109.5M parameters, compiled for RISC-V"),
+    ("bert-base", "bert-base-uncased", "Rust/Candle BERT encoder with 110.1M parameters, compiled for RISC-V"),
 ]
 LIES = {
-    "ulp": "one float result off by 1 ULP",
-    "load": "one bit of one loaded value",
-    "int": "one bit of one integer result",
-    "output": "a forged printed result",
-    "commit": "a forged committed answer",
-    "token": "a forged answer token",
+    "ulp": "one RISC-V floating-point instruction returns a neighboring number",
+    "load": "one RISC-V load reads a value with one bit changed",
+    "int": "one RISC-V integer instruction returns a value with one bit changed",
+    "output": "printed text changed; saved VM answer unchanged",
+    "commit": "the answer saved in VM memory changed",
+    "token": "one generated token ID saved differently in VM memory",
 }
 
 
