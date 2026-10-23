@@ -47,7 +47,7 @@
             <a class="button-link primary" href="#run">Try it in your browser <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="#how-it-works">See how it works</a>
           </div>
-          <p class="hero-note"><strong>Research prototype.</strong> The demo runs locally in your browser. MLVM is much slower than ordinary model inference, and its dispute system is not deployed. <a href="blog.html#limits">What it can and cannot verify →</a></p>
+          <p class="hero-note"><strong>Research prototype.</strong> The demo runs locally in your browser. Disputes run locally today; an on-chain dispute system is not built yet. <a href="blog.html#limits">What it can and cannot verify →</a></p>
         </div>
         <aside class="reading-invite" aria-labelledby="read-title">
           <p class="eyebrow">Recorded experiment</p>
@@ -56,6 +56,12 @@
           <a class="button-link primary" href="blog.html#lies">See the experiment <span aria-hidden="true">→</span></a>
         </aside>
       </div>
+      <ul class="feature-links" aria-label="What MLVM provides">
+        <li><a href="blog.html#why-riscv"><strong>A RISC-V virtual machine</strong><span>Models compile to RV64IMAFD and run in software, floating point included. No GPU or RISC-V hardware needed.</span></a></li>
+        <li><a href="blog.html#cross-platform"><strong>Deterministic across platforms</strong><span>The same program and inputs give bit-identical states. CI checks Linux, macOS, Windows and WebAssembly.</span></a></li>
+        <li><a href="#how-it-works"><strong>Verifiable, one instruction at a time</strong><span>Any machine state has a 32-byte fingerprint. One instruction can be rechecked from a few kilobytes.</span></a></li>
+        <li><a href="#liar"><strong>Disputable</strong><span>When two runs end differently, about log₂ N rounds find the step where they split: 34 for 14.8 billion.</span></a></li>
+      </ul>
     </section>
 
     <section id="how-it-works" class="act concept-section">

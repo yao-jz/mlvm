@@ -368,7 +368,7 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 .text-link { color: var(--ink); font-size: 14px; text-decoration-color: var(--axis); }
 .hero-note { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 20px 0 0; max-width: 58ch; }
 .hero-note strong { color: var(--ink); }
-.feature-links { list-style: none; padding: 28px 0 0; margin: 40px 0 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.feature-links { list-style: none; padding: 28px 0 0; margin: 40px 0 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
 .feature-links a { display: block; color: var(--ink); text-decoration: none; }
 .feature-links a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
 .feature-links strong { display: block; font-size: 14px; font-weight: 600; }
@@ -456,6 +456,7 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
   .hero-grid { grid-template-columns: 1fr; gap: 32px; }
   .hero h1 { max-width: 24ch; }
   .journey, .concept-steps, .featured-runs, .design-notes { grid-template-columns: 1fr; }
+  .feature-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .design-notes { gap: 24px; }
   .journey a { padding: 20px 12px; }
   .journey li + li { border-left: 0; border-top: 1px solid var(--border); }
