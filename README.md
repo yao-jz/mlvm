@@ -137,7 +137,7 @@ vulnerabilities as described in [SECURITY](.github/SECURITY.md).
 
 ```bibtex
 @software{yao_mlvm,
-  author = {Yao, Jianzhu},
+  author = {Yao, Jianzhu and Viswanath, Pramod},
   title  = {{MLVM}: deterministic {RV64IMAFD} execution over committed memory},
   url    = {https://github.com/yao-jz/mlvm},
   year   = {2026}

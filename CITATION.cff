@@ -7,6 +7,9 @@ authors:
     family-names: Yao
     email: jy0246@princeton.edu
     affiliation: Princeton University
+  - given-names: Pramod
+    family-names: Viswanath
+    affiliation: Princeton University
 repository-code: "https://github.com/yao-jz/mlvm"
 abstract: >-
   MLVM is a deterministic RISC-V RV64IMAFD emulator and proof-tooling laboratory.
