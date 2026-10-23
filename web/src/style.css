@@ -366,7 +366,8 @@ input[type="range"] { width: 100%; accent-color: var(--liar); }
 .button-link.primary { background: var(--ink); color: var(--page); border-color: var(--ink); font-weight: 600; padding: 13px 18px; }
 .button-link.primary:hover { opacity: 0.85; }
 .text-link { color: var(--ink); font-size: 14px; text-decoration-color: var(--axis); }
-.hero-note { font-size: 13px; color: var(--muted); margin: 20px 0 0; max-width: 55ch; }
+.hero-note { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 20px 0 0; max-width: 58ch; }
+.hero-note strong { color: var(--ink); }
 .feature-links { list-style: none; padding: 28px 0 0; margin: 40px 0 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .feature-links a { display: block; color: var(--ink); text-decoration: none; }
 .feature-links a:hover strong { text-decoration: underline; text-underline-offset: 3px; }

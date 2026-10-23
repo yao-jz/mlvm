@@ -48,7 +48,7 @@
             <a class="button-link primary" href="#how-it-works">How verification works <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="#run">Try it in your browser</a>
           </div>
-          <p class="hero-note">MLVM is an open-source research project. <a href="blog.html#limits">Current scope and limitations →</a></p>
+          <p class="hero-note"><strong>CPU only, no GPU.</strong> The model’s compiled program runs in software, one instruction at a time, about a thousand times slower than native inference. MLVM is for checking a run, not for serving one. It is an open-source research project. <a href="blog.html#limits">Current scope and limitations →</a></p>
         </div>
         <aside class="reading-invite" aria-labelledby="read-title">
           <p class="eyebrow">From the blog · Illustrated walkthrough</p>
@@ -86,7 +86,7 @@
             instruction set: additions, memory reads and other small operations with defined
             behavior. C and Rust programs can compile to that target, so the same machine can
             run different models and their surrounding code.</p>
-          <p>The program runs inside MLVM. <strong>You do not need a RISC-V processor.</strong>
+          <p>The program runs inside MLVM. <strong>You do not need a RISC-V processor or a GPU.</strong>
             <a href="blog.html#why-riscv">More on this choice →</a></p>
           <h3 id="software-floats">Floating point belongs in the VM, too.</h3>
           <p>Models do much of their work with floating-point numbers. MLVM uses Berkeley
