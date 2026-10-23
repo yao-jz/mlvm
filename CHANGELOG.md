@@ -3,6 +3,14 @@
 All notable user-visible changes are documented here. MLVM follows Semantic Versioning;
 before 1.0, a minor release may contain breaking changes.
 
+## [Unreleased]
+
+### Fixed
+
+- An exact zero from a subtraction or fused multiply-add of opposite-signed values is now -0
+  when rounding down (RDN), as IEEE 754 requires; it was +0 in every rounding mode. Programs
+  that round to nearest, including every recorded model run, are unaffected.
+
 ## [0.2.0] - 2026-10-23
 
 The first public release. Earlier 0.1 builds were private previews.

@@ -119,7 +119,7 @@ func Softfloat_mulAddF16(uiA uint16, uiB uint16, uiC uint16, op uint8) Float16_t
 			// zeroProd
 			uiZ = uiC
 			if !IntToBool(int(uint16(expC)|sigC)) && (signProd != signC) {
-				uiZ = PackToF16UI(false, 0, 0)
+				uiZ = PackToF16UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 			}
 			// uiZ
 			return Float16_t(uiZ)
@@ -131,7 +131,7 @@ func Softfloat_mulAddF16(uiA uint16, uiB uint16, uiC uint16, op uint8) Float16_t
 			// zeroProd
 			uiZ = uiC
 			if !IntToBool(int(uint16(expC)|sigC)) && (signProd != signC) {
-				uiZ = PackToF16UI(false, 0, 0)
+				uiZ = PackToF16UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 			}
 			// uiZ
 			return Float16_t(uiZ)
@@ -190,7 +190,7 @@ func Softfloat_mulAddF16(uiA uint16, uiB uint16, uiC uint16, op uint8) Float16_t
 			sig32Z = sigProd - sig32C
 			if sig32Z == 0 {
 				// completeCancellation
-				uiZ = PackToF16UI(false, 0, 0)
+				uiZ = PackToF16UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 				// uiZ
 				return Float16_t(uiZ)
 			}

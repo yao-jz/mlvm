@@ -41,7 +41,7 @@ func Softfloat_subMagsF32(uiA, uiB uint32) Float32_t {
 		}
 		sigDiff = int32(sigA - sigB)
 		if sigDiff == 0 {
-			uiZ = PackToF32UI(false, 0, 0)
+			uiZ = PackToF32UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 			// uiZ
 			return Float32_t(uiZ)
 		}

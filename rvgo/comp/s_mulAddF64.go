@@ -119,7 +119,7 @@ func Softfloat_mulAddF64(uiA uint64, uiB uint64, uiC uint64, op uint8) Float64_t
 			uiZ = uiC
 			if ((uint64(expC) | sigC) == 0) && (signZ != signC) {
 				// completeCancellation
-				uiZ = PackToF64UI(false, 0, 0)
+				uiZ = PackToF64UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 			}
 			// uiZ
 			return Float64_t(uiZ)
@@ -132,7 +132,7 @@ func Softfloat_mulAddF64(uiA uint64, uiB uint64, uiC uint64, op uint8) Float64_t
 			uiZ = uiC
 			if ((uint64(expC) | sigC) == 0) && (signZ != signC) {
 				// completeCancellation
-				uiZ = PackToF64UI(false, 0, 0)
+				uiZ = PackToF64UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 			}
 			// uiZ
 			return Float64_t(uiZ)
@@ -230,7 +230,7 @@ func Softfloat_mulAddF64(uiA uint64, uiB uint64, uiC uint64, op uint8) Float64_t
 			sigZ -= sigC
 			if sigZ == 0 && sig128Z[IndexWord(4, 1)] == 0 && sig128Z[IndexWord(4, 0)] == 0 {
 				// completeCancellation
-				uiZ = PackToF64UI(false, 0, 0)
+				uiZ = PackToF64UI(Softfloat_roundingMode == Softfloat_round_min, 0, 0)
 				// uiZ
 				return Float64_t(uiZ)
 			}

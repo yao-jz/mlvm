@@ -149,6 +149,44 @@ func TestSoftFloatConversionsAgainstNativeFPU(t *testing.T) {
 	t.Logf("%d integral values, conversions exact in both directions", len(integral))
 }
 
+// TestExactZeroSignFollowsRoundingMode pins IEEE 754's rule for an exact zero sum of operands
+// with opposite signs: +0 in every rounding mode except round-down, where it is -0. The C
+// reads softfloat_roundingMode at each complete cancellation; the port had `false` there in
+// subMags and mulAdd, so RDN gave +0. Random operands almost never cancel exactly, which is
+// why the host-FPU sweep above (round to nearest only) could not see it.
+func TestExactZeroSignFollowsRoundingMode(t *testing.T) {
+	f64 := func(v float64) include.Float64_t { return include.Float64_t(math.Float64bits(v)) }
+	f32 := func(v float32) include.Float32_t { return include.Float32_t(math.Float32bits(v)) }
+	negZero64, negZero32 := math.Copysign(0, -1), float32(math.Copysign(0, -1))
+	defer func() { include.Softfloat_roundingMode = include.Softfloat_round_near_even }()
+
+	for _, mode := range []uint8{
+		include.Softfloat_round_near_even, include.Softfloat_round_minMag, include.Softfloat_round_min,
+		include.Softfloat_round_max, include.Softfloat_round_near_maxMag,
+	} {
+		include.Softfloat_roundingMode = mode
+		want64, want32 := uint64(0), uint32(0)
+		if mode == include.Softfloat_round_min {
+			want64, want32 = 1<<63, 1<<31
+		}
+		for name, got := range map[string]uint64{
+			"1 - 1":      uint64(comp.F64_sub(f64(1), f64(1))),
+			"1 + -1":     uint64(comp.F64_add(f64(1), f64(-1))),
+			"1 * 2 + -2": uint64(comp.F64_mulAdd(f64(1), f64(2), f64(-2))),
+			"0 * 1 + -0": uint64(comp.F64_mulAdd(f64(0), f64(1), f64(negZero64))),
+		} {
+			require.Equalf(t, want64, got, "F64 %s in rounding mode %d", name, mode)
+		}
+		for name, got := range map[string]uint32{
+			"1 - 1":      uint32(comp.F32_sub(f32(1), f32(1))),
+			"1 * 2 + -2": uint32(comp.F32_mulAdd(f32(1), f32(2), f32(-2))),
+			"0 * 1 + -0": uint32(comp.F32_mulAdd(f32(0), f32(1), f32(negZero32))),
+		} {
+			require.Equalf(t, want32, got, "F32 %s in rounding mode %d", name, mode)
+		}
+	}
+}
+
 // TestSetMemoryRangeInvalidatesRoot pins a cache-invalidation bug that made a merkle root go
 // stale.
 //
