@@ -41,13 +41,23 @@ references:
       MLVM's virtual machine is derived from asterisc. The RISC-V interpreter,
       merkleized memory, bisection tooling and Solidity mirror originate there.
   - type: software
+    title: "softfloat-go: Berkeley SoftFloat 3 in Go"
+    authors:
+      - given-names: Jianzhu
+        family-names: Yao
+    repository-code: "https://github.com/yao-jz/softfloat-go"
+    license: MIT
+    notes: >-
+      The Go port of Berkeley SoftFloat that rvgo/comp is taken from. MLVM's copy adds
+      fixes and the RISC-V classify, min and max operations.
+  - type: software
     title: "Berkeley SoftFloat"
     authors:
       - given-names: John R.
         family-names: Hauser
     url: "http://www.jhauser.us/arithmetic/SoftFloat.html"
     notes: >-
-      rvgo/comp is a hand port of Berkeley SoftFloat Release 3e to Go.
+      rvgo/comp comes from softfloat-go, a hand port of Berkeley SoftFloat Release 3e to Go.
   - type: software
     title: "candle: minimalist ML framework for Rust"
     repository-code: "https://github.com/huggingface/candle"
