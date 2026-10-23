@@ -8,7 +8,7 @@ Five figures are generated:
   docs/fig/architecture.svg         the whole system: guest, execution, state, dispute, verdict
   docs/fig/address-space.svg        the 64-bit guest address space and what lives where
   docs/fig/isa-coverage.svg         per-extension instruction coverage, read from the VM source
-  docs/fig/overview.svg             Figure 1 of the write-up (web/blog.html): run, bisect, referee
+  docs/fig/overview.svg             the README's story: the problem, then fingerprint, find, check
   docs/fig/bisection-questions.svg  Figure 4 of the write-up: questions per dispute against length
 
 All are plain SVG with no external references, and all carry a `prefers-color-scheme`
@@ -252,6 +252,7 @@ ARCH_STYLE = """
     .mt    { fill: #1f2328; font: 600 14px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     .d     { fill: #424a53; font: 400 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     .c     { fill: #6e7781; font: 400 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok    { fill: #1a7f37; font: 600 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     @media (prefers-color-scheme: dark) {
       .bg    { fill: #0d1117; }
       .panel { fill: #161b22; stroke: #30363d; }
@@ -266,6 +267,7 @@ ARCH_STYLE = """
       .mt    { fill: #e6edf3; }
       .d     { fill: #b7bdc8; }
       .c     { fill: #7d8590; }
+      .ok    { fill: #3fb950; }
     }
   </style>
 """
@@ -474,7 +476,7 @@ def architecture_svg() -> str:
 # Figures drawn inline in the write-up, exported so the README can show them. They keep the
 # page's class names from web/src/blog.css; the tokens below give them the palette of the
 # figures above.
-BLOG_FIGURES = (("overview.svg", "fig1"), ("bisection-questions.svg", "fig4"))
+BLOG_FIGURES = (("bisection-questions.svg", "fig4"),)
 BLOG_STYLE = """
     svg {
       --surface: #ffffff; --surface-2: #f6f8fa; --ink: #1f2328; --ink-2: #59636e;
@@ -511,11 +513,143 @@ def blog_figure_svg(fig_id: str, pad: int = 16) -> str:
             f"{body}\n</svg>\n")
 
 
+def overview_svg() -> str:
+    """The story the README and the playground tell: someone runs a model and returns an
+    answer you cannot check; MLVM fingerprints every step, finds the first instruction where
+    two runs differ, and has a referee re-execute only that one."""
+    w, h = 960, 464
+    p = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" '
+        f'role="img" aria-label="From an answer to one checked instruction: someone runs a model and '
+        f'returns an answer that cannot be checked by itself; MLVM fingerprints every step, finds the '
+        f'first instruction where two runs differ in about log2 N rounds, and a referee re-executes '
+        f'only that instruction">',
+        ARCH_STYLE,
+        '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" '
+        'markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse">'
+        '<path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>',
+        f'<rect class="bg" width="{w}" height="{h}"/>',
+    ]
+
+    def t(x, y, s, cls="d", anchor=None, fill=None):
+        a = f' text-anchor="{anchor}"' if anchor else ""
+        f = f' fill="{fill}"' if fill else ""
+        p.append(f'<text class="{cls}" x="{x:g}" y="{y:g}"{a}{f}>{esc(s)}</text>')
+
+    def rect(x, y, rw, rh, cls, rx=8):
+        p.append(f'<rect class="{cls}" x="{x:g}" y="{y:g}" width="{rw:g}" height="{rh:g}" rx="{rx}"/>')
+
+    def arrow(x1, y1, x2, y2):
+        p.append(f'<line class="wire" x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" marker-end="url(#ah)"/>')
+
+    def line(x1, y1, x2, y2, colour, width=2):
+        p.append(f'<line x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" stroke="{colour}" stroke-width="{width}"/>')
+
+    t(24, 34, "From an answer to one checked instruction", "title")
+    t(24, 56, "How MLVM lets you verify a model run without running it again.", "sub")
+
+    # The problem ------------------------------------------------------------------------
+    rect(24, 72, 912, 104, "panel")
+    t(38, 94, "THE PROBLEM", "hdr")
+    for i, (title, line_) in enumerate((("You agree on a model", "its weights and a prompt"),
+                                        ("Someone else runs it", "on their own computer"),
+                                        ("They return an answer", "\u201cOnce upon a time, \u2026\u201d"))):
+        x = 38 + i * 216
+        rect(x, 106, 190, 54, "card", rx=6)
+        t(x + 14, 127, title, "mt")
+        t(x + 14, 146, line_)
+        if i:
+            arrow(x - 24, 133, x - 3, 133)
+    t(686, 124, "Is the answer right?", "mt")
+    t(686, 143, "The answer alone cannot show it,")
+    t(686, 160, "and running the model again is expensive.")
+
+    arrow(480, 176, 480, 206)
+    t(492, 197, "MLVM makes the run checkable in three steps", "c")
+
+    # The three steps ------------------------------------------------------------------
+    y, ph, pw = 210, 240, (912 - 2 * 14) / 3
+    steps = (
+        ("STEP 1", "Fingerprint every step",
+         ("After any instruction, the machine's",
+          "memory and registers hash to one",
+          "32-byte fingerprint. The same run gives",
+          "the same fingerprints on any computer.")),
+        ("STEP 2", "Find the first disagreement",
+         ("If two runs end with different",
+          "fingerprints, compare them halfway and",
+          "keep the half where they differ. About",
+          "log\u2082 N rounds: 34 for 14.8 billion.")),
+        ("STEP 3", "Check that one instruction",
+         ("A referee re-executes only that",
+          "instruction. It never runs the model,",
+          "and the evidence is a few kilobytes",
+          "that anyone can check again.")),
+    )
+    for i, (num, title, caption) in enumerate(steps):
+        px = 24 + i * (pw + 14)
+        rect(px, y, pw, ph, "panel")
+        t(px + 14, y + 24, num, "hdr")
+        t(px + 14, y + 45, title, "mt")
+        for n, s_ in enumerate(caption):
+            t(px + 14, y + 172 + n * 17, s_)
+        if i:
+            arrow(px - 13, y + 104, px - 2, y + 104)
+
+    # Step 1: a run, and the fingerprint after each instruction.
+    px = 24
+    xs = [px + 36 + k * 56 for k in range(5)]
+    line(xs[0], y + 88, xs[-1], y + 88, C_EXEC)
+    for k, (x, lab, fp) in enumerate(zip(xs, ("1", "2", "3", "\u2026", "N"),
+                                          ("0x3a\u2026", "0x91\u2026", "0x07\u2026", "", "0xbe\u2026"))):
+        t(x, y + 76, lab, "c", "middle")
+        if fp:
+            p.append(f'<circle class="card" cx="{x}" cy="{y + 88}" r="4"/>')
+            rect(x - 25, y + 100, 50, 20, "card", rx=4)
+            t(x, y + 114, fp, "c", "middle")
+    t(px + 14, y + 140, "a fingerprint after every instruction", "c")
+
+    # Step 2: two runs that differ from one instruction on, and the halving search.
+    px = 24 + pw + 14
+    x0, x1, xc = px + 22, px + 236, px + 158
+    t(px + 14, y + 66, "original", "c", fill=C_EXEC)
+    line(x0 + 50, y + 70, x1, y + 70, C_EXEC)
+    t(px + 14, y + 90, "changed", "c", fill=C_LIAR)
+    line(x0 + 50, y + 94, xc, y + 94, C_GREY)
+    line(xc, y + 94, x1, y + 94, C_LIAR)
+    p.append(f'<path d="M{xc - 4},{y + 90} l8,8 m0,-8 l-8,8" stroke="{C_LIAR}" stroke-width="2"/>')
+    t(x1 + 8, y + 74, "0xbe\u2026", "c", fill=C_EXEC)
+    t(x1 + 8, y + 98, "0x89\u2026", "c", fill=C_LIAR)
+    lo, hi = x0 + 50, x1
+    for r in range(4):
+        p.append(f'<rect x="{lo:.1f}" y="{y + 110 + r * 9}" width="{hi - lo:.1f}" height="5" rx="2" '
+                 f'fill="{C_EXEC}" fill-opacity="{0.25 + 0.15 * r:.2f}"/>')
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if xc > mid else (lo, mid)
+    t(px + 14, y + 116, "round 1", "c")
+    t(px + 14, y + 143, "round 4", "c")
+
+    # Step 3: the evidence goes in, one instruction is re-executed, the verdict comes out.
+    px = 24 + 2 * (pw + 14)
+    for k, lab in enumerate(("674-byte state", "memory proof")):
+        rect(px + 14 + k * 136, y + 58, 128, 24, "card", rx=4)
+        t(px + 14 + k * 136 + 64, y + 74, lab, "c", "middle")
+    arrow(px + 147, y + 82, px + 147, y + 98)
+    rect(px + 14, y + 100, 266, 28, "card", rx=4)
+    p.append(f'<rect x="{px + 14}" y="{y + 108}" width="3" height="12" rx="1.5" fill="{C_FP}"/>')
+    t(px + 28, y + 118, "re-execute", "c")
+    t(px + 108, y + 119, "fmul.s ft3, ft4, ft5", "m")
+    t(px + 14, y + 148, "\u2713 the original run is right", "ok")
+    p.append("</svg>")
+    return "\n".join(p)
+
+
 def main() -> int:
     FIG.mkdir(exist_ok=True)
     for name, svg in (("address-space.svg", address_space_svg()),
                       ("isa-coverage.svg", isa_coverage_svg()),
                       ("architecture.svg", architecture_svg()),
+                      ("overview.svg", overview_svg()),
                       *((name, blog_figure_svg(fig)) for name, fig in BLOG_FIGURES)):
         path = FIG / name
         path.write_text(svg)

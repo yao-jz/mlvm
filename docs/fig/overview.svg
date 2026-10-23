@@ -1,101 +1,131 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 792 344" width="792" height="344" role="img" aria-labelledby="fig1-t">
-<title id="fig1-t">System overview: inputs become a prestate root, the fast VM produces a poststate root, two machines with different roots are bisected down to one step, and three referees check that step.</title>
-<style>
-    svg {
-      --surface: #ffffff; --surface-2: #f6f8fa; --ink: #1f2328; --ink-2: #59636e;
-      --muted: #8c959f; --grid: #eaeef2; --axis: #d0d7de; --caller: #d0d7de;
-      --accent: #3b7dd8; --honest: #3b7dd8; --liar: #c9743a;
-      --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 464" width="960" height="464" role="img" aria-label="From an answer to one checked instruction: someone runs a model and returns an answer that cannot be checked by itself; MLVM fingerprints every step, finds the first instruction where two runs differ in about log2 N rounds, and a referee re-executes only that instruction">
+
+  <style>
+    .bg    { fill: #ffffff; }
+    .panel { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1; }
+    .card  { fill: #ffffff; stroke: #d0d7de; stroke-width: 1; }
+    .void  { fill: none; stroke: #8c959f; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .title { fill: #1f2328; font: 600 19px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .sub   { fill: #59636e; font: 400 13px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .lbl   { fill: #1f2328; font: 500 13.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .hdr   { fill: #59636e; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.06em; }
+    .m     { fill: #1f2328; font: 400 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .mm    { fill: #59636e; font: 400 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ms    { fill: #59636e; font: 400 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .tag   { font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .stage { fill: #1f2328; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .wire  { stroke: #8c959f; stroke-width: 1.3; fill: none; }
+    .head  { fill: #8c959f; }
+    .seg   { fill: #d0d7de; stroke: #f6f8fa; stroke-width: 1.5; }
+    .segn  { fill: #3b7dd8; fill-opacity: 0.38; stroke: #f6f8fa; stroke-width: 1.5; }
+    .mt    { fill: #1f2328; font: 600 14px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .d     { fill: #424a53; font: 400 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .c     { fill: #6e7781; font: 400 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok    { fill: #1a7f37; font: 600 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     @media (prefers-color-scheme: dark) {
-      svg {
-        --surface: #0d1117; --surface-2: #161b22; --ink: #e6edf3; --ink-2: #9198a1;
-        --muted: #6e7681; --grid: #21262d; --axis: #30363d; --caller: #30363d;
-      }
+      .bg    { fill: #0d1117; }
+      .panel { fill: #161b22; stroke: #30363d; }
+      .card  { fill: #0d1117; stroke: #30363d; }
+      .void  { stroke: #6e7681; }
+      .title, .lbl, .m, .stage { fill: #e6edf3; }
+      .sub, .hdr, .mm, .ms { fill: #9198a1; }
+      .wire  { stroke: #6e7681; }
+      .head  { fill: #6e7681; }
+      .seg   { fill: #30363d; stroke: #161b22; }
+      .segn  { fill-opacity: 0.55; stroke: #161b22; }
+      .mt    { fill: #e6edf3; }
+      .d     { fill: #b7bdc8; }
+      .c     { fill: #7d8590; }
+      .ok    { fill: #3fb950; }
     }
-    .bg { fill: var(--surface); stroke: var(--axis); stroke-width: 1; }
-    text { font-family: var(--sans); }
-    .f-box { fill: var(--surface); stroke: var(--axis); stroke-width: 1.25; }
-    .f-box-alt { fill: var(--surface-2); stroke: var(--axis); stroke-width: 1.25; }
-    .f-box-hi { fill: color-mix(in srgb, var(--accent) 12%, var(--surface)); stroke: var(--accent); stroke-width: 1.5; }
-    .f-box-liar { fill: color-mix(in srgb, var(--liar) 12%, var(--surface)); stroke: var(--liar); stroke-width: 1.5; }
-    .f-t { fill: var(--ink); font-size: 16px; font-weight: 600; }
-    .f-s { fill: var(--ink-2); font-size: 14.5px; }
-    .f-m { fill: var(--ink-2); font-family: var(--mono) !important; font-size: 13.5px; }
-    .f-panel { fill: var(--ink); font-size: 15px; font-weight: 600; }
-    .f-line { stroke: var(--ink-2); stroke-width: 1.5; fill: none; }
-    .f-thin { stroke: var(--muted); stroke-width: 1; fill: none; }
-    .f-dash { stroke: var(--muted); stroke-width: 1.25; stroke-dasharray: 4 3; fill: none; }
-    .f-head { fill: var(--ink-2); }
-    .f-grid { stroke: var(--grid); stroke-width: 1; }
-    .f-axis { stroke: var(--axis); stroke-width: 1; }
-    .f-tick { fill: var(--muted); font-size: 13px; }
-    .f-ref { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
-    .f-dot { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
-    .f-label { fill: var(--ink-2); font-size: 14px; }
-    .f-seg { fill: var(--caller); stroke: var(--surface); stroke-width: 2; }
-    .f-seg-new { fill: color-mix(in srgb, var(--accent) 34%, var(--surface)); stroke: var(--surface); stroke-width: 2; }
-    .f-tri { fill: var(--surface-2); stroke: var(--axis); stroke-width: 1.25; }
-    .f-path { stroke: var(--accent); stroke-width: 2.25; fill: none; }
-    .f-node { fill: var(--accent); }
-    .f-honest { stroke: var(--honest); stroke-width: 2.5; fill: none; }
-    .f-liar { stroke: var(--liar); stroke-width: 2.5; fill: none; }
-    .f-honest-dash { stroke: var(--honest); stroke-width: 2; stroke-dasharray: 5 4; fill: none; opacity: 0.6; }
-    .f-band { fill: color-mix(in srgb, var(--accent) 14%, transparent); }
-    .f-bar { fill: var(--accent); }
-    .f-ckpt { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.5; }
-    .f-mark-lo { stroke: var(--honest); stroke-width: 2; }
-    .f-mark-hi { stroke: var(--liar); stroke-width: 2; }
-</style>
-<rect class="bg" x="-15.5" y="-15.5" width="791" height="343" rx="12"/>
-<defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-head"/></marker></defs>
-<rect class="f-box" x="8" y="16" width="166" height="64" rx="10"/>
-<text class="f-t" x="91" y="42" text-anchor="middle">ELF + inputs</text>
-<text class="f-s" x="91" y="62" text-anchor="middle">weights, prompt</text>
-<rect class="f-box" x="198" y="16" width="166" height="64" rx="10"/>
-<text class="f-t" x="281" y="42" text-anchor="middle">prestate root</text>
-<text class="f-m" x="281" y="62" text-anchor="middle">0x03bd61b5…</text>
-<rect class="f-box-hi" x="388" y="16" width="166" height="64" rx="10"/>
-<text class="f-t" x="471" y="42" text-anchor="middle">fast VM</text>
-<text class="f-s" x="471" y="62" text-anchor="middle">software IEEE-754</text>
-<rect class="f-box" x="578" y="16" width="174" height="64" rx="10"/>
-<text class="f-t" x="665" y="42" text-anchor="middle">poststate root</text>
-<text class="f-s" x="665" y="62" text-anchor="middle">answer committed</text>
-<line class="f-line" x1="174" y1="48" x2="196" y2="48" marker-end="url(#ah1)"/>
-<line class="f-line" x1="364" y1="48" x2="386" y2="48" marker-end="url(#ah1)"/>
-<line class="f-line" x1="554" y1="48" x2="576" y2="48" marker-end="url(#ah1)"/>
+  </style>
 
-<line class="f-line" x1="471" y1="80" x2="471" y2="126" marker-end="url(#ah1)"/>
-<text class="f-s" x="480" y="108">two machines, different roots</text>
-<rect class="f-box" x="198" y="128" width="356" height="64" rx="10"/>
-<text class="f-t" x="376" y="154" text-anchor="middle">bisection over state hashes</text>
-<text class="f-s" x="376" y="174" text-anchor="middle">“hash after n steps?” · ≈ log₂ N questions</text>
-<line class="f-line" x1="554" y1="160" x2="576" y2="160" marker-end="url(#ah1)"/>
-<rect class="f-box" x="578" y="128" width="174" height="64" rx="10"/>
-<text class="f-t" x="665" y="154" text-anchor="middle">one disputed step</text>
-<text class="f-s" x="665" y="174" text-anchor="middle">witness + proofs</text>
-<line class="f-line" x1="198" y1="160" x2="176" y2="160" marker-end="url(#ah1)"/>
-<rect class="f-box-alt" x="8" y="128" width="166" height="64" rx="10"/>
-<text class="f-t" x="91" y="154" text-anchor="middle">dispute record</text>
-<text class="f-s" x="91" y="174" text-anchor="middle">a few KB of JSON</text>
-<line class="f-line" x1="91" y1="192" x2="91" y2="238" marker-end="url(#ah1)"/>
-<rect class="f-box-alt" x="8" y="240" width="166" height="64" rx="10"/>
-<text class="f-t" x="91" y="266" text-anchor="middle">mlvm referee</text>
-<text class="f-s" x="91" y="286" text-anchor="middle">rules again, no rerun</text>
-
-<polyline class="f-line" points="665,192 665,214"/>
-<line class="f-line" x1="286" y1="214" x2="665" y2="214"/>
-<line class="f-line" x1="286" y1="214" x2="286" y2="238" marker-end="url(#ah1)"/>
-<line class="f-line" x1="475" y1="214" x2="475" y2="238" marker-end="url(#ah1)"/>
-<line class="f-line" x1="664" y1="214" x2="664" y2="238" marker-end="url(#ah1)"/>
-<rect class="f-box" x="198" y="240" width="176" height="64" rx="10"/>
-<text class="f-t" x="286" y="266" text-anchor="middle">RISCV.sol in an EVM</text>
-<text class="f-s" x="286" y="286" text-anchor="middle">integer, memory · gas</text>
-<rect class="f-box" x="387" y="240" width="176" height="64" rx="10"/>
-<text class="f-t" x="475" y="266" text-anchor="middle">slow.Step</text>
-<text class="f-s" x="475" y="286" text-anchor="middle">Go mirror of RISCV.sol</text>
-<rect class="f-box-hi" x="576" y="240" width="176" height="64" rx="10"/>
-<text class="f-t" x="664" y="266" text-anchor="middle">SoftFloat</text>
-<text class="f-s" x="664" y="286" text-anchor="middle">float arithmetic</text>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="bg" width="960" height="464"/>
+<text class="title" x="24" y="34">From an answer to one checked instruction</text>
+<text class="sub" x="24" y="56">How MLVM lets you verify a model run without running it again.</text>
+<rect class="panel" x="24" y="72" width="912" height="104" rx="8"/>
+<text class="hdr" x="38" y="94">THE PROBLEM</text>
+<rect class="card" x="38" y="106" width="190" height="54" rx="6"/>
+<text class="mt" x="52" y="127">You agree on a model</text>
+<text class="d" x="52" y="146">its weights and a prompt</text>
+<rect class="card" x="254" y="106" width="190" height="54" rx="6"/>
+<text class="mt" x="268" y="127">Someone else runs it</text>
+<text class="d" x="268" y="146">on their own computer</text>
+<line class="wire" x1="230" y1="133" x2="251" y2="133" marker-end="url(#ah)"/>
+<rect class="card" x="470" y="106" width="190" height="54" rx="6"/>
+<text class="mt" x="484" y="127">They return an answer</text>
+<text class="d" x="484" y="146">“Once upon a time, …”</text>
+<line class="wire" x1="446" y1="133" x2="467" y2="133" marker-end="url(#ah)"/>
+<text class="mt" x="686" y="124">Is the answer right?</text>
+<text class="d" x="686" y="143">The answer alone cannot show it,</text>
+<text class="d" x="686" y="160">and running the model again is expensive.</text>
+<line class="wire" x1="480" y1="176" x2="480" y2="206" marker-end="url(#ah)"/>
+<text class="c" x="492" y="197">MLVM makes the run checkable in three steps</text>
+<rect class="panel" x="24" y="210" width="294.667" height="240" rx="8"/>
+<text class="hdr" x="38" y="234">STEP 1</text>
+<text class="mt" x="38" y="255">Fingerprint every step</text>
+<text class="d" x="38" y="382">After any instruction, the machine's</text>
+<text class="d" x="38" y="399">memory and registers hash to one</text>
+<text class="d" x="38" y="416">32-byte fingerprint. The same run gives</text>
+<text class="d" x="38" y="433">the same fingerprints on any computer.</text>
+<rect class="panel" x="332.667" y="210" width="294.667" height="240" rx="8"/>
+<text class="hdr" x="346.667" y="234">STEP 2</text>
+<text class="mt" x="346.667" y="255">Find the first disagreement</text>
+<text class="d" x="346.667" y="382">If two runs end with different</text>
+<text class="d" x="346.667" y="399">fingerprints, compare them halfway and</text>
+<text class="d" x="346.667" y="416">keep the half where they differ. About</text>
+<text class="d" x="346.667" y="433">log₂ N rounds: 34 for 14.8 billion.</text>
+<line class="wire" x1="319.667" y1="314" x2="330.667" y2="314" marker-end="url(#ah)"/>
+<rect class="panel" x="641.333" y="210" width="294.667" height="240" rx="8"/>
+<text class="hdr" x="655.333" y="234">STEP 3</text>
+<text class="mt" x="655.333" y="255">Check that one instruction</text>
+<text class="d" x="655.333" y="382">A referee re-executes only that</text>
+<text class="d" x="655.333" y="399">instruction. It never runs the model,</text>
+<text class="d" x="655.333" y="416">and the evidence is a few kilobytes</text>
+<text class="d" x="655.333" y="433">that anyone can check again.</text>
+<line class="wire" x1="628.333" y1="314" x2="639.333" y2="314" marker-end="url(#ah)"/>
+<line x1="60" y1="298" x2="284" y2="298" stroke="#3b7dd8" stroke-width="2"/>
+<text class="c" x="60" y="286" text-anchor="middle">1</text>
+<circle class="card" cx="60" cy="298" r="4"/>
+<rect class="card" x="35" y="310" width="50" height="20" rx="4"/>
+<text class="c" x="60" y="324" text-anchor="middle">0x3a…</text>
+<text class="c" x="116" y="286" text-anchor="middle">2</text>
+<circle class="card" cx="116" cy="298" r="4"/>
+<rect class="card" x="91" y="310" width="50" height="20" rx="4"/>
+<text class="c" x="116" y="324" text-anchor="middle">0x91…</text>
+<text class="c" x="172" y="286" text-anchor="middle">3</text>
+<circle class="card" cx="172" cy="298" r="4"/>
+<rect class="card" x="147" y="310" width="50" height="20" rx="4"/>
+<text class="c" x="172" y="324" text-anchor="middle">0x07…</text>
+<text class="c" x="228" y="286" text-anchor="middle">…</text>
+<text class="c" x="284" y="286" text-anchor="middle">N</text>
+<circle class="card" cx="284" cy="298" r="4"/>
+<rect class="card" x="259" y="310" width="50" height="20" rx="4"/>
+<text class="c" x="284" y="324" text-anchor="middle">0xbe…</text>
+<text class="c" x="38" y="350">a fingerprint after every instruction</text>
+<text class="c" x="346.667" y="276" fill="#3b7dd8">original</text>
+<line x1="404.667" y1="280" x2="568.667" y2="280" stroke="#3b7dd8" stroke-width="2"/>
+<text class="c" x="346.667" y="300" fill="#c9743a">changed</text>
+<line x1="404.667" y1="304" x2="490.667" y2="304" stroke="#7d8590" stroke-width="2"/>
+<line x1="490.667" y1="304" x2="568.667" y2="304" stroke="#c9743a" stroke-width="2"/>
+<path d="M486.6666666666667,300 l8,8 m0,-8 l-8,8" stroke="#c9743a" stroke-width="2"/>
+<text class="c" x="576.667" y="284" fill="#3b7dd8">0xbe…</text>
+<text class="c" x="576.667" y="308" fill="#c9743a">0x89…</text>
+<rect x="404.7" y="320" width="164.0" height="5" rx="2" fill="#3b7dd8" fill-opacity="0.25"/>
+<rect x="486.7" y="329" width="82.0" height="5" rx="2" fill="#3b7dd8" fill-opacity="0.40"/>
+<rect x="486.7" y="338" width="41.0" height="5" rx="2" fill="#3b7dd8" fill-opacity="0.55"/>
+<rect x="486.7" y="347" width="20.5" height="5" rx="2" fill="#3b7dd8" fill-opacity="0.70"/>
+<text class="c" x="346.667" y="326">round 1</text>
+<text class="c" x="346.667" y="353">round 4</text>
+<rect class="card" x="655.333" y="268" width="128" height="24" rx="4"/>
+<text class="c" x="719.333" y="284" text-anchor="middle">674-byte state</text>
+<rect class="card" x="791.333" y="268" width="128" height="24" rx="4"/>
+<text class="c" x="855.333" y="284" text-anchor="middle">memory proof</text>
+<line class="wire" x1="788.333" y1="292" x2="788.333" y2="308" marker-end="url(#ah)"/>
+<rect class="card" x="655.333" y="310" width="266" height="28" rx="4"/>
+<rect x="655.3333333333334" y="318" width="3" height="12" rx="1.5" fill="#8b6cc9"/>
+<text class="c" x="669.333" y="328">re-execute</text>
+<text class="m" x="749.333" y="329">fmul.s ft3, ft4, ft5</text>
+<text class="ok" x="655.333" y="358">✓ the original run is right</text>
 </svg>

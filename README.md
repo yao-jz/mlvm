@@ -19,7 +19,7 @@ Every state of the run has a 32-byte fingerprint, so any disagreement comes down
 </div>
 
 <p align="center">
-  <img src="docs/fig/overview.svg" width="792" alt="Inputs become a prestate root and the fast VM produces a poststate root. When two machines report different roots, bisection over state hashes narrows them to one disputed step, which RISCV.sol, slow.Step or SoftFloat checks; the dispute record lets mlvm referee rule again without a rerun.">
+  <img src="docs/fig/overview.svg" width="880" alt="From an answer to one checked instruction. The problem: you agree on a model, someone else runs it and returns an answer, and the answer alone cannot show it is right. Step 1: every instruction is followed by a 32-byte fingerprint of the machine. Step 2: when two runs end with different fingerprints, halving the run about log2 N times finds the first instruction where they differ. Step 3: a referee re-executes only that instruction from a 674-byte state and a memory proof.">
 </p>
 
 MLVM is an RV64IMAFD virtual machine in Go. It executes every instruction in software,

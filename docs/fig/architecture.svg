@@ -21,6 +21,7 @@
     .mt    { fill: #1f2328; font: 600 14px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     .d     { fill: #424a53; font: 400 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     .c     { fill: #6e7781; font: 400 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok    { fill: #1a7f37; font: 600 12.5px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
     @media (prefers-color-scheme: dark) {
       .bg    { fill: #0d1117; }
       .panel { fill: #161b22; stroke: #30363d; }
@@ -35,6 +36,7 @@
       .mt    { fill: #e6edf3; }
       .d     { fill: #b7bdc8; }
       .c     { fill: #7d8590; }
+      .ok    { fill: #3fb950; }
     }
   </style>
 
